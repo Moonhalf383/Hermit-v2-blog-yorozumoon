@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+	<channel>
+		<title>Posts on Yorozumoon</title>
+		<link>http://localhost:1313/zh-cn/posts/</link>
+		<description>Recent content in Posts on Yorozumoon</description>
+		<generator>Hugo -- 0.152.2</generator>
+		<language>zh-cn</language>
+		<lastBuildDate>Fri, 21 Nov 2025 14:06:57 +0800</lastBuildDate>
+		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		
+		<item>
+			<title>Test</title>
+			<link>http://localhost:1313/zh-cn/posts/test/</link>
+			<pubDate>Fri, 21 Nov 2025 14:06:57 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/test/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="test">test<a href="#test" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="test-1">test<a href="#test-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<h3 id="test-2">test<a href="#test-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><strong>test</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;test&#39;</span>)
+</span></span></code></pre></div><hr>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Hellohugo</title>
+			<link>http://localhost:1313/zh-cn/posts/hellohugo/</link>
+			<pubDate>Wed, 19 Nov 2025 23:20:43 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/hellohugo/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h2 id="hellohugo">Hellohugo<a href="#hellohugo" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>这是新的开始！</p>
+<p>期中之后，我决定改用hugo这一通常认为比hexo更优秀的博客框架来重新搭建自己的博客。原先使用hexo的博客因为起初技术力不足导致种种配置困难，最近想把文章投送上去时突然发现oranges主题的代码块意外的很丑。与此同时，老博客是在我的windows主系统中完成搭建的，而我现在代码工作基本完全转向了linux（虽然只是wsl），继续在windows下维护博客又会带来种种不便，索性完全弃用原本的博客，在wsl中另起炉灶。</p>
+]]></content>
+		</item>
+		
+	</channel>
+</rss>

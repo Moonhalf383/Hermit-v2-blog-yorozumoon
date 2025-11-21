@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abouts on 井枝万事屋</title>
+    <link>http://localhost:1313/about/</link>
+    <description>Recent content in Abouts on 井枝万事屋</description>
+    <generator>Hugo</generator>
+    <language>zh_cn</language>
+    <lastBuildDate>Thu, 20 Nov 2025 23:03:14 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/about/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>月のまにまに</title>
+      <link>http://localhost:1313/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/</link>
+      <pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
+      <guid>http://localhost:1313/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/</guid>
+      <description>&lt;p&gt;关于页测试。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

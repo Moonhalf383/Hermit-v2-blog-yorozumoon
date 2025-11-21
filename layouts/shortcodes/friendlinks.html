@@ -1,0 +1,14 @@
+{{/* layouts/shortcodes/friendlinks.html */}}
+<div class="friend-links-container">
+    {{ range .Site.Data.links.list }}
+    <a href="{{ .url }}" target="_blank" class="friend-card">
+        <div class="friend-left">
+            <img src="{{ .avatar }}" alt="{{ .name }}" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name={{ .name }}&background=random'">
+        </div>
+        <div class="friend-right">
+            <div class="friend-name">{{ .name }}</div>
+            <div class="friend-desc">{{ .desc }}</div>
+        </div>
+    </a>
+    {{ end }}
+</div>

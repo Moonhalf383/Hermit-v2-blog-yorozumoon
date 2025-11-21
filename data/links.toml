@@ -1,0 +1,37 @@
+# data/links.toml
+
+[[list]]
+name = "Go Hugo"
+url = "https://gohugo.io"
+avatar = "https://gohugo.io/images/hugo-logo.png"
+desc = "世界上最快的网站构建框架"
+
+[[list]]
+name = "GitHub"
+url = "https://github.com"
+avatar = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+desc = "代码托管平台"
+
+[[list]]
+name = "SakiMidare"
+url = "https://www.sakimidare.top/"
+avatar = "/images/avatar.DDuJmLsr_Z10nWFM.webp"
+desc = "心臓は点滅するかしら……"
+
+[[list]]
+name = "383494"
+url = "https://blog.383494.xyz/"
+avatar = "/images/friend_default.png"
+desc = "使用了默认头像"
+
+[[list]]
+name = "Frankly6"
+url = "https://frankly6.cn/"
+avatar = "/images/Frankly6.png"
+desc = "......"
+
+[[list]]
+name = "GlowLED"
+url = "https://blog.glowled.top/"
+avatar = "/images/avatar_yamada.jpg"
+desc = "一个混吃等死的普通人"

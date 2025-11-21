@@ -1,0 +1,144 @@
+# THIS IS AN EXAMPLE ON HOW YOU SHOULD CONFIGURE YOUR hugo.toml
+# See this hugo.toml in action at https://github.com/1bl4z3r/hermit-V2/blob/staging/hugo.toml
+# Example Site is Staging branch, acessible at https://github.com/1bl4z3r/hermit-V2/tree/staging
+# To see what each config does, refer to https://1bl4z3r.github.io/hermit-V2/en/posts/explaining-configs/
+# Open Issue or Pull Request at https://github.com/1bl4z3r/hermit-V2
+
+baseURL = "https://yorozumoon.cn/"
+defaultContentLanguage = "zh-cn"
+defaultContentLanguageInSubdir = true
+theme = "hermit-v2"
+enableRobotsTXT = true                ## set to true to enable inbuilt robots.txt
+
+[languages]
+[languages.zh-cn]
+title = "Yorozumoon"   # 网站标题
+languageCode = "zh-cn" # 这里的语言代码对应HTML头
+weight = 1
+
+# 之前说的主页副标题打字机内容，实际上在多语言模式下，建议放在这里配置
+[languages.zh-cn.params]
+homeSubtitle = "きっとキミは狂ってんだ,誰もがそう思うでしょう,でもこれが僕の描く理想の歌,そのまま何も言わないで!"
+languageCode = "zh-CN"
+
+title = "井枝万事屋"
+# enableGitInfo = true
+
+pygmentsCodefences = true
+pygmentsUseClasses = true
+#hasCJKLanguage = true
+
+rssLimit = 10
+
+copyright = "copyright by Moonhalf."
+enableEmoji = true
+
+#[services]
+#  [services.disqus]
+#    shortname = ''
+#  [services.googleAnalytics]
+#    id = ''
+
+[frontmatter]
+date = ["date", "publishDate", "lastmod"]
+lastmod = ["lastmod", ":git", "date", "publishDate"]
+publishDate = ["publishDate", "date"]
+expiryDate = ["expiryDate"]
+
+
+[params.author]
+name = "Moonhalf"
+about = "月のまにまに"
+
+[blackfriday]
+# hrefTargetBlank = true
+# noreferrerLinks = true
+# nofollowLinks = true
+
+[taxonomies]
+tag = "tags"
+# Categories are disabled by default.
+# category = "categories"
+
+# Enable to get proper Mathjax support
+#[markup]
+#  [markup.goldmark]
+#    [markup.goldmark.extensions]
+#      [markup.goldmark.extensions.passthrough]
+#        enable = true
+#        [markup.goldmark.extensions.passthrough.delimiters]
+#          block = [['\[', '\]'], ['$$', '$$']]
+#          inline = [['\(', '\)']]
+
+
+[params]
+# description = "CHANGE ME SITE DESCRIPTION"
+# images = [""]
+themeColor = "#494f5c"
+accentColor = "#018472"
+
+#homeSubtitle = "CHANGE ME HOME SUBTITLE"
+footerCopyright = "Copyright by Moonhalf"
+# footerHideThemeName = false
+# bgImg = ""
+# gitUrl = "https://github.com/1bl4z3r/hermit-V2/tree/staging"
+
+justifyContent = false
+
+relatedPosts = true
+code_copy_button = true
+
+homeSubtitlePrinter = true
+scrollToTop = true
+global_mathjax = false
+readTime = true
+readTimeSeparator = "次阅读"
+# legacyLayout = false
+shareSocial = true
+# googleTagManager = "GTM-XXXXXXXX"
+# tagSymbol = "#"
+# categorySymbol = "⊲"
+# pinned = "Pinned Posts"
+# pinnedSVGname = "pin"
+# listLayout = ["description","tags","categories","legacy"]
+# initialPublish = "Initally Posted on: "
+# human = ["single","posts"]
+# noIndex = false
+# denyRobots = "noindex, nofollow, noarchive"
+# allowRobots = "index, follow"
+# siteNoIndex = false
+# noIndexPages = ["404 Page not found"]
+# usesAnimation = true
+# mathjaxLib = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+# mermaidLib = "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs"
+[params.gallery]
+enable = true
+thumbnail = '300'
+
+[params.dateform]
+CopyrightDate = "2006"
+LongDate = "Jan 2, 2006"
+ShortDate = "Jan 2"
+NumDateShort = "2006-01-02"
+NumDateLong = "2006-01-02 15:04 -0700"
+
+[[params.socialLinks]]
+name = "github"
+url = "https://github.com/Moonhalf383"
+
+[menu]
+
+[[menu.main]]
+name = "文章"
+url = "posts/"
+weight = 10
+
+[[menu.main]]
+name = "关于"
+url = "about/"
+weight = 20
+
+[[menu.main]]
+name = "友链"    # 显示的文字
+url = "links/" # 对应的文件路径（不需要.md）
+weight = 30    # 排序数字
