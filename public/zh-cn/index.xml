@@ -1,83 +1,61 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yorozumoon</title><link>http://localhost:1313/zh-cn/</link><description>Recent content on Yorozumoon</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Nov 2025 14:21:21 +0800</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml"/><item><title>友链</title><link>http://localhost:1313/zh-cn/links/</link><pubDate>Fri, 21 Nov 2025 14:21:21 +0800</pubDate><guid>http://localhost:1313/zh-cn/links/</guid><description>&lt;p&gt;月枝的朋友。&lt;/p&gt;
-
-&lt;div class="friend-links-container"&gt;
- 
- &lt;a href="https://gohugo.io" target="_blank" class="friend-card"&gt;
- &lt;div class="friend-left"&gt;
- &lt;img src="https://gohugo.io/images/hugo-logo.png" alt="Go Hugo" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Go Hugo&amp;background=random'"&gt;
- &lt;/div&gt;
- &lt;div class="friend-right"&gt;
- &lt;div class="friend-name"&gt;Go Hugo&lt;/div&gt;
- &lt;div class="friend-desc"&gt;世界上最快的网站构建框架&lt;/div&gt;
- &lt;/div&gt;
- &lt;/a&gt;
- 
- &lt;a href="https://github.com" target="_blank" class="friend-card"&gt;
- &lt;div class="friend-left"&gt;
- &lt;img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=GitHub&amp;background=random'"&gt;
- &lt;/div&gt;
- &lt;div class="friend-right"&gt;
- &lt;div class="friend-name"&gt;GitHub&lt;/div&gt;
- &lt;div class="friend-desc"&gt;代码托管平台&lt;/div&gt;
- &lt;/div&gt;
- &lt;/a&gt;
- 
- &lt;a href="https://www.sakimidare.top/" target="_blank" class="friend-card"&gt;
- &lt;div class="friend-left"&gt;
- &lt;img src="http://localhost:1313/images/avatar.DDuJmLsr_Z10nWFM.webp" alt="SakiMidare" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=SakiMidare&amp;background=random'"&gt;
- &lt;/div&gt;
- &lt;div class="friend-right"&gt;
- &lt;div class="friend-name"&gt;SakiMidare&lt;/div&gt;
- &lt;div class="friend-desc"&gt;心臓は点滅するかしら……&lt;/div&gt;
- &lt;/div&gt;
- &lt;/a&gt;
- 
- &lt;a href="https://blog.383494.xyz/" target="_blank" class="friend-card"&gt;
- &lt;div class="friend-left"&gt;
- &lt;img src="http://localhost:1313/images/friend_default.png" alt="383494" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=383494&amp;background=random'"&gt;
- &lt;/div&gt;
- &lt;div class="friend-right"&gt;
- &lt;div class="friend-name"&gt;383494&lt;/div&gt;
- &lt;div class="friend-desc"&gt;使用了默认头像&lt;/div&gt;
- &lt;/div&gt;
- &lt;/a&gt;
- 
- &lt;a href="https://frankly6.cn/" target="_blank" class="friend-card"&gt;
- &lt;div class="friend-left"&gt;
- &lt;img src="http://localhost:1313/images/Frankly6.png" alt="Frankly6" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Frankly6&amp;background=random'"&gt;
- &lt;/div&gt;
- &lt;div class="friend-right"&gt;
- &lt;div class="friend-name"&gt;Frankly6&lt;/div&gt;
- &lt;div class="friend-desc"&gt;......&lt;/div&gt;
- &lt;/div&gt;
- &lt;/a&gt;
- 
- &lt;a href="https://blog.glowled.top/" target="_blank" class="friend-card"&gt;
- &lt;div class="friend-left"&gt;
- &lt;img src="http://localhost:1313/images/avatar_yamada.jpg" alt="GlowLED" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=GlowLED&amp;background=random'"&gt;
- &lt;/div&gt;
- &lt;div class="friend-right"&gt;
- &lt;div class="friend-name"&gt;GlowLED&lt;/div&gt;
- &lt;div class="friend-desc"&gt;一个混吃等死的普通人&lt;/div&gt;
- &lt;/div&gt;
- &lt;/a&gt;
- 
-&lt;/div&gt;
-
-&lt;hr&gt;
-&lt;h3 id="如何交换友链"&gt;如何交换友链？&lt;a href="#%e5%a6%82%e4%bd%95%e4%ba%a4%e6%8d%a2%e5%8f%8b%e9%93%be" class="anchor" aria-hidden="true"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
- stroke-linecap="round" stroke-linejoin="round"&gt;
- &lt;path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"&gt;&lt;/path&gt;
- &lt;line x1="8" y1="12" x2="16" y2="12"&gt;&lt;/line&gt;
- &lt;/svg&gt;&lt;/a&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;名称&lt;/strong&gt;: 井枝万事屋&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;链接&lt;/strong&gt;: &lt;a href="https://yorozumoon.cn"&gt;https://yorozumoon.cn&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;简介&lt;/strong&gt;: 濂珠沉葬，玉碎琉璃&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Hellohugo</title><link>http://localhost:1313/zh-cn/posts/hellohugo/</link><pubDate>Wed, 19 Nov 2025 23:20:43 +0800</pubDate><guid>http://localhost:1313/zh-cn/posts/hellohugo/</guid><description>&lt;h2 id="hellohugo"&gt;Hellohugo&lt;a href="#hellohugo" class="anchor" aria-hidden="true"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
- stroke-linecap="round" stroke-linejoin="round"&gt;
- &lt;path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"&gt;&lt;/path&gt;
- &lt;line x1="8" y1="12" x2="16" y2="12"&gt;&lt;/line&gt;
- &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;这是新的开始！&lt;/p&gt;
-&lt;p&gt;期中之后，我决定改用hugo这一通常认为比hexo更优秀的博客框架来重新搭建自己的博客。原先使用hexo的博客因为起初技术力不足导致种种配置困难，最近想把文章投送上去时突然发现oranges主题的代码块意外的很丑。与此同时，老博客是在我的windows主系统中完成搭建的，而我现在代码工作基本完全转向了linux（虽然只是wsl），继续在windows下维护博客又会带来种种不便，索性完全弃用原本的博客，在wsl中另起炉灶。&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yorozumoon</title>
+    <link>http://localhost:1313/zh-cn/</link>
+    <description>Recent content on Yorozumoon</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Nov 2025 11:11:53 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NeovimPlugins配置方法</title>
+      <link>http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sun, 23 Nov 2025 11:11:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;p&gt;我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)&lt;/p&gt;&#xA;&lt;h3 id=&#34;插件的分类&#34;&gt;插件的分类&lt;a href=&#34;#%e6%8f%92%e4%bb%b6%e7%9a%84%e5%88%86%e7%b1%bb&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;nvim的插件大致有以下几类:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;基础辅助。拓展vim的行为。&lt;/li&gt;&#xA;&lt;li&gt;git集成&lt;/li&gt;&#xA;&lt;li&gt;外观主题&lt;/li&gt;&#xA;&lt;li&gt;代码智能&#xA;&lt;ul&gt;&#xA;&lt;li&gt;自动补全&lt;/li&gt;&#xA;&lt;li&gt;语法高亮&lt;/li&gt;&#xA;&lt;li&gt;语法诊断&lt;/li&gt;&#xA;&lt;li&gt;调试与运行&lt;/li&gt;&#xA;&lt;li&gt;代码格式化&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;模糊搜索&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;至少在kickstart中出现的插件可以大致归类为以上内容。&lt;/p&gt;&#xA;&lt;h3 id=&#34;插件管理器&#34;&gt;插件管理器&lt;a href=&#34;#%e6%8f%92%e4%bb%b6%e7%ae%a1%e7%90%86%e5%99%a8&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Neovim配置如何入门</title>
+      <link>http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/</link>
+      <pubDate>Sun, 23 Nov 2025 10:53:11 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/</guid>
+      <description>&lt;p&gt;如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。&lt;/p&gt;&#xA;&lt;p&gt;闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;nvim配置原理&#34;&gt;Nvim配置原理&lt;a href=&#34;#nvim%e9%85%8d%e7%bd%ae%e5%8e%9f%e7%90%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。&lt;/p&gt;&#xA;&lt;p&gt;但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。&lt;/p&gt;&#xA;&lt;p&gt;通常，一个neovim的配置文件目录如下：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;~/.config/nvim/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;├── init.lua&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;└── lua/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ├── config/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    │   ├── options.lua&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    │   ├── keymaps.lua&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    │   └── autocmds.lua&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    └── plugins/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ├── init.lua       （可选）&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ├── lualine.lua&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ├── treesitter.lua&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        └── ……&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>友链</title>
+      <link>http://localhost:1313/zh-cn/links/</link>
+      <pubDate>Fri, 21 Nov 2025 14:21:21 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/links/</guid>
+      <description>&lt;p&gt;月枝的朋友。&lt;/p&gt;&#xA;&#xA;&lt;div class=&#34;friend-links-container&#34;&gt;&#xA;    &#xA;    &lt;a href=&#34;https://gohugo.io&#34; target=&#34;_blank&#34; class=&#34;friend-card&#34;&gt;&#xA;        &lt;div class=&#34;friend-left&#34;&gt;&#xA;            &lt;img src=&#34;https://gohugo.io/images/hugo-logo.png&#34; alt=&#34;Go Hugo&#34; class=&#34;friend-avatar&#34; onerror=&#34;this.src=&#39;https://ui-avatars.com/api/?name=Go Hugo&amp;background=random&#39;&#34;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div class=&#34;friend-right&#34;&gt;&#xA;            &lt;div class=&#34;friend-name&#34;&gt;Go Hugo&lt;/div&gt;&#xA;            &lt;div class=&#34;friend-desc&#34;&gt;世界上最快的网站构建框架&lt;/div&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/a&gt;&#xA;    &#xA;    &lt;a href=&#34;https://github.com&#34; target=&#34;_blank&#34; class=&#34;friend-card&#34;&gt;&#xA;        &lt;div class=&#34;friend-left&#34;&gt;&#xA;            &lt;img src=&#34;https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png&#34; alt=&#34;GitHub&#34; class=&#34;friend-avatar&#34; onerror=&#34;this.src=&#39;https://ui-avatars.com/api/?name=GitHub&amp;background=random&#39;&#34;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div class=&#34;friend-right&#34;&gt;&#xA;            &lt;div class=&#34;friend-name&#34;&gt;GitHub&lt;/div&gt;&#xA;            &lt;div class=&#34;friend-desc&#34;&gt;代码托管平台&lt;/div&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/a&gt;&#xA;    &#xA;    &lt;a href=&#34;https://www.sakimidare.top/&#34; target=&#34;_blank&#34; class=&#34;friend-card&#34;&gt;&#xA;        &lt;div class=&#34;friend-left&#34;&gt;&#xA;            &lt;img src=&#34;http://localhost:1313/images/avatar.DDuJmLsr_Z10nWFM.webp&#34; alt=&#34;SakiMidare&#34; class=&#34;friend-avatar&#34; onerror=&#34;this.src=&#39;https://ui-avatars.com/api/?name=SakiMidare&amp;background=random&#39;&#34;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div class=&#34;friend-right&#34;&gt;&#xA;            &lt;div class=&#34;friend-name&#34;&gt;SakiMidare&lt;/div&gt;&#xA;            &lt;div class=&#34;friend-desc&#34;&gt;心臓は点滅するかしら……&lt;/div&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/a&gt;&#xA;    &#xA;    &lt;a href=&#34;https://blog.383494.xyz/&#34; target=&#34;_blank&#34; class=&#34;friend-card&#34;&gt;&#xA;        &lt;div class=&#34;friend-left&#34;&gt;&#xA;            &lt;img src=&#34;http://localhost:1313/images/friend_default.png&#34; alt=&#34;383494&#34; class=&#34;friend-avatar&#34; onerror=&#34;this.src=&#39;https://ui-avatars.com/api/?name=383494&amp;background=random&#39;&#34;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div class=&#34;friend-right&#34;&gt;&#xA;            &lt;div class=&#34;friend-name&#34;&gt;383494&lt;/div&gt;&#xA;            &lt;div class=&#34;friend-desc&#34;&gt;使用了默认头像&lt;/div&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/a&gt;&#xA;    &#xA;    &lt;a href=&#34;https://frankly6.cn/&#34; target=&#34;_blank&#34; class=&#34;friend-card&#34;&gt;&#xA;        &lt;div class=&#34;friend-left&#34;&gt;&#xA;            &lt;img src=&#34;http://localhost:1313/images/Frankly6.png&#34; alt=&#34;Frankly6&#34; class=&#34;friend-avatar&#34; onerror=&#34;this.src=&#39;https://ui-avatars.com/api/?name=Frankly6&amp;background=random&#39;&#34;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div class=&#34;friend-right&#34;&gt;&#xA;            &lt;div class=&#34;friend-name&#34;&gt;Frankly6&lt;/div&gt;&#xA;            &lt;div class=&#34;friend-desc&#34;&gt;......&lt;/div&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/a&gt;&#xA;    &#xA;    &lt;a href=&#34;https://blog.glowled.top/&#34; target=&#34;_blank&#34; class=&#34;friend-card&#34;&gt;&#xA;        &lt;div class=&#34;friend-left&#34;&gt;&#xA;            &lt;img src=&#34;http://localhost:1313/images/avatar_yamada.jpg&#34; alt=&#34;GlowLED&#34; class=&#34;friend-avatar&#34; onerror=&#34;this.src=&#39;https://ui-avatars.com/api/?name=GlowLED&amp;background=random&#39;&#34;&gt;&#xA;        &lt;/div&gt;&#xA;        &lt;div class=&#34;friend-right&#34;&gt;&#xA;            &lt;div class=&#34;friend-name&#34;&gt;GlowLED&lt;/div&gt;&#xA;            &lt;div class=&#34;friend-desc&#34;&gt;一个混吃等死的普通人&lt;/div&gt;&#xA;        &lt;/div&gt;&#xA;    &lt;/a&gt;&#xA;    &#xA;&lt;/div&gt;&#xA;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;如何交换友链&#34;&gt;如何交换友链？&lt;a href=&#34;#%e5%a6%82%e4%bd%95%e4%ba%a4%e6%8d%a2%e5%8f%8b%e9%93%be&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;名称&lt;/strong&gt;: 井枝万事屋&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;链接&lt;/strong&gt;: &lt;a href=&#34;https://yorozumoon.cn&#34;&gt;https://yorozumoon.cn&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;简介&lt;/strong&gt;: 濂珠沉葬，玉碎琉璃&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>Test</title>
+      <link>http://localhost:1313/zh-cn/posts/test/</link>
+      <pubDate>Fri, 21 Nov 2025 14:06:57 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/test/</guid>
+      <description>&lt;h1 id=&#34;test&#34;&gt;test&lt;a href=&#34;#test&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;h2 id=&#34;test-1&#34;&gt;test&lt;a href=&#34;#test-1&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;h3 id=&#34;test-2&#34;&gt;test&lt;a href=&#34;#test-2&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;&lt;strong&gt;test&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>まにまに</title>
+      <link>http://localhost:1313/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/</link>
+      <pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/</guid>
+      <description>&lt;h4 id=&#34;转载自r-906--まにまに随之任之-manimani-歌词&#34;&gt;转载自&lt;a href=&#34;https://www.bilibili.com/opus/675340700589490199?spm_id_from=333.1387.0.0&#34;&gt;r-906 – まにまに(随之任之) (Manimani) 歌词&lt;/a&gt;&lt;a href=&#34;#%e8%bd%ac%e8%bd%bd%e8%87%aar-906--%e3%81%be%e3%81%ab%e3%81%be%e3%81%ab%e9%9a%8f%e4%b9%8b%e4%bb%bb%e4%b9%8b-manimani-%e6%ad%8c%e8%af%8d&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;p&gt;狂(くる)&lt;/p&gt;&#xA;&lt;h3 id=&#34;きっとキミは狂ってんだ&#34;&gt;きっとキミは狂ってんだ&lt;a href=&#34;#%e3%81%8d%e3%81%a3%e3%81%a8%e3%82%ad%e3%83%9f%e3%81%af%e7%8b%82%e3%81%a3%e3%81%a6%e3%82%93%e3%81%a0&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h3&gt;&#xA;&lt;p&gt;誰(だれ)&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Hellohugo</title>
+      <link>http://localhost:1313/zh-cn/posts/hellohugo/</link>
+      <pubDate>Wed, 19 Nov 2025 23:20:43 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/hellohugo/</guid>
+      <description>&lt;h2 id=&#34;hellohugo&#34;&gt;Hellohugo&lt;a href=&#34;#hellohugo&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;这是新的开始！&lt;/p&gt;&#xA;&lt;p&gt;期中之后，我决定改用hugo博客框架来重新搭建自己的博客。原先使用hexo的博客因为起初技术力不足导致种种配置困难，最近想把文章投送上去时突然发现oranges主题的代码块意外的很丑。与此同时，老博客是在我的windows主系统中完成搭建的，而我现在代码工作基本完全转向了linux（虽然只是wsl），继续在windows下维护博客又会带来种种不便，所以索性完全弃用原本的博客，在wsl中另起炉灶。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>零基础如何搭建博客</title>
+      <link>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Sat, 20 Sep 2025 20:49:03 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
+      <description>&lt;h4 id=&#34;从旧站移植来的旧文旧站使用的是hexo框架&#34;&gt;从旧站移植来的旧文，旧站使用的是hexo框架。&lt;a href=&#34;#%e4%bb%8e%e6%97%a7%e7%ab%99%e7%a7%bb%e6%a4%8d%e6%9d%a5%e7%9a%84%e6%97%a7%e6%96%87%e6%97%a7%e7%ab%99%e4%bd%bf%e7%94%a8%e7%9a%84%e6%98%afhexo%e6%a1%86%e6%9e%b6&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;p&gt;大概在本月的14号左右，我突然想起来之前知乎上有人和我说过可以搭建一个博客，写写题解什么的。当然，搭一个博客和写题解之间没有必然关系，但是就那几天我突然开始好奇什么是博客。不查不知道，博客竟然是一类网站的统称。经过了一番折腾总算是把自己的博客网站搭建起来了。&lt;/p&gt;&#xA;&lt;p&gt;下面，请让我简述我的博客是如何搭建起来的。&lt;/p&gt;&#xA;&lt;h2 id=&#34;1静态框架hexo&#34;&gt;1.静态框架hexo&lt;a href=&#34;#1%e9%9d%99%e6%80%81%e6%a1%86%e6%9e%b6hexo&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;因为博客实际上是一种过去盛行的网络社交方式，大多数博客都大同小异，所以，搭建博客很多时候是一件相当同质化的事情。这就意味着，我们可以用相似的框架来搭建自己的博客。这就是博客框架。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

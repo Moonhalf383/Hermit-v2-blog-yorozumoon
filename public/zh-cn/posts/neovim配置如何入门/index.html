@@ -1,342 +1,152 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
-	<channel>
-		<title>Posts on Yorozumoon</title>
-		<link>http://localhost:1313/zh-cn/posts/</link>
-		<description>Recent content in Posts on Yorozumoon</description>
-		<generator>Hugo -- 0.152.2</generator>
-		<language>zh-cn</language>
-		<lastBuildDate>Sun, 23 Nov 2025 11:11:53 +0800</lastBuildDate>
-		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
-		
-		
-		<item>
-			<title>NeovimPlugins配置方法</title>
-			<link>http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/</link>
-			<pubDate>Sun, 23 Nov 2025 11:11:53 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)</p>
-<h3 id="插件的分类">插件的分类<a href="#%e6%8f%92%e4%bb%b6%e7%9a%84%e5%88%86%e7%b1%bb" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<p>nvim的插件大致有以下几类:</p>
-<ul>
-<li>基础辅助。拓展vim的行为。</li>
-<li>git集成</li>
-<li>外观主题</li>
-<li>代码智能
-<ul>
-<li>自动补全</li>
-<li>语法高亮</li>
-<li>语法诊断</li>
-<li>调试与运行</li>
-<li>代码格式化</li>
-</ul>
-</li>
-<li>模糊搜索</li>
-</ul>
-<p>至少在kickstart中出现的插件可以大致归类为以上内容。</p>
-<h3 id="插件管理器">插件管理器<a href="#%e6%8f%92%e4%bb%b6%e7%ae%a1%e7%90%86%e5%99%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<p>光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。</p>
-<p>让我们看到init.lua中关于下载lazy.nvim插件管理器的部分：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Install `lazy.nvim` plugin manager ]]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> lazypath <span style="color:#f92672">=</span> vim.fn.stdpath <span style="color:#e6db74">&#39;data&#39;</span> <span style="color:#f92672">..</span> <span style="color:#e6db74">&#39;/lazy/lazy.nvim&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (vim.uv <span style="color:#f92672">or</span> vim.loop).fs_stat(lazypath) <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> lazyrepo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://github.com/folke/lazy.nvim.git&#39;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> out <span style="color:#f92672">=</span> vim.fn.system { <span style="color:#e6db74">&#39;git&#39;</span>, <span style="color:#e6db74">&#39;clone&#39;</span>, <span style="color:#e6db74">&#39;--filter=blob:none&#39;</span>, <span style="color:#e6db74">&#39;--branch=stable&#39;</span>, lazyrepo, lazypath }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> vim.v.shell_error <span style="color:#f92672">~=</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    error(<span style="color:#e6db74">&#39;Error cloning lazy.nvim:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">..</span> out)
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">---@type vim.Option</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> rtp <span style="color:#f92672">=</span> vim.opt.rtp
-</span></span><span style="display:flex;"><span>rtp:prepend(lazypath)
-</span></span></code></pre></div><p>这段代码的含义，简单来说就是：</p>
-<ul>
-<li>创建一个lazypath作为这个插件管理器的老家
-<ul>
-<li>在linux系统中，通常就是<code>~/.local/share/nvim/lazy/lazy.nvim</code></li>
-</ul>
-</li>
-<li>将lazy.nvim在github上的仓库克隆到lazypath</li>
-<li>其余部分的代码基本是出于兼容性而写的（但是并非无用，这段代码的健壮性还是非常强的，能让你在绝大多数情况下都能至少保证lazy.nvim安装成功）</li>
-</ul>
-<p>这段代码基本唯一有价值的东西就是告诉你lazypath的老家在哪，实在有问题可能会要去检查那里的文件。但是通常而言用不到。而且你大概率也不会自己写这段代码，所以多数情况下忽视即可。</p>
-<h3 id="插件">插件<a href="#%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require(<span style="color:#e6db74">&#39;lazy&#39;</span>).setup({
-</span></span></code></pre></div><p>从接下来开始就到了重头戏了，nvim的插件管理。</p>
-<p>在我们kickstart nvim这个配置模版中，大几百行的代码都塞在了<code>require('lazy').setup({</code>这个巨大括号里。</p>
-<p><code>require('lazy').setup()</code>接受的是两个参数，其中第一个参数就是一个巨大的lua table，里面放的是插件的“说明书”，第二个参数则是可选的，用来定制lazy.nvim自身的外观和行为。我们主要关注第一部分，即插件的“说明书”到底怎么写。</p>
-<h4 id="插件说明书-plugin-specification">插件说明书 (Plugin Specification)<a href="#%e6%8f%92%e4%bb%b6%e8%af%b4%e6%98%8e%e4%b9%a6-plugin-specification" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>所谓的插件说明书，就是setup()中第一个参数table中的元素。每一个说明书就代表了一个插件。</p>
-<p>一个插件说明书的职能大概有：</p>
-<ul>
-<li>让lazy.nvim去下载需要的插件</li>
-<li>传递配置选项给插件</li>
-<li>加载触发器来实现自动功能</li>
-<li>设置自定义函数来配置插件（比如设置快捷键）</li>
-<li>声明依赖项</li>
-<li>设置加载条件</li>
-<li>设置打开特定文件时加载插件</li>
-<li>导入其他文件中的插件配置</li>
-</ul>
-<p>好吧，光看这些职能是没有用的，我们来以init.lua中提供的插件说明书来详细讲解。</p>
-<h4 id="最简形式">最简形式<a href="#%e6%9c%80%e7%ae%80%e5%bd%a2%e5%bc%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;NMAC427/guess-indent.nvim&#39;</span>, <span style="color:#75715e">-- Detect tabstop and shiftwidth automatically</span>
-</span></span></code></pre></div><p>没错，一个字符串就足够作为一个插件了。记得后面要加逗号。</p>
-<p>这段代码的含义就是，到github上找到<code>NMAC427</code>这个用户的<code>guess-indent.nvim</code>这个仓库并下载下来，什么都不配置，直接用默认配置即可。这是最省事的写法。</p>
-<p>但是多数时候，你为了更方便的使用插件，不得不进行一些相应的配置。这个时候，我们就要用到更加复杂的配置方式。</p>
-<h4 id="常见形式">常见形式<a href="#%e5%b8%b8%e8%a7%81%e5%bd%a2%e5%bc%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#75715e">-- Use `opts = {}` to automatically pass options to a plugin&#39;s `setup()` function, forcing the plugin to be loaded.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Alternatively, use `config = function() ... end` for full control over the configuration.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- If you prefer to call `setup` explicitly, use:</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    {</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        &#39;lewis6991/gitsigns.nvim&#39;,</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        config = function()</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--            require(&#39;gitsigns&#39;).setup({</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--                -- Your gitsigns configuration here</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--            })</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        end,</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    }</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Here is a more advanced example where we pass configuration</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- options to `gitsigns.nvim`.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- See `:help gitsigns` to understand what the configuration keys do</span>
-</span></span><span style="display:flex;"><span>  { <span style="color:#75715e">-- Adds git related signs to the gutter, as well as utilities for managing changes</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;lewis6991/gitsigns.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>      signs <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        add <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;+&#39;</span> },
-</span></span><span style="display:flex;"><span>        change <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~&#39;</span> },
-</span></span><span style="display:flex;"><span>        delete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;_&#39;</span> },
-</span></span><span style="display:flex;"><span>        topdelete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;‾&#39;</span> },
-</span></span><span style="display:flex;"><span>        changedelete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~&#39;</span> },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>  },
-</span></span></code></pre></div><p>这是一个git图标插件，功能是在侧边栏显示当前文本中的改动增减。但是我们想要自定义显示的图标，那么我们就必须进行配置。</p>
-<p>配置的方式如上，简单来说就是将插件说明书写成一个table。lua中table是唯一的组合数据结构，功能类似于js的对象，既能当哈希表或字典，又能当列表，还能作为类。如果想要写好lua程序，你将不得不直面这种身兼数职的境况。</p>
-<p>在以上这段代码中，配置gitsigns时我们使用了<code>opts</code>这个配置键。这是最简洁的配置键，配置的选项又插件作者提供，插件加载完成后会自动调用你给出的配置。</p>
-<p>其他的插件配置键我们暂且不谈，我们不妨先由一个简单而效果显著的插件配置出发，来自己手动完成一个配置：配色方案。</p>
-<h3 id="配色方案配置">配色方案配置<a href="#%e9%85%8d%e8%89%b2%e6%96%b9%e6%a1%88%e9%85%8d%e7%bd%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  { <span style="color:#75715e">-- You can easily change to a different colorscheme.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Change the name of the colorscheme plugin below, and then</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- change the command in the config to whatever the name of that colorscheme is.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;folke/tokyonight.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>, <span style="color:#75715e">-- Make sure to load this before all the other start plugins.</span>
-</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">---@diagnostic disable-next-line: missing-fields</span>
-</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;tokyonight&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>        styles <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          comments <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> }, <span style="color:#75715e">-- Disable italics in comments</span>
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Load the colorscheme here.</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Like many other themes, this one has different styles, and you could load</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- any other, such as &#39;tokyonight-storm&#39;, &#39;tokyonight-moon&#39;, or &#39;tokyonight-day&#39;.</span>
-</span></span><span style="display:flex;"><span>      vim.cmd.colorscheme <span style="color:#e6db74">&#39;tokyonight-night&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  },
-</span></span></code></pre></div><p>在kickstart配置模版中，默认的配色方案长成这样。它下载的是tokyonight，一个我个人不是很喜欢的配色方案。所以我一定要把它改掉。</p>
-<p>我们先来分析一下这段代码的组成：</p>
-<ul>
-<li><code>'folke/tokyonight.nvim',</code>作者+插件名，一个插件的最简形式。</li>
-<li><code>priority = 1000,</code>设置优先级。颜色主题需要较高的优先级，这样才能保证在你看到任何界面元素之前，颜色主题已经加载完毕，使视觉体验更平滑。</li>
-<li><code>require('tokyonight').setup</code>调用插件提供的标准配置函数</li>
-<li><code>comments = { italic = false }</code>禁用注释斜体，这个功能在某些平台上表现不佳（比如我的termux）</li>
-<li><code>vim.cmd.colorscheme 'tokyonight-night'</code>在完成前面的setup步骤后，让nvim真正开始加载这个颜色主题。</li>
-</ul>
-<p>那么我们现在就来修改这段代码，来改成我更喜欢的onedarkpro主题。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;olimorris/onedarkpro.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;onedarkpro&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>        highlights <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          Comment <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> },
-</span></span><span style="display:flex;"><span>          Directory <span style="color:#f92672">=</span> { bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>          ErrorMsg <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>, bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      vim.cmd <span style="color:#e6db74">&#39;colorscheme onedark&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  },
-</span></span></code></pre></div><p>ok，当我保存退出再进入后，我就喜提新颜色主题了。</p>
-<p>简单来说，这部分内容难点就在于：如果你不去深入了解配置文件的组成结构，你可能根本不知道github上给出的配置代码到底该放在哪。现在我们知道了，只需要把github上给出的配置代码塞进一个table里，再塞到<code>require('lazy').setup({</code>里即可。</p>
-<p>颜色方案配置比较简单，因为它不涉及任何按键的设置。接下来我们来为我们的nvim添加一个“浮动终端”，就想一般的图形化界面ide那样在界面的中央弹出一个终端窗口，而非使用nvim原生的类似分屏的终端。</p>
-<p>但是在开始之前，我们先进行一些准备工作：我们实际上应该把这些插件说明书分门别类的放在<code>lua/custom/plugins</code>目录下，而不是全部扁平化的放在init.lua中。让我们先把颜色方案的代码移动过去。</p>
-<p>首先，我们看到<code>init.lua</code>中插件说明书的最后部分：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#75715e">-- note: the import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    this is the easiest way to modularize your config.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--  uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.</span>
-</span></span><span style="display:flex;"><span>  { import <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;custom.plugins&#39;</span> },
-</span></span></code></pre></div><p>这一部分中，<code>\{ import = 'custom.plugins' },</code>原本是注释起来的，将前面的注释符号删除，这样lazy.nvim就会自动去在custom/plugins目录下寻找插件说明书。</p>
-<p>接着，输入以下指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim lua/custom/plugins/colorscheme.lua
-</span></span></code></pre></div><p>这样我们就创建了一个专门存放配色方案的lua模块。将原本我们写在init.lua中的代码移植过来，并用<code>return{}</code>包裹，得到：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">--colorscheme.lua</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;olimorris/onedarkpro.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;onedarkpro&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>        highlights <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          Comment <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> },
-</span></span><span style="display:flex;"><span>          Directory <span style="color:#f92672">=</span> { bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>          ErrorMsg <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>, bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      vim.cmd <span style="color:#e6db74">&#39;colorscheme onedark&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>此时，重新打开nvim，配色方案应该依然工作正常。这就意味着你成功构建了一个插件说明书。</p>
-<h4 id="浮动终端">浮动终端<a href="#%e6%b5%ae%e5%8a%a8%e7%bb%88%e7%ab%af" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>浮动终端的常用插件是<code>toggleterm.nvim</code>，简称toggle。</p>
-<p>让我们先在plugins下创建一个专属于toggle的lua模块：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim lua/custom/plugins/toggleterm.lua
-</span></span></code></pre></div><p>然后，让我写入插件的配置代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;akinsho/toggleterm.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>  version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;*&#39;</span>,
-</span></span><span style="display:flex;"><span>  config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>    require(<span style="color:#e6db74">&#39;toggleterm&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 设置终端窗口大小</span>
-</span></span><span style="display:flex;"><span>      size <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(term)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> term.direction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;horizontal&#39;</span> <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">15</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elseif</span> term.direction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;vertical&#39;</span> <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> vim.o.columns <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.4</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 打开终端的快捷键，这里设置为 Ctrl + \</span>
-</span></span><span style="display:flex;"><span>      open_mapping <span style="color:#f92672">=</span> <span style="color:#e6db74">[[&lt;c-\&gt;]]</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 隐藏 toggleterm buffer 中的行号</span>
-</span></span><span style="display:flex;"><span>      hide_numbers <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 当 Neovim 目录切换时，终端下次打开也会切换到相应目录</span>
-</span></span><span style="display:flex;"><span>      autochdir <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 设置终端窗口的背景色，可以根据你的主题进行调整</span>
-</span></span><span style="display:flex;"><span>      highlights <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        Normal <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          guibg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;none&#39;</span>, <span style="color:#75715e">-- 这里设置为 &#34;none&#34; 表示使用默认背景</span>
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        NormalFloat <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          link <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Normal&#39;</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 阴影效果，如果设置了上面的 highlights 中的 Normal，建议将此项设为 false</span>
-</span></span><span style="display:flex;"><span>      shade_terminals <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 阴影的强度，数值越小越深</span>
-</span></span><span style="display:flex;"><span>      shading_factor <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">30</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 启动时进入插入模式</span>
-</span></span><span style="display:flex;"><span>      start_in_insert <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 在插入模式下也可以使用 open_mapping 打开终端</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- insert_mappings = true,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 在终端窗口中也可以使用 open_mapping (会覆盖一些终端默认行为)</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- terminal_mappings = true,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 保持上次终端的大小</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- persist_size = true,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 终端进程退出时自动关闭窗口</span>
-</span></span><span style="display:flex;"><span>      direction <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;float&#39;</span>, <span style="color:#75715e">-- 设置默认打开方式为浮动窗口</span>
-</span></span><span style="display:flex;"><span>      close_on_exit <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 使用 Neovim 的默认 shell</span>
-</span></span><span style="display:flex;"><span>      shell <span style="color:#f92672">=</span> vim.o.shell,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 自动滚动到底部</span>
-</span></span><span style="display:flex;"><span>      auto_scroll <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 浮动窗口的设置</span>
-</span></span><span style="display:flex;"><span>      float_opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">-- 边框样式</span>
-</span></span><span style="display:flex;"><span>        border <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;curved&#39;</span>, <span style="color:#75715e">-- 使用圆角边框</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">-- 窗口透明度</span>
-</span></span><span style="display:flex;"><span>        winblend <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>,
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 设置一个函数，用于在 normal 模式下按下 &lt;esc&gt; 时退出终端</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_G</span>.<span style="color:#a6e22e">set_terminal_keymaps</span>()
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">local</span> opts <span style="color:#f92672">=</span> { buffer <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> }
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;esc&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;C-\&gt;&lt;C-n&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;jk&#39;</span>, <span style="color:#e6db74">[[&lt;C-\&gt;&lt;C-n&gt;]]</span>, opts) <span style="color:#75715e">-- jk 也可以退出</span>
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-h&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd h&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-j&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd j&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-k&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd k&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-l&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd l&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 当打开终端时，自动应用上面的快捷键设置</span>
-</span></span><span style="display:flex;"><span>    vim.cmd(<span style="color:#e6db74">&#39;autocmd! TermOpen term://* lua set_terminal_keymaps()&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 定义一个快捷键，方便地打开一个 LazyGit 终端</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> Terminal <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;toggleterm.terminal&#39;</span>).Terminal
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> lazygit <span style="color:#f92672">=</span> Terminal:new({
-</span></span><span style="display:flex;"><span>      cmd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lazygit&#34;</span>,
-</span></span><span style="display:flex;"><span>      hidden <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      direction <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;float&#34;</span>,
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_LAZYGIT_TOGGLE</span>()
-</span></span><span style="display:flex;"><span>      lazygit:toggle()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    vim.keymap.set(<span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;&lt;leader&gt;gg&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;lua _LAZYGIT_TOGGLE()&lt;CR&gt;&#34;</span>, {
-</span></span><span style="display:flex;"><span>        noremap <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>        silent <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>        desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Lazygit&#34;</span>,
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>在了解了原理之后，和ai交流的难度显著下降了。我得到了一套非常棒的配置，甚至帮我添加了lazygit的界面。效果非常帅。</p>
-<p>这时候保存退出，再重进，你就应该可以通过你设置的快捷键来打开toggle终端了。</p>
-<hr>
-<p>看到这里，你已经可以完全自己上手去解决插件配置问题了。实际上，你基本不需要自己写代码，你只要能读的懂一点代码就行，你只需要把github上插件作者提供的配置样例丢给ai让它生成一个涵盖了大多数功能的配置，再依据自己的需求进行删改即可。</p>
-]]></content>
-		</item>
-		
-		<item>
-			<title>Neovim配置如何入门</title>
-			<link>http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/</link>
-			<pubDate>Sun, 23 Nov 2025 10:53:11 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。</p>
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="Neovim配置如何入门">
+  <meta itemprop="description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。
+闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）
+Nvim配置原理 neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。
+但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。
+通常，一个neovim的配置文件目录如下：
+~/.config/nvim/ ├── init.lua └── lua/ ├── config/ │ ├── options.lua │ ├── keymaps.lua │ └── autocmds.lua └── plugins/ ├── init.lua （可选） ├── lualine.lua ├── treesitter.lua └── …… 乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。">
+  <meta itemprop="datePublished" content="2025-11-23T10:53:11+08:00">
+  <meta itemprop="dateModified" content="2025-11-23T10:53:11+08:00">
+  <meta itemprop="wordCount" content="1991">
+  <meta itemprop="keywords" content="Neovim,教程"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="Neovim配置如何入门">
+  <meta property="og:description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。
+闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）
+Nvim配置原理 neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。
+但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。
+通常，一个neovim的配置文件目录如下：
+~/.config/nvim/ ├── init.lua └── lua/ ├── config/ │ ├── options.lua │ ├── keymaps.lua │ └── autocmds.lua └── plugins/ ├── init.lua （可选） ├── lualine.lua ├── treesitter.lua └── …… 乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-11-23T10:53:11+08:00">
+    <meta property="article:modified_time" content="2025-11-23T10:53:11+08:00">
+    <meta property="article:tag" content="Neovim">
+    <meta property="article:tag" content="教程">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Neovim配置如何入门">
+  <meta name="twitter:description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。
+闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）
+Nvim配置原理 neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。
+但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。
+通常，一个neovim的配置文件目录如下：
+~/.config/nvim/ ├── init.lua └── lua/ ├── config/ │ ├── options.lua │ ├── keymaps.lua │ └── autocmds.lua └── plugins/ ├── init.lua （可选） ├── lualine.lua ├── treesitter.lua └── …… 乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Neovim配置如何入门",
+    "name": "Neovim配置如何入门",
+    "description": "如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。\n闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）\nNvim配置原理 neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。\n但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。\n通常，一个neovim的配置文件目录如下：\n~/.config/nvim/ ├── init.lua └── lua/ ├── config/ │ ├── options.lua │ ├── keymaps.lua │ └── autocmds.lua └── plugins/ ├── init.lua （可选） ├── lualine.lua ├── treesitter.lua └── …… 乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。\n",
+    "keywords": ["Neovim", "教程"],
+    "articleBody": "如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。\n闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）\nNvim配置原理 neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。\n但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。\n通常，一个neovim的配置文件目录如下：\n~/.config/nvim/ ├── init.lua └── lua/ ├── config/ │ ├── options.lua │ ├── keymaps.lua │ └── autocmds.lua └── plugins/ ├── init.lua （可选） ├── lualine.lua ├── treesitter.lua └── …… 乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。\n正如你所见，nvim的配置文件全部都使用的是lua语言。但是不用有太高的心理负担，因为这是一个语法甚至比python还要简单的语言。nvim配置过程就相当于构建一个自己的lua语言程序，你需要自己组织其文件结构来让neovim知道如何使用你的配置。\n所以显然，在你开始配置nvim之前，你最好能了解一下lua语言的用法。不过也不用着急，你可以接着看，遇到不懂的点再去深入了解。\nkickstart kickstart链接 这是并不是一个neovim发行版，它只是一套配置文件。严谨的说，它是nvim官方维护的一个学习版nvim配置框架。它使用了lazy. nvim这一插件管理器（注意：这和lazyvim完全不是一回事），但是和lazyvim是完全不一样的两个东西，后者是一个“开箱即用”的nvim框架（但也不那么开箱即用）。\n你仍然需要安装nvim。kickstart只是提供了清晰的配置文件，方便初学者快速了解如何配置nvim。我们接下来也会以kickvim提供的init.lua为例讲解neovim可供配置的内容。\n安装neovim 显然，如果我们想要使用neovim，我们需要先安装它。你可以安装任意你想要的版本，不过这里我们选择Nvim 0.11.5。kickstart要求nvim版本为最新的稳定版，或者每日夜晚自动编译得到的不经过稳定性测试的Nightly版，我们此处使用的是最新的稳定版。\n对于大部分普通电脑，cpu采用x86_64架构，你需要下载nvim-linux-x86_64.tar.gz。这是软件文件的压缩包，你需要把它移动到你想要它存在的文件目录下，然后在该目录下执行：\ntar xzvf nvim-linux-x86_64.tar.gz #或者你实际下载的压缩包 我这边使用的是termux，平板、手机一般cpu架构是arm64，所以我下载的是nvim-linux-arm64.tar.gz。执行相同命令解压之后得到一个同名文件夹。此时，输入：\n./nvim-linux-x86_64/bin/nvim #注意第一个应当是你实际下载的版本 通常来说，这个时候你就会进入一个nvim的默认的黑白界面。这就意味着你neovim安装成功了。\n此外，为了使用方便，你最好还要安装一些剪切板工具，如xclip，以及Nerd Font，用来显示更美观的图标。此部分自行参考相应的文档自己选择进行。\nkickstart安装 现在我们来安装kickstart。在kickstart的文档中，开发者提示说可以将这个kickstart仓库复刻一份到你自己的仓库下，这样你可以通过git来管理你的配置。\n如果你懒得复刻一份，直接输入这个指令，kickstart就会开始自动安装（后记：这里你最好记住这个文件位置~/.config/nvim，因为你之后折腾配置的时候要经常打开它）：\ngit clone https://github.com/nvim-lua/kickstart.nvim.git \"${XDG_CONFIG_HOME:-$HOME/.config}\"/nvim 如果复刻了一份到自己的仓库，直接从自己的仓库克隆即可。\n在下载好后，再次输入nvim，如果一切正常，你就会看见一堆进度条，一堆看不懂的东西安装完后，界面显示出Tokyo night的配色方案，这就意味着你安装成功了。\n可能遇到的问题 在某些平台上，stylua或者一些其他插件并没有提供预编译版，这意味着Mason（你可以理解为nvim的包管理器，自动安装、管理各种开发工具）无法自动安装这些工具。你需要自行编译安装。其中比较推荐的是使用世界上最好的包管理器cargo来进行编译安装。\n要使用cargo，你需要先安装rust。\npkg install rust #这里开头需要用你自己实际的包管理器 安装完后，输入：\ncargo install stylua 如果没有意外的话，下载成功后二进制文件会位于~/.cargo/bin/stylua（cargo理论上会给出提示）。在~/.bashrc或者~/.zshrc中加入一行export PATH=\"$HOME/.cargo/bin:$PATH\" 退出后输入source ~/.bashrc或者source ~/.zshrc，之后按理来说stylua就已经可以工作了。\n但是这个时候，Mason可能会因为只识别Mason安装的stylua而导致进入nvim后依然报错。你可以:\nnvim ~/.config/nvim/init.lua 这就是我们一会会讲到的文件，里面罗列了所有你可能会用到的配置文本。在其中大概718行的位置，你可以找到：\nrequire(\"mason-tool-installer\").setup { ensure_installed = { -- 删掉 stylua 或者不要写 } } 正如上文中的注释，此处本来应该有stylua相关的内容。将它删掉或者注释掉即可。保存退出，再次进入nvim，此时就不会有stylua报错了。你可以通过:!which stylua来验证nvim可以找到stylua应用。\n除stylua外，还有一些包也可能会因为环境缘故无法直接通过mason安装，不再一一列举。\n如果你遇到无法解决的问题，你可以暂时先放一放，继续阅读。之后仍然无法解决，则去求助ai或者其他博客。\ninit.lua 现在，我们终于可以进入根目录的init.lua了。\nnvim ~/.config/nvim/init.lua 如果一切顺利，你会进入一个1000多行的文件，这就是kickstart的配置模版。接下来我们会逐段分析这个配置模版。\n开头部分 ===================================================================== ==================== READ THIS BEFORE CONTINUING ==================== ===================================================================== ======== .-----. ======== ======== .----------------------. | === | ======== ======== |.-\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"-.| |-----| ======== ======== || || | === | ======== ======== || KICKSTART.NVIM || |-----| ======== ======== || || | === | ======== ======== || || |-----| ======== ======== ||:Tutor || |:::::| ======== ======== |'-..................-'| |____o| ======== ======== `\"\")----------------(\"\"` ___________ ======== ======== /::::::::::| |::::::::::\\ \\ no mouse \\ ======== ======== /:::========| |==hjkl==:::\\ \\ required \\ ======== ======== '\"\"\"\"\"\"\"\"\"\"\"\"' '\"\"\"\"\"\"\"\"\"\"\"\"' '\"\"\"\"\"\"\"\"\"\"' ======== ======== ======== ===================================================================== ===================================================================== What is Kickstart? Kickstart.nvim is *not* a distribution. Kickstart.nvim is a starting point for your own configuration. The goal is that you can read every line of code, top-to-bottom, understand what your configuration is doing, and modify it to suit your needs. Once you've done that, you can start exploring, configuring and tinkering to make Neovim your own! That might mean leaving Kickstart just the way it is for a while or immediately breaking it into modular pieces. It's up to you! If you don't know anything about Lua, I recommend taking some time to read through a guide. One possible example which will only take 10-15 minutes: - https://learnxinyminutes.com/docs/lua/ After understanding a bit more about Lua, you can use `:help lua-guide` as a reference for how Neovim integrates Lua. - :help lua-guide - (or HTML version): https://neovim.io/doc/user/lua-guide.html 简单总结，就是告诉你这不是一个neovim发行版，只是一个模版框架。其中它给出的一个10-15min学习lua的网站 https://learnxinyminutes.com/zh-cn/lua/ 非常有用，可以帮助你快速掌握使用lua的关键知识。lua并不是一个复杂的语言，甚至比python还要简单的多。下面我简单罗列一些我们可能会用到的lua知识。\n一些必须的lua基础知识 local关键字 在lua当中，如果不使用local声明，变量就会被视为全局变量。在声明函数之前加上local被视为是lua编程的良好风格。\nrequire关键字 这个关键字非常重要，它的作用是加载和使用模块。简单来说，你的配置文件可能有复杂的结构，但是neovim并不能全自动地去搜索所有的.lua文件。正如很多其他语言只有一个main.xx文件一样，lua通常而言也只有一个主文件，你需要在这个主文件中引用其他文件的内容。\n在我个人看来，lua的文件组织方式和python有许多相似之处。两者都将单个的.lua文件或者.py文件看做一个\"模块\"，不同功能的模块之间除了文件内容之外没有文件后缀名或者文件名的限制。但是python和lua在一些细节的机制上还是有所不同。\npython的模块导出机制可以看做是“默认导出”。一个python模块文件（即一个.py文件）所有的顶级变量、函数、类全都是公开的。比如你在utils.py中写了一个名为myfunction()的函数，你想在另一个.py文件中使用这个函数，你只需要先import utils，再写utils.myfunction()即可。可以说，python的每个单独的.py文件都是一个“命名空间”，就像namespace std一样。\n但是lua采用了一个与此区别较大的管理方式。简单来说，lua的所有内容都是“私有的”，如果你想让别的.lua文件使用这个.lua文件中的函数等内容，你需要把这些东西“打包发出去”。理解这点对于配置neovim非常关键。\n我们下面来看一个简单的例子：\n-- shopping.lua -- (上面的 local 函数和变量定义) -- 1. 手动创建一个空的“储物柜” (table) local M = {} -- 2. 手动把要公开的东西放进去 M.buy_apple = buy_apple --这是一个shopping.lua中定义的函数 M.PRICE_PER_APPLE = PRICE_PER_APPLE --这是一个shopping.lua中定义的变量 -- 注意：我们故意不把 buy_banana 放进去 -- 3. 把这个填充好的储物柜作为模块的出口 return M 当我们想从另一个.lua中调用shopping.lua中的函数或者变量时，我们需要这么写：\nlocal shopping = require('shopping') --此处就用到了require 这时候，我们就在这个.lua文件中定义了一个变量，名字叫shopping。它的内容是什么呢？很简单，就是shopping.lua中最后“打包”好的M这个table。\n此时，如果你想买苹果，你就写shopping.buy_apple()，如果你想知道苹果的单价，那你就写shopping.PRICE_PER_APPLE。但是你没办法买香蕉，因为你在shopping.lua中没有把buy_banana()打包发出去。\n读到这里，你基本上已经明白了lua的模块管理机制了，但是还不够（因为接下来的内容同样非常重要）。lua并不能完全自动地搜索根目录下匹配名称的.lua文件，而是遵循着一种“内部搜索顺序”。简单来说，这个内部搜索顺序就是一堆相对路径，lua文件运行时会挨个搜索这些路径去找符合条件的.lua文件（比如我们前文写的shopping.lua)，如果它在按照内部搜索顺序寻找无果，那么，它就会报错。\n这点之所以重要，就是因为有的时候你必须要让neovim知道它需要的文件到底在哪，但是这个工作是没办法交给ai的，因为你没办法把整个项目都发给ai，ai凭刻板印象给出的代码在解决这类问题时通常无法正常工作，因为它根本不了解你到底把什么文件放在哪了（甚至你自己也很可能未必知道自己需要的文件在哪）。这个时候再把问题发给ai让它解决，ai就会继续给你一个更错的答案，最后恶性循环。（别问我是怎么知道的）\n下面我来详细讲解一下“内置搜索顺序”的机制。\n内置搜索顺序 lua中用于搜索lua模块的路径变量称为“packege.path”，存储在内置的package表中。\n它们通常长成这样：\n./?.lua;./?/init.lua;/usr/local/share/lua/5.4/?.lua;/usr/local/share/lua/5.4/?/init.lua;... 其中，分号分隔了不同的路径，?代表此处会被自动替换为你require中填写的内容。\n例如，假设你执行了 require(‘socket.core’)，Lua 会：\n将模块名中的 . 替换为目录分隔符（如 / 或 \\）。所以 socket.core 变成了 socket/core。 然后用 socket/core 替换掉 package.path 中每个模板的 ?，并依次检查文件是否存在： ./socket/core.lua (在当前目录下找) ./socket/core/init.lua (在当前目录下的 socket 目录中找 init.lua) /usr/local/share/lua/5.4/socket/core.lua (在标准的 Lua 库目录下找) /usr/local/share/lua/5.4/socket/core/init.lua (在标准的 Lua 库目录的子目录中找) …等等，直到找到一个存在的文件为止。 一旦找到，lua就会执行这个文件并返回结果（在我们前文的例子中，返回的就是打包好的函数和变量），如果找不到，require就会报错。\n那么，当我们需要去寻找一个不在默认搜索路径中的文件该怎么做呢？\n下面我们举一个简单的例子:\n首先，让我们在随便一个测试用的文件夹中创建以下文件结构：\n. ├── libs │ └── myutils.lua └── main.lua 然后，让我们在myutils.lua中随便写一点测试用的代码：\n-- libs/myutils.lua -- 创建一个 table 用于导出 local M = {} function M.greet(name) return \"Hello, \" .. name .. \"! Welcome to our module.\" end -- 导出这个 table return M 然后，我们来在main.lua中写一个错误的模块调用代码：\n-- main.lua print(\"Attempting to load the 'myutils' module...\") -- 尝试加载位于 libs 文件夹中的 myutils 模块 -- 注意：我们直接写 'myutils' 而不是 'libs.myutils'，因为 'libs' 只是一个普通文件夹， -- 并不是 Lua 的包名。我们需要让 Lua 知道要去 'libs' 这个文件夹里找。 local utils = require('myutils') -- 如果加载成功，就使用它的功能 local message = utils.greet(\"Alice\") print(\"Successfully loaded module!\") print(message) 这段代码是ai写的。你可能会对其中的注释感到疑惑，我来尝试解答一下：\n直接写require('libs.myutils')其实是可以正常工作的，但是这并不利于维护。我们希望让lua自己通过package path去寻找所需要的模块，而代码中应该只考虑需要什么模块。如果我们在require中强行写入物理位置，虽然可以工作，但是一旦我们调整了文件位置，就不得不修改整个程序中所有从libs中调用模块的代码，这样做非常的低效。 在这段代码中，我们构建了一个无法通过package path找到所需模版的main.lua，这完全是反面例子。后文我们会给出修改。 保存退出，输入lua main.lua，你就会喜提报错：\n$ lua main.lua Attempting to load the 'myutils' module... lua: main.lua:8: module 'myutils' not found: no field package.preload['myutils'] no file '/data/data/com.termux/files/usr/share/lua/5.3/myutils.lua' no file '/data/data/com.termux/files/usr/share/lua/5.3/myutils/init.lua' no file '/data/data/com.termux/files/usr/lib/lua/5.3/myutils.lua' no file '/data/data/com.termux/files/usr/lib/lua/5.3/myutils/init.lua' no file './myutils.lua' no file './myutils/init.lua' no file '/data/data/com.termux/files/usr/lib/lua/5.3/myutils.so' no file '/data/data/com.termux/files/usr/lib/lua/5.3/loadall.so' no file './myutils.so' stack traceback: [C]: in function 'require' main.lua:8: in main chunk [C]: in ? 这样的报错信息会在你配置nvim过程中时常出现（如果你完全不关心背后的原理）。\n从报错信息中，你会看到lua查找了所有的内部搜索路径，但是都找不到你要的myutils.lua这个模块，因为你把它放在了libs下，lua根本不知道还有这个地方。\n那么如何解决呢？很简单，我们只需要让main.lua把libs添加到package path中就行。\n将main.lua修改为以下内容：\n-- main.lua print(\"--- Experiment 2: Modifying package.path in script ---\") -- 打印修改前的 path，方便对比 print(\"Original package.path:\") print(package.path) -- 将我们的 libs 目录添加到搜索路径的最前面 -- './libs/?.lua' 是一个模板，'?' 会被 require 的模块名替换 package.path = './libs/?.lua;' .. package.path print(\"\\nModified package.path:\") print(package.path) print(\"\\nAttempting to load the 'myutils' module...\") local utils = require('myutils') local message = utils.greet(\"Bob\") print(\"Successfully loaded module!\") print(message) 再次退出，输入lua main.lua你就可以得到想要的内容：\n$ lua main.lua --- Experiment 2: Modifying package.path in script --- Original package.path: /data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua Modified package.path: ./libs/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua Attempting to load the 'myutils' module... Successfully loaded module! Hello, Bob! Welcome to our module. 注：以上是我在termux中运行的信息，其他平台上显示的path可能会有所区别。\n我们打印了修改前后package.path的内容，显然，在Modified package.path中第一个搜索路径就是我们添加的./libs/?.lua，此时我们也确实成功使用了myutils.lua中的函数。\n怎么做到的呢？让我们来仔细看一下我们修改的核心内容：\n-- 将我们的 libs 目录添加到搜索路径的最前面 -- './libs/?.lua' 是一个模板，'?' 会被 require 的模块名替换 package.path = './libs/?.lua;' .. package.path ..在lua中表示字符串连接。这段代码的含义非常清晰：在package.path这个字符串前面加上我们需要的搜索路径。就这么简单。package.path本质就是一个字符串，你可以随意的根据需要修改本工程的搜索路径。\n除此之外，如果你的所有lua工程都采用基本一致的文件结构，你可以把你需要的自定义的搜索路径写入环境变量中。比如你可以在终端中输入export LUA_PATH=\"./libs/?.lua;;\"，其中;;意味着保留原本的路径。这时候，即使你不在main.lua开头编辑package.path，lua也会自动找到libs下的myutils.lua，因为所需要的搜索路径已经成为一个环境的一部分了。\n但是如果你希望自己的代码可以一次写入、处处运行，那么我建议你还是老老实实的把所需要的搜索路径写在开头，以便在不同环境中都可以使用。\n讲到这里，我们大概理解了lua的工作原理，现在让我们继续阅读根目录下的init.lua文件。\n正式开始分析init.lua Kickstart Guide: TODO: The very first thing you should do is to run the command `:Tutor` in Neovim. If you don't know what this means, type the following: - - : - Tutor - (If you already know the Neovim basics, you can skip this step.) Once you've completed that, you can continue working through **AND READING** the rest of the kickstart init.lua. Next, run AND READ `:help`. This will open up a help window with some basic information about reading, navigating and searching the builtin help documentation. This should be the first place you go to look when you're stuck or confused with something. It's one of my favorite Neovim features. MOST IMPORTANTLY, we provide a keymap \"sh\" to [s]earch the [h]elp documentation, which is very useful when you're not exactly sure of what you're looking for. I have left several `:help X` comments throughout the init.lua These are hints about where to find more information about the relevant settings, plugins or Neovim features used in Kickstart. NOTE: Look for lines like this Throughout the file. These are for you, the reader, to help you understand what is happening. Feel free to delete them once you know what you're doing, but they should serve as a guide for when you are first encountering a few different constructs in your Neovim config. If you experience any errors while trying to install kickstart, run `:checkhealth` for more info. I hope you enjoy your Neovim journey, - TJ P.S. You can delete this when you're done too. It's your config now! :) --]] 总结一下：\n你可以在普通模式下:Tutor来进入一个neovim的使用教程，告诉你这个软件的基本使用方式。 vim的使用方式可以非常花哨，内置的指令多的数不过来。遗憾的是我只会其中最基本的几个指令，但是这通常来讲已经足够了。你不需要为了少按几个上下左右而去背一大堆指令，这样做有用，但是对于一个入门的人来说完全没有必要。 你可以在普通模式下:help来查看帮助。里面罗列了nvim支持的各种功能，以及一些基本的使用方式。这就是一部使用说明书，就和你买的家用电器里附带的说明书是一个性质。 你可以+s+h来进入一个帮助搜索界面。（然而我不会用） 文件剩余的内容都随便你配置。 -- Set as the leader key -- See `:help mapleader` -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used) vim.g.mapleader = ' ' vim.g.maplocalleader = ' ' -- Set to true if you have a Nerd Font installed and selected in the terminal vim.g.have_nerd_font = false vim.g：代表全局变量。这里设置的变量在全局都有效。 vim.g.mapleader = ' '：将空格键设置为“前导键”，用来作为一个通用的快捷键前缀。 vim.g.maplocalleader = ' '：局部映射，简单来说就是只在某些文件中才会生效的“前导键”，之后x就表示只在此情况下才生效的快捷键。 vim.g.have_nerd_font = false：声明你的终端环境有没有安装Nerd Font。很多nvim的插件需要nerd font来支持一些复杂的图形界面，如果你没有安装nerd font，通过在这里声明false，那些插件就会只显示一些普通文本来适配你的环境。 如果你安装了nerd font，记得把这个变量设置为true。 setting options -- [[ Setting options ]] -- See `:help vim.o` -- NOTE: You can change these options as you wish! -- For more options, you can see `:help option-list` -- Make line numbers default vim.o.number = true -- You can also add relative line numbers, to help with jumping. -- Experiment for yourself to see if you like it! -- vim.o.relativenumber = true -- Enable mouse mode, can be useful for resizing splits for example! vim.o.mouse = 'a' -- Don't show the mode, since it's already in the status line vim.o.showmode = false -- Sync clipboard between OS and Neovim. -- Schedule the setting after `UiEnter` because it can increase startup-time. -- Remove this option if you want your OS clipboard to remain independent. -- See `:help 'clipboard'` vim.schedule(function() vim.o.clipboard = 'unnamedplus' end) -- Enable break indent vim.o.breakindent = true -- Save undo history vim.o.undofile = true -- Case-insensitive searching UNLESS \\C or one or more capital letters in the search term vim.o.ignorecase = true vim.o.smartcase = true -- Keep signcolumn on by default vim.o.signcolumn = 'yes' -- Decrease update time vim.o.updatetime = 250 -- Decrease mapped sequence wait time vim.o.timeoutlen = 300 -- Configure how new splits should be opened vim.o.splitright = true vim.o.splitbelow = true -- Sets how neovim will display certain whitespace characters in the editor. -- See `:help 'list'` -- and `:help 'listchars'` -- -- Notice listchars is set using `vim.opt` instead of `vim.o`. -- It is very similar to `vim.o` but offers an interface for conveniently interacting with tables. -- See `:help lua-options` -- and `:help lua-options-guide` vim.o.list = true vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- Preview substitutions live, as you type! vim.o.inccommand = 'split' -- Show which line your cursor is on vim.o.cursorline = true -- Minimal number of screen lines to keep above and below the cursor. vim.o.scrolloff = 10 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`), -- instead raise a dialog asking if you wish to save the current file(s) -- See `:help 'confirm'` vim.o.confirm = true vim.o：设置nvim的各种行为选项。 vim.o.number = true：显示==行号==。默认显示的是绝对行号 vim.o.relativenumber = true：显示==相对行号==。 你可能会好奇如果两个都启用会怎么样。答案很简单：你所处的行会显示绝对行号，而其他行会显示相对行号。这样你既能确定自己的绝对位置，又方便跳转位置，这是很多人的选择。 vim.o.mouse = 'a'：==鼠标模式==，a表示对所有文件都适用。如果你有鼠标，你没有理由把这个这个关掉。 vim.o.showmode = false：不显示nvim内置的==状态提示==。更加现代的状态栏插件可以提供比文本更美观的状态栏，所以除非你有特殊的美术追求，没必要调为true。 vim.schedule(function()vim.o.clipboard = 'unnamedplus'end)：vim.schedule表示在ui完全加载完之后再执行，后面的函数表示将nvim的==剪切板与操作系统剪切板同步==。你可以在nvim中y复制文本之后在外部ctrl v粘贴，也可以外部ctrl c复制后在nvim中p粘贴。 这是一个非常有必要的设置，尤其是当你需要和ai博弈的时候。 vim.o.breakindent = true：==打断缩进==，文本太长自动换行后保持和原文本同样的缩进。 vim.o.undofile = true：保存==撤回树==，当你再次打开这个文件时，你仍然可以撤回到之前的状态，即使中间你保存了文件。实现原理是另外建立一个.un~文件，所以理论上你可以撤回到宇宙大爆炸（如果你从那时就开始写代码） vim.o.ignorecase = true vim.o.smartcase = true：==搜索==时忽视大小写，但是如果你输入了至少一个大写时又会自动大小写敏感。 vim.o.signcolumn = 'yes'： 保持==侧边栏显示==，Lsp（后面会涉及）和一些其他的插件需要依赖这个侧边栏来显示一些信息，所以保持开启。 vim.o.updatetime = 250：==更新时间==，你可以理解为minecraft中的随机刻，很多插件的使用依赖于这个更新时间，如果减少，一些插件的响应速度会加快。 vim.o.timeoutlen = 300：==映射序列等待时间==，比如你的一个映射是j+k，当你按下j时，nvim会等待300ms，如果你在这时间内按下k，那么就会执行映射。 vim.o.splitright = true vim.o.splitbelow = true：新的水平==分屏==和垂直分屏会分别出现在右边和下边。 vim.o.list = true：开启list模式，让nvim可以显示一些特殊的==空白字符== vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }：将tab显示为》，将尾部的多余空格显示为·，将不可断空格显示为␣。 vim.o.inccommand = 'split'：执行替换命令时在一个新的==分屏窗口==中实时显示预览效果。 vim.o.cursorline = true：==高亮==光标所在的当前行。 vim.o.scrolloff = 10：光标滚动时会==偏移上下边缘10行==，方便阅读。 vim.o.confirm = true：在一些可能导致数据丢失的情况下==要求你确认==，比如未保存时就退出。除非你是人形计算机永远可以保证正确，那么建议你保持开启。 -- [[ Basic Keymaps ]] -- See `:help vim.keymap.set()` -- Clear highlights on search when pressing in normal mode -- See `:help hlsearch` vim.keymap.set('n', '', 'nohlsearch') -- Diagnostic keymaps vim.keymap.set('n', 'q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' }) -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier -- for people to discover. Otherwise, you normally need to press , which -- is not what someone will guess without a bit more experience. -- -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping -- or just use to exit terminal mode vim.keymap.set('t', '', '",
+    "wordCount" : "1991",
+    "inLanguage": "zh-cn",
+    "datePublished": "2025-11-23T10:53:11+08:00",
+    "dateModified": "2025-11-23T10:53:11+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>Neovim配置如何入门</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Nov 23, 2025</span></div>
+				<h1>Neovim配置如何入门</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg>Moonhalf</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/neovim">Neovim</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B">教程</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>1991&nbsp  次阅读(还是阅读时间？有点搞不懂)9 Minutes, 3 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2025-11-23 10:53 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <p>如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。</p>
 <p>闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）</p>
 <hr>
 <h2 id="nvim配置原理">Nvim配置原理<a href="#nvim%e9%85%8d%e7%bd%ae%e5%8e%9f%e7%90%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -940,325 +750,59 @@ What is Kickstart?
 </span></span><span style="display:flex;"><span>require <span style="color:#e6db74">&#39;custom.keymaps&#39;</span>
 </span></span></code></pre></div><p>不出意外的话，保存退出再重进，你原先写在init.lua中的配置此时再次会发挥作用。你可以通过这种方式让你的配置文件更加易于维护。</p>
 <p>大概先这样，我还会就界面个性化、lsp等比较棘手的配置问题再写几篇博客。</p>
-]]></content>
-		</item>
-		
-		<item>
-			<title>Test</title>
-			<link>http://localhost:1313/zh-cn/posts/test/</link>
-			<pubDate>Fri, 21 Nov 2025 14:06:57 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/test/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="test">test<a href="#test" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
-<h2 id="test-1">test<a href="#test-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<h3 id="test-2">test<a href="#test-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<p><strong>test</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">&#39;test&#39;</span>)
-</span></span></code></pre></div><hr>
-]]></content>
-		</item>
-		
-		<item>
-			<title>Hellohugo</title>
-			<link>http://localhost:1313/zh-cn/posts/hellohugo/</link>
-			<pubDate>Wed, 19 Nov 2025 23:20:43 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/hellohugo/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h2 id="hellohugo">Hellohugo<a href="#hellohugo" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>这是新的开始！</p>
-<p>期中之后，我决定改用hugo博客框架来重新搭建自己的博客。原先使用hexo的博客因为起初技术力不足导致种种配置困难，最近想把文章投送上去时突然发现oranges主题的代码块意外的很丑。与此同时，老博客是在我的windows主系统中完成搭建的，而我现在代码工作基本完全转向了linux（虽然只是wsl），继续在windows下维护博客又会带来种种不便，所以索性完全弃用原本的博客，在wsl中另起炉灶。</p>
-]]></content>
-		</item>
-		
-		<item>
-			<title>零基础如何搭建博客</title>
-			<link>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
-			<pubDate>Sat, 20 Sep 2025 20:49:03 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h4 id="从旧站移植来的旧文旧站使用的是hexo框架">从旧站移植来的旧文，旧站使用的是hexo框架。<a href="#%e4%bb%8e%e6%97%a7%e7%ab%99%e7%a7%bb%e6%a4%8d%e6%9d%a5%e7%9a%84%e6%97%a7%e6%96%87%e6%97%a7%e7%ab%99%e4%bd%bf%e7%94%a8%e7%9a%84%e6%98%afhexo%e6%a1%86%e6%9e%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>大概在本月的14号左右，我突然想起来之前知乎上有人和我说过可以搭建一个博客，写写题解什么的。当然，搭一个博客和写题解之间没有必然关系，但是就那几天我突然开始好奇什么是博客。不查不知道，博客竟然是一类网站的统称。经过了一番折腾总算是把自己的博客网站搭建起来了。</p>
-<p>下面，请让我简述我的博客是如何搭建起来的。</p>
-<h2 id="1静态框架hexo">1.静态框架hexo<a href="#1%e9%9d%99%e6%80%81%e6%a1%86%e6%9e%b6hexo" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>因为博客实际上是一种过去盛行的网络社交方式，大多数博客都大同小异，所以，搭建博客很多时候是一件相当同质化的事情。这就意味着，我们可以用相似的框架来搭建自己的博客。这就是博客框架。</p>
-<p>博客框架替用户几乎铺平了所有技术困难，而用户可以聚焦在业务问题（如写博客）上。博客框架大致可以分为两类，静态框架和动态框架。后者的学习成本更高，但是可以做出更多的交互。而前者虽然不便于做交互，但是用来写写简单的博客文已经足够了。所以对我而言，性价比最高的方案就是使用静态博客框架搭建自己的博客。</p>
-<p>在静态博客框架中，我选择了hexo。没什么理由，只是因为主题多并且学习成本低而已。对于其性能方面或许存在的问题，我的评价是我的境界还不足以让我感受到它的问题。</p>
-<h2 id="2怎么用hexo">2.怎么用hexo？<a href="#2%e6%80%8e%e4%b9%88%e7%94%a8hexo" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>这是一个很现实的问题。对于大多数电脑使用者而言，用电脑几乎等同于与图形化界面打交道。比如，如果你想创建一个微信公众号，你只需要前往微信公众平台在图形化界面注册即可。但是对于博客框架和大多数拓展包而言，它们并不采用图形化界面的交互方式，而是采用命令行工具来完成各项工作。</p>
-<p>这就意味着，想使用hexo搭建框架，最好先学一点命令行工具的用法。</p>
-<h4 id="命令行工具">命令行工具<a href="#%e5%91%bd%e4%bb%a4%e8%a1%8c%e5%b7%a5%e5%85%b7" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>原谅我只用过windows系统。在win系统中，有两种命令行工具：cmd和powershell。前者大多用来做基础命令和兼容性，功能有限。此处我们使用powershell。</p>
-<p>此外，你还需要安装git。如果你从来没有听说过它，这是一个软件，专门用来管理你的工程代码。鉴于博客本质上就是搭建网站，所以这也是不得不品的一环。安装git之后，你的电脑里还会出现另一个命令行工具：git bash。</p>
-<p>所以，git bash和powershell又有什么区别呢？请看chatgpt给出的解释：</p>
-<pre tabindex="0"><code>1. 运行环境不同
 
-Git Bash
+			</div>
+			
 
-提供一个类 Linux 的 bash shell 环境（基于 MinGW）。
+<div class="related-posts thin">
+	<h2></h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">零基础如何搭建博客</a></li>
+	
+	</ul>
+</div>
 
-内置了很多常见的 Unix 工具（如 ls、grep、cat、rm）。
-
-默认命令语法更接近 Linux / macOS。
-
-适合习惯 Linux 命令行的用户。
-
-PowerShell
-
-Windows 原生的 shell，基于 .NET。
-
-Git 本身并不自带 PowerShell，但你装了 Git for Windows 后，git.exe 会注册到系统 PATH，因此 PowerShell 也能直接用 git。
-
-命令语法是 PowerShell 风格（Get-Command、| 管道传对象）。
-
-更适合做 Windows 系统管理 + Git 混合场景。
-
-2. 命令行为上的差异
-
-路径格式
-
-Git Bash：用 Linux 风格路径 /c/Users/...
-
-PowerShell：用 Windows 风格路径 C:\Users\...
-
-Git 内部能自动适配，但有时脚本里路径写法要注意。
-
-脚本兼容性
-
-Git Bash 能直接跑 .sh 脚本（Linux 写的脚本几乎不用改）。
-
-PowerShell 只能跑 .ps1，要想跑 .sh，得额外配置（比如用 WSL）。
-
-输出和管道
-
-Git Bash：输出就是 文本，常用 grep、awk 处理。
-
-PowerShell：输出是 对象，可以 git log | Out-File log.txt，但有些 git 输出并不是对象，还是普通文本，这时就当成字符串处理。
-
-3. 体验上的差异
-
-Git Bash
-
-更像在 Linux 下用 Git，教程和 Stack Overflow 示例几乎可以原样照搬。
-
-有补全、颜色支持等。
-
-PowerShell
-
-跟 Windows 系统融合度高，比如直接结合 Windows 文件系统、服务管理。
-</code></pre><p>我们总结一下，大概就是git bash风格上更像linux系统，更能适配各类教程；而powershell和win系统的适配度更高。</p>
-<p>所以我怎么用呢？我的评价是默认用powershell，报错出语法错误之后再试试git bash上能不能行。为什么要同时使用这两个命令行工具呢？很简单，因为当你作为初学者使用git时，不免要问问LLM的意见，这个时候LLM就有可能从网络的各个角落给你搜罗来命令，其中很可能相当一部分只能在git bash上使用，但是如果想本地调试博客的话又最好使用powershall。所以，轮着用吧。</p>
-<p>对于powershell，只需要知道两个最基本的指令就行了。</p>
-<pre tabindex="0"><code>cd &lt;path&gt;
-dir
-</code></pre><p>第一个指令是改变你命令行最前面的那个地址。之后你需要将地址改到你博客文件的根目录上才能继续使用hexo的相关命令。
-第二个命令是罗列该目录下有什么文件，方便你cd。</p>
-<p>好的，现在你知道了怎么用命令行工具切换文件目录了，是时候让我们开始在本地安装我们的hexo框架了。</p>
-<h4 id="hexo环境安装">hexo环境安装<a href="#hexo%e7%8e%af%e5%a2%83%e5%ae%89%e8%a3%85" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>hexo框架是使用nodejs写的。就像C++需要编译才能运行，java需要JDK才能运行，nodejs写的程序也一样，在使用之前，我们还需要安装nodejs。</p>
-<p>安装网站：<a href="https://nodejs.org/">nodejs</a></p>
-<p>此外，在前文中我们提到了git。如果你想更新网站内容，对于hexo框架而言最方便的途径就是使用git。反正git工具对于一个写代码的人而言早晚都要学的，不如就趁现在学一下吧。</p>
-<p>安装网站：<a href="https://git-scm.com/downloads">git</a>(后记：实际上多数时候直接使用包管理器就可以非常轻松地下载。)</p>
-<p>最后，毫无疑问，你需要安装hexo。但是这次，你不需要访问任何网站。nodejs内置了npm包管理器。你只需要输入一串指令就可以自动安装hexo。</p>
-<pre tabindex="0"><code>npm install -g hexo-cli
-</code></pre><p>在powershell中输入。为什么不在git bash中输入呢？因为我没试过。(实际上应该差不多)</p>
-<h4 id="创建一个博客项目">创建一个博客项目<a href="#%e5%88%9b%e5%bb%ba%e4%b8%80%e4%b8%aa%e5%8d%9a%e5%ae%a2%e9%a1%b9%e7%9b%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>在环境搭建完毕之后，你需要创建一个博客项目。hexo是一个为你生成博客网站源码的工具，它的产出单元就是博客。所以，创建一个博客。
-cd到你觉得合适的地址，输入以下指令：</p>
-<pre tabindex="0"><code>hexo init myblog   # 创建一个名为 myblog 的博客目录
-cd myblog
-npm install         # 安装依赖
-</code></pre><p>执行完后，你会得到一个完整的博客项目文件夹，里面包括：</p>
-<ul>
-<li>source/_posts/：放文章的地方</li>
-<li>themes/：博客外观主题</li>
-<li>config.yml：全局配置文件</li>
-</ul>
-<p>好的，现在你就成功了相当一部分了。你已经有了博客的主要文件，你只需要往里面填内容然后部署即可。</p>
-<p>那么，如何填内容呢？我们先来了解一下怎么本地测试。</p>
-<pre tabindex="0"><code>hexo clean
-hexo g
-hexo s
-</code></pre><p>这三个指令通常是连着输的，大多数时候你根本不用关心三个指令分别是什么意思，你只需要知道：三个指令输完之后，你会得到一个网址<code>http://localhost:4000/</code>，把它输入到浏览器中你就可以本地预览你的博客网站。通常而言，预览的结果就是部署得到的结果。(后记：实则不然，第二次部署博客费了老劲，预览的结果和部署的结果始终不同，改了好久环境变量。)</p>
-<h2 id="如何写博客">如何写博客？<a href="#%e5%a6%82%e4%bd%95%e5%86%99%e5%8d%9a%e5%ae%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>在上文中你已经学会了hexo的基本用法。现在是时候填充一些实际内容了。博客框架最大的优点就是支持markdown语法。这是一个程序员写README的经典标记语法，但是对于初学者来说可能会有一点点门槛。</p>
-<p>这里不再罗列markdown的语法。不过，如果你想学markdown，我的经验是你可以先从学obsidian开始。我在b站上找到了一个非常适合初学者学习的obsidian教程。用obsidian学markdown最大的好处就是markdown的效果能立竿见影，高度可视化。<a href="https://www.bilibili.com/video/BV1Hj411E7ra/?spm_id_from=333.337.search-card.all.click&amp;vd_source=31ba3d75fa2995f7e1b776de7a637bd4">教程视频</a></p>
-<p>如果你想写一篇博客，在powershell中输入：</p>
-<pre tabindex="0"><code>hexo new post &lt;post_name&gt;
-</code></pre><p>然后，把myblog整个文件夹丢到vscode里。在source/_posts里，你可以找到“文章名.md”的文件，在这里用markdown语言撰写你的博客。</p>
-<p>在写完一篇博客之后，记得保存，随后在终端输入上文中的测试指令，你就可以在本地看到你的博客文章了。</p>
-<h2 id="如何使用主题">如何使用主题？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e4%b8%bb%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>在默认情况下，hexo自带了一个主题，你不需要插入主题也可以搭建自己的博客。但是hexo的优势就在于活跃的中文社区与大量的开源主题。如果你不会导入主题的话绝对是一件遗憾。</p>
-<p>使用主题并不是一件难事，但是对于初学者（比如我）而言，因为误操作git导致给自己创造了一系列困难是常有的事。所以，在使用主题之前，我们最好先了解一下git和github的基础知识。</p>
-<h4 id="如何使用git">如何使用git？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8git" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>在前文中我们有提到过git。这是一个非常好用的程序管理器，你可以将其类比为码农的游戏存档，但是它的功能比简单的存档更加强大，它可以随时存档，读档，创建分支，合并分支。与其将它比作是一个存档器，不如说是一个功能极强的时间机器。</p>
-<p>当然，在此处，你同样只需要了解一些基础知识即可。</p>
-<pre tabindex="0"><code>git add .
-git add &lt;file_name&gt;
-git commit -m &lt;message&gt;
-git branch &lt;branch_name&gt;
-git checkout &lt;branch_name&gt;
-git log
-git branch -m &lt;new-name&gt;
-</code></pre><p>简单来说，第一个命令是将当前目录下的所有文件添加到缓存区，第二个命令是将指定文件添加到缓存区。
-第三个命令是提交缓存区的所有文件，形成一次提交，并且带有一条写入的message。
-第四条是在当前提交处创建一个分支。
-第五个是读档，回档到某个分支的状态。
-第六个是查看git提交记录，你可以看到项目的所有提交记录，包括时间，哈希值，message以及分支。
-最后一个是修改当前分支的名称。</p>
-<p>忘了写了，还有<code>git init</code>，这是一个非常关键的命令，需要在以上命令写之前写入。一个工程只需要写一次就够了。这会告诉git，这里有一个工程文件需要git插手，即初始化git，之后此目录下才能使用git命令。</p>
-<p>看不懂上面是什么意思？没关系。尽管git本身是命令行工具，但是当前网路上不乏许多直观的教程。下面推荐几个</p>
-<p><a href="https://learngitbranching.js.org/?locale=zh_CN">Learn Git Branching</a> - 用游戏式的交互直观展示git工作流程。在branch方面更加清晰。
-<a href="https://www.youtube.com/watch?v=mJ-qvsxPHpY&amp;t=602s">Git Tutorial For Dummies</a> - 顾名思义，给蠢蛋上的git教程。跟着走一遍就会用git了。
-（后记：其实我现在还是不太能完全理解git分支版本控制的原理，大多数时候git add .,git commit,git push就足够满足需求了。）</p>
-<p>然而，只用git是不够的，安装主题需要从github上导入，因此，你也必须学习一点github知识。</p>
-<h4 id="如何使用github">如何使用github？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8github" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>hub在英文中表示“中心”，github即git中心。尽管是一个高度图形化的网站，github的使用很大程度上依赖于git。
-下面我们罗列几个与github相关的git指令。</p>
-<pre tabindex="0"><code>git clone &lt;远程仓库地址&gt; &lt;本地相对地址&gt; - 将github上的某仓库克隆到本地
-git remote add origin &lt;远程仓库地址&gt; - 给当前项目添加 GitHub 仓库（一般第一次 push 时用）
-git push origin main - 将本地 main 分支推送到 GitHub 上
-git push -u origin main - 第一次推送时用，之后可直接 git push
-</code></pre><p>比如，如果我希望我的博客使用Oranges主题，我就这么做：</p>
-<ul>
-<li>cd到博客根目录/myblog</li>
-<li><code>git clone https://github.com/zchengsite/hexo-theme-oranges themes/Oranges</code>
-输入第二行的命令之后，你的themes文件夹中就会出现Oranges文件。这时候你就可以使用该主题了。</li>
-</ul>
-<p>注意：不同主题各自有自己的配置文件，请参考github上各个主题的readme.md文件了解配置方法。</p>
-<p>有的主题会建议你使用submodule方式添加主题。这需要一定的git基础，并且会造成提交部署上流程的复杂化。反正我暂时不会。我的方案是直接clone到本地，之后删除其中的所有.git相关的文件，这样这些导入的文件就不会被视作是一个子仓库，而是你工程文件的一部分。除非你有频繁更新主题的需求，一般而言导入一次就不会再去更新主题了。
-（后记：现在仍然不会使用子模块。）</p>
-<h2 id="如何部署博客">如何部署博客？<a href="#%e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2%e5%8d%9a%e5%ae%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>通过上文的流程，你已经可以在本地编辑和预览你的博客网站了。但是这不够，因为你需要让它部署到公网上才能让它被其他人看到。
-所以，如何部署呢？我们需要先了解一些基础知识。</p>
-<ul>
-<li>首先，你的博客需要一个地方存放它的工程文件，即你的myblog文件夹。这个位置不能是你的本地，因为博客网站24小时连轴转，你的电脑可是需要休息的。</li>
-<li>此外，你的博客需要一个域名，例如baidu.com。不然别人怎么访问你的博客。</li>
-<li>之后，你需要一个平台来代替你的电脑来运行网站。当然如果你会搭自己的服务器那当我没说，不过有这实力也不至于来看我的文章了。</li>
-</ul>
-<p>感觉很复杂吗？没关系，我们一条一条来。</p>
-<p>首先第一条。在哪里可以存放你的工程文件呢？对于一个毫无编程基础的人而言，你可能会想到网盘。很不错了，但是我们有更优化的方案。这就是我们前文中提到的github。
-在这里，我们先正式介绍一下github。</p>
-<h4 id="什么是github">什么是github？<a href="#%e4%bb%80%e4%b9%88%e6%98%afgithub" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>我知道你可能很想吐槽为什么我先讲怎么用github再介绍github，但是你先别急。</p>
-<p>GitHub，是一个基于git的代码托管平台。它就像是一个几乎无限大的网盘，你可以在这里搭建仓库，存放代码，甚至和他人合作完成项目。</p>
-<p>怎么做到无限大的？好吧，实际上并不是无限大。github要求单个仓库上线大小为1GB，单个文件上限大小为100MB。但是，对于代码这种纯粹字符组成的文件，一般而言空间占用量很小，加上得益于git的高效储存，对于大部分代码工程而言使用github都是足够使用了。当然，如果你想在这里上传视频等大体积文件，这就有点困难了。</p>
-<h4 id="如何在github上存放你的工程文件">如何在github上存放你的工程文件？<a href="#%e5%a6%82%e4%bd%95%e5%9c%a8github%e4%b8%8a%e5%ad%98%e6%94%be%e4%bd%a0%e7%9a%84%e5%b7%a5%e7%a8%8b%e6%96%87%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>非常简单。在我们前文中有讲过如何把本地文件上传到github。现在我再来详细介绍一遍。</p>
-<ul>
-<li>首先，创建一个仓库。你可以在github中轻松找到创建仓库的按键。输入你想命名的仓库名就大功告成了。</li>
-<li>之后，进入你的仓库界面。复制此处的网址。</li>
-<li><code>git remote add origin &lt;远程仓库地址&gt;</code>, 将当前项目链接到你刚创建的github仓库。</li>
-<li><code>git add .</code> <code>git commit -m &lt;message&gt;</code>,将当前项目提交一次git存档。</li>
-<li><code>git push -u origin main</code>,将当前提交上传到github。</li>
-</ul>
-<p>这时候，去你的github仓库里，你就可以看到你的工程文件成功出现在了那里。成功上传。</p>
-<p>注意：之后在相同的工程文件中，你只需要输入<code>git push</code>就可以代替<code>git push -u origin main</code>，更加快捷。</p>
-<h4 id="如何获得域名">如何获得域名？<a href="#%e5%a6%82%e4%bd%95%e8%8e%b7%e5%be%97%e5%9f%9f%e5%90%8d" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>这是全过程最简单的一环，拿钱摆事即可。</p>
-<p>国内的主要域名商就是阿里云和腾讯云。我个人是在腾讯云上买的域名。</p>
-<p>域名的不同价格主要就是后缀决定的。不要被某些域名较低的首年价格吸引了，没必要搞一个太花里胡哨的域名，我个人还是更追求稳定。</p>
-<p>在腾讯云上购买域名之后，你会在这里找到相关的工作台。这很重要，之后部署博客的时候会用到。</p>
-<h4 id="部署博客">部署博客。<a href="#%e9%83%a8%e7%bd%b2%e5%8d%9a%e5%ae%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
-<p>现在，你已经有了域名和博客网站的内容，是时候让它部署到公网上了。</p>
-<p>这时候，我们需要寻求云计算服务平台的帮助，来托管我们的网站代码。在其中，我个人选择的是vercel，在中文社区广受好评的托管平台。</p>
-<p>值得注意的是，如果你去问chatgpt或者gemini等外国LLM，你可能会被告知vercel在国内的速度并不好，并推荐使用cloudflare。然而事实截然相反，我身边用过的人都说cf又慢又爱抽风。事实证明，有时候有经验的真人会比大数据更懂你的需求。</p>
-<p>至少在vercel中，部署博客几乎是一条龙服务，跟着引导走就行了。这边提几个可能产生误会的地方。</p>
-<h6 id="1如何使用自己的域名">1.如何使用自己的域名？<a href="#1%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e8%87%aa%e5%b7%b1%e7%9a%84%e5%9f%9f%e5%90%8d" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h6>
-<p>这里需要引入DNS的概念。</p>
-<p>DNS：Domain Name System，域名系统，用来实现域名和IP地址的相互映射。简单来说，用户想通过域名来访问网站，但是计算机需要IP地址。DNS就提供了这样的寻址功能。</p>
-<p>如果我们想通过域名来访问自己的博客，我们就需要让我们的域名通过DNS记录链接到云计算服务平台的IP地址。</p>
-<p>所以，这时候我们需要返回域名商的工作台。在此处为我们的域名添加DNS记录。此处，你需要去获知你所选云计算服务平台的IP地址。</p>
-<p>我其实不太明白怎么获知这个IP地址，误打误撞就填对了。所以需要你自己去探索方法。</p>
-<h6 id="2如何更新">2.如何更新？<a href="#2%e5%a6%82%e4%bd%95%e6%9b%b4%e6%96%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h6>
-<p>如果你想更新博客，你需要重新部署一遍吗？</p>
-<p>答案是不用。vercel这样的平台会自动检测github仓库的提交并采用当前分支的最新记录。你只需要git push一下你就可以看到公网上你的博客内容更新了。</p>
-<h2 id="尾声">尾声<a href="#%e5%b0%be%e5%a3%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
-<p>这是我正式写的第一篇博客。码字码了半天。因为实际上本人也是刚刚开始接触博客，没有很丰富的经验与知识基础，希望多多见谅。</p>
-<p>因为现在没有图床，导入图片不太方便，之后希望能尽快解决。（2025-11-23，现在也没有解决）</p>
-]]></content>
-		</item>
-		
-	</channel>
-</rss>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+   </svg>&nbsp;</span><br><span>NeovimPlugins配置方法</span>
+			</a>
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/test/">
+				<span class="post-nav-label">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>Test</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2025 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; Copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script></body>
+</html>

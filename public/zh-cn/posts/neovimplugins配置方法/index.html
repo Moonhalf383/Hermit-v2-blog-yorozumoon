@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="NeovimPlugins配置方法">
+  <meta itemprop="description" content="我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)
+插件的分类 nvim的插件大致有以下几类:
+基础辅助。拓展vim的行为。 git集成 外观主题 代码智能 自动补全 语法高亮 语法诊断 调试与运行 代码格式化 模糊搜索 至少在kickstart中出现的插件可以大致归类为以上内容。
+插件管理器 光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。">
+  <meta itemprop="datePublished" content="2025-11-23T11:11:53+08:00">
+  <meta itemprop="dateModified" content="2025-11-23T11:11:53+08:00">
+  <meta itemprop="wordCount" content="846">
+  <meta itemprop="keywords" content="Neovim,教程"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="NeovimPlugins配置方法">
+  <meta property="og:description" content="我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)
+插件的分类 nvim的插件大致有以下几类:
+基础辅助。拓展vim的行为。 git集成 外观主题 代码智能 自动补全 语法高亮 语法诊断 调试与运行 代码格式化 模糊搜索 至少在kickstart中出现的插件可以大致归类为以上内容。
+插件管理器 光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-11-23T11:11:53+08:00">
+    <meta property="article:modified_time" content="2025-11-23T11:11:53+08:00">
+    <meta property="article:tag" content="Neovim">
+    <meta property="article:tag" content="教程">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="NeovimPlugins配置方法">
+  <meta name="twitter:description" content="我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)
+插件的分类 nvim的插件大致有以下几类:
+基础辅助。拓展vim的行为。 git集成 外观主题 代码智能 自动补全 语法高亮 语法诊断 调试与运行 代码格式化 模糊搜索 至少在kickstart中出现的插件可以大致归类为以上内容。
+插件管理器 光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "NeovimPlugins配置方法",
+    "name": "NeovimPlugins配置方法",
+    "description": "我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)\n插件的分类 nvim的插件大致有以下几类:\n基础辅助。拓展vim的行为。 git集成 外观主题 代码智能 自动补全 语法高亮 语法诊断 调试与运行 代码格式化 模糊搜索 至少在kickstart中出现的插件可以大致归类为以上内容。\n插件管理器 光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。\n",
+    "keywords": ["Neovim", "教程"],
+    "articleBody": "我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)\n插件的分类 nvim的插件大致有以下几类:\n基础辅助。拓展vim的行为。 git集成 外观主题 代码智能 自动补全 语法高亮 语法诊断 调试与运行 代码格式化 模糊搜索 至少在kickstart中出现的插件可以大致归类为以上内容。\n插件管理器 光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。\n让我们看到init.lua中关于下载lazy.nvim插件管理器的部分：\n-- [[ Install `lazy.nvim` plugin manager ]] -- See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim' if not (vim.uv or vim.loop).fs_stat(lazypath) then local lazyrepo = 'https://github.com/folke/lazy.nvim.git' local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath } if vim.v.shell_error ~= 0 then error('Error cloning lazy.nvim:\\n' .. out) end end ---@type vim.Option local rtp = vim.opt.rtp rtp:prepend(lazypath) 这段代码的含义，简单来说就是：\n创建一个lazypath作为这个插件管理器的老家 在linux系统中，通常就是~/.local/share/nvim/lazy/lazy.nvim 将lazy.nvim在github上的仓库克隆到lazypath 其余部分的代码基本是出于兼容性而写的（但是并非无用，这段代码的健壮性还是非常强的，能让你在绝大多数情况下都能至少保证lazy.nvim安装成功） 这段代码基本唯一有价值的东西就是告诉你lazypath的老家在哪，实在有问题可能会要去检查那里的文件。但是通常而言用不到。而且你大概率也不会自己写这段代码，所以多数情况下忽视即可。\n插件 require('lazy').setup({ 从接下来开始就到了重头戏了，nvim的插件管理。\n在我们kickstart nvim这个配置模版中，大几百行的代码都塞在了require('lazy').setup({这个巨大括号里。\nrequire('lazy').setup()接受的是两个参数，其中第一个参数就是一个巨大的lua table，里面放的是插件的“说明书”，第二个参数则是可选的，用来定制lazy.nvim自身的外观和行为。我们主要关注第一部分，即插件的“说明书”到底怎么写。\n插件说明书 (Plugin Specification) 所谓的插件说明书，就是setup()中第一个参数table中的元素。每一个说明书就代表了一个插件。\n一个插件说明书的职能大概有：\n让lazy.nvim去下载需要的插件 传递配置选项给插件 加载触发器来实现自动功能 设置自定义函数来配置插件（比如设置快捷键） 声明依赖项 设置加载条件 设置打开特定文件时加载插件 导入其他文件中的插件配置 好吧，光看这些职能是没有用的，我们来以init.lua中提供的插件说明书来详细讲解。\n最简形式 'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically 没错，一个字符串就足够作为一个插件了。记得后面要加逗号。\n这段代码的含义就是，到github上找到NMAC427这个用户的guess-indent.nvim这个仓库并下载下来，什么都不配置，直接用默认配置即可。这是最省事的写法。\n但是多数时候，你为了更方便的使用插件，不得不进行一些相应的配置。这个时候，我们就要用到更加复杂的配置方式。\n常见形式 -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded. -- -- Alternatively, use `config = function() ... end` for full control over the configuration. -- If you prefer to call `setup` explicitly, use: -- { -- 'lewis6991/gitsigns.nvim', -- config = function() -- require('gitsigns').setup({ -- -- Your gitsigns configuration here -- }) -- end, -- } -- -- Here is a more advanced example where we pass configuration -- options to `gitsigns.nvim`. -- -- See `:help gitsigns` to understand what the configuration keys do { -- Adds git related signs to the gutter, as well as utilities for managing changes 'lewis6991/gitsigns.nvim', opts = { signs = { add = { text = '+' }, change = { text = '~' }, delete = { text = '_' }, topdelete = { text = '‾' }, changedelete = { text = '~' }, }, }, }, 这是一个git图标插件，功能是在侧边栏显示当前文本中的改动增减。但是我们想要自定义显示的图标，那么我们就必须进行配置。\n配置的方式如上，简单来说就是将插件说明书写成一个table。lua中table是唯一的组合数据结构，功能类似于js的对象，既能当哈希表或字典，又能当列表，还能作为类。如果想要写好lua程序，你将不得不直面这种身兼数职的境况。\n在以上这段代码中，配置gitsigns时我们使用了opts这个配置键。这是最简洁的配置键，配置的选项又插件作者提供，插件加载完成后会自动调用你给出的配置。\n其他的插件配置键我们暂且不谈，我们不妨先由一个简单而效果显著的插件配置出发，来自己手动完成一个配置：配色方案。\n配色方案配置 { -- You can easily change to a different colorscheme. -- Change the name of the colorscheme plugin below, and then -- change the command in the config to whatever the name of that colorscheme is. -- -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`. 'folke/tokyonight.nvim', priority = 1000, -- Make sure to load this before all the other start plugins. config = function() ---@diagnostic disable-next-line: missing-fields require('tokyonight').setup { styles = { comments = { italic = false }, -- Disable italics in comments }, } -- Load the colorscheme here. -- Like many other themes, this one has different styles, and you could load -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'. vim.cmd.colorscheme 'tokyonight-night' end, }, 在kickstart配置模版中，默认的配色方案长成这样。它下载的是tokyonight，一个我个人不是很喜欢的配色方案。所以我一定要把它改掉。\n我们先来分析一下这段代码的组成：\n'folke/tokyonight.nvim',作者+插件名，一个插件的最简形式。 priority = 1000,设置优先级。颜色主题需要较高的优先级，这样才能保证在你看到任何界面元素之前，颜色主题已经加载完毕，使视觉体验更平滑。 require('tokyonight').setup调用插件提供的标准配置函数 comments = { italic = false }禁用注释斜体，这个功能在某些平台上表现不佳（比如我的termux） vim.cmd.colorscheme 'tokyonight-night'在完成前面的setup步骤后，让nvim真正开始加载这个颜色主题。 那么我们现在就来修改这段代码，来改成我更喜欢的onedarkpro主题。\n{ 'olimorris/onedarkpro.nvim', priority = 1000, config = function() require('onedarkpro').setup { highlights = { Comment = { italic = false }, Directory = { bold = true }, ErrorMsg = { italic = false, bold = true }, }, } vim.cmd 'colorscheme onedark' end, }, ok，当我保存退出再进入后，我就喜提新颜色主题了。\n简单来说，这部分内容难点就在于：如果你不去深入了解配置文件的组成结构，你可能根本不知道github上给出的配置代码到底该放在哪。现在我们知道了，只需要把github上给出的配置代码塞进一个table里，再塞到require('lazy').setup({里即可。\n颜色方案配置比较简单，因为它不涉及任何按键的设置。接下来我们来为我们的nvim添加一个“浮动终端”，就想一般的图形化界面ide那样在界面的中央弹出一个终端窗口，而非使用nvim原生的类似分屏的终端。\n但是在开始之前，我们先进行一些准备工作：我们实际上应该把这些插件说明书分门别类的放在lua/custom/plugins目录下，而不是全部扁平化的放在init.lua中。让我们先把颜色方案的代码移动过去。\n首先，我们看到init.lua中插件说明书的最后部分：\n-- note: the import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua` -- this is the easiest way to modularize your config. -- -- uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going. { import = 'custom.plugins' }, 这一部分中，\\{ import = 'custom.plugins' },原本是注释起来的，将前面的注释符号删除，这样lazy.nvim就会自动去在custom/plugins目录下寻找插件说明书。\n接着，输入以下指令：\nnvim lua/custom/plugins/colorscheme.lua 这样我们就创建了一个专门存放配色方案的lua模块。将原本我们写在init.lua中的代码移植过来，并用return{}包裹，得到：\n--colorscheme.lua return { { 'olimorris/onedarkpro.nvim', priority = 1000, config = function() require('onedarkpro').setup { highlights = { Comment = { italic = false }, Directory = { bold = true }, ErrorMsg = { italic = false, bold = true }, }, } vim.cmd 'colorscheme onedark' end, }, } 此时，重新打开nvim，配色方案应该依然工作正常。这就意味着你成功构建了一个插件说明书。\n浮动终端 浮动终端的常用插件是toggleterm.nvim，简称toggle。\n让我们先在plugins下创建一个专属于toggle的lua模块：\nnvim lua/custom/plugins/toggleterm.lua 然后，让我写入插件的配置代码：\nreturn { 'akinsho/toggleterm.nvim', version = '*', config = function() require('toggleterm').setup { -- 设置终端窗口大小 size = function(term) if term.direction == 'horizontal' then return 15 elseif term.direction == 'vertical' then return vim.o.columns * 0.4 end end, -- 打开终端的快捷键，这里设置为 Ctrl + \\ open_mapping = [[]], -- 隐藏 toggleterm buffer 中的行号 hide_numbers = true, -- 当 Neovim 目录切换时，终端下次打开也会切换到相应目录 autochdir = true, -- 设置终端窗口的背景色，可以根据你的主题进行调整 highlights = { Normal = { guibg = 'none', -- 这里设置为 \"none\" 表示使用默认背景 }, NormalFloat = { link = 'Normal', }, }, -- 阴影效果，如果设置了上面的 highlights 中的 Normal，建议将此项设为 false shade_terminals = true, -- 阴影的强度，数值越小越深 shading_factor = -30, -- 启动时进入插入模式 start_in_insert = true, -- 在插入模式下也可以使用 open_mapping 打开终端 -- insert_mappings = true, -- 在终端窗口中也可以使用 open_mapping (会覆盖一些终端默认行为) -- terminal_mappings = true, -- 保持上次终端的大小 -- persist_size = true, -- 终端进程退出时自动关闭窗口 direction = 'float', -- 设置默认打开方式为浮动窗口 close_on_exit = true, -- 使用 Neovim 的默认 shell shell = vim.o.shell, -- 自动滚动到底部 auto_scroll = true, -- 浮动窗口的设置 float_opts = { -- 边框样式 border = 'curved', -- 使用圆角边框 -- 窗口透明度 winblend = 20, }, } -- 设置一个函数，用于在 normal 模式下按下 时退出终端 function _G.set_terminal_keymaps() local opts = { buffer = 0 } vim.keymap.set('t', '', [[]], opts) vim.keymap.set('t', 'jk', [[]], opts) -- jk 也可以退出 vim.keymap.set('t', '', [[wincmd h]], opts) vim.keymap.set('t', '', [[wincmd j]], opts) vim.keymap.set('t', '', [[wincmd k]], opts) vim.keymap.set('t', '', [[wincmd l]], opts) end -- 当打开终端时，自动应用上面的快捷键设置 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()') -- 定义一个快捷键，方便地打开一个 LazyGit 终端 local Terminal = require('toggleterm.terminal').Terminal local lazygit = Terminal:new({ cmd = \"lazygit\", hidden = true, direction = \"float\", }) function _LAZYGIT_TOGGLE() lazygit:toggle() end vim.keymap.set(\"n\", \"gg\", \"lua _LAZYGIT_TOGGLE()\", { noremap = true, silent = true, desc = \"Lazygit\", }) end, } 在了解了原理之后，和ai交流的难度显著下降了。我得到了一套非常棒的配置，甚至帮我添加了lazygit的界面。效果非常帅。\n这时候保存退出，再重进，你就应该可以通过你设置的快捷键来打开toggle终端了。\n看到这里，你已经可以完全自己上手去解决插件配置问题了。实际上，你基本不需要自己写代码，你只要能读的懂一点代码就行，你只需要把github上插件作者提供的配置样例丢给ai让它生成一个涵盖了大多数功能的配置，再依据自己的需求进行删改即可。\n",
+    "wordCount" : "846",
+    "inLanguage": "zh-cn",
+    "datePublished": "2025-11-23T11:11:53+08:00",
+    "dateModified": "2025-11-23T11:11:53+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>NeovimPlugins配置方法</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Nov 23, 2025</span></div>
+				<h1>NeovimPlugins配置方法</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg>Moonhalf</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/neovim">Neovim</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B">教程</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>846&nbsp  次阅读(还是阅读时间？有点搞不懂)3 Minutes, 50 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2025-11-23 11:11 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <p>我的上一篇博客中，我们探讨了如何配置nvim。但是仅仅是修改了键位和vim行为远远不足以让我们的nvim可以承担代码任务。我们需要插件来拓展nvim的功能。插件是nvim的灵魂，有了插件，你的nvim才能作为一个功能完备的ide来使用。(后记：真正使用时你应该去使用lazyvim，并通过lazyvim的lazyextra功能配置lsp和相关的调试功能。如果你有生活，不要尝试自己配置lsp，尤其是如果你想写java之类的面向大型工程设计的语言。)</p>
+<h3 id="插件的分类">插件的分类<a href="#%e6%8f%92%e4%bb%b6%e7%9a%84%e5%88%86%e7%b1%bb" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>nvim的插件大致有以下几类:</p>
+<ul>
+<li>基础辅助。拓展vim的行为。</li>
+<li>git集成</li>
+<li>外观主题</li>
+<li>代码智能
+<ul>
+<li>自动补全</li>
+<li>语法高亮</li>
+<li>语法诊断</li>
+<li>调试与运行</li>
+<li>代码格式化</li>
+</ul>
+</li>
+<li>模糊搜索</li>
+</ul>
+<p>至少在kickstart中出现的插件可以大致归类为以上内容。</p>
+<h3 id="插件管理器">插件管理器<a href="#%e6%8f%92%e4%bb%b6%e7%ae%a1%e7%90%86%e5%99%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。</p>
+<p>让我们看到init.lua中关于下载lazy.nvim插件管理器的部分：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Install `lazy.nvim` plugin manager ]]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">--    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> lazypath <span style="color:#f92672">=</span> vim.fn.stdpath <span style="color:#e6db74">&#39;data&#39;</span> <span style="color:#f92672">..</span> <span style="color:#e6db74">&#39;/lazy/lazy.nvim&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (vim.uv <span style="color:#f92672">or</span> vim.loop).fs_stat(lazypath) <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> lazyrepo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://github.com/folke/lazy.nvim.git&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> out <span style="color:#f92672">=</span> vim.fn.system { <span style="color:#e6db74">&#39;git&#39;</span>, <span style="color:#e6db74">&#39;clone&#39;</span>, <span style="color:#e6db74">&#39;--filter=blob:none&#39;</span>, <span style="color:#e6db74">&#39;--branch=stable&#39;</span>, lazyrepo, lazypath }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> vim.v.shell_error <span style="color:#f92672">~=</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    error(<span style="color:#e6db74">&#39;Error cloning lazy.nvim:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">..</span> out)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">---@type vim.Option</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> rtp <span style="color:#f92672">=</span> vim.opt.rtp
+</span></span><span style="display:flex;"><span>rtp:prepend(lazypath)
+</span></span></code></pre></div><p>这段代码的含义，简单来说就是：</p>
+<ul>
+<li>创建一个lazypath作为这个插件管理器的老家
+<ul>
+<li>在linux系统中，通常就是<code>~/.local/share/nvim/lazy/lazy.nvim</code></li>
+</ul>
+</li>
+<li>将lazy.nvim在github上的仓库克隆到lazypath</li>
+<li>其余部分的代码基本是出于兼容性而写的（但是并非无用，这段代码的健壮性还是非常强的，能让你在绝大多数情况下都能至少保证lazy.nvim安装成功）</li>
+</ul>
+<p>这段代码基本唯一有价值的东西就是告诉你lazypath的老家在哪，实在有问题可能会要去检查那里的文件。但是通常而言用不到。而且你大概率也不会自己写这段代码，所以多数情况下忽视即可。</p>
+<h3 id="插件">插件<a href="#%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require(<span style="color:#e6db74">&#39;lazy&#39;</span>).setup({
+</span></span></code></pre></div><p>从接下来开始就到了重头戏了，nvim的插件管理。</p>
+<p>在我们kickstart nvim这个配置模版中，大几百行的代码都塞在了<code>require('lazy').setup({</code>这个巨大括号里。</p>
+<p><code>require('lazy').setup()</code>接受的是两个参数，其中第一个参数就是一个巨大的lua table，里面放的是插件的“说明书”，第二个参数则是可选的，用来定制lazy.nvim自身的外观和行为。我们主要关注第一部分，即插件的“说明书”到底怎么写。</p>
+<h4 id="插件说明书-plugin-specification">插件说明书 (Plugin Specification)<a href="#%e6%8f%92%e4%bb%b6%e8%af%b4%e6%98%8e%e4%b9%a6-plugin-specification" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>所谓的插件说明书，就是setup()中第一个参数table中的元素。每一个说明书就代表了一个插件。</p>
+<p>一个插件说明书的职能大概有：</p>
+<ul>
+<li>让lazy.nvim去下载需要的插件</li>
+<li>传递配置选项给插件</li>
+<li>加载触发器来实现自动功能</li>
+<li>设置自定义函数来配置插件（比如设置快捷键）</li>
+<li>声明依赖项</li>
+<li>设置加载条件</li>
+<li>设置打开特定文件时加载插件</li>
+<li>导入其他文件中的插件配置</li>
+</ul>
+<p>好吧，光看这些职能是没有用的，我们来以init.lua中提供的插件说明书来详细讲解。</p>
+<h4 id="最简形式">最简形式<a href="#%e6%9c%80%e7%ae%80%e5%bd%a2%e5%bc%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;NMAC427/guess-indent.nvim&#39;</span>, <span style="color:#75715e">-- Detect tabstop and shiftwidth automatically</span>
+</span></span></code></pre></div><p>没错，一个字符串就足够作为一个插件了。记得后面要加逗号。</p>
+<p>这段代码的含义就是，到github上找到<code>NMAC427</code>这个用户的<code>guess-indent.nvim</code>这个仓库并下载下来，什么都不配置，直接用默认配置即可。这是最省事的写法。</p>
+<p>但是多数时候，你为了更方便的使用插件，不得不进行一些相应的配置。这个时候，我们就要用到更加复杂的配置方式。</p>
+<h4 id="常见形式">常见形式<a href="#%e5%b8%b8%e8%a7%81%e5%bd%a2%e5%bc%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#75715e">-- Use `opts = {}` to automatically pass options to a plugin&#39;s `setup()` function, forcing the plugin to be loaded.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Alternatively, use `config = function() ... end` for full control over the configuration.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- If you prefer to call `setup` explicitly, use:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        &#39;lewis6991/gitsigns.nvim&#39;,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        config = function()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--            require(&#39;gitsigns&#39;).setup({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--                -- Your gitsigns configuration here</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--            })</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        end,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    }</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Here is a more advanced example where we pass configuration</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- options to `gitsigns.nvim`.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- See `:help gitsigns` to understand what the configuration keys do</span>
+</span></span><span style="display:flex;"><span>  { <span style="color:#75715e">-- Adds git related signs to the gutter, as well as utilities for managing changes</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;lewis6991/gitsigns.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>    opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>      signs <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        add <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;+&#39;</span> },
+</span></span><span style="display:flex;"><span>        change <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~&#39;</span> },
+</span></span><span style="display:flex;"><span>        delete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;_&#39;</span> },
+</span></span><span style="display:flex;"><span>        topdelete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;‾&#39;</span> },
+</span></span><span style="display:flex;"><span>        changedelete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~&#39;</span> },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  },
+</span></span></code></pre></div><p>这是一个git图标插件，功能是在侧边栏显示当前文本中的改动增减。但是我们想要自定义显示的图标，那么我们就必须进行配置。</p>
+<p>配置的方式如上，简单来说就是将插件说明书写成一个table。lua中table是唯一的组合数据结构，功能类似于js的对象，既能当哈希表或字典，又能当列表，还能作为类。如果想要写好lua程序，你将不得不直面这种身兼数职的境况。</p>
+<p>在以上这段代码中，配置gitsigns时我们使用了<code>opts</code>这个配置键。这是最简洁的配置键，配置的选项又插件作者提供，插件加载完成后会自动调用你给出的配置。</p>
+<p>其他的插件配置键我们暂且不谈，我们不妨先由一个简单而效果显著的插件配置出发，来自己手动完成一个配置：配色方案。</p>
+<h3 id="配色方案配置">配色方案配置<a href="#%e9%85%8d%e8%89%b2%e6%96%b9%e6%a1%88%e9%85%8d%e7%bd%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  { <span style="color:#75715e">-- You can easily change to a different colorscheme.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Change the name of the colorscheme plugin below, and then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- change the command in the config to whatever the name of that colorscheme is.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">--</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;folke/tokyonight.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>, <span style="color:#75715e">-- Make sure to load this before all the other start plugins.</span>
+</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">---@diagnostic disable-next-line: missing-fields</span>
+</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;tokyonight&#39;</span>).setup {
+</span></span><span style="display:flex;"><span>        styles <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          comments <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> }, <span style="color:#75715e">-- Disable italics in comments</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Load the colorscheme here.</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Like many other themes, this one has different styles, and you could load</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- any other, such as &#39;tokyonight-storm&#39;, &#39;tokyonight-moon&#39;, or &#39;tokyonight-day&#39;.</span>
+</span></span><span style="display:flex;"><span>      vim.cmd.colorscheme <span style="color:#e6db74">&#39;tokyonight-night&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span></code></pre></div><p>在kickstart配置模版中，默认的配色方案长成这样。它下载的是tokyonight，一个我个人不是很喜欢的配色方案。所以我一定要把它改掉。</p>
+<p>我们先来分析一下这段代码的组成：</p>
+<ul>
+<li><code>'folke/tokyonight.nvim',</code>作者+插件名，一个插件的最简形式。</li>
+<li><code>priority = 1000,</code>设置优先级。颜色主题需要较高的优先级，这样才能保证在你看到任何界面元素之前，颜色主题已经加载完毕，使视觉体验更平滑。</li>
+<li><code>require('tokyonight').setup</code>调用插件提供的标准配置函数</li>
+<li><code>comments = { italic = false }</code>禁用注释斜体，这个功能在某些平台上表现不佳（比如我的termux）</li>
+<li><code>vim.cmd.colorscheme 'tokyonight-night'</code>在完成前面的setup步骤后，让nvim真正开始加载这个颜色主题。</li>
+</ul>
+<p>那么我们现在就来修改这段代码，来改成我更喜欢的onedarkpro主题。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;olimorris/onedarkpro.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;onedarkpro&#39;</span>).setup {
+</span></span><span style="display:flex;"><span>        highlights <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          Comment <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> },
+</span></span><span style="display:flex;"><span>          Directory <span style="color:#f92672">=</span> { bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
+</span></span><span style="display:flex;"><span>          ErrorMsg <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>, bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      vim.cmd <span style="color:#e6db74">&#39;colorscheme onedark&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span></code></pre></div><p>ok，当我保存退出再进入后，我就喜提新颜色主题了。</p>
+<p>简单来说，这部分内容难点就在于：如果你不去深入了解配置文件的组成结构，你可能根本不知道github上给出的配置代码到底该放在哪。现在我们知道了，只需要把github上给出的配置代码塞进一个table里，再塞到<code>require('lazy').setup({</code>里即可。</p>
+<p>颜色方案配置比较简单，因为它不涉及任何按键的设置。接下来我们来为我们的nvim添加一个“浮动终端”，就想一般的图形化界面ide那样在界面的中央弹出一个终端窗口，而非使用nvim原生的类似分屏的终端。</p>
+<p>但是在开始之前，我们先进行一些准备工作：我们实际上应该把这些插件说明书分门别类的放在<code>lua/custom/plugins</code>目录下，而不是全部扁平化的放在init.lua中。让我们先把颜色方案的代码移动过去。</p>
+<p>首先，我们看到<code>init.lua</code>中插件说明书的最后部分：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#75715e">-- note: the import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    this is the easiest way to modularize your config.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--  uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.</span>
+</span></span><span style="display:flex;"><span>  { import <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;custom.plugins&#39;</span> },
+</span></span></code></pre></div><p>这一部分中，<code>\{ import = 'custom.plugins' },</code>原本是注释起来的，将前面的注释符号删除，这样lazy.nvim就会自动去在custom/plugins目录下寻找插件说明书。</p>
+<p>接着，输入以下指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim lua/custom/plugins/colorscheme.lua
+</span></span></code></pre></div><p>这样我们就创建了一个专门存放配色方案的lua模块。将原本我们写在init.lua中的代码移植过来，并用<code>return{}</code>包裹，得到：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">--colorscheme.lua</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;olimorris/onedarkpro.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
+</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;onedarkpro&#39;</span>).setup {
+</span></span><span style="display:flex;"><span>        highlights <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          Comment <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> },
+</span></span><span style="display:flex;"><span>          Directory <span style="color:#f92672">=</span> { bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
+</span></span><span style="display:flex;"><span>          ErrorMsg <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>, bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      vim.cmd <span style="color:#e6db74">&#39;colorscheme onedark&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>此时，重新打开nvim，配色方案应该依然工作正常。这就意味着你成功构建了一个插件说明书。</p>
+<h4 id="浮动终端">浮动终端<a href="#%e6%b5%ae%e5%8a%a8%e7%bb%88%e7%ab%af" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>浮动终端的常用插件是<code>toggleterm.nvim</code>，简称toggle。</p>
+<p>让我们先在plugins下创建一个专属于toggle的lua模块：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim lua/custom/plugins/toggleterm.lua
+</span></span></code></pre></div><p>然后，让我写入插件的配置代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;akinsho/toggleterm.nvim&#39;</span>,
+</span></span><span style="display:flex;"><span>  version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;*&#39;</span>,
+</span></span><span style="display:flex;"><span>  config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>    require(<span style="color:#e6db74">&#39;toggleterm&#39;</span>).setup {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 设置终端窗口大小</span>
+</span></span><span style="display:flex;"><span>      size <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(term)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> term.direction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;horizontal&#39;</span> <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elseif</span> term.direction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;vertical&#39;</span> <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> vim.o.columns <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.4</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 打开终端的快捷键，这里设置为 Ctrl + \</span>
+</span></span><span style="display:flex;"><span>      open_mapping <span style="color:#f92672">=</span> <span style="color:#e6db74">[[&lt;c-\&gt;]]</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 隐藏 toggleterm buffer 中的行号</span>
+</span></span><span style="display:flex;"><span>      hide_numbers <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 当 Neovim 目录切换时，终端下次打开也会切换到相应目录</span>
+</span></span><span style="display:flex;"><span>      autochdir <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 设置终端窗口的背景色，可以根据你的主题进行调整</span>
+</span></span><span style="display:flex;"><span>      highlights <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        Normal <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          guibg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;none&#39;</span>, <span style="color:#75715e">-- 这里设置为 &#34;none&#34; 表示使用默认背景</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        NormalFloat <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          link <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Normal&#39;</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 阴影效果，如果设置了上面的 highlights 中的 Normal，建议将此项设为 false</span>
+</span></span><span style="display:flex;"><span>      shade_terminals <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 阴影的强度，数值越小越深</span>
+</span></span><span style="display:flex;"><span>      shading_factor <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">30</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 启动时进入插入模式</span>
+</span></span><span style="display:flex;"><span>      start_in_insert <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 在插入模式下也可以使用 open_mapping 打开终端</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- insert_mappings = true,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 在终端窗口中也可以使用 open_mapping (会覆盖一些终端默认行为)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- terminal_mappings = true,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 保持上次终端的大小</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- persist_size = true,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 终端进程退出时自动关闭窗口</span>
+</span></span><span style="display:flex;"><span>      direction <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;float&#39;</span>, <span style="color:#75715e">-- 设置默认打开方式为浮动窗口</span>
+</span></span><span style="display:flex;"><span>      close_on_exit <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 使用 Neovim 的默认 shell</span>
+</span></span><span style="display:flex;"><span>      shell <span style="color:#f92672">=</span> vim.o.shell,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 自动滚动到底部</span>
+</span></span><span style="display:flex;"><span>      auto_scroll <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 浮动窗口的设置</span>
+</span></span><span style="display:flex;"><span>      float_opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">-- 边框样式</span>
+</span></span><span style="display:flex;"><span>        border <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;curved&#39;</span>, <span style="color:#75715e">-- 使用圆角边框</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">-- 窗口透明度</span>
+</span></span><span style="display:flex;"><span>        winblend <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>,
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 设置一个函数，用于在 normal 模式下按下 &lt;esc&gt; 时退出终端</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_G</span>.<span style="color:#a6e22e">set_terminal_keymaps</span>()
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">local</span> opts <span style="color:#f92672">=</span> { buffer <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> }
+</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;esc&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;C-\&gt;&lt;C-n&gt;]]</span>, opts)
+</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;jk&#39;</span>, <span style="color:#e6db74">[[&lt;C-\&gt;&lt;C-n&gt;]]</span>, opts) <span style="color:#75715e">-- jk 也可以退出</span>
+</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-h&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd h&lt;CR&gt;]]</span>, opts)
+</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-j&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd j&lt;CR&gt;]]</span>, opts)
+</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-k&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd k&lt;CR&gt;]]</span>, opts)
+</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-l&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd l&lt;CR&gt;]]</span>, opts)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 当打开终端时，自动应用上面的快捷键设置</span>
+</span></span><span style="display:flex;"><span>    vim.cmd(<span style="color:#e6db74">&#39;autocmd! TermOpen term://* lua set_terminal_keymaps()&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 定义一个快捷键，方便地打开一个 LazyGit 终端</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> Terminal <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;toggleterm.terminal&#39;</span>).Terminal
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> lazygit <span style="color:#f92672">=</span> Terminal:new({
+</span></span><span style="display:flex;"><span>      cmd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lazygit&#34;</span>,
+</span></span><span style="display:flex;"><span>      hidden <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>      direction <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;float&#34;</span>,
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_LAZYGIT_TOGGLE</span>()
+</span></span><span style="display:flex;"><span>      lazygit:toggle()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    vim.keymap.set(<span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;&lt;leader&gt;gg&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;lua _LAZYGIT_TOGGLE()&lt;CR&gt;&#34;</span>, {
+</span></span><span style="display:flex;"><span>        noremap <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        silent <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Lazygit&#34;</span>,
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在了解了原理之后，和ai交流的难度显著下降了。我得到了一套非常棒的配置，甚至帮我添加了lazygit的界面。效果非常帅。</p>
+<p>这时候保存退出，再重进，你就应该可以通过你设置的快捷键来打开toggle终端了。</p>
+<hr>
+<p>看到这里，你已经可以完全自己上手去解决插件配置问题了。实际上，你基本不需要自己写代码，你只要能读的懂一点代码就行，你只需要把github上插件作者提供的配置样例丢给ai让它生成一个涵盖了大多数功能的配置，再依据自己的需求进行删改即可。</p>
+
+			</div>
+			
+
+<div class="related-posts thin">
+	<h2></h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/">Neovim配置如何入门</a></li>
+	
+	<li><a href="/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">零基础如何搭建博客</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/">
+				<span class="post-nav-label">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>Neovim配置如何入门</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2025 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; Copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script></body>
+</html>

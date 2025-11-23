@@ -59,16 +59,21 @@ tag = "tags"
 # Categories are disabled by default.
 # category = "categories"
 
-# Enable to get proper Mathjax support
-#[markup]
-#  [markup.goldmark]
-#    [markup.goldmark.extensions]
-#      [markup.goldmark.extensions.passthrough]
-#        enable = true
-#        [markup.goldmark.extensions.passthrough.delimiters]
-#          block = [['\[', '\]'], ['$$', '$$']]
-#          inline = [['\(', '\)']]
+[markup]
+# Goldmark 设置（MathJax）
+[markup.goldmark]
+[markup.goldmark.extensions]
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['\[', '\]'], ['$$', '$$']]
+inline = [['\(', '\)']]
 
+# 文章目录（TOC）设置
+[markup.tableOfContents]
+startLevel = 2
+endLevel = 3
+ordered = false
 
 [params]
 # description = "CHANGE ME SITE DESCRIPTION"
@@ -91,7 +96,7 @@ homeSubtitlePrinter = true
 scrollToTop = true
 global_mathjax = false
 readTime = true
-readTimeSeparator = "次阅读"
+readTimeSeparator = "次阅读(还是阅读时间？有点搞不懂)"
 # legacyLayout = false
 shareSocial = true
 # googleTagManager = "GTM-XXXXXXXX"
