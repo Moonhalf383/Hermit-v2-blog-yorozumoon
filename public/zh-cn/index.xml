@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yorozumoon</title><link>https://yorozumoon.cn/zh-cn/</link><description>Recent content on Yorozumoon</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Nov 2025 14:21:21 +0800</lastBuildDate><atom:link href="https://yorozumoon.cn/zh-cn/index.xml" rel="self" type="application/rss+xml"/><item><title>友链</title><link>https://yorozumoon.cn/zh-cn/links/</link><pubDate>Fri, 21 Nov 2025 14:21:21 +0800</pubDate><guid>https://yorozumoon.cn/zh-cn/links/</guid><description>&lt;p&gt;月枝的朋友。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yorozumoon</title><link>http://localhost:1313/zh-cn/</link><description>Recent content on Yorozumoon</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Nov 2025 14:21:21 +0800</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml"/><item><title>友链</title><link>http://localhost:1313/zh-cn/links/</link><pubDate>Fri, 21 Nov 2025 14:21:21 +0800</pubDate><guid>http://localhost:1313/zh-cn/links/</guid><description>&lt;p&gt;月枝的朋友。&lt;/p&gt;
 
 &lt;div class="friend-links-container"&gt;
  
@@ -24,7 +24,7 @@
  
  &lt;a href="https://www.sakimidare.top/" target="_blank" class="friend-card"&gt;
  &lt;div class="friend-left"&gt;
- &lt;img src="https://yorozumoon.cn/images/avatar.DDuJmLsr_Z10nWFM.webp" alt="SakiMidare" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=SakiMidare&amp;background=random'"&gt;
+ &lt;img src="http://localhost:1313/images/avatar.DDuJmLsr_Z10nWFM.webp" alt="SakiMidare" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=SakiMidare&amp;background=random'"&gt;
  &lt;/div&gt;
  &lt;div class="friend-right"&gt;
  &lt;div class="friend-name"&gt;SakiMidare&lt;/div&gt;
@@ -34,7 +34,7 @@
  
  &lt;a href="https://blog.383494.xyz/" target="_blank" class="friend-card"&gt;
  &lt;div class="friend-left"&gt;
- &lt;img src="https://yorozumoon.cn/images/friend_default.png" alt="383494" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=383494&amp;background=random'"&gt;
+ &lt;img src="http://localhost:1313/images/friend_default.png" alt="383494" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=383494&amp;background=random'"&gt;
  &lt;/div&gt;
  &lt;div class="friend-right"&gt;
  &lt;div class="friend-name"&gt;383494&lt;/div&gt;
@@ -44,7 +44,7 @@
  
  &lt;a href="https://frankly6.cn/" target="_blank" class="friend-card"&gt;
  &lt;div class="friend-left"&gt;
- &lt;img src="https://yorozumoon.cn/images/Frankly6.png" alt="Frankly6" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Frankly6&amp;background=random'"&gt;
+ &lt;img src="http://localhost:1313/images/Frankly6.png" alt="Frankly6" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Frankly6&amp;background=random'"&gt;
  &lt;/div&gt;
  &lt;div class="friend-right"&gt;
  &lt;div class="friend-name"&gt;Frankly6&lt;/div&gt;
@@ -54,7 +54,7 @@
  
  &lt;a href="https://blog.glowled.top/" target="_blank" class="friend-card"&gt;
  &lt;div class="friend-left"&gt;
- &lt;img src="https://yorozumoon.cn/images/avatar_yamada.jpg" alt="GlowLED" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=GlowLED&amp;background=random'"&gt;
+ &lt;img src="http://localhost:1313/images/avatar_yamada.jpg" alt="GlowLED" class="friend-avatar" onerror="this.src='https://ui-avatars.com/api/?name=GlowLED&amp;background=random'"&gt;
  &lt;/div&gt;
  &lt;div class="friend-right"&gt;
  &lt;div class="friend-name"&gt;GlowLED&lt;/div&gt;
@@ -74,7 +74,7 @@
 &lt;li&gt;&lt;strong&gt;名称&lt;/strong&gt;: 井枝万事屋&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;链接&lt;/strong&gt;: &lt;a href="https://yorozumoon.cn"&gt;https://yorozumoon.cn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;简介&lt;/strong&gt;: 濂珠沉葬，玉碎琉璃&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Hellohugo</title><link>https://yorozumoon.cn/zh-cn/posts/hellohugo/</link><pubDate>Wed, 19 Nov 2025 23:20:43 +0800</pubDate><guid>https://yorozumoon.cn/zh-cn/posts/hellohugo/</guid><description>&lt;h2 id="hellohugo"&gt;Hellohugo&lt;a href="#hellohugo" class="anchor" aria-hidden="true"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+&lt;/ul&gt;</description></item><item><title>Hellohugo</title><link>http://localhost:1313/zh-cn/posts/hellohugo/</link><pubDate>Wed, 19 Nov 2025 23:20:43 +0800</pubDate><guid>http://localhost:1313/zh-cn/posts/hellohugo/</guid><description>&lt;h2 id="hellohugo"&gt;Hellohugo&lt;a href="#hellohugo" class="anchor" aria-hidden="true"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
  stroke-linecap="round" stroke-linejoin="round"&gt;
  &lt;path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"&gt;&lt;/path&gt;
  &lt;line x1="8" y1="12" x2="16" y2="12"&gt;&lt;/line&gt;
