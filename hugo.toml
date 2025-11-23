@@ -48,7 +48,6 @@ expiryDate = ["expiryDate"]
 
 [params.author]
 name = "Moonhalf"
-about = "月のまにまに"
 
 [blackfriday]
 # hrefTargetBlank = true
