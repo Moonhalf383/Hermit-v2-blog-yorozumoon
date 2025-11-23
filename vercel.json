@@ -1,0 +1,17 @@
+{
+  "builds": [
+    {
+      "src": "hugo.toml",
+      "use": "@vercel/hugo",
+      "config": {
+        "version": "0.152.2"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}
