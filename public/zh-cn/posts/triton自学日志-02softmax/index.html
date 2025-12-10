@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="Triton自学日志 02FusedSoftmax">
+  <meta itemprop="description" content="融合 Softmax （Fused Softmax） 在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。 在此过程中，你会学习到：
+内核融合对于带宽受限操作的优势。 Triton 中缩减操作。 使用原生 PyTorch 对 X 逐行进行 Softmax 计算 import torch import torch_npu import triton import triton.language as tl def naive_softmax(x): &#34;&#34;&#34; 我们减去最大元素以避免溢出。Softmax 对于这种偏移是不变的。 &#34;&#34;&#34; # 读取 MN 个元素；写入 M 个元素 x_max = x.max(dim=1)[0] # 读取 MN &#43; M 个元素；写入 MN 个元素 z = x - x_max[:, None] # 读取 MN 个元素；写入 MN 个元素 numerator = torch.exp(z) # 读取 MN 个元素；写入 M 个元素 denominator = numerator.sum(dim=1) # 读取 MN &#43; M 个元素；写入 MN 个元素 ret = numerator / denominator[:, None] # 总计：读取 5MN &#43; 2M 个元素；写入 3MN &#43; 2M 个元素 return ret 什么是&#34;Softmax&#34;？ 在大模型开发中，softmax是一个非常重要的算法。它的作用是把绝对的分数转化为相对概率。">
+  <meta itemprop="datePublished" content="2025-12-10T08:33:43+08:00">
+  <meta itemprop="dateModified" content="2025-12-10T08:33:43+08:00">
+  <meta itemprop="wordCount" content="1199">
+  <meta itemprop="keywords" content="Triton,Ascend,学习日志,Python,Torch,推理加速"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="Triton自学日志 02FusedSoftmax">
+  <meta property="og:description" content="融合 Softmax （Fused Softmax） 在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。 在此过程中，你会学习到：
+内核融合对于带宽受限操作的优势。 Triton 中缩减操作。 使用原生 PyTorch 对 X 逐行进行 Softmax 计算 import torch import torch_npu import triton import triton.language as tl def naive_softmax(x): &#34;&#34;&#34; 我们减去最大元素以避免溢出。Softmax 对于这种偏移是不变的。 &#34;&#34;&#34; # 读取 MN 个元素；写入 M 个元素 x_max = x.max(dim=1)[0] # 读取 MN &#43; M 个元素；写入 MN 个元素 z = x - x_max[:, None] # 读取 MN 个元素；写入 MN 个元素 numerator = torch.exp(z) # 读取 MN 个元素；写入 M 个元素 denominator = numerator.sum(dim=1) # 读取 MN &#43; M 个元素；写入 MN 个元素 ret = numerator / denominator[:, None] # 总计：读取 5MN &#43; 2M 个元素；写入 3MN &#43; 2M 个元素 return ret 什么是&#34;Softmax&#34;？ 在大模型开发中，softmax是一个非常重要的算法。它的作用是把绝对的分数转化为相对概率。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-10T08:33:43+08:00">
+    <meta property="article:modified_time" content="2025-12-10T08:33:43+08:00">
+    <meta property="article:tag" content="Triton">
+    <meta property="article:tag" content="Ascend">
+    <meta property="article:tag" content="学习日志">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Torch">
+    <meta property="article:tag" content="推理加速">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Triton自学日志 02FusedSoftmax">
+  <meta name="twitter:description" content="融合 Softmax （Fused Softmax） 在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。 在此过程中，你会学习到：
+内核融合对于带宽受限操作的优势。 Triton 中缩减操作。 使用原生 PyTorch 对 X 逐行进行 Softmax 计算 import torch import torch_npu import triton import triton.language as tl def naive_softmax(x): &#34;&#34;&#34; 我们减去最大元素以避免溢出。Softmax 对于这种偏移是不变的。 &#34;&#34;&#34; # 读取 MN 个元素；写入 M 个元素 x_max = x.max(dim=1)[0] # 读取 MN &#43; M 个元素；写入 MN 个元素 z = x - x_max[:, None] # 读取 MN 个元素；写入 MN 个元素 numerator = torch.exp(z) # 读取 MN 个元素；写入 M 个元素 denominator = numerator.sum(dim=1) # 读取 MN &#43; M 个元素；写入 MN 个元素 ret = numerator / denominator[:, None] # 总计：读取 5MN &#43; 2M 个元素；写入 3MN &#43; 2M 个元素 return ret 什么是&#34;Softmax&#34;？ 在大模型开发中，softmax是一个非常重要的算法。它的作用是把绝对的分数转化为相对概率。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Triton自学日志 02FusedSoftmax",
+    "name": "Triton自学日志 02FusedSoftmax",
+    "description": "融合 Softmax （Fused Softmax） 在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。 在此过程中，你会学习到：\n内核融合对于带宽受限操作的优势。 Triton 中缩减操作。 使用原生 PyTorch 对 X 逐行进行 Softmax 计算 import torch import torch_npu import triton import triton.language as tl def naive_softmax(x): \u0026#34;\u0026#34;\u0026#34; 我们减去最大元素以避免溢出。Softmax 对于这种偏移是不变的。 \u0026#34;\u0026#34;\u0026#34; # 读取 MN 个元素；写入 M 个元素 x_max = x.max(dim=1)[0] # 读取 MN + M 个元素；写入 MN 个元素 z = x - x_max[:, None] # 读取 MN 个元素；写入 MN 个元素 numerator = torch.exp(z) # 读取 MN 个元素；写入 M 个元素 denominator = numerator.sum(dim=1) # 读取 MN + M 个元素；写入 MN 个元素 ret = numerator / denominator[:, None] # 总计：读取 5MN + 2M 个元素；写入 3MN + 2M 个元素 return ret 什么是\u0026quot;Softmax\u0026quot;？ 在大模型开发中，softmax是一个非常重要的算法。它的作用是把绝对的分数转化为相对概率。\n",
+    "keywords": ["Triton", "Ascend", "学习日志", "Python", "Torch", "推理加速"],
+    "articleBody": "融合 Softmax （Fused Softmax） 在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。 在此过程中，你会学习到：\n内核融合对于带宽受限操作的优势。 Triton 中缩减操作。 使用原生 PyTorch 对 X 逐行进行 Softmax 计算 import torch import torch_npu import triton import triton.language as tl def naive_softmax(x): \"\"\" 我们减去最大元素以避免溢出。Softmax 对于这种偏移是不变的。 \"\"\" # 读取 MN 个元素；写入 M 个元素 x_max = x.max(dim=1)[0] # 读取 MN + M 个元素；写入 MN 个元素 z = x - x_max[:, None] # 读取 MN 个元素；写入 MN 个元素 numerator = torch.exp(z) # 读取 MN 个元素；写入 M 个元素 denominator = numerator.sum(dim=1) # 读取 MN + M 个元素；写入 MN 个元素 ret = numerator / denominator[:, None] # 总计：读取 5MN + 2M 个元素；写入 3MN + 2M 个元素 return ret 什么是\"Softmax\"？ 在大模型开发中，softmax是一个非常重要的算法。它的作用是把绝对的分数转化为相对概率。\n举个简单的例子，假如某段对话中，大模型对下一个应该吐出的字，心里经过计算得到应该为猫、狗、猪，分数分别为10分，5分，20分。大模型需要在这三个字之间摇骰子选出一个。这时候我们就需要将分数转化为对应的概率。\n将分数转化为概率的方法可以有很多种，在这里我们所采用的方式是：以每个元素分数的指数为权重决定最后概率。我们先求得每个元素的e指数，之后对e指数求和，然后计算每个元素e指数与总和的比值，最后得到概率。通过e指数，我们可以拉大差距，让最高分者有更大的可能成为答案，同时保留其他元素出现的可能。x-x_max的作用是防止e指数算出来结果过大导致溢出。根据数学推导，可以得知这里采用x和x-x_max计算得到的概率是相同的。\n内核融合的目的 当在 PyTorch 中以原生方式实现时，计算y=naive_softmax(x)需要从 DRAM 中读取 5MN+2M 个元素，并写回 3MN+2M 个元素。显然这是非常低效的；我们更希望使用一个自定义的“融合”内核，它只需读取一次 X，并在芯片上完成所有必要的计算。 这样一来只需读取和写回 2MN 个字节，因此我们可以期望理论上的加速比大约为 4 倍（即 (8MN+4M)/2MN）。\ntorch.jit.script旨在自动执行这种“内核融合”，但它仍然远未达到理想状态。\nDRAM 显存。在triton算子开发的语境下，内存有着严密的层级关系。不同层级的内存有着不同的功能。其中DRAM即显存的地位类似总仓库，通常有几十个G，但是庞大的存储空间对应的代价是极慢的读写速度。torch原生语句出于通用性考虑，每次读写都以DRAM为对象，但是在一些复杂的操作中就会使得出现过多理论上不必要的读写操作。triton算子提高性能的本质也就是将对DRAM的读写操作压缩到最少。\n除了DRAM，triton算子开发中还有一个相当重要的概念就是SRAM，即共享内存。这就是triton语句中默认的读写位置。triton编译器会帮你自动管理这个层级的内存，而这个层级的特点就是虽然空间很小，但是读写速度很快。\n在我们的triton算子开发过程中，我们通过tl.load来从DRAM中拉取数据，并通过tl.store来将数据写入DRAM。其余的变量操作本质都是在SRAM和寄存器中操作。\n计算内核 softmax 内核工作原理如下：每个计算单元（program）以程序数量为跨度加载输入矩阵X的一组行数据，执行归一化处理后，将结果写入输出矩阵Y。 注意：Triton 的一个重要限制是每个块必须具有 2 的幂次数的元素，因此，如果我们要处理任意可能的输入形状，需要在内部「填充」每一行，并适当保护内存操作。\n@triton.jit def softmax_kernel(output_ptr, input_ptr, input_row_stride, output_row_stride, n_rows, n_cols, BLOCK_SIZE: tl.constexpr): # 程序起始行 row_start = tl.program_id(0) row_step = tl.num_programs(0) for row_idx in tl.range(row_start, n_rows, row_step): # 步长表示我们需要对指针增加多少以推进 1 行 row_start_ptr = input_ptr + row_idx * input_row_stride # 块大小是大于 n_cols 的下一个二的幂，因此我们可以适配 # 单个块中的行 col_offsets = tl.arange(0, BLOCK_SIZE) input_ptrs = row_start_ptr + col_offsets # 将行加载到 SRAM 中，使用掩码，因为 BLOCK_SIZE 可能大于 n_cols mask = col_offsets \u003c n_cols row = tl.load(input_ptrs, mask=mask, other=-float('inf')) # 为了数值稳定性而减去最大值 row_minus_max = row - tl.max(row, axis=0) # 请注意，Triton 中的指数运算速度很快，但是是近似的。 numerator = tl.exp(row_minus_max) denominator = tl.sum(numerator, axis=0) softmax_output = numerator / denominator # 将输出写回 DRAM output_row_start_ptr = output_ptr + row_idx * output_row_stride output_ptrs = output_row_start_ptr + col_offsets tl.store(output_ptrs, softmax_output, mask=mask) 这段代码做了什么事情？ 我们在前文中谈到了融合算子提高性能的手段是只读取一次DRAM的数据，中间的计算过程全部放在SRAM中进行。但是对于怎么实现的我们尚不得而知。这段代码就是“教科书级别”的Triton Fused Softmax实现方式。\n我们来分块解读这段代码：\n分配任务 row_start = tl.program_id(0) # 我是第几号工人（PID） row_step = tl.num_programs(0) # 总共有多少个工人（Grid Size） for row_idx in tl.range(row_start, n_rows, row_step): tl.program_id(0)表示的就是当前核心被分配到的目标程序id，tl.num_programs(0)则是总共的程序数。让行步长设置为程序数，目的就是让遍历所有行的时候不同程序进程不会相互冲突。随后使用for循环遍历所有的从row_start到n_rows之间步长为row_step的行。\n比如，假如有1000行数据，但是总共只有n个工人，第i个工人就应该去处理第n * k + i个数据，这样不同工人之间处理的数据才不会相互重叠。\n获取数据 # 算出这一行在内存里的起始地址 row_start_ptr = input_ptr + row_idx * input_row_stride # 制造一个 [0, 1, ..., BLOCK_SIZE-1] 的索引条 col_offsets = tl.arange(0, BLOCK_SIZE) # 算出这一行每个元素具体的内存地址 input_ptrs = row_start_ptr + col_offsets # 制作掩码：只保留真实数据长度以内的部分 mask = col_offsets \u003c n_cols # 【关键动作】从 HBM 加载到 SRAM # other=-inf 是为了防止填充部分的 0 干扰求 Max（如果是 0 可能会变成最大值） row = tl.load(input_ptrs, mask=mask, other=-float('inf')) 前面三行代码的作用就是直接生成一个可以覆盖整个行的内存地址向量。虽然我们感觉要处理的数据似乎是呈二维排布的，但是在内存中的真实情况是所有信息都是线性排布的。因此，我们可以直接将每一行的起始地址加上偏移量向量得到这一行每个元素的地址组成的向量。\n在这行代码中，input_row_stride本质上就代表了你一行元素的个数。\n但是这时，有一个很关键的问题就是，BLOCK_SIZE的大小只能是2的整数次幂。为了能让核心一个任务就能处理一行数据，并且过程中不存在内存越界的情况，我们引入“掩码”的概念。将mask赋值为一个布尔向量，对应位置在我们目标范围内的元素为true，反之为false。这样，根据mask再调用tl.load函数我们就可以得到这一整行的数据。\n计算数据 # 1. 找最大值 (只读 SRAM) row_minus_max = row - tl.max(row, axis=0) # 2. 算指数 (只读 SRAM) numerator = tl.exp(row_minus_max) # 3. 求和 (只读 SRAM) denominator = tl.sum(numerator, axis=0) # 4. 算除法 (只读 SRAM) softmax_output = numerator / denominator 这里大量使用了数据科学库常见的广播机制，最后实现的效果和pytorch中的原生代码效果一致，只不过计算过程发生在SRAM当中。\n写入数据 # 算出输出的内存地址 output_row_start_ptr = output_ptr + row_idx * output_row_stride output_ptrs = output_row_start_ptr + col_offsets # 【关键动作】从 SRAM 写回 HBM tl.store(output_ptrs, softmax_output, mask=mask) 直到最后一步再把数据写入DRAM当中。完成整个kernel运算。\n辅助函数 我们可以创建一个辅助函数，该函数能够将核函数及其元参数加入执行队列，以处理任意给定的输入张量。\ntarget = triton.runtime.driver.active.get_current_target() kernels = {} def softmax(x, stream): n_rows, n_cols = x.shape # 每次循环迭代的块大小是大于或等于`x`列数的最小二的幂 BLOCK_SIZE = triton.next_power_of_2(n_cols) # 分配输出空间 y = torch.empty_like(x) # 预编译内核以获取寄存器使用情况并计算线程占用情况。 kernel, num_programs = kernels.get(BLOCK_SIZE, (None, 0)) if kernel is None: num_programs = 32 kernel = softmax_kernel kernels[BLOCK_SIZE] = (kernel, num_programs) num_programs = min(num_programs, n_rows) kernel[(num_programs, 1, 1)]( y, x, x.stride(0), y.stride(0), n_rows, n_cols, BLOCK_SIZE ) return y 这段代码有几个相对不太容易理解的机制。下面我来一一解答。\nQ1：函数外的target、kernels的作用是什么？ kernels = {}注意这种写法在python中代表着创建一个字典。它不是什么triton中特有的语法。在本代码中，kernels字典的key为BLOCK_SIZE，即任务块的大小，而值则为一个存储了kernel函数和启动程序数的元组，代表一种启动程序的方式。\n每次我们运行带有@triton.jit装饰的函数时，triton都需要依据输入的参数做一系列初始化的工作。多数时候，softmax函数是一个相对常用的函数，假如每次调用这个函数都必须要重新初始化就会导致不必要的性能浪费。所以我们通过memo字典的方式存储记录的方式实现性能优化。\ntarget的意义是获取当前设备的硬件信息。在本代码片段中没有被用到。\nQ2：kernel.get是做什么的？ 查表。在之前的softmax使用过程中，我们很可能已经处理了相同的BLOCK_SIZE场景。这里因为返回的是元组，所以直接赋值两个变量自动解包。如果存储的kernels中没有所需的记录，后面我们就会为之创建一套解决方案。\nQ3：看起来kernel只可能为softmax_kernel，这样的话为什么还要多存储一个kernel在memo中呢？ 因为softmax_kernel之间也有区别。区别就在于，假如我们为softmax_kernel添加一个@triton_autotune（）装饰器，我们调用的kernel函数就会依据情况不同而发生变化，而转化为针对对应参数时的最优BLOCK_SIZE配置版kernel。\n通过memo字典，我们直接捕捉这些发生变化的kernel函数，使得遇到相同BLOCK_SIZE时我们无需再次把性能用在自动调优上，进一步实现优化。\nQ4：kernel[…](…)是什么写法？ 这是一个非常神奇的写法。\n在kernel[…]的方括号当中写入的是一个元组，其中包含至多三个元素。写成方括号的形式看起来像是在查字典，但是实际上做的事情也确实类似。launcher = kernel[(100,1,1)]最后会得到一个配置好的启动器对象。kernel对象的__getitem__方法在triton中被覆写了，让你可以通过这种方式得到一个自定义形状的启动模式。在这里，我们得到了一个一维的由100个程序或进程组成的启动方法。如果你想只写入一个参数，记得python中的一元元组要求必须在元素后加一个逗号，即(x,)。\n还记得pid = tl.program_id(0)吗？这里之所以需要一个参数0，本质上就是因为程序进程的排布方式是三维的。输入0就意味着返回当前程序的第一维坐标。由于我们使用的启动方式就是一维的，只读取第一维坐标就足够区分不同的程序进程了。\n之所以程序启动会是一个立体的三维概念，根本上并不是因为显卡中核心是这么排布的，而是方便人类去适配不同的数据结构。比如如果你要处理图像，你可能针对每一个像素点都要开一个程序，这时使用二维方式启动程序并用横纵坐标来标记程序就可以为写代码带来方便。同时，这也会间接带来性能上的优化。\n在01_vector_add中，我们在这个方括号中传入了一个lambda函数。这个lambda函数传入的参数就是kernel函数的参数字典。我们可以通过那种方式来动态决定启动程序数，但是在这里，我们本质上使用了memo记忆化搜索的方式来进一步优化性能，使得相同的情景我们无需再将性能用在动态决定启动程序数上。\n单元测试 需要在一个具有不规则行和列数的矩阵上测试处理好的内核，此举可以验证Padding机制是否起作用\ndevice = torch.npu.current_device() stream = torch.npu.current_stream(device).npu_stream torch.manual_seed(0) x = torch.randn(1823, 781, device='npu') y_triton = softmax(x, stream) y_torch = torch.softmax(x, axis=1) assert torch.allclose(y_triton, y_torch), (y_triton, y_torch) print(y_triton) print(y_torch) print(f'The maximum difference between torch and triton is ' f'{torch.max(torch.abs(y_triton-y_torch))}') 我们上文中编写的帮助函数实际作用是对目标的二维张量的每一行进行softmax计算。在这个例子中，我们生成了一个由随机数构成的张量x，随后分别使用torch原生方法和triton融合算子来对它进行softmax计算，最后测量两结果之间的最大差异。\n理论上来说，我们的triton算子和torch原生算子的数学过程是等价的。之所以会出现微小误差实际上是过程中的计算步骤的底层实现方法导致了一些浮点数精度误差。\nOut:\ntensor([[0.0002, 0.0017, 0.0009, ..., 0.0009, 0.0013, 0.0073], [0.0001, 0.0004, 0.0006, ..., 0.0006, 0.0004, 0.0003], [0.0007, 0.0002, 0.0006, ..., 0.0011, 0.0004, 0.0039], ..., [0.0021, 0.0002, 0.0015, ..., 0.0012, 0.0014, 0.0022], [0.0003, 0.0002, 0.0007, ..., 0.0005, 0.0006, 0.0007], [0.0034, 0.0014, 0.0005, ..., 0.0007, 0.0016, 0.0028]], device='npu:0') tensor([[0.0002, 0.0017, 0.0009, ..., 0.0009, 0.0013, 0.0073], [0.0001, 0.0004, 0.0006, ..., 0.0006, 0.0004, 0.0003], [0.0007, 0.0002, 0.0006, ..., 0.0011, 0.0004, 0.0039], ..., [0.0021, 0.0002, 0.0015, ..., 0.0012, 0.0014, 0.0022], [0.0003, 0.0002, 0.0007, ..., 0.0005, 0.0006, 0.0007], [0.0034, 0.0014, 0.0005, ..., 0.0007, 0.0016, 0.0028]], device='npu:0') The maximum difference between torch and triton is 1.4901161193847656e-08 “The maximum difference between torch and triton is 1.4901161193847656e-08” 表示Triton和PyTorch的输出结果非常接近，肉眼不可区分。\n测试性能 为了对比triton融合算子和torch原生方法的性能，我们再次采用benchmark方法来测量不同数据量下两种算法的带宽吞吐量。顺便的，我们还可以看看torch原生的softmax方法的性能如何。\n\"\"\" Fused Softmax ============= \"\"\" import torch import torch_npu import triton import triton.language as tl from triton.runtime import driver def naive_softmax(x): \"\"\"Compute row-wise softmax of X using native pytorch We subtract the maximum element in order to avoid overflows. Softmax is invariant to this shift. \"\"\" # read MN elements ; write M elements x_max = x.max(dim=1)[0] # read MN + M elements ; write MN elements z = x - x_max[:, None] # read MN elements ; write MN elements numerator = torch.exp(z) # read MN elements ; write M elements denominator = numerator.sum(dim=1) # read MN + M elements ; write MN elements ret = numerator / denominator[:, None] # in total: read 5MN + 2M elements ; wrote 3MN + 2M elements return ret @triton.jit def softmax_kernel( output_ptr, input_ptr, input_row_stride, output_row_stride, n_rows, n_cols, BLOCK_SIZE: tl.constexpr, ): # starting row of the program row_start = tl.program_id(0) row_step = tl.num_programs(0) for row_idx in tl.range(row_start, n_rows, row_step): # The stride represents how much we need to increase the pointer to advance 1 row row_start_ptr = input_ptr + row_idx * input_row_stride # The block size is the next power of two greater than n_cols, so we can fit each # row in a single block col_offsets = tl.arange(0, BLOCK_SIZE) input_ptrs = row_start_ptr + col_offsets # Load the row into SRAM, using a mask since BLOCK_SIZE may be \u003e than n_cols mask = col_offsets \u003c n_cols row = tl.load(input_ptrs, mask=mask, other=-float(\"inf\")) # Subtract maximum for numerical stability row_minus_max = row - tl.max(row, axis=0) numerator = tl.exp(row_minus_max) denominator = tl.sum(numerator, axis=0) softmax_output = numerator / denominator # Write back output to DRAM output_row_start_ptr = output_ptr + row_idx * output_row_stride output_ptrs = output_row_start_ptr + col_offsets tl.store(output_ptrs, softmax_output, mask=mask) target = triton.runtime.driver.active.get_current_target() kernels = {} def softmax(x, stream): n_rows, n_cols = x.shape # The block size of each loop iteration is the smallest power of two greater than the number of columns in `x` BLOCK_SIZE = triton.next_power_of_2(n_cols) # Allocate output y = torch.empty_like(x) # pre-compile kernel to get register usage and compute thread occupancy. kernel, num_programs = kernels.get(BLOCK_SIZE, (None, 0)) if kernel is None: num_programs = 32 kernel = softmax_kernel kernels[BLOCK_SIZE] = (kernel, num_programs) num_programs = min(num_programs, n_rows) # Create a number of persistent programs. kernel[(num_programs, 1, 1)]( y, x, x.stride(0), y.stride(0), n_rows, n_cols, BLOCK_SIZE ) return y device = torch.npu.current_device() stream = torch.npu.current_stream(device).npu_stream @triton.testing.perf_report( triton.testing.Benchmark( x_names=[\"N\"], # 用作图表 X 轴的参数名 x_vals=[128 * i for i in range(1, 100)], # X 轴的具体数值 line_arg=\"provider\", # 用作对比不同曲线的参数名 line_vals=[\"triton\", \"torch-native\", \"torch-naive\"], # 只有这三个值 line_names=[\"Triton\", \"Torch (Native)\", \"Torch (Naive)\"], # 图例显示的名字 styles=[(\"blue\", \"-\"), (\"green\", \"-\"), (\"red\", \"--\")], # 曲线颜色和线型 ylabel=\"GB/s\", # Y 轴单位：显存吞吐量 (越高越好) plot_name=\"softmax-performance\", args={\"M\": 4096}, # 固定 Batch Size 为 4096 ) ) def benchmark(M, N, provider): # 初始化数据 (FP16 或者是 FP32) x = torch.randn(M, N, device=\"npu\", dtype=torch.float32) # 使用 Quantile 计算分位数，避免偶尔的抖动 quantiles = [0.5, 0.2, 0.8] if provider == \"torch-native\": # 这里的 torch.softmax 是 C++ 深度优化的库函数 (cuDNN/CANN) ms, min_ms, max_ms = triton.testing.do_bench( lambda: torch.softmax(x, axis=-1), quantiles=quantiles ) if provider == \"triton\": ms, min_ms, max_ms = triton.testing.do_bench( lambda: softmax(x, stream), quantiles=quantiles ) if provider == \"torch-naive\": # 这是一个反面教材，速度极慢 ms, min_ms, max_ms = triton.testing.do_bench( lambda: naive_softmax(x), quantiles=quantiles ) # 计算吞吐量 GB/s # 公式：(读取量 + 写入量) / 时间 gbps = lambda ms: 2 * x.numel() * x.element_size() * 1e-9 / (ms * 1e-3) return gbps(ms), gbps(max_ms), gbps(min_ms) # 运行测试 if __name__ == \"__main__\": # 检查是否有 GPU/NPU if torch.npu.is_available(): benchmark.run(print_data=True, show_plots=True, save_path=\".\") else: print(\"未检测到 GPU/NPU，无法运行 Triton 测试。\") 运行这段代码，我得到了如下图的性能对比图表：\n从图中可以看出,我们的triton融合算子和torch.softmax在数据量较大的情况下性能基本一致，而使用torch原生方法分步计算的torch-naive则性能表现一般。\n",
+    "wordCount" : "1199",
+    "inLanguage": "zh-cn",
+    "datePublished": "2025-12-10T08:33:43+08:00",
+    "dateModified": "2025-12-10T08:33:43+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>Triton自学日志 02FusedSoftmax</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Dec 10, 2025</span></div>
+				<h1>Triton自学日志 02FusedSoftmax</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg>Moonhalf</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/triton">Triton</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/ascend">Ascend</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97">学习日志</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/python">Python</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/torch">Torch</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F">推理加速</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>1199&nbsp  次阅读(还是阅读时间？有点搞不懂)5 Minutes, 27 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2025-12-10 08:33 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h1 id="融合-softmax-fused-softmax">融合 Softmax （Fused Softmax）<a href="#%e8%9e%8d%e5%90%88-softmax-fused-softmax" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。
+在此过程中，你会学习到：</p>
+<ul>
+<li>内核融合对于带宽受限操作的优势。</li>
+<li>Triton 中缩减操作。</li>
+</ul>
+<h2 id="使用原生-pytorch-对-x-逐行进行-softmax-计算">使用原生 PyTorch 对 X 逐行进行 Softmax 计算<a href="#%e4%bd%bf%e7%94%a8%e5%8e%9f%e7%94%9f-pytorch-%e5%af%b9-x-%e9%80%90%e8%a1%8c%e8%bf%9b%e8%a1%8c-softmax-%e8%ae%a1%e7%ae%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch_npu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton.language <span style="color:#66d9ef">as</span> tl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">naive_softmax</span>(x):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    我们减去最大元素以避免溢出。Softmax 对于这种偏移是不变的。
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 读取 MN 个元素；写入 M 个元素</span>
+</span></span><span style="display:flex;"><span>    x_max <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>max(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 读取 MN + M 个元素；写入 MN 个元素</span>
+</span></span><span style="display:flex;"><span>    z <span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> x_max[:, <span style="color:#66d9ef">None</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 读取 MN 个元素；写入 MN 个元素</span>
+</span></span><span style="display:flex;"><span>    numerator <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(z)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 读取 MN 个元素；写入 M 个元素</span>
+</span></span><span style="display:flex;"><span>    denominator <span style="color:#f92672">=</span> numerator<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 读取 MN + M 个元素；写入 MN 个元素</span>
+</span></span><span style="display:flex;"><span>    ret <span style="color:#f92672">=</span> numerator <span style="color:#f92672">/</span> denominator[:, <span style="color:#66d9ef">None</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 总计：读取 5MN + 2M 个元素；写入 3MN + 2M 个元素</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ret
+</span></span></code></pre></div><h3 id="什么是softmax">什么是&quot;Softmax&quot;？<a href="#%e4%bb%80%e4%b9%88%e6%98%afsoftmax" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>在大模型开发中，softmax是一个非常重要的算法。它的作用是把绝对的分数转化为相对概率。</p>
+<p>举个简单的例子，假如某段对话中，大模型对下一个应该吐出的字，心里经过计算得到应该为<code>猫</code>、<code>狗</code>、<code>猪</code>，分数分别为10分，5分，20分。大模型需要在这三个字之间摇骰子选出一个。这时候我们就需要将分数转化为对应的概率。</p>
+<p>将分数转化为概率的方法可以有很多种，在这里我们所采用的方式是：以每个元素分数的指数为权重决定最后概率。我们先求得每个元素的e指数，之后对e指数求和，然后计算每个元素e指数与总和的比值，最后得到概率。通过e指数，我们可以拉大差距，让最高分者有更大的可能成为答案，同时保留其他元素出现的可能。x-x_max的作用是防止e指数算出来结果过大导致溢出。根据数学推导，可以得知这里采用x和x-x_max计算得到的概率是相同的。</p>
+<hr>
+<h3 id="内核融合的目的">内核融合的目的<a href="#%e5%86%85%e6%a0%b8%e8%9e%8d%e5%90%88%e7%9a%84%e7%9b%ae%e7%9a%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>当在 PyTorch 中以原生方式实现时，计算<code>y=naive_softmax(x)</code>需要从 DRAM 中读取 5MN+2M 个元素，并写回 3MN+2M 个元素。显然这是非常低效的；我们更希望使用一个自定义的“融合”内核，它只需读取一次 X，并在芯片上完成所有必要的计算。
+这样一来只需读取和写回 2MN 个字节，因此我们可以期望理论上的加速比大约为 4 倍（即 (8MN+4M)/2MN）。</p>
+<p><code>torch.jit.script</code>旨在自动执行这种“内核融合”，但它仍然远未达到理想状态。</p>
+<h4 id="dram">DRAM<a href="#dram" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>显存。在triton算子开发的语境下，内存有着严密的<strong>层级</strong>关系。不同层级的内存有着不同的功能。其中DRAM即显存的地位类似总仓库，通常有几十个G，但是庞大的存储空间对应的代价是极慢的读写速度。torch原生语句出于通用性考虑，每次读写都以DRAM为对象，但是在一些复杂的操作中就会使得出现过多理论上不必要的读写操作。triton算子提高性能的本质也就是将对DRAM的读写操作压缩到最少。</p>
+<p>除了DRAM，triton算子开发中还有一个相当重要的概念就是SRAM，即共享内存。这就是triton语句中默认的读写位置。triton编译器会帮你自动管理这个层级的内存，而这个层级的特点就是虽然空间很小，但是读写速度很快。</p>
+<p>在我们的triton算子开发过程中，我们通过<code>tl.load</code>来从DRAM中拉取数据，并通过<code>tl.store</code>来将数据写入DRAM。其余的变量操作本质都是在SRAM和寄存器中操作。</p>
+<hr>
+<h2 id="计算内核">计算内核<a href="#%e8%ae%a1%e7%ae%97%e5%86%85%e6%a0%b8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>softmax 内核工作原理如下：每个计算单元（program）以程序数量为跨度加载输入矩阵X的一组行数据，执行归一化处理后，将结果写入输出矩阵Y。
+注意：Triton 的一个重要限制是每个块必须具有 2 的幂次数的元素，因此，如果我们要处理任意可能的输入形状，需要在内部「填充」每一行，并适当保护内存操作。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#a6e22e">@triton.jit</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax_kernel</span>(output_ptr, input_ptr, input_row_stride, output_row_stride, n_rows, n_cols, BLOCK_SIZE: tl<span style="color:#f92672">.</span>constexpr):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 程序起始行</span>
+</span></span><span style="display:flex;"><span>    row_start <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    row_step <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>num_programs(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> row_idx <span style="color:#f92672">in</span> tl<span style="color:#f92672">.</span>range(row_start, n_rows, row_step):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 步长表示我们需要对指针增加多少以推进 1 行</span>
+</span></span><span style="display:flex;"><span>        row_start_ptr <span style="color:#f92672">=</span> input_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> input_row_stride
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 块大小是大于 n_cols 的下一个二的幂，因此我们可以适配</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 单个块中的行</span>
+</span></span><span style="display:flex;"><span>        col_offsets <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, BLOCK_SIZE)
+</span></span><span style="display:flex;"><span>        input_ptrs <span style="color:#f92672">=</span> row_start_ptr <span style="color:#f92672">+</span> col_offsets
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 将行加载到 SRAM 中，使用掩码，因为 BLOCK_SIZE 可能大于 n_cols</span>
+</span></span><span style="display:flex;"><span>        mask <span style="color:#f92672">=</span> col_offsets <span style="color:#f92672">&lt;</span> n_cols
+</span></span><span style="display:flex;"><span>        row <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(input_ptrs, mask<span style="color:#f92672">=</span>mask, other<span style="color:#f92672">=-</span>float(<span style="color:#e6db74">&#39;inf&#39;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 为了数值稳定性而减去最大值</span>
+</span></span><span style="display:flex;"><span>        row_minus_max <span style="color:#f92672">=</span> row <span style="color:#f92672">-</span> tl<span style="color:#f92672">.</span>max(row, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 请注意，Triton 中的指数运算速度很快，但是是近似的。</span>
+</span></span><span style="display:flex;"><span>        numerator <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>exp(row_minus_max)
+</span></span><span style="display:flex;"><span>        denominator <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>sum(numerator, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        softmax_output <span style="color:#f92672">=</span> numerator <span style="color:#f92672">/</span> denominator
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 将输出写回 DRAM</span>
+</span></span><span style="display:flex;"><span>        output_row_start_ptr <span style="color:#f92672">=</span> output_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> output_row_stride
+</span></span><span style="display:flex;"><span>        output_ptrs <span style="color:#f92672">=</span> output_row_start_ptr <span style="color:#f92672">+</span> col_offsets
+</span></span><span style="display:flex;"><span>        tl<span style="color:#f92672">.</span>store(output_ptrs, softmax_output, mask<span style="color:#f92672">=</span>mask)
+</span></span></code></pre></div><h3 id="这段代码做了什么事情">这段代码做了什么事情？<a href="#%e8%bf%99%e6%ae%b5%e4%bb%a3%e7%a0%81%e5%81%9a%e4%ba%86%e4%bb%80%e4%b9%88%e4%ba%8b%e6%83%85" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>我们在前文中谈到了融合算子提高性能的手段是只读取一次DRAM的数据，中间的计算过程全部放在SRAM中进行。但是对于怎么实现的我们尚不得而知。这段代码就是“教科书级别”的Triton Fused Softmax实现方式。</p>
+<p>我们来分块解读这段代码：</p>
+<hr>
+<h4 id="分配任务">分配任务<a href="#%e5%88%86%e9%85%8d%e4%bb%bb%e5%8a%a1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>row_start <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(<span style="color:#ae81ff">0</span>)      <span style="color:#75715e"># 我是第几号工人（PID）</span>
+</span></span><span style="display:flex;"><span>row_step <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>num_programs(<span style="color:#ae81ff">0</span>)     <span style="color:#75715e"># 总共有多少个工人（Grid Size）</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> row_idx <span style="color:#f92672">in</span> tl<span style="color:#f92672">.</span>range(row_start, n_rows, row_step):
+</span></span></code></pre></div><p><code>tl.program_id(0)</code>表示的就是当前核心被分配到的目标程序id，<code>tl.num_programs(0)</code>则是总共的程序数。让行步长设置为程序数，目的就是让遍历所有行的时候不同程序进程不会相互冲突。随后使用for循环遍历所有的从<code>row_start</code>到<code>n_rows</code>之间步长为<code>row_step</code>的行。</p>
+<p>比如，假如有1000行数据，但是总共只有n个工人，第i个工人就应该去处理第<code>n * k + i</code>个数据，这样不同工人之间处理的数据才不会相互重叠。</p>
+<hr>
+<h4 id="获取数据">获取数据<a href="#%e8%8e%b7%e5%8f%96%e6%95%b0%e6%8d%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 算出这一行在内存里的起始地址</span>
+</span></span><span style="display:flex;"><span>row_start_ptr <span style="color:#f92672">=</span> input_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> input_row_stride
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 制造一个 [0, 1, ..., BLOCK_SIZE-1] 的索引条</span>
+</span></span><span style="display:flex;"><span>col_offsets <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, BLOCK_SIZE)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 算出这一行每个元素具体的内存地址</span>
+</span></span><span style="display:flex;"><span>input_ptrs <span style="color:#f92672">=</span> row_start_ptr <span style="color:#f92672">+</span> col_offsets
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 制作掩码：只保留真实数据长度以内的部分</span>
+</span></span><span style="display:flex;"><span>mask <span style="color:#f92672">=</span> col_offsets <span style="color:#f92672">&lt;</span> n_cols
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 【关键动作】从 HBM 加载到 SRAM</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># other=-inf 是为了防止填充部分的 0 干扰求 Max（如果是 0 可能会变成最大值）</span>
+</span></span><span style="display:flex;"><span>row <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(input_ptrs, mask<span style="color:#f92672">=</span>mask, other<span style="color:#f92672">=-</span>float(<span style="color:#e6db74">&#39;inf&#39;</span>))
+</span></span></code></pre></div><p>前面三行代码的作用就是直接生成一个可以覆盖整个行的内存地址向量。虽然我们感觉要处理的数据似乎是呈二维排布的，但是在内存中的真实情况是所有信息都是线性排布的。因此，我们可以直接将每一行的起始地址加上偏移量向量得到这一行每个元素的地址组成的向量。</p>
+<p>在这行代码中，<code>input_row_stride</code>本质上就代表了你一行元素的个数。</p>
+<p>但是这时，有一个很关键的问题就是，BLOCK_SIZE的大小只能是2的整数次幂。为了能让核心一个任务就能处理一行数据，并且过程中不存在内存越界的情况，我们引入“掩码”的概念。将<code>mask</code>赋值为一个布尔向量，对应位置在我们目标范围内的元素为true，反之为false。这样，根据mask再调用tl.load函数我们就可以得到这一整行的数据。</p>
+<hr>
+<h3 id="计算数据">计算数据<a href="#%e8%ae%a1%e7%ae%97%e6%95%b0%e6%8d%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 找最大值 (只读 SRAM)</span>
+</span></span><span style="display:flex;"><span>row_minus_max <span style="color:#f92672">=</span> row <span style="color:#f92672">-</span> tl<span style="color:#f92672">.</span>max(row, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 算指数 (只读 SRAM)</span>
+</span></span><span style="display:flex;"><span>numerator <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>exp(row_minus_max)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 求和 (只读 SRAM)</span>
+</span></span><span style="display:flex;"><span>denominator <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>sum(numerator, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 算除法 (只读 SRAM)</span>
+</span></span><span style="display:flex;"><span>softmax_output <span style="color:#f92672">=</span> numerator <span style="color:#f92672">/</span> denominator
+</span></span></code></pre></div><p>这里大量使用了数据科学库常见的广播机制，最后实现的效果和pytorch中的原生代码效果一致，只不过计算过程发生在SRAM当中。</p>
+<hr>
+<h3 id="写入数据">写入数据<a href="#%e5%86%99%e5%85%a5%e6%95%b0%e6%8d%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 算出输出的内存地址</span>
+</span></span><span style="display:flex;"><span>output_row_start_ptr <span style="color:#f92672">=</span> output_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> output_row_stride
+</span></span><span style="display:flex;"><span>output_ptrs <span style="color:#f92672">=</span> output_row_start_ptr <span style="color:#f92672">+</span> col_offsets
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 【关键动作】从 SRAM 写回 HBM</span>
+</span></span><span style="display:flex;"><span>tl<span style="color:#f92672">.</span>store(output_ptrs, softmax_output, mask<span style="color:#f92672">=</span>mask)
+</span></span></code></pre></div><p>直到最后一步再把数据写入DRAM当中。完成整个kernel运算。</p>
+<hr>
+<h1 id="辅助函数">辅助函数<a href="#%e8%be%85%e5%8a%a9%e5%87%bd%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>我们可以创建一个辅助函数，该函数能够将核函数及其元参数加入执行队列，以处理任意给定的输入张量。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>target <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>runtime<span style="color:#f92672">.</span>driver<span style="color:#f92672">.</span>active<span style="color:#f92672">.</span>get_current_target()
+</span></span><span style="display:flex;"><span>kernels <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(x, stream):
+</span></span><span style="display:flex;"><span>    n_rows, n_cols <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>shape
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 每次循环迭代的块大小是大于或等于`x`列数的最小二的幂</span>
+</span></span><span style="display:flex;"><span>    BLOCK_SIZE <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>next_power_of_2(n_cols)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 分配输出空间</span>
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>empty_like(x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 预编译内核以获取寄存器使用情况并计算线程占用情况。</span>
+</span></span><span style="display:flex;"><span>    kernel, num_programs <span style="color:#f92672">=</span> kernels<span style="color:#f92672">.</span>get(BLOCK_SIZE, (<span style="color:#66d9ef">None</span>, <span style="color:#ae81ff">0</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> kernel <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        num_programs <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span>        kernel <span style="color:#f92672">=</span> softmax_kernel
+</span></span><span style="display:flex;"><span>        kernels[BLOCK_SIZE] <span style="color:#f92672">=</span> (kernel, num_programs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    num_programs <span style="color:#f92672">=</span> min(num_programs, n_rows)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    kernel[(num_programs, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)](
+</span></span><span style="display:flex;"><span>        y,
+</span></span><span style="display:flex;"><span>        x,
+</span></span><span style="display:flex;"><span>        x<span style="color:#f92672">.</span>stride(<span style="color:#ae81ff">0</span>),
+</span></span><span style="display:flex;"><span>        y<span style="color:#f92672">.</span>stride(<span style="color:#ae81ff">0</span>),
+</span></span><span style="display:flex;"><span>        n_rows,
+</span></span><span style="display:flex;"><span>        n_cols,
+</span></span><span style="display:flex;"><span>        BLOCK_SIZE
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> y
+</span></span></code></pre></div><p>这段代码有几个相对不太容易理解的机制。下面我来一一解答。</p>
+<h3 id="q1函数外的targetkernels的作用是什么">Q1：函数外的target、kernels的作用是什么？<a href="#q1%e5%87%bd%e6%95%b0%e5%a4%96%e7%9a%84targetkernels%e7%9a%84%e4%bd%9c%e7%94%a8%e6%98%af%e4%bb%80%e4%b9%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><code>kernels = {}</code>注意这种写法在python中代表着创建一个字典。它不是什么triton中特有的语法。在本代码中，kernels字典的key为BLOCK_SIZE，即任务块的大小，而值则为一个存储了kernel函数和启动程序数的元组，代表一种启动程序的方式。</p>
+<p>每次我们运行带有<code>@triton.jit</code>装饰的函数时，triton都需要依据输入的参数做一系列初始化的工作。多数时候，softmax函数是一个相对常用的函数，假如每次调用这个函数都必须要重新初始化就会导致不必要的性能浪费。所以我们通过memo字典的方式存储记录的方式实现性能优化。</p>
+<p><code>target</code>的意义是获取当前设备的硬件信息。在本代码片段中没有被用到。</p>
+<hr>
+<h3 id="q2kernelget是做什么的">Q2：kernel.get是做什么的？<a href="#q2kernelget%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>查表。在之前的softmax使用过程中，我们很可能已经处理了相同的BLOCK_SIZE场景。这里因为返回的是元组，所以直接赋值两个变量自动解包。如果存储的kernels中没有所需的记录，后面我们就会为之创建一套解决方案。</p>
+<hr>
+<h3 id="q3看起来kernel只可能为softmax_kernel这样的话为什么还要多存储一个kernel在memo中呢">Q3：看起来kernel只可能为softmax_kernel，这样的话为什么还要多存储一个kernel在memo中呢？<a href="#q3%e7%9c%8b%e8%b5%b7%e6%9d%a5kernel%e5%8f%aa%e5%8f%af%e8%83%bd%e4%b8%basoftmax_kernel%e8%bf%99%e6%a0%b7%e7%9a%84%e8%af%9d%e4%b8%ba%e4%bb%80%e4%b9%88%e8%bf%98%e8%a6%81%e5%a4%9a%e5%ad%98%e5%82%a8%e4%b8%80%e4%b8%aakernel%e5%9c%a8memo%e4%b8%ad%e5%91%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>因为softmax_kernel之间也有区别。区别就在于，假如我们为softmax_kernel添加一个<code>@triton_autotune（）</code>装饰器，我们调用的kernel函数就会依据情况不同而发生变化，而转化为针对对应参数时的最优BLOCK_SIZE配置版kernel。</p>
+<p>通过memo字典，我们直接捕捉这些发生变化的kernel函数，使得遇到相同BLOCK_SIZE时我们无需再次把性能用在自动调优上，进一步实现优化。</p>
+<hr>
+<h3 id="q4kernel是什么写法">Q4：kernel[&hellip;](&hellip;)是什么写法？<a href="#q4kernel%e6%98%af%e4%bb%80%e4%b9%88%e5%86%99%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>这是一个非常神奇的写法。</p>
+<p>在kernel[&hellip;]的方括号当中写入的是一个元组，其中包含至多三个元素。写成方括号的形式看起来像是在查字典，但是实际上做的事情也确实类似。<code>launcher = kernel[(100,1,1)]</code>最后会得到一个配置好的启动器对象。kernel对象的__getitem__方法在triton中被覆写了，让你可以通过这种方式得到一个自定义形状的启动模式。在这里，我们得到了一个一维的由100个程序或进程组成的启动方法。如果你想只写入一个参数，记得python中的一元元组要求必须在元素后加一个逗号，即<code>(x,)</code>。</p>
+<p>还记得<code>pid = tl.program_id(0)</code>吗？这里之所以需要一个参数0，本质上就是因为程序进程的排布方式是三维的。输入0就意味着返回当前程序的第一维坐标。由于我们使用的启动方式就是一维的，只读取第一维坐标就足够区分不同的程序进程了。</p>
+<p>之所以程序启动会是一个立体的三维概念，根本上并不是因为显卡中核心是这么排布的，而是方便人类去适配不同的数据结构。比如如果你要处理图像，你可能针对每一个像素点都要开一个程序，这时使用二维方式启动程序并用横纵坐标来标记程序就可以为写代码带来方便。同时，这也会间接带来性能上的优化。</p>
+<p>在01_vector_add中，我们在这个方括号中传入了一个lambda函数。这个lambda函数传入的参数就是kernel函数的参数字典。我们可以通过那种方式来动态决定启动程序数，但是在这里，我们本质上使用了memo记忆化搜索的方式来进一步优化性能，使得相同的情景我们无需再将性能用在动态决定启动程序数上。</p>
+<hr>
+<h2 id="单元测试">单元测试<a href="#%e5%8d%95%e5%85%83%e6%b5%8b%e8%af%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>需要在一个具有不规则行和列数的矩阵上测试处理好的内核，此举可以验证Padding机制是否起作用</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>device <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_device()
+</span></span><span style="display:flex;"><span>stream <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_stream(device)<span style="color:#f92672">.</span>npu_stream
+</span></span><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">1823</span>, <span style="color:#ae81ff">781</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu&#39;</span>)
+</span></span><span style="display:flex;"><span>y_triton <span style="color:#f92672">=</span> softmax(x, stream)
+</span></span><span style="display:flex;"><span>y_torch <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>softmax(x, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">assert</span> torch<span style="color:#f92672">.</span>allclose(y_triton, y_torch), (y_triton, y_torch)
+</span></span><span style="display:flex;"><span>print(y_triton)
+</span></span><span style="display:flex;"><span>print(y_torch)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;The maximum difference between torch and triton is &#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>torch<span style="color:#f92672">.</span>max(torch<span style="color:#f92672">.</span>abs(y_triton<span style="color:#f92672">-</span>y_torch))<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span></code></pre></div><p>我们上文中编写的帮助函数实际作用是对目标的二维张量的每一行进行softmax计算。在这个例子中，我们生成了一个由随机数构成的张量x，随后分别使用torch原生方法和triton融合算子来对它进行softmax计算，最后测量两结果之间的最大差异。</p>
+<p>理论上来说，我们的triton算子和torch原生算子的数学过程是等价的。之所以会出现微小误差实际上是过程中的计算步骤的底层实现方法导致了一些浮点数精度误差。</p>
+<p>Out:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tensor<span style="color:#f92672">([[</span>0.0002, 0.0017, 0.0009,  ..., 0.0009, 0.0013, 0.0073<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0001, 0.0004, 0.0006,  ..., 0.0006, 0.0004, 0.0003<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0007, 0.0002, 0.0006,  ..., 0.0011, 0.0004, 0.0039<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        ...,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0021, 0.0002, 0.0015,  ..., 0.0012, 0.0014, 0.0022<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0003, 0.0002, 0.0007,  ..., 0.0005, 0.0006, 0.0007<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0034, 0.0014, 0.0005,  ..., 0.0007, 0.0016, 0.0028<span style="color:#f92672">]]</span>,
+</span></span><span style="display:flex;"><span>       device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>tensor<span style="color:#f92672">([[</span>0.0002, 0.0017, 0.0009,  ..., 0.0009, 0.0013, 0.0073<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0001, 0.0004, 0.0006,  ..., 0.0006, 0.0004, 0.0003<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0007, 0.0002, 0.0006,  ..., 0.0011, 0.0004, 0.0039<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        ...,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0021, 0.0002, 0.0015,  ..., 0.0012, 0.0014, 0.0022<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0003, 0.0002, 0.0007,  ..., 0.0005, 0.0006, 0.0007<span style="color:#f92672">]</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0034, 0.0014, 0.0005,  ..., 0.0007, 0.0016, 0.0028<span style="color:#f92672">]]</span>,
+</span></span><span style="display:flex;"><span>       device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>The maximum difference between torch and triton is 1.4901161193847656e-08
+</span></span></code></pre></div><p>&ldquo;The maximum difference between torch and triton is 1.4901161193847656e-08&rdquo; 表示Triton和PyTorch的输出结果非常接近，肉眼不可区分。</p>
+<hr>
+<h1 id="测试性能">测试性能<a href="#%e6%b5%8b%e8%af%95%e6%80%a7%e8%83%bd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>为了对比triton融合算子和torch原生方法的性能，我们再次采用benchmark方法来测量不同数据量下两种算法的带宽吞吐量。顺便的，我们还可以看看torch原生的softmax方法的性能如何。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Fused Softmax
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">=============
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch_npu
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton.language <span style="color:#66d9ef">as</span> tl
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> triton.runtime <span style="color:#f92672">import</span> driver
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">naive_softmax</span>(x):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Compute row-wise softmax of X using native pytorch
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    We subtract the maximum element in order to avoid overflows. Softmax is invariant to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    this shift.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># read  MN elements ; write M  elements</span>
+</span></span><span style="display:flex;"><span>    x_max <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>max(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># read MN + M elements ; write MN elements</span>
+</span></span><span style="display:flex;"><span>    z <span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> x_max[:, <span style="color:#66d9ef">None</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># read  MN elements ; write MN elements</span>
+</span></span><span style="display:flex;"><span>    numerator <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(z)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># read  MN elements ; write M  elements</span>
+</span></span><span style="display:flex;"><span>    denominator <span style="color:#f92672">=</span> numerator<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># read MN + M elements ; write MN elements</span>
+</span></span><span style="display:flex;"><span>    ret <span style="color:#f92672">=</span> numerator <span style="color:#f92672">/</span> denominator[:, <span style="color:#66d9ef">None</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># in total: read 5MN + 2M elements ; wrote 3MN + 2M elements</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ret
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@triton.jit</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax_kernel</span>(
+</span></span><span style="display:flex;"><span>    output_ptr,
+</span></span><span style="display:flex;"><span>    input_ptr,
+</span></span><span style="display:flex;"><span>    input_row_stride,
+</span></span><span style="display:flex;"><span>    output_row_stride,
+</span></span><span style="display:flex;"><span>    n_rows,
+</span></span><span style="display:flex;"><span>    n_cols,
+</span></span><span style="display:flex;"><span>    BLOCK_SIZE: tl<span style="color:#f92672">.</span>constexpr,
+</span></span><span style="display:flex;"><span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># starting row of the program</span>
+</span></span><span style="display:flex;"><span>    row_start <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    row_step <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>num_programs(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> row_idx <span style="color:#f92672">in</span> tl<span style="color:#f92672">.</span>range(row_start, n_rows, row_step):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># The stride represents how much we need to increase the pointer to advance 1 row</span>
+</span></span><span style="display:flex;"><span>        row_start_ptr <span style="color:#f92672">=</span> input_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> input_row_stride
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># The block size is the next power of two greater than n_cols, so we can fit each</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># row in a single block</span>
+</span></span><span style="display:flex;"><span>        col_offsets <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, BLOCK_SIZE)
+</span></span><span style="display:flex;"><span>        input_ptrs <span style="color:#f92672">=</span> row_start_ptr <span style="color:#f92672">+</span> col_offsets
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Load the row into SRAM, using a mask since BLOCK_SIZE may be &gt; than n_cols</span>
+</span></span><span style="display:flex;"><span>        mask <span style="color:#f92672">=</span> col_offsets <span style="color:#f92672">&lt;</span> n_cols
+</span></span><span style="display:flex;"><span>        row <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(input_ptrs, mask<span style="color:#f92672">=</span>mask, other<span style="color:#f92672">=-</span>float(<span style="color:#e6db74">&#34;inf&#34;</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Subtract maximum for numerical stability</span>
+</span></span><span style="display:flex;"><span>        row_minus_max <span style="color:#f92672">=</span> row <span style="color:#f92672">-</span> tl<span style="color:#f92672">.</span>max(row, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        numerator <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>exp(row_minus_max)
+</span></span><span style="display:flex;"><span>        denominator <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>sum(numerator, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        softmax_output <span style="color:#f92672">=</span> numerator <span style="color:#f92672">/</span> denominator
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Write back output to DRAM</span>
+</span></span><span style="display:flex;"><span>        output_row_start_ptr <span style="color:#f92672">=</span> output_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> output_row_stride
+</span></span><span style="display:flex;"><span>        output_ptrs <span style="color:#f92672">=</span> output_row_start_ptr <span style="color:#f92672">+</span> col_offsets
+</span></span><span style="display:flex;"><span>        tl<span style="color:#f92672">.</span>store(output_ptrs, softmax_output, mask<span style="color:#f92672">=</span>mask)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>target <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>runtime<span style="color:#f92672">.</span>driver<span style="color:#f92672">.</span>active<span style="color:#f92672">.</span>get_current_target()
+</span></span><span style="display:flex;"><span>kernels <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(x, stream):
+</span></span><span style="display:flex;"><span>    n_rows, n_cols <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>shape
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># The block size of each loop iteration is the smallest power of two greater than the number of columns in `x`</span>
+</span></span><span style="display:flex;"><span>    BLOCK_SIZE <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>next_power_of_2(n_cols)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Allocate output</span>
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>empty_like(x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># pre-compile kernel to get register usage and compute thread occupancy.</span>
+</span></span><span style="display:flex;"><span>    kernel, num_programs <span style="color:#f92672">=</span> kernels<span style="color:#f92672">.</span>get(BLOCK_SIZE, (<span style="color:#66d9ef">None</span>, <span style="color:#ae81ff">0</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> kernel <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        num_programs <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span>        kernel <span style="color:#f92672">=</span> softmax_kernel
+</span></span><span style="display:flex;"><span>        kernels[BLOCK_SIZE] <span style="color:#f92672">=</span> (kernel, num_programs)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    num_programs <span style="color:#f92672">=</span> min(num_programs, n_rows)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create a number of persistent programs.</span>
+</span></span><span style="display:flex;"><span>    kernel[(num_programs, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)](
+</span></span><span style="display:flex;"><span>        y, x, x<span style="color:#f92672">.</span>stride(<span style="color:#ae81ff">0</span>), y<span style="color:#f92672">.</span>stride(<span style="color:#ae81ff">0</span>), n_rows, n_cols, BLOCK_SIZE
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>device <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_device()
+</span></span><span style="display:flex;"><span>stream <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_stream(device)<span style="color:#f92672">.</span>npu_stream
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@triton.testing.perf_report</span>(
+</span></span><span style="display:flex;"><span>    triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>Benchmark(
+</span></span><span style="display:flex;"><span>        x_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;N&#34;</span>],  <span style="color:#75715e"># 用作图表 X 轴的参数名</span>
+</span></span><span style="display:flex;"><span>        x_vals<span style="color:#f92672">=</span>[<span style="color:#ae81ff">128</span> <span style="color:#f92672">*</span> i <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>)],  <span style="color:#75715e"># X 轴的具体数值</span>
+</span></span><span style="display:flex;"><span>        line_arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;provider&#34;</span>,  <span style="color:#75715e"># 用作对比不同曲线的参数名</span>
+</span></span><span style="display:flex;"><span>        line_vals<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;triton&#34;</span>, <span style="color:#e6db74">&#34;torch-native&#34;</span>, <span style="color:#e6db74">&#34;torch-naive&#34;</span>],  <span style="color:#75715e"># 只有这三个值</span>
+</span></span><span style="display:flex;"><span>        line_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Triton&#34;</span>, <span style="color:#e6db74">&#34;Torch (Native)&#34;</span>, <span style="color:#e6db74">&#34;Torch (Naive)&#34;</span>],  <span style="color:#75715e"># 图例显示的名字</span>
+</span></span><span style="display:flex;"><span>        styles<span style="color:#f92672">=</span>[(<span style="color:#e6db74">&#34;blue&#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>), (<span style="color:#e6db74">&#34;green&#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>), (<span style="color:#e6db74">&#34;red&#34;</span>, <span style="color:#e6db74">&#34;--&#34;</span>)],  <span style="color:#75715e"># 曲线颜色和线型</span>
+</span></span><span style="display:flex;"><span>        ylabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;GB/s&#34;</span>,  <span style="color:#75715e"># Y 轴单位：显存吞吐量 (越高越好)</span>
+</span></span><span style="display:flex;"><span>        plot_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;softmax-performance&#34;</span>,
+</span></span><span style="display:flex;"><span>        args<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;M&#34;</span>: <span style="color:#ae81ff">4096</span>},  <span style="color:#75715e"># 固定 Batch Size 为 4096</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">benchmark</span>(M, N, provider):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 初始化数据 (FP16 或者是 FP32)</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(M, N, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;npu&#34;</span>, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 使用 Quantile 计算分位数，避免偶尔的抖动</span>
+</span></span><span style="display:flex;"><span>    quantiles <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">0.8</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> provider <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;torch-native&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 这里的 torch.softmax 是 C++ 深度优化的库函数 (cuDNN/CANN)</span>
+</span></span><span style="display:flex;"><span>        ms, min_ms, max_ms <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>do_bench(
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">lambda</span>: torch<span style="color:#f92672">.</span>softmax(x, axis<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>), quantiles<span style="color:#f92672">=</span>quantiles
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> provider <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;triton&#34;</span>:
+</span></span><span style="display:flex;"><span>        ms, min_ms, max_ms <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>do_bench(
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">lambda</span>: softmax(x, stream), quantiles<span style="color:#f92672">=</span>quantiles
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> provider <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;torch-naive&#34;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 这是一个反面教材，速度极慢</span>
+</span></span><span style="display:flex;"><span>        ms, min_ms, max_ms <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>do_bench(
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">lambda</span>: naive_softmax(x), quantiles<span style="color:#f92672">=</span>quantiles
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 计算吞吐量 GB/s</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 公式：(读取量 + 写入量) / 时间</span>
+</span></span><span style="display:flex;"><span>    gbps <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> ms: <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> x<span style="color:#f92672">.</span>numel() <span style="color:#f92672">*</span> x<span style="color:#f92672">.</span>element_size() <span style="color:#f92672">*</span> <span style="color:#ae81ff">1e-9</span> <span style="color:#f92672">/</span> (ms <span style="color:#f92672">*</span> <span style="color:#ae81ff">1e-3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> gbps(ms), gbps(max_ms), gbps(min_ms)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 运行测试</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检查是否有 GPU/NPU</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>is_available():
+</span></span><span style="display:flex;"><span>        benchmark<span style="color:#f92672">.</span>run(print_data<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, show_plots<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, save_path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;.&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;未检测到 GPU/NPU，无法运行 Triton 测试。&#34;</span>)
+</span></span></code></pre></div><p>运行这段代码，我得到了如下图的性能对比图表：</p>
+<p><img src="/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%942025121001.jpg" alt=""></p>
+<p>从图中可以看出,我们的triton融合算子和<code>torch.softmax</code>在数据量较大的情况下性能基本一致，而使用torch原生方法分步计算的<code>torch-naive</code>则性能表现一般。</p>
+
+			</div>
+			
+
+<div class="related-posts thin">
+	<h2></h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/">Triton自学日志 01VectorAdd</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/">
+				<span class="post-nav-label">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>Triton自学日志 01VectorAdd</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2025 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; Copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script></body>
+</html>
