@@ -81,7 +81,15 @@
 			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
 		</div>
 		<div class="hdr-right hdr-icons">
-			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
    <path
       d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
@@ -524,6 +532,45 @@
    </svg></abbr></a></div>
 
 		</article>
+		<aside id="toc">
+			<div class="toc-title"></div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-什么是计算内核">1. 什么是“计算内核”？</a>
+      <ul>
+        <li><a href="#计算内核kernel">计算内核（kernel）</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-tritonjit装饰器在干什么">2. @triton.jit装饰器在干什么?</a></li>
+    <li><a href="#3-行业黑话">3. 行业黑话</a>
+      <ul>
+        <li><a href="#x_ptry_ptroutput_ptr"><code>x_ptr</code>、<code>y_ptr</code>、<code>output_ptr</code></a></li>
+        <li><a href="#block_sizetlconstexpr"><code>BLOCK_SIZE:tl.constexpr</code></a></li>
+        <li><a href="#什么是triton语境下的程序">什么是Triton语境下的“程序”?</a></li>
+        <li><a href="#为什么要固定block_size">为什么要固定block_size？</a></li>
+        <li><a href="#pid--tlprogram_idaxis--0"><code>pid = tl.program_id(axis = 0)</code></a></li>
+        <li><a href="#block_start--pid--block_size"><code>block_start = pid * BLOCK_SIZE</code></a></li>
+        <li><a href="#offsets--block_start--tlarange0-block_size"><code>offsets = block_start + tl.arange(0, BLOCK_SIZE)</code></a></li>
+        <li><a href="#mask--offsets--n_elements"><code>mask = offsets &lt; n_elements</code></a></li>
+        <li><a href="#x--tlloadx_ptr--offsets-maskmask"><code>x = tl.load(x_ptr + offsets, mask=mask)</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#这段代码做了什么">这段代码做了什么？</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#这段代码又是干什么的">这段代码又是干什么的？</a>
+      <ul>
+        <li><a href="#output--torchempty_likex"><code>output = torch.empty_like(x)</code></a></li>
+        <li><a href="#n_elements--outputnumel"><code>n_elements = output.numel()</code></a></li>
+        <li><a href="#grid--lambda-meta-tritoncdivn_elements-metablock_size-"><code>grid = lambda meta: (triton.cdiv(n_elements, meta[&#39;BLOCK_SIZE&#39;]), )</code></a></li>
+        <li><a href="#add_kernelgridx-y-output-n_elements-block_size1024"><code>add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=1024)</code></a></li>
+        <li><a href="#return-output"><code>return output</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
 		<div class="post-nav thin">
 			<a class="next-post" href="http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"

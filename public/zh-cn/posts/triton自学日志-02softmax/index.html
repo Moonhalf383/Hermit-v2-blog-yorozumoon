@@ -81,7 +81,15 @@
 			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
 		</div>
 		<div class="hdr-right hdr-icons">
-			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
    <path
       d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
@@ -598,6 +606,38 @@
 </div>
 
 		</article>
+		<aside id="toc">
+			<div class="toc-title"></div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#使用原生-pytorch-对-x-逐行进行-softmax-计算">使用原生 PyTorch 对 X 逐行进行 Softmax 计算</a>
+      <ul>
+        <li><a href="#什么是softmax">什么是&quot;Softmax&quot;？</a></li>
+        <li><a href="#内核融合的目的">内核融合的目的</a></li>
+      </ul>
+    </li>
+    <li><a href="#计算内核">计算内核</a>
+      <ul>
+        <li><a href="#这段代码做了什么事情">这段代码做了什么事情？</a></li>
+        <li><a href="#计算数据">计算数据</a></li>
+        <li><a href="#写入数据">写入数据</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#q1函数外的targetkernels的作用是什么">Q1：函数外的target、kernels的作用是什么？</a></li>
+        <li><a href="#q2kernelget是做什么的">Q2：kernel.get是做什么的？</a></li>
+        <li><a href="#q3看起来kernel只可能为softmax_kernel这样的话为什么还要多存储一个kernel在memo中呢">Q3：看起来kernel只可能为softmax_kernel，这样的话为什么还要多存储一个kernel在memo中呢？</a></li>
+        <li><a href="#q4kernel是什么写法">Q4：kernel[&hellip;](&hellip;)是什么写法？</a></li>
+      </ul>
+    </li>
+    <li><a href="#单元测试">单元测试</a></li>
+  </ul>
+</nav>
+		</aside>
 		<div class="post-nav thin">
 			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/">
 				<span class="post-nav-label">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"

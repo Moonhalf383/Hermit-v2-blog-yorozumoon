@@ -2,9 +2,9 @@
 title: "Triton自学日志 02FusedSoftmax"
 date: 2025-12-10T08:33:43+08:00
 draft: false 
-toc: false
 images:
 tags: ['Triton','Ascend','学习日志','Python','Torch','推理加速'] 
+toc: true
 ---
 # 融合 Softmax （Fused Softmax）
 

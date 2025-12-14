@@ -1818,7 +1818,7 @@ What is Kickstart?
 			<title>零基础如何搭建博客</title>
 			<link>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
 			<pubDate>Sat, 20 Sep 2025 20:49:03 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h4 id="从旧站移植来的旧文旧站使用的是hexo框架">从旧站移植来的旧文，旧站使用的是hexo框架。<a href="#%e4%bb%8e%e6%97%a7%e7%ab%99%e7%a7%bb%e6%a4%8d%e6%9d%a5%e7%9a%84%e6%97%a7%e6%96%87%e6%97%a7%e7%ab%99%e4%bd%bf%e7%94%a8%e7%9a%84%e6%98%afhexo%e6%a1%86%e6%9e%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h4 id="从旧站移植来的旧文旧站使用的是hexo框架">从旧站移植来的旧文，旧站使用的是hexo框架<a href="#%e4%bb%8e%e6%97%a7%e7%ab%99%e7%a7%bb%e6%a4%8d%e6%9d%a5%e7%9a%84%e6%97%a7%e6%96%87%e6%97%a7%e7%ab%99%e4%bd%bf%e7%94%a8%e7%9a%84%e6%98%afhexo%e6%a1%86%e6%9e%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
@@ -1919,7 +1919,8 @@ dir
 <p>hexo框架是使用nodejs写的。就像C++需要编译才能运行，java需要JDK才能运行，nodejs写的程序也一样，在使用之前，我们还需要安装nodejs。</p>
 <p>安装网站：<a href="https://nodejs.org/">nodejs</a></p>
 <p>此外，在前文中我们提到了git。如果你想更新网站内容，对于hexo框架而言最方便的途径就是使用git。反正git工具对于一个写代码的人而言早晚都要学的，不如就趁现在学一下吧。</p>
-<p>安装网站：<a href="https://git-scm.com/downloads">git</a>(后记：实际上多数时候直接使用包管理器就可以非常轻松地下载。)</p>
+<p>安装网站：<a href="https://git-scm.com/downloads">git</a>
+(后记：实际上多数时候直接使用包管理器就可以非常轻松地下载。)</p>
 <p>最后，毫无疑问，你需要安装hexo。但是这次，你不需要访问任何网站。nodejs内置了npm包管理器。你只需要输入一串指令就可以自动安装hexo。</p>
 <pre tabindex="0"><code>npm install -g hexo-cli
 </code></pre><p>在powershell中输入。为什么不在git bash中输入呢？因为我没试过。(实际上应该差不多)</p>
@@ -1944,7 +1945,8 @@ npm install         # 安装依赖
 <pre tabindex="0"><code>hexo clean
 hexo g
 hexo s
-</code></pre><p>这三个指令通常是连着输的，大多数时候你根本不用关心三个指令分别是什么意思，你只需要知道：三个指令输完之后，你会得到一个网址<code>http://localhost:4000/</code>，把它输入到浏览器中你就可以本地预览你的博客网站。通常而言，预览的结果就是部署得到的结果。(后记：实则不然，第二次部署博客费了老劲，预览的结果和部署的结果始终不同，改了好久环境变量。)</p>
+</code></pre><p>这三个指令通常是连着输的，大多数时候你根本不用关心三个指令分别是什么意思，你只需要知道：三个指令输完之后，你会得到一个网址<code>http://localhost:4000/</code>，把它输入到浏览器中你就可以本地预览你的博客网站。通常而言，预览的结果就是部署得到的结果。
+(后记：实则不然，第二次部署博客费了老劲，预览的结果和部署的结果始终不同，改了好久环境变量。)</p>
 <h2 id="如何写博客">如何写博客？<a href="#%e5%a6%82%e4%bd%95%e5%86%99%e5%8d%9a%e5%ae%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
@@ -2056,7 +2058,7 @@ git push -u origin main - 第一次推送时用，之后可直接 git push
 <p>国内的主要域名商就是阿里云和腾讯云。我个人是在腾讯云上买的域名。</p>
 <p>域名的不同价格主要就是后缀决定的。不要被某些域名较低的首年价格吸引了，没必要搞一个太花里胡哨的域名，我个人还是更追求稳定。</p>
 <p>在腾讯云上购买域名之后，你会在这里找到相关的工作台。这很重要，之后部署博客的时候会用到。</p>
-<h4 id="部署博客">部署博客。<a href="#%e9%83%a8%e7%bd%b2%e5%8d%9a%e5%ae%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+<h4 id="部署博客">部署博客<a href="#%e9%83%a8%e7%bd%b2%e5%8d%9a%e5%ae%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>

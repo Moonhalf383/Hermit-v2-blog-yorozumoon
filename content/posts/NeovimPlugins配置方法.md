@@ -2,7 +2,7 @@
 title: "NeovimPlugins配置方法"
 date: 2025-11-23T11:11:53+08:00
 draft: false 
-toc: false
+toc: true 
 images:
 tags: ['Neovim','教程'] 
 ---
@@ -17,11 +17,11 @@ nvim的插件大致有以下几类:
 - git集成
 - 外观主题
 - 代码智能
-	- 自动补全
-	- 语法高亮
-	- 语法诊断
-	- 调试与运行
-	- 代码格式化
+  - 自动补全
+  - 语法高亮
+  - 语法诊断
+  - 调试与运行
+  - 代码格式化
 - 模糊搜索
 
 至少在kickstart中出现的插件可以大致归类为以上内容。
@@ -52,7 +52,7 @@ rtp:prepend(lazypath)
 这段代码的含义，简单来说就是：
 
 - 创建一个lazypath作为这个插件管理器的老家
-	- 在linux系统中，通常就是`~/.local/share/nvim/lazy/lazy.nvim`
+  - 在linux系统中，通常就是`~/.local/share/nvim/lazy/lazy.nvim`
 - 将lazy.nvim在github上的仓库克隆到lazypath
 - 其余部分的代码基本是出于兼容性而写的（但是并非无用，这段代码的健壮性还是非常强的，能让你在绝大多数情况下都能至少保证lazy.nvim安装成功）
 
@@ -257,7 +257,6 @@ return {
 nvim lua/custom/plugins/toggleterm.lua
 ```
 
-
 然后，让我写入插件的配置代码：
 
 ```lua
@@ -360,4 +359,3 @@ return {
 ---
 
 看到这里，你已经可以完全自己上手去解决插件配置问题了。实际上，你基本不需要自己写代码，你只要能读的懂一点代码就行，你只需要把github上插件作者提供的配置样例丢给ai让它生成一个涵盖了大多数功能的配置，再依据自己的需求进行删改即可。
-

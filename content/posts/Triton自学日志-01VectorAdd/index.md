@@ -2,9 +2,9 @@
 title: "Triton自学日志 01VectorAdd"
 date: 2025-12-09T08:26:42+08:00
 draft: false 
-toc: false
 images:
 tags: ['Triton','Ascend','学习日志','Python','Torch','推理加速'] 
+toc: true
 ---
 
 在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。
