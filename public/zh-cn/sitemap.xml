@@ -11,9 +11,6 @@
     <loc>http://localhost:1313/zh-cn/tags/python/</loc>
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/</loc>
-    <lastmod>2025-12-10T08:33:43+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/torch/</loc>
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
@@ -24,6 +21,9 @@
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/</loc>
+    <lastmod>2025-12-10T08:33:43+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/</loc>
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/</loc>
@@ -59,13 +59,10 @@
     <loc>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2025-11-21T14:06:57+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/about/</loc>
-    <lastmod>2025-11-20T23:03:14+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/r-906/</loc>
     <lastmod>2025-11-20T23:03:14+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/</loc>
+    <loc>http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/</loc>
     <lastmod>2025-11-20T23:03:14+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%AD%8C%E8%AF%8D/</loc>

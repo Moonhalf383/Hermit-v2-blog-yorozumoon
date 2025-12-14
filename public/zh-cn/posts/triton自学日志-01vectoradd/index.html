@@ -12,28 +12,14 @@
 <meta name="msapplication-TileColor" content="#494f5c">
 
   <meta itemprop="name" content="Triton自学日志 01VectorAdd">
-  <meta itemprop="description" content="在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。
-本文参考链接如下：
-Triton Ascend
-01-vector-add教程
-文章写完之后突然意识到triton语境下数据缓存的位置实际是显存而非传统意义的内存。文中可能会出现显存内存不分的情况，意会即可。
-向量相加 （Vector Addition） 在本节中，我们将使用 Triton 编写一个简单的向量相加的程序。 在此过程中，你会学习到：
-Triton 的基本编程模式。 用于定义 Triton 内核的triton.jit装饰器（decorator）。 计算内核:
-import torch import torch_npu import triton import triton.language as tl @triton.jit def add_kernel(x_ptr, # 指向第一个输入向量的指针。 y_ptr, # 指向第二个输入向量的指针。 output_ptr, # 指向输出向量的指针。 n_elements, # 向量的大小。 BLOCK_SIZE: tl.constexpr, # 每个程序应处理的元素数量。 # 注意：`constexpr` 将标记变量为常量。 ): # 不同的数据由不同的“process”来处理，因此需要分配： pid = tl.program_id(axis=0) # 使用 1D 启动网格，因此轴为 0。 # 该程序将处理相对初始数据偏移的输入。 # 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。 # 注意 offsets 是指针列表： block_start = pid * BLOCK_SIZE offsets = block_start &#43; tl.arange(0, BLOCK_SIZE) # 创建掩码以防止内存操作超出边界访问。 mask = offsets &lt; n_elements # 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。 x = tl.load(x_ptr &#43; offsets, mask=mask) y = tl.load(y_ptr &#43; offsets, mask=mask) output = x &#43; y # 将 x &#43; y 写回 DRAM。 tl.store(output_ptr &#43; offsets, output, mask=mask) 如何理解？ 1. 什么是“计算内核”？ 通常的python程序运行在cpu上，程序的执行方式是串行（一行一行执行）。">
+  <meta itemprop="description" content="在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。">
   <meta itemprop="datePublished" content="2025-12-09T08:26:42+08:00">
   <meta itemprop="dateModified" content="2025-12-09T08:26:42+08:00">
-  <meta itemprop="wordCount" content="696">
+  <meta itemprop="wordCount" content="6030">
   <meta itemprop="keywords" content="Triton,Ascend,学习日志,Python,Torch,推理加速"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/">
   <meta property="og:site_name" content="Yorozumoon">
   <meta property="og:title" content="Triton自学日志 01VectorAdd">
-  <meta property="og:description" content="在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。
-本文参考链接如下：
-Triton Ascend
-01-vector-add教程
-文章写完之后突然意识到triton语境下数据缓存的位置实际是显存而非传统意义的内存。文中可能会出现显存内存不分的情况，意会即可。
-向量相加 （Vector Addition） 在本节中，我们将使用 Triton 编写一个简单的向量相加的程序。 在此过程中，你会学习到：
-Triton 的基本编程模式。 用于定义 Triton 内核的triton.jit装饰器（decorator）。 计算内核:
-import torch import torch_npu import triton import triton.language as tl @triton.jit def add_kernel(x_ptr, # 指向第一个输入向量的指针。 y_ptr, # 指向第二个输入向量的指针。 output_ptr, # 指向输出向量的指针。 n_elements, # 向量的大小。 BLOCK_SIZE: tl.constexpr, # 每个程序应处理的元素数量。 # 注意：`constexpr` 将标记变量为常量。 ): # 不同的数据由不同的“process”来处理，因此需要分配： pid = tl.program_id(axis=0) # 使用 1D 启动网格，因此轴为 0。 # 该程序将处理相对初始数据偏移的输入。 # 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。 # 注意 offsets 是指针列表： block_start = pid * BLOCK_SIZE offsets = block_start &#43; tl.arange(0, BLOCK_SIZE) # 创建掩码以防止内存操作超出边界访问。 mask = offsets &lt; n_elements # 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。 x = tl.load(x_ptr &#43; offsets, mask=mask) y = tl.load(y_ptr &#43; offsets, mask=mask) output = x &#43; y # 将 x &#43; y 写回 DRAM。 tl.store(output_ptr &#43; offsets, output, mask=mask) 如何理解？ 1. 什么是“计算内核”？ 通常的python程序运行在cpu上，程序的执行方式是串行（一行一行执行）。">
+  <meta property="og:description" content="在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -48,14 +34,7 @@ import torch import torch_npu import triton import triton.language as tl @triton
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Triton自学日志 01VectorAdd">
-  <meta name="twitter:description" content="在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。
-本文参考链接如下：
-Triton Ascend
-01-vector-add教程
-文章写完之后突然意识到triton语境下数据缓存的位置实际是显存而非传统意义的内存。文中可能会出现显存内存不分的情况，意会即可。
-向量相加 （Vector Addition） 在本节中，我们将使用 Triton 编写一个简单的向量相加的程序。 在此过程中，你会学习到：
-Triton 的基本编程模式。 用于定义 Triton 内核的triton.jit装饰器（decorator）。 计算内核:
-import torch import torch_npu import triton import triton.language as tl @triton.jit def add_kernel(x_ptr, # 指向第一个输入向量的指针。 y_ptr, # 指向第二个输入向量的指针。 output_ptr, # 指向输出向量的指针。 n_elements, # 向量的大小。 BLOCK_SIZE: tl.constexpr, # 每个程序应处理的元素数量。 # 注意：`constexpr` 将标记变量为常量。 ): # 不同的数据由不同的“process”来处理，因此需要分配： pid = tl.program_id(axis=0) # 使用 1D 启动网格，因此轴为 0。 # 该程序将处理相对初始数据偏移的输入。 # 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。 # 注意 offsets 是指针列表： block_start = pid * BLOCK_SIZE offsets = block_start &#43; tl.arange(0, BLOCK_SIZE) # 创建掩码以防止内存操作超出边界访问。 mask = offsets &lt; n_elements # 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。 x = tl.load(x_ptr &#43; offsets, mask=mask) y = tl.load(y_ptr &#43; offsets, mask=mask) output = x &#43; y # 将 x &#43; y 写回 DRAM。 tl.store(output_ptr &#43; offsets, output, mask=mask) 如何理解？ 1. 什么是“计算内核”？ 通常的python程序运行在cpu上，程序的执行方式是串行（一行一行执行）。">
+  <meta name="twitter:description" content="在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。">
 
 <script type="application/ld+json">
 {
@@ -63,16 +42,18 @@ import torch import torch_npu import triton import triton.language as tl @triton
     "@type": "BlogPosting",
     "headline": "Triton自学日志 01VectorAdd",
     "name": "Triton自学日志 01VectorAdd",
-    "description": "在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。\n本文参考链接如下：\nTriton Ascend\n01-vector-add教程\n文章写完之后突然意识到triton语境下数据缓存的位置实际是显存而非传统意义的内存。文中可能会出现显存内存不分的情况，意会即可。\n向量相加 （Vector Addition） 在本节中，我们将使用 Triton 编写一个简单的向量相加的程序。 在此过程中，你会学习到：\nTriton 的基本编程模式。 用于定义 Triton 内核的triton.jit装饰器（decorator）。 计算内核:\nimport torch import torch_npu import triton import triton.language as tl @triton.jit def add_kernel(x_ptr, # 指向第一个输入向量的指针。 y_ptr, # 指向第二个输入向量的指针。 output_ptr, # 指向输出向量的指针。 n_elements, # 向量的大小。 BLOCK_SIZE: tl.constexpr, # 每个程序应处理的元素数量。 # 注意：`constexpr` 将标记变量为常量。 ): # 不同的数据由不同的“process”来处理，因此需要分配： pid = tl.program_id(axis=0) # 使用 1D 启动网格，因此轴为 0。 # 该程序将处理相对初始数据偏移的输入。 # 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。 # 注意 offsets 是指针列表： block_start = pid * BLOCK_SIZE offsets = block_start + tl.arange(0, BLOCK_SIZE) # 创建掩码以防止内存操作超出边界访问。 mask = offsets \u0026lt; n_elements # 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。 x = tl.load(x_ptr + offsets, mask=mask) y = tl.load(y_ptr + offsets, mask=mask) output = x + y # 将 x + y 写回 DRAM。 tl.store(output_ptr + offsets, output, mask=mask) 如何理解？ 1. 什么是“计算内核”？ 通常的python程序运行在cpu上，程序的执行方式是串行（一行一行执行）。\n",
+    "description": "在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。\n",
     "keywords": ["Triton", "Ascend", "学习日志", "Python", "Torch", "推理加速"],
     "articleBody": "在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。\n本文参考链接如下：\nTriton Ascend\n01-vector-add教程\n文章写完之后突然意识到triton语境下数据缓存的位置实际是显存而非传统意义的内存。文中可能会出现显存内存不分的情况，意会即可。\n向量相加 （Vector Addition） 在本节中，我们将使用 Triton 编写一个简单的向量相加的程序。 在此过程中，你会学习到：\nTriton 的基本编程模式。 用于定义 Triton 内核的triton.jit装饰器（decorator）。 计算内核:\nimport torch import torch_npu import triton import triton.language as tl @triton.jit def add_kernel(x_ptr, # 指向第一个输入向量的指针。 y_ptr, # 指向第二个输入向量的指针。 output_ptr, # 指向输出向量的指针。 n_elements, # 向量的大小。 BLOCK_SIZE: tl.constexpr, # 每个程序应处理的元素数量。 # 注意：`constexpr` 将标记变量为常量。 ): # 不同的数据由不同的“process”来处理，因此需要分配： pid = tl.program_id(axis=0) # 使用 1D 启动网格，因此轴为 0。 # 该程序将处理相对初始数据偏移的输入。 # 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。 # 注意 offsets 是指针列表： block_start = pid * BLOCK_SIZE offsets = block_start + tl.arange(0, BLOCK_SIZE) # 创建掩码以防止内存操作超出边界访问。 mask = offsets \u003c n_elements # 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。 x = tl.load(x_ptr + offsets, mask=mask) y = tl.load(y_ptr + offsets, mask=mask) output = x + y # 将 x + y 写回 DRAM。 tl.store(output_ptr + offsets, output, mask=mask) 如何理解？ 1. 什么是“计算内核”？ 通常的python程序运行在cpu上，程序的执行方式是串行（一行一行执行）。\n但是在npu/gpu上，计算核心的组成和cpu上完全不同。npu/gpu上的核心功能远比cpu简单，但是核心数量远远大于cpu，适合用来处理大量的简单计算。为了快速计算，我们需要让核心并行计算，即几千个核心同时进行计算。这时的程序逻辑就和cpu上有所区别。\n计算内核（kernel） 我们没有办法通过一个巨大的程序控制全局，而是通过发射kernel的方式明确每个npu/gpu小核心的工作内容。kernel就是你送给小核心的指令。发射一次kernel，所有的指定核心就会按照你给出的指令进行同样的计算操作，而他们之间的区别就在于操作的内存地址有所不同。\n2. @triton.jit装饰器在干什么? 显然，你的python程序没办法直接跑在npu/gpu上。npu/gpu核心功能本身就很简单了，而你的python程序则是跑在cpu上的。所以，你需要方法把python程序代码解读为npu/gpu能懂的语言。\n在写def add_kernel()前为它加上@triton.jit装饰器后，在你运行这个python程序时，这段add_kernel函数就会被编译为npu/gpu能懂的二进制机器码，并将这个npu/gpu能直接读懂的指令放在某个地方，等待调用。\n当你真正调用add_kernel这个函数时，系统实际上并不会在cpu上执行这个函数的函数体，而是通过驱动程序直接使用刚才编译好的二进制机器码。\n说白了，就是把这段python程序变成npu上能高速运行的二进制程序。\n3. 行业黑话 x_ptr、y_ptr、output_ptr 向量的起始地址。向量在内存中的存储是连续的，因此我们只需要一个起始地址就可以描述这个向量中所有元素的位置。\nBLOCK_SIZE:tl.constexpr 在这里，注释中出现了一个“程序”的概念。此处的“程序”如果代入我们通常对“程序”的理解，在这个上下文中会显得非常违和。所以，我们需要先来明确npu语境下“程序”的概念。\n什么是Triton语境下的“程序”? 在 Triton 的代码逻辑里：\n一个“程序（instance）” = 你的内核函数被复制并运行的其中一次“副本”。\n举个例子：\n假如总数据量为1024。 你规定了一个block_size，让一个“副本”每次只能处理128个数据。 所以根据代码，你最后算出来你需要启动8个副本。 你创建了8个副本，核心就会自动来取走你创建的副本，一旦一个副本完成，多余的核心就会立刻投入接下来的副本的工作。 用一个形象比喻：\n考试总共要做1024道题（数据量）。 参加考试的考生有4个（核心数）。 一个卷子只能放128道题（你规定的block_size）。 你打印了8张卷子（程序），每个卷子有128道题。 考生每个人各自拿走了1张卷子，做完一张后自动再取剩下的卷子。 为什么要固定block_size？ 比如，你可能会认为，直接一张卷子印256道题不就没有中间调度的问题了吗？或者随便多少道题只要最后完成就行。\n但是，在triton的语境下，规定好block_size之后，编译器就可以针对这个任务包大小对生成的二进制机器码进行疯狂优化。将block_size定为常量可以大幅提升运算效率。\npid = tl.program_id(axis = 0) 别忘了，我们在写的东西是一个kernel。我们最后会把这同一个kernel发送给所有的核心，但是这些核心最后需要去处理不同内存地址上的向量，这样才能实现并行计算的目的。\n这些核心之间唯一有区别的地方，就在于它们被分配到的program_id不同。因此，通过program_id，你实际上做的事情是告诉核心根据它正在进行的程序id去随机应变。而我们此处的“随机应变”就是让核心根据程序id去操作相应的内存地址。\nblock_start = pid * BLOCK_SIZE 任务块的起始点。在本代码情景下，你要操作的内存是一大片连续内存空间，所以将它分块后你需要让核心先知道自己所处理的那一块数据的一个“锚点”在哪，再根据“锚点”位置通过偏移量明确操作的具体位置。\noffsets = block_start + tl.arange(0, BLOCK_SIZE) tl.arange(0, BLOCK_SIZE)直接生成一个0到BLOCK_SIZE的序列，加上block_start对序列中的每个数字添加一个起始值，最后得到了一个偏移量向量，代表了这一批任务的具体内存偏移。\nmask = offsets \u003c n_elements Mask的含义是“掩码”。简单来说，这里offsets是一个向量，而n_elements则是一个数字。根据torch、triton、numpy等数据科学工具常见的神奇的广播机制，n_elements被直接复制了若干个而组成了一个和offsets大小一致的向量，最后mask得到的也是一个向量，但是内容是offsets中对应元素与n_elements比较结果的布尔值。\n比如，假如offsets = [1,2,3]，n_elements = 3，那么最后mask就得到[True,True,False]。\n通过这种方式，我们可以确保核心工作不越界。比如，假如你的向量有1000个数据要处理，但是你设置的BLOCK_SIZE大小却是128，1000除不尽128，那么最后一个块就只会计算掩码中为true的部分，保证不去越界计算向量外的内存。\nx = tl.load(x_ptr + offsets, mask=mask) x_ptr为第一个向量的起始地址，offsets为偏移量向量。显然，这里也通过广播机制得到了一个向量，而这个向量信息的含义就是核心要读取的信息在内存中的绝对地址。mask = mask通过关键字传值的方式将我们前面计算过的掩码传入load函数的mask参数。最后返回得到的x即为符合mask掩码约束的x_ptr+offsets部分的内存对应的信息组成的新向量。mask为false的部分信息被自动填充为0.0。\n这段代码做了什么？ 定义了一个函数，它会在运行时直接转换为二进制机器码。它提供了若干参数，分别允许你去控制输入的两个向量的起始地址，输出向量的地址，向量的大小，以及过程中的BLOCK_SIZE。\n调用这个函数，程序就会在你指定的内存地址分别读取向量大小个数的数据，并分别相加，最后存入输出向量的地址。只不过，这些操作是通过npu而非cpu完成的。\ntorch add 创建一个辅助函数用于：\n生成 z 张量； 用适当的 grid/block sizes 将上述内核加入队列。 def add(x: torch.Tensor, y: torch.Tensor): # 需要预分配输出。 output = torch.empty_like(x) n_elements = output.numel() # 启动网格表示并行运行的内核实例的数量。 # 可以是 Tuple[int]，也可以是 Callable(metaparameters) -\u003e Tuple[int]。 # 在本case中，使用 1D 网格，其中大小是块的数量： grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), ) # NOTE: # - 每个 torch.tensor 对象都会隐式转换为其第一个元素的指针。 # - `triton.jit` 函数可以通过启动网格索引来获得可调用的 NPU 内核。 # - 不要忘记以keywords的方式传递meta-parameters。 add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=1024) # 返回 z 的句柄。 return output 这段代码又是干什么的？ 这是一个宿主端的代码。简单来说，torch开发者需要能进行并行计算来实现业务逻辑，但是他们并不想去关心你底层实现的逻辑。因此，作为triton开发者，你需要做的是把这个功能封装为一个极其简单易用同时兼顾安全性的函数，供客户随时调用。\n我们来逐行分析这段代码：\noutput = torch.empty_like(x) 调用torch库，在npu显存上为output挖了一个和x一样大小的坑，让output存入这个坑的地址。\n如果你不挖这个坑，你前面写的add_kernel就不知道该把运算结果存到哪个位置，而python函数通常要返回运算值而非算完之后随便扔在某个地方。\nn_elements = output.numel() 让n_elements存入output的大小。\ngrid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), ) 这行代码是这个函数中相对复杂的一段。它的作用是动态决定需要启动的程序数。\ngrid的类型是一个lambda函数，在后文中，它被通过一种邪门的写法传入了add_kernel中。你可能注意到了，grid并非写入圆括号当中，而是写在方括号中。我们后文中会提及这种写法的意义。总之，这是一种一般python程序中不会涉及到的写法。\ntriton.cdiv是ceiling division的缩写，即向上取整。\n这个时候，你可能就会有疑问：meta是个什么东西？你先别急，我们先看后面一句代码。\nadd_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=1024) 这段代码即调用了我们前文写的add_kernel函数。\n在这个lambda函数中，meta的类型是一个字典。在你发射kernel时，它里面装的就是你所传递的元参数。在我们写的add函数中，x、y均为Torch中的Tensor数据类型，传参时会隐式转换为内存地址。而output在我们前文中也已经提前挖好坑了。\n但这里，我们通过了一些邪门的方法额外传入了一个grid函数。下面我就来解释一下这种写法的含义。\nmeta triton的开发者预料到了你需要有办法去根据特殊情景决定启动的程序数量，所以他们提供了一种方式让你可以获取客户在使用你封装好的函数时的传参情况。\n什么方式呢？在你使用@triton.jit装饰好的函数时，triton会捕捉到你传入的参数，构成一个字典。比如，在我们上文写出的add_kernel函数中，这个字典大概长成这样：\nmeta = { \"x_ptr\" : \u003caddress\u003e \"y_ptr\" : \u003caddress\u003e \"output_ptr\" : \u003caddress\u003e \"n_elements\" : \u003cnumble\u003e \"BLOCK_SIZE\" : \u003cnumble\u003e } 系统在进行运算之前，会先生成这个字典，然后暗中调用一个lambda函数，将这个字典作为参数传入，根据得到的结果进而决定最后启动的程序个数。\n你通常没办法直接调用这个字典，不过幸运的是，你可以去决定系统暗中调用的lambda函数的形式，而这个lambda函数传入的参数正是triton生成的参数字典。\n因此，我们在前面定义lambda函数grid为lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), )，意义就是在add_kernel生效之前读取传入的参数字典，根据参数字典中BLOCK_SIZE的值计算出需要的最少启动程序数，然后系统通过这个返回值最终决定启动的程序数。\nreturn output 返回output这个生成的tensor。\n使用上述函数计算两个 torch.tensor 对象的 element-wise sum，并测试其正确性：\ntorch.manual_seed(0) size = 98432 x = torch.rand(size, device='npu') y = torch.rand(size, device='npu') output_torch = x + y output_triton = add(x, y) print(output_torch) print(output_triton) print(f'The maximum difference between torch and triton is ' f'{torch.max(torch.abs(output_torch - output_triton))}') 这是一段测试代码。x、y分别是使用torch生成的随机向量。output_torch为直接使用torch内置方法计算得到的向量和，output_triton为使用我们自定义函数计算得到的向量和，最后打印两者的最大残差。\n理论上来说，如果程序正确，output_torch和output_triton应该输出完全一致。\nOut:\ntensor([0.8329, 1.0024, 1.3639, ..., 1.0796, 1.0406, 1.5811], device='npu:0') tensor([0.8329, 1.0024, 1.3639, ..., 1.0796, 1.0406, 1.5811], device='npu:0') The maximum difference between torch and triton is 0.0 “The maximum difference between torch and triton is 0.0” 表示Triton和PyTorch的输出结果一致。\n但是，如果你真正去衡量torch方法与triton方法之间的计算速度，你会发现triton方法算出来的速度基本与torch方法持平，甚至更慢一点。原因很简单，torch经过了长期的优化，这种基础算子的计算速度基本已经达到了物理极限，而我们自己写的triton算法在调用npu显存数据上要花费额外的时间。\ntriton算子真正的优势区间在于写“融合算子”。同样的操作，pytorch的每一步操作都要单独去显存拉取一次数据，操作多起来之后这一步拉取操作就会显著影响运行速度。而通过写triton算子直接操作显存，一次拉取数据之后直接计算得到结果，这样就可以规避中间不必要的额外拉取用时。\n如何测试运行速度？ 因为异步运算的缘故，torch和time模块这样基于CPU的计时方法无法测量NPU中的真正用时。我们需要使用triton提供的专业基本测试工具triton.testing.do_bench来测试计算效率。\n在下列实例代码中，我们采用带宽吞吐量为依据衡量torch和triton的运行速度差异。\nimport matplotlib # 强制使用 'Agg' 后端，这个后端专门用于不弹窗直接生成图片文件 matplotlib.use(\"Agg\") import matplotlib.pyplot as plt import torch import torch_npu import triton import triton.language as tl @triton.jit def add_kernel( x_ptr, # 指向第一个输入向量的指针。 y_ptr, # 指向第二个输入向量的指针。 output_ptr, # 指向输出向量的指针。 n_elements, # 向量的大小。 BLOCK_SIZE: tl.constexpr, # 每个程序应处理的元素数量。 # 注意：`constexpr` 将标记变量为常量。 ): # 不同的数据由不同的“process”来处理，因此需要分配： pid = tl.program_id(axis=0) # 使用 1D 启动网格，因此轴为 0。 # 该程序将处理相对初始数据偏移的输入。 # 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。 # 注意 offsets 是指针列表： block_start = pid * BLOCK_SIZE offsets = block_start + tl.arange(0, BLOCK_SIZE) # 创建掩码以防止内存操作超出边界访问。 mask = offsets \u003c n_elements # 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。 x = tl.load(x_ptr + offsets, mask=mask) y = tl.load(y_ptr + offsets, mask=mask) output = x + y # 将 x + y 写回 DRAM。 tl.store(output_ptr + offsets, output, mask=mask) @triton.testing.perf_report( triton.testing.Benchmark( x_names=[\"size\"], # 作为x轴变化的参数 x_vals=[128 * i for i in range(2, 100)], # 测试从 256 到 12800 的不同大小 line_arg=\"provider\", line_vals=[\"triton\", \"torch\"], # 对比这两家 line_names=[\"Triton\", \"Torch\"], styles=[(\"blue\", \"-\"), (\"green\", \"-\")], ylabel=\"GB/s\", # 用带宽吞吐量作为指标 plot_name=\"vector-add-performance\", args={}, ) ) def benchmark(size, provider): x = torch.rand(size, device=\"npu\", dtype=torch.float32) y = torch.rand(size, device=\"npu\", dtype=torch.float32) # 预热显存分配 quantiles = [0.5, 0.2, 0.8] if provider == \"torch\": ms, min_ms, max_ms = triton.testing.do_bench(lambda: x + y, quantiles=quantiles) if provider == \"triton\": output = torch.empty_like(x) grid = lambda meta: (triton.cdiv(size, meta[\"BLOCK_SIZE\"]),) # 封装一下 lambda 方便测速 def call_triton(): add_kernel[grid](x, y, output, size, BLOCK_SIZE=1024) ms, min_ms, max_ms = triton.testing.do_bench(call_triton, quantiles=quantiles) # 返回吞吐量计算 GB/s def gbps(ms): # 读x(4 bytes) + 读y(4 bytes) + 写output(4 bytes) = 12 bytes return 12 * size / ms * 1e-6 return gbps(ms), gbps(max_ms), gbps(min_ms) # 运行 benchmark benchmark.run(print_data=True, show_plots=False, save_path=\"./bench_result\") 在使用这个测试工具之前，你需要先确保安装了matplotlib、pandas、numpy等基本数据科学库。最后你可以得到由matplotlib生成的性能测试图表。\n在本代码中，实际进行加法计算的用时非常少，大部分的用时都在信息搬运上，而带宽正描述的是这一行为的速率。通过运行这段代码，我们就成功得到了torch原生写法与我们自己写的triton算子之间的性能差异图表。\n",
-    "wordCount" : "696",
+    "wordCount" : "6030",
     "inLanguage": "zh-cn",
     "datePublished": "2025-12-09T08:26:42+08:00",
     "dateModified": "2025-12-09T08:26:42+08:00",
     "author":{
         "@type": "Person",
-        "name": "Moonhalf",},
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"
@@ -91,13 +72,13 @@ import torch import torch_npu import triton import triton.language as tl @triton
 	</head>
 
 <body id="page">
-<header id="site-header">
+<header id="site-header" class="animated slideInUp">
 	<div class="hdr-wrapper section-inner">
 		<div class="hdr-left">
 			<div class="site-branding">
 				<a href="http://localhost:1313/">Yorozumoon</a>
 			</div>
-			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
 		</div>
 		<div class="hdr-right hdr-icons">
 			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -117,6 +98,7 @@ import torch import torch_npu import triton import triton.language as tl @triton
 <div id="mobile-menu" class="animated fast">
 	<ul>
 		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
 		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
 		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
 	</ul>
@@ -132,7 +114,7 @@ import torch import torch_npu import triton import triton.language as tl @triton
    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
    <line x1="16" y1="8" x2="2" y2="22"></line>
    <line x1="17.5" y1="15" x2="9" y2="15"></line>
-</svg>Moonhalf</p>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
 <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
       <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
@@ -145,7 +127,7 @@ import torch import torch_npu import triton import triton.language as tl @triton
       <line x1="16" y1="13" x2="8" y2="13"></line>
       <line x1="16" y1="17" x2="8" y2="17"></line>
       <polyline points="10 9 9 9 8 9"></polyline>
-   </svg>696&nbsp  次阅读(还是阅读时间？有点搞不懂)3 Minutes, 9 Seconds</p>
+   </svg>6030&nbsp  阅读时长27 Minutes, 24 Seconds</p>
 <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -534,7 +516,12 @@ import torch import torch_npu import triton import triton.language as tl @triton
 <p><img src="/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%942025120901.jpg" alt=""></p>
 
 			</div>
-			
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title=""><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
 
 		</article>
 		<div class="post-nav thin">
@@ -574,7 +561,7 @@ import torch import torch_npu import triton import triton.language as tl @triton
 <footer id="site-footer" class="section-inner thin animated fadeIn faster">
 <p>
 	&copy; 2025 <a href="http://localhost:1313/">Yorozumoon</a>
-	&#183; Copyright by Moonhalf
+	&#183; copyright by Moonhalf
 	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
 	</p></footer>
 <script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script></body>
