@@ -2,10 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/zh-cn/tags/ascend/</loc>
-    <lastmod>2025-12-10T08:33:43+08:00</lastmod>
+    <loc>http://localhost:1313/zh-cn/tags/curl/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/ohmyzsh/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/wget/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/zsh/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/curlwget/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/zshohmyzsh/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2025-12-15T23:25:53+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/ascend/</loc>
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/python/</loc>
@@ -18,12 +48,6 @@
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/</loc>
-    <lastmod>2025-12-10T08:33:43+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/</loc>
-    <lastmod>2025-12-10T08:33:43+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/</loc>
     <lastmod>2025-12-10T08:33:43+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/</loc>
@@ -39,9 +63,6 @@
     <lastmod>2025-11-23T11:11:53+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/</loc>
-    <lastmod>2025-11-23T11:11:53+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2025-11-23T11:11:53+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/</loc>
@@ -79,5 +100,7 @@
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2025-09-20T20:49:03+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/readme/</loc>
   </url>
 </urlset>

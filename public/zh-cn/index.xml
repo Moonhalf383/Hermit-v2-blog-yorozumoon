@@ -7,8 +7,22 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Wed, 10 Dec 2025 08:33:43 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Dec 2025 23:25:53 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工具不图鉴01：curl&amp;wget</title>
+      <link>http://localhost:1313/zh-cn/posts/curlwget/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/curlwget/</guid>
+      <description>&lt;p&gt;参考链接：&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://curl.se/&#34;&gt;curl官网&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.gnu.org/software/wget/&#34;&gt;wget官网&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;curl和wget是在配置服务器时相当常用的终端工具。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;什么是curl&#34;&gt;什么是curl？&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%afcurl&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>工具不图鉴02：zsh&amp;ohmyzsh</title>
+      <link>http://localhost:1313/zh-cn/posts/zshohmyzsh/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/zshohmyzsh/</guid>
+      <description>&lt;p&gt;参考链接：&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/Z_shell&#34;&gt;zsh wiki&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://ohmyz.sh/&#34;&gt;ohmyzsh&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;什么是zsh&#34;&gt;什么是zsh？&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%afzsh&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;zsh是一个功能丰富的Unix shell，即&lt;strong&gt;命令行解释器&lt;/strong&gt;。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Triton自学日志 02FusedSoftmax</title>
       <link>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/</link>
@@ -71,6 +85,13 @@
       <pubDate>Sat, 20 Sep 2025 20:49:03 +0800</pubDate>
       <guid>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
       <description>&lt;h4 id=&#34;从旧站移植来的旧文旧站使用的是hexo框架&#34;&gt;从旧站移植来的旧文，旧站使用的是hexo框架&lt;a href=&#34;#%e4%bb%8e%e6%97%a7%e7%ab%99%e7%a7%bb%e6%a4%8d%e6%9d%a5%e7%9a%84%e6%97%a7%e6%96%87%e6%97%a7%e7%ab%99%e4%bd%bf%e7%94%a8%e7%9a%84%e6%98%afhexo%e6%a1%86%e6%9e%b6&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h4&gt;&#xA;&lt;p&gt;大概在本月的14号左右，我突然想起来之前知乎上有人和我说过可以搭建一个博客，写写题解什么的。当然，搭一个博客和写题解之间没有必然关系，但是就那几天我突然开始好奇什么是博客。不查不知道，博客竟然是一类网站的统称。经过了一番折腾总算是把自己的博客网站搭建起来了。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/zh-cn/posts/readme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/readme/</guid>
+      <description>&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;p&gt;A fast and flexible static site generator built with love by &lt;a href=&#34;https://github.com/bep&#34;&gt;bep&lt;/a&gt;, &lt;a href=&#34;https://github.com/spf13&#34;&gt;spf13&lt;/a&gt;, and &lt;a href=&#34;https://github.com/gohugoio/hugo/graphs/contributors&#34;&gt;friends&lt;/a&gt; in &lt;a href=&#34;https://go.dev/&#34;&gt;Go&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://godoc.org/github.com/gohugoio/hugo&#34;&gt;&lt;img src=&#34;https://godoc.org/github.com/gohugoio/hugo?status.svg&#34; alt=&#34;GoDoc&#34;&gt;&lt;/a&gt;&#xA;&lt;a href=&#34;https://github.com/gohugoio/hugo/actions?query=workflow%3ATest&#34;&gt;&lt;img src=&#34;https://github.com/gohugoio/hugo/workflows/Test/badge.svg&#34; alt=&#34;Tests on Linux, MacOS and Windows&#34;&gt;&lt;/a&gt;&#xA;&lt;a href=&#34;https://goreportcard.com/report/github.com/gohugoio/hugo&#34;&gt;&lt;img src=&#34;https://goreportcard.com/badge/github.com/gohugoio/hugo&#34; alt=&#34;Go Report Card&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://gohugo.io&#34;&gt;Website&lt;/a&gt; | &lt;a href=&#34;https://gohugo.io/installation&#34;&gt;Installation&lt;/a&gt; | &lt;a href=&#34;https://gohugo.io/documentation&#34;&gt;Documentation&lt;/a&gt; | &lt;a href=&#34;https://discourse.gohugo.io&#34;&gt;Support&lt;/a&gt; | &lt;a href=&#34;CONTRIBUTING.md&#34;&gt;Contributing&lt;/a&gt; | &lt;!-- raw HTML omitted --&gt;Mastodon&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;a href=&#34;#overview&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Hugo is a &lt;a href=&#34;https://en.wikipedia.org/wiki/Static_site_generator&#34;&gt;static site generator&lt;/a&gt; written in &lt;a href=&#34;https://go.dev/&#34;&gt;Go&lt;/a&gt;, optimized for speed and designed for flexibility. With its advanced templating system and fast asset pipelines, Hugo renders a complete site in seconds, often less.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

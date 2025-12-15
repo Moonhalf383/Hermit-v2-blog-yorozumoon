@@ -7,8 +7,22 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Sun, 23 Nov 2025 11:11:53 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Dec 2025 23:25:53 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工具不图鉴01：curl&amp;wget</title>
+      <link>http://localhost:1313/zh-cn/posts/curlwget/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/curlwget/</guid>
+      <description>&lt;p&gt;参考链接：&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://curl.se/&#34;&gt;curl官网&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.gnu.org/software/wget/&#34;&gt;wget官网&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;curl和wget是在配置服务器时相当常用的终端工具。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;什么是curl&#34;&gt;什么是curl？&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%afcurl&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>工具不图鉴02：zsh&amp;ohmyzsh</title>
+      <link>http://localhost:1313/zh-cn/posts/zshohmyzsh/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/zshohmyzsh/</guid>
+      <description>&lt;p&gt;参考链接：&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/Z_shell&#34;&gt;zsh wiki&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://ohmyz.sh/&#34;&gt;ohmyzsh&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;什么是zsh&#34;&gt;什么是zsh？&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%afzsh&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;zsh是一个功能丰富的Unix shell，即&lt;strong&gt;命令行解释器&lt;/strong&gt;。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>NeovimPlugins配置方法</title>
       <link>http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/</link>

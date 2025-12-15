@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="工具不图鉴02：zsh&ohmyzsh">
+  <meta itemprop="description" content="参考链接：
+zsh wiki
+ohmyzsh
+什么是zsh？ zsh是一个功能丰富的Unix shell，即命令行解释器。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。">
+  <meta itemprop="datePublished" content="2025-12-15T23:25:53+08:00">
+  <meta itemprop="dateModified" content="2025-12-15T23:25:53+08:00">
+  <meta itemprop="wordCount" content="2866">
+  <meta itemprop="keywords" content="工具不图鉴,教程,Zsh,Ohmyzsh"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/zshohmyzsh/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="工具不图鉴02：zsh&ohmyzsh">
+  <meta property="og:description" content="参考链接：
+zsh wiki
+ohmyzsh
+什么是zsh？ zsh是一个功能丰富的Unix shell，即命令行解释器。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-15T23:25:53+08:00">
+    <meta property="article:modified_time" content="2025-12-15T23:25:53+08:00">
+    <meta property="article:tag" content="工具不图鉴">
+    <meta property="article:tag" content="教程">
+    <meta property="article:tag" content="Zsh">
+    <meta property="article:tag" content="Ohmyzsh">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="工具不图鉴02：zsh&ohmyzsh">
+  <meta name="twitter:description" content="参考链接：
+zsh wiki
+ohmyzsh
+什么是zsh？ zsh是一个功能丰富的Unix shell，即命令行解释器。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "工具不图鉴02：zsh\u0026ohmyzsh",
+    "name": "工具不图鉴02：zsh\u0026ohmyzsh",
+    "description": "参考链接：\nzsh wiki\nohmyzsh\n什么是zsh？ zsh是一个功能丰富的Unix shell，即命令行解释器。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。\n",
+    "keywords": ["工具不图鉴", "教程", "zsh", "ohmyzsh"],
+    "articleBody": "参考链接：\nzsh wiki\nohmyzsh\n什么是zsh？ zsh是一个功能丰富的Unix shell，即命令行解释器。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。\n相较于其他命令行解释器如bash，zsh具有更强大的功能，如自动补全，历史记录，切换主题等。这一切都可以通过添加插件来完成。\n如何安装zsh？ zsh并不是一个更新非常迅速的软件，这意味着你并不一定需要安装最新版才能确保最大程度的稳定和功能。通常来说，直接使用你的系统级包管理器来安装即可，不会导致兼容性问题。\nsudo apt install zsh 什么是ohmyzsh？ ohmyzsh是一个开源的社区驱动的zsh配置管理框架。通常来说，直接为zsh添加插件并不方便。但是通过ohmyzsh，你只需要克隆一下插件仓库，再修改一下~/.zshrc即可使用插件。\nomz拥有非常丰富的插件生态以及活跃的贡献者社区，可以大大提高终端美观程度以及使用效率。\n如何安装ohmyzsh？ 不同于zsh以及很多其他的基本工具，ohmyzsh是一个迭代迅速的社区工具。这意味着如果想要使用更新更好的插件，最好通过官方渠道进行安装。\n这里罗列从omz官网上摘录的下载指令。你只需要将指令输入终端运行即可。\n方法一：通过curl安装\nsh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" 方法二：通过wget安装\nsh -c \"$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)\" 这两个指令是相对稳定的，它们不会随omz版本迭代而发生改变。\nohmyzsh如何配置？ 将zsh设置为默认shell：\nchsh -s /bin/zsh 常用插件 1. zsh-autosuggestions (自动补全建议) 根据历史记录给出自动补全建议，按下右键自动补全。\ngithub网页\ngit clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 2. zsh-syntax-highlighting (语法高亮) 当你输入命令时，正确的命令显示绿色，错误的显示红色，路径带有下划线。\ngithub网页\ngit clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 3. git（内置插件） 提供git简写别名，并支持tab补全。\n常用别名： gst -\u003e git status gco -\u003e git checkout gcm -\u003e git checkout master (或 main) gp -\u003e git push gl -\u003e git pull 4. z（内置插件） 记录你访问过的目录，之后只需输入 z + 目录名片段 即可直接跳转，无需输入完整路径。\n用法：z down (可能直接跳转到 ~/Downloads) 5. extract（内置插件） 通用解压插件。不需要记住 tar -xvf、unzip 等繁琐参数，统一使用 x 命令解压任何格式的压缩包。\n用法：x filename.tar.gz 启用插件 下载完第三方插件后，必须在 .zshrc 文件中配置才能生效。\n1. 编辑配置文件：\nnano ~/.zshrc # 或者使用 vim ~/.zshrc 2. 找到 plugins=(...) 这一行，修改为： (注意：插件名之间用空格分隔，不要用逗号)（想使用哪些插件就写入哪些插件）\nplugins=( git z extract sudo web-search docker zsh-autosuggestions # 第三方 zsh-syntax-highlighting # 第三方，建议放在列表最后 ) 3. 使配置生效：\nsource ~/.zshrc 常见美化方案 可视化主题百科\n在~/.zshrc中找到ZSH_THEME配置项，将对应位置的主题改为你下载的主题，之后source ~/.zshrc即可启用。\n1. Powerlevel10k 目前相当流行的主题，配置方便，高度可自定义。\ngithub网页\ngit clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k 主题名：powerlevel10k/powerlevel10k\n2. ys 我个人比较喜欢的主题，非常简洁美观，并且是omz的内置主题。直接将主题名改为ys即可。\n集成式配置脚本 一键配置zsh\u0026omz全套环境。\n#!/bin/bash # ============================================================ # Zsh + OMZ + Plugins + P10k 一键安装脚本 (含 Termux 支持) # ============================================================ # 定义颜色 RED='\\033[0;31m' GREEN='\\033[0;32m' YELLOW='\\033[0;33m' BLUE='\\033[0;34m' NC='\\033[0m' # No Color # 定义路径 OMZ_DIR=\"$HOME/.oh-my-zsh\" ZSH_CUSTOM=\"$OMZ_DIR/custom\" ZSHRC=\"$HOME/.zshrc\" echo -e \"${BLUE}\u003e\u003e\u003e 开始执行集成安装脚本...${NC}\" # 1. 环境检测与软件安装 # ----------------------------------------------------------- install_packages() { echo -e \"${YELLOW}正在检查系统环境...${NC}\" CMD_INSTALL=\"\" CMD_UPDATE=\"\" # 检测是否为 Termux if [ -n \"$TERMUX_VERSION\" ]; then echo -e \"${GREEN}识别到 Termux 环境。${NC}\" CMD_INSTALL=\"pkg install -y\" CMD_UPDATE=\"pkg update -y\" # Termux 通常不需要 sudo，除非安装了 tsu，但常规包管理直接用 pkg # 检测 MacOS elif [[ \"$OSTYPE\" == \"darwin\"* ]]; then echo -e \"${GREEN}识别到 MacOS 环境。${NC}\" if command -v brew \u0026\u003e /dev/null; then CMD_INSTALL=\"brew install\" else echo -e \"${RED}未找到 Homebrew，请先安装 Homebrew。${NC}\" exit 1 fi # 检测 Linux 发行版 elif command -v apt-get \u0026\u003e /dev/null; then CMD_INSTALL=\"sudo apt-get install -y\" CMD_UPDATE=\"sudo apt-get update\" elif command -v yum \u0026\u003e /dev/null; then CMD_INSTALL=\"sudo yum install -y\" elif command -v dnf \u0026\u003e /dev/null; then CMD_INSTALL=\"sudo dnf install -y\" elif command -v pacman \u0026\u003e /dev/null; then CMD_INSTALL=\"sudo pacman -S --noconfirm\" else echo -e \"${RED}未找到支持的包管理器 (pkg/apt/yum/dnf/pacman/brew)。${NC}\" exit 1 fi # 更新源 (仅 Termux 和 Debian/Ubuntu) if [ ! -z \"$CMD_UPDATE\" ]; then echo -e \"正在更新软件源...\" $CMD_UPDATE fi # 安装 git, zsh, curl, vim (vim用于防止sed有时需要编辑器环境) # Termux 基础包可能不含 vim/nano，建议安装一个编辑器 DEPENDENCIES=\"git zsh curl\" for pkg in $DEPENDENCIES; do if ! command -v $pkg \u0026\u003e /dev/null; then echo -e \"${YELLOW}正在安装 $pkg ...${NC}\" $CMD_INSTALL $pkg else echo -e \"${GREEN}$pkg 已安装。${NC}\" fi done } install_packages # 2. 安装 Oh My Zsh # ----------------------------------------------------------- if [ -d \"$OMZ_DIR\" ]; then echo -e \"${GREEN}Oh My Zsh 已安装，跳过下载。${NC}\" else echo -e \"${YELLOW}正在安装 Oh My Zsh...${NC}\" # 使用官方脚本 sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended if [ ! -d \"$OMZ_DIR\" ]; then echo -e \"${RED}Oh My Zsh 安装失败，请检查网络 (Termux可能需要开启VPN)。${NC}\" exit 1 fi fi # 3. 下载插件 # ----------------------------------------------------------- install_plugin() { local name=$1 local repo=$2 local target_dir=\"$ZSH_CUSTOM/plugins/$name\" if [ ! -d \"$target_dir\" ]; then echo -e \"${YELLOW}正在下载插件: $name ...${NC}\" git clone --depth=1 $repo $target_dir else echo -e \"${GREEN}插件 $name 已存在。${NC}\" fi } install_plugin \"zsh-autosuggestions\" \"https://github.com/zsh-users/zsh-autosuggestions\" install_plugin \"zsh-syntax-highlighting\" \"https://github.com/zsh-users/zsh-syntax-highlighting.git\" # 4. 下载 Powerlevel10k 主题 # ----------------------------------------------------------- THEME_DIR=\"$ZSH_CUSTOM/themes/powerlevel10k\" if [ ! -d \"$THEME_DIR\" ]; then echo -e \"${YELLOW}正在下载主题: Powerlevel10k ...${NC}\" git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $THEME_DIR else echo -e \"${GREEN}主题 Powerlevel10k 已存在。${NC}\" fi # 5. 配置 .zshrc # ----------------------------------------------------------- echo -e \"${YELLOW}正在配置 .zshrc ...${NC}\" # 备份 if [ -f \"$ZSHRC\" ]; then cp \"$ZSHRC\" \"${ZSHRC}.backup.$(date +%Y%m%d%H%M%S)\" fi # 覆盖模板 cp \"$OMZ_DIR/templates/zshrc.zsh-template\" \"$ZSHRC\" # 设置 sed 命令 (MacOS 需要 -i '') if [[ \"$OSTYPE\" == \"darwin\"* ]]; then SED_CMD=\"sed -i ''\" else SED_CMD=\"sed -i\" # Linux \u0026 Termux fi # 修改主题 $SED_CMD 's/^ZSH_THEME=\".*\"/ZSH_THEME=\"powerlevel10k\\/powerlevel10k\"/' \"$ZSHRC\" # 修改插件 # 注意：Termux 环境下 docker 插件通常无效，但保留也不会报错 NEW_PLUGINS=\"plugins=(git z extract web-search zsh-autosuggestions zsh-syntax-highlighting)\" # 如果不是 MacOS 且不是 Termux (即普通 Linux 服务器)，加上 sudo 插件 # Termux 默认没 sudo，加上会报错；MacOS 也不常用 sudo 插件 if [[ -z \"$TERMUX_VERSION\" ]] \u0026\u0026 [[ \"$OSTYPE\" != \"darwin\"* ]]; then NEW_PLUGINS=\"plugins=(git z extract sudo web-search docker zsh-autosuggestions zsh-syntax-highlighting)\" fi $SED_CMD \"s/^plugins=(git)/$NEW_PLUGINS/\" \"$ZSHRC\" # 兜底检查 if ! grep -q \"zsh-autosuggestions\" \"$ZSHRC\"; then echo -e \"\\n$NEW_PLUGINS\" \u003e\u003e \"$ZSHRC\" fi echo -e \"${GREEN}.zshrc 配置完成！${NC}\" # 6. 设置默认 Shell # ----------------------------------------------------------- CURRENT_SHELL=$(basename \"$SHELL\") if [ \"$CURRENT_SHELL\" != \"zsh\" ]; then echo -e \"${YELLOW}正在设置 zsh 为默认 Shell...${NC}\" if command -v chsh \u0026\u003e /dev/null; then chsh -s $(which zsh) else echo -e \"${RED}无法自动修改默认 Shell，请手动执行: chsh -s zsh${NC}\" fi else echo -e \"${GREEN}当前 Shell 已经是 Zsh。${NC}\" fi # 7. 结束 # ----------------------------------------------------------- echo -e \"\\n${BLUE}==============================================${NC}\" echo -e \"${GREEN} Termux / Linux / Mac 环境安装完成！${NC}\" echo -e \"${BLUE}==============================================${NC}\" echo -e \"请执行: ${YELLOW}exec zsh${NC} 或重启 Termux 以生效。\" echo -e \"Powerlevel10k 配置向导将在首次进入 zsh 时启动。\" echo -e \"\\n💡 Termux 提示: 如果图标显示乱码，请长按 Termux 界面 -\u003e More -\u003e Style -\u003e Font\" echo -e \" 并选择一款 Nerd Font (推荐 MesloLGS NF)。\" echo -e \"==============================================\\n\" 这个脚本是ai写的。不过这不重要，好用就行。\n理论上这段脚本具有一定的健壮性，对于多数的linux发行版、macos，乃至termux，这段脚本按理都可以正常工作，不过我没测试过。\n如何使用? 将这个脚本写入xx.sh中。xx可以是任意名字，比如install_zsh.sh。 chmod +x xx.sh，输入这个指令为脚本赋权。 在当前目录下运行这个.sh文件，即输入./xx.sh。脚本就开始工作了。 ",
+    "wordCount" : "2866",
+    "inLanguage": "zh-cn",
+    "datePublished": "2025-12-15T23:25:53+08:00",
+    "dateModified": "2025-12-15T23:25:53+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/zshohmyzsh/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>工具不图鉴02：zsh&amp;ohmyzsh</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Dec 15, 2025</span></div>
+				<h1>工具不图鉴02：zsh&amp;ohmyzsh</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4">工具不图鉴</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B">教程</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/zsh">zsh</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/ohmyzsh">ohmyzsh</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>2866&nbsp  阅读时长13 Minutes, 1 Second</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2025-12-15 23:25 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <p>参考链接：</p>
+<p><a href="https://zh.wikipedia.org/wiki/Z_shell">zsh wiki</a></p>
+<p><a href="https://ohmyz.sh/">ohmyzsh</a></p>
+<h2 id="什么是zsh">什么是zsh？<a href="#%e4%bb%80%e4%b9%88%e6%98%afzsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>zsh是一个功能丰富的Unix shell，即<strong>命令行解释器</strong>。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。</p>
+<p>相较于其他命令行解释器如bash，zsh具有更强大的功能，如自动补全，历史记录，切换主题等。这一切都可以通过添加插件来完成。</p>
+<hr>
+<h3 id="如何安装zsh">如何安装zsh？<a href="#%e5%a6%82%e4%bd%95%e5%ae%89%e8%a3%85zsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>zsh并不是一个更新非常迅速的软件，这意味着你并不一定需要安装最新版才能确保最大程度的稳定和功能。通常来说，直接使用你的系统级包管理器来安装即可，不会导致兼容性问题。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install zsh
+</span></span></code></pre></div><hr>
+<h2 id="什么是ohmyzsh">什么是ohmyzsh？<a href="#%e4%bb%80%e4%b9%88%e6%98%afohmyzsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>ohmyzsh是一个开源的社区驱动的zsh配置管理框架。通常来说，直接为zsh添加插件并不方便。但是通过ohmyzsh，你只需要克隆一下插件仓库，再修改一下~/.zshrc即可使用插件。</p>
+<p>omz拥有非常丰富的插件生态以及活跃的贡献者社区，可以大大提高终端美观程度以及使用效率。</p>
+<hr>
+<h4 id="如何安装ohmyzsh">如何安装ohmyzsh？<a href="#%e5%a6%82%e4%bd%95%e5%ae%89%e8%a3%85ohmyzsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>不同于zsh以及很多其他的基本工具，ohmyzsh是一个迭代迅速的社区工具。这意味着如果想要使用更新更好的插件，最好通过官方渠道进行安装。</p>
+<p>这里罗列从<a href="https://ohmyz.sh/#install">omz官网</a>上摘录的下载指令。你只需要将指令输入终端运行即可。</p>
+<p>方法一：通过curl安装</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>方法二：通过wget安装</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>这两个指令是相对稳定的，它们不会随omz版本迭代而发生改变。</p>
+<hr>
+<h2 id="ohmyzsh如何配置">ohmyzsh如何配置？<a href="#ohmyzsh%e5%a6%82%e4%bd%95%e9%85%8d%e7%bd%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>将zsh设置为默认shell：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>chsh -s /bin/zsh
+</span></span></code></pre></div><hr>
+<h3 id="常用插件">常用插件<a href="#%e5%b8%b8%e7%94%a8%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<h4 id="1-zsh-autosuggestions-自动补全建议">1. zsh-autosuggestions (自动补全建议)<a href="#1-zsh-autosuggestions-%e8%87%aa%e5%8a%a8%e8%a1%a5%e5%85%a8%e5%bb%ba%e8%ae%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>根据历史记录给出自动补全建议，按下右键自动补全。</p>
+<p><a href="https://github.com/zsh-users/zsh-autosuggestions">github网页</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-autosuggestions <span style="color:#e6db74">${</span>ZSH_CUSTOM<span style="color:#66d9ef">:-</span>~/.oh-my-zsh/custom<span style="color:#e6db74">}</span>/plugins/zsh-autosuggestions
+</span></span></code></pre></div><hr>
+<h4 id="2-zsh-syntax-highlighting-语法高亮">2. zsh-syntax-highlighting (语法高亮)<a href="#2-zsh-syntax-highlighting-%e8%af%ad%e6%b3%95%e9%ab%98%e4%ba%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>当你输入命令时，正确的命令显示绿色，错误的显示红色，路径带有下划线。</p>
+<p><a href="https://github.com/zsh-users/zsh-syntax-highlighting">github网页</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-syntax-highlighting.git <span style="color:#e6db74">${</span>ZSH_CUSTOM<span style="color:#66d9ef">:-</span>~/.oh-my-zsh/custom<span style="color:#e6db74">}</span>/plugins/zsh-syntax-highlighting
+</span></span></code></pre></div><hr>
+<h4 id="3-git内置插件">3. git（内置插件）<a href="#3-git%e5%86%85%e7%bd%ae%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>提供git简写别名，并支持tab补全。</p>
+<ul>
+<li>常用别名：
+<ul>
+<li>gst -&gt; git status</li>
+<li>gco -&gt; git checkout</li>
+<li>gcm -&gt; git checkout master (或 main)</li>
+<li>gp -&gt; git push</li>
+<li>gl -&gt; git pull</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="4-z内置插件">4. z（内置插件）<a href="#4-z%e5%86%85%e7%bd%ae%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>记录你访问过的目录，之后只需输入 <code>z + 目录名片段</code> 即可直接跳转，无需输入完整路径。</p>
+<ul>
+<li>用法：<code>z down</code> (可能直接跳转到 <code>~/Downloads</code>)</li>
+</ul>
+<hr>
+<h4 id="5-extract内置插件">5. extract（内置插件）<a href="#5-extract%e5%86%85%e7%bd%ae%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>通用解压插件。不需要记住 <code>tar -xvf</code>、<code>unzip</code> 等繁琐参数，统一使用 <code>x</code> 命令解压任何格式的压缩包。</p>
+<ul>
+<li>用法：<code>x filename.tar.gz</code></li>
+</ul>
+<hr>
+<h3 id="启用插件">启用插件<a href="#%e5%90%af%e7%94%a8%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>下载完第三方插件后，必须在 <code>.zshrc</code> 文件中配置才能生效。</p>
+<p><strong>1. 编辑配置文件：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nano ~/.zshrc
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者使用 vim ~/.zshrc</span>
+</span></span></code></pre></div><p><strong>2. 找到 <code>plugins=(...)</code> 这一行，修改为：</strong>
+(注意：插件名之间用<strong>空格</strong>分隔，不要用逗号)（想使用哪些插件就写入哪些插件）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plugins<span style="color:#f92672">=(</span>
+</span></span><span style="display:flex;"><span>    git
+</span></span><span style="display:flex;"><span>    z
+</span></span><span style="display:flex;"><span>    extract
+</span></span><span style="display:flex;"><span>    sudo
+</span></span><span style="display:flex;"><span>    web-search
+</span></span><span style="display:flex;"><span>    docker
+</span></span><span style="display:flex;"><span>    zsh-autosuggestions       <span style="color:#75715e"># 第三方</span>
+</span></span><span style="display:flex;"><span>    zsh-syntax-highlighting   <span style="color:#75715e"># 第三方，建议放在列表最后</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p><strong>3. 使配置生效：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>source ~/.zshrc
+</span></span></code></pre></div><hr>
+<h3 id="常见美化方案">常见美化方案<a href="#%e5%b8%b8%e8%a7%81%e7%be%8e%e5%8c%96%e6%96%b9%e6%a1%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes">可视化主题百科</a></p>
+<p>在<code>~/.zshrc</code>中找到<code>ZSH_THEME</code>配置项，将对应位置的主题改为你下载的主题，之后<code>source ~/.zshrc</code>即可启用。</p>
+<hr>
+<h4 id="1-powerlevel10k">1. Powerlevel10k<a href="#1-powerlevel10k" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>目前相当流行的主题，配置方便，高度可自定义。</p>
+<p><a href="https://github.com/romkatv/powerlevel10k">github网页</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> https://github.com/romkatv/powerlevel10k.git <span style="color:#e6db74">${</span>ZSH_CUSTOM<span style="color:#66d9ef">:-</span>$HOME/.oh-my-zsh/custom<span style="color:#e6db74">}</span>/themes/powerlevel10k
+</span></span></code></pre></div><p>主题名：<code>powerlevel10k/powerlevel10k</code></p>
+<hr>
+<h4 id="2-ys">2. ys<a href="#2-ys" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>我个人比较喜欢的主题，非常简洁美观，并且是omz的内置主题。直接将主题名改为ys即可。</p>
+<hr>
+<h1 id="集成式配置脚本">集成式配置脚本<a href="#%e9%9b%86%e6%88%90%e5%bc%8f%e9%85%8d%e7%bd%ae%e8%84%9a%e6%9c%ac" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>一键配置zsh&amp;omz全套环境。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  Zsh + OMZ + Plugins + P10k 一键安装脚本 (含 Termux 支持)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ============================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义颜色</span>
+</span></span><span style="display:flex;"><span>RED<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;31m&#39;</span>
+</span></span><span style="display:flex;"><span>GREEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;32m&#39;</span>
+</span></span><span style="display:flex;"><span>YELLOW<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;33m&#39;</span>
+</span></span><span style="display:flex;"><span>BLUE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;34m&#39;</span>
+</span></span><span style="display:flex;"><span>NC<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0m&#39;</span> <span style="color:#75715e"># No Color</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义路径</span>
+</span></span><span style="display:flex;"><span>OMZ_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.oh-my-zsh&#34;</span>
+</span></span><span style="display:flex;"><span>ZSH_CUSTOM<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">/custom&#34;</span>
+</span></span><span style="display:flex;"><span>ZSHRC<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.zshrc&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>BLUE<span style="color:#e6db74">}</span><span style="color:#e6db74">&gt;&gt;&gt; 开始执行集成安装脚本...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 环境检测与软件安装</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>install_packages<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在检查系统环境...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    CMD_UPDATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检测是否为 Termux</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$TERMUX_VERSION<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">识别到 Termux 环境。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pkg install -y&#34;</span>
+</span></span><span style="display:flex;"><span>        CMD_UPDATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pkg update -y&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Termux 通常不需要 sudo，除非安装了 tsu，但常规包管理直接用 pkg</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检测 MacOS</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$OSTYPE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;darwin&#34;</span>* <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">识别到 MacOS 环境。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> command -v brew &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>            CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;brew install&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">未找到 Homebrew，请先安装 Homebrew。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检测 Linux 发行版</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v apt-get &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo apt-get install -y&#34;</span>
+</span></span><span style="display:flex;"><span>        CMD_UPDATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo apt-get update&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v yum &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo yum install -y&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v dnf &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo dnf install -y&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v pacman &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo pacman -S --noconfirm&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">未找到支持的包管理器 (pkg/apt/yum/dnf/pacman/brew)。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 更新源 (仅 Termux 和 Debian/Ubuntu)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -z <span style="color:#e6db74">&#34;</span>$CMD_UPDATE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;正在更新软件源...&#34;</span>
+</span></span><span style="display:flex;"><span>        $CMD_UPDATE
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 安装 git, zsh, curl, vim (vim用于防止sed有时需要编辑器环境)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Termux 基础包可能不含 vim/nano，建议安装一个编辑器</span>
+</span></span><span style="display:flex;"><span>    DEPENDENCIES<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;git zsh curl&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> pkg in $DEPENDENCIES; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ! command -v $pkg &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>            echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在安装 </span>$pkg<span style="color:#e6db74"> ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            $CMD_INSTALL $pkg
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span>$pkg<span style="color:#e6db74"> 已安装。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>install_packages
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 安装 Oh My Zsh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -d <span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">Oh My Zsh 已安装，跳过下载。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在安装 Oh My Zsh...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 使用官方脚本</span>
+</span></span><span style="display:flex;"><span>    sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;&#34;</span> --unattended
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d <span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">Oh My Zsh 安装失败，请检查网络 (Termux可能需要开启VPN)。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 下载插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>install_plugin<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    local name<span style="color:#f92672">=</span>$1
+</span></span><span style="display:flex;"><span>    local repo<span style="color:#f92672">=</span>$2
+</span></span><span style="display:flex;"><span>    local target_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ZSH_CUSTOM<span style="color:#e6db74">/plugins/</span>$name<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d <span style="color:#e6db74">&#34;</span>$target_dir<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在下载插件: </span>$name<span style="color:#e6db74"> ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> $repo $target_dir
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">插件 </span>$name<span style="color:#e6db74"> 已存在。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>install_plugin <span style="color:#e6db74">&#34;zsh-autosuggestions&#34;</span> <span style="color:#e6db74">&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;</span>
+</span></span><span style="display:flex;"><span>install_plugin <span style="color:#e6db74">&#34;zsh-syntax-highlighting&#34;</span> <span style="color:#e6db74">&#34;https://github.com/zsh-users/zsh-syntax-highlighting.git&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 下载 Powerlevel10k 主题</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>THEME_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ZSH_CUSTOM<span style="color:#e6db74">/themes/powerlevel10k&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d <span style="color:#e6db74">&#34;</span>$THEME_DIR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在下载主题: Powerlevel10k ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> https://github.com/romkatv/powerlevel10k.git $THEME_DIR
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">主题 Powerlevel10k 已存在。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. 配置 .zshrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在配置 .zshrc ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 备份</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    cp <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>ZSHRC<span style="color:#e6db74">}</span><span style="color:#e6db74">.backup.</span><span style="color:#66d9ef">$(</span>date +%Y%m%d%H%M%S<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 覆盖模板</span>
+</span></span><span style="display:flex;"><span>cp <span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">/templates/zshrc.zsh-template&#34;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置 sed 命令 (MacOS 需要 -i &#39;&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$OSTYPE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;darwin&#34;</span>* <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    SED_CMD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sed -i &#39;&#39;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    SED_CMD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sed -i&#34;</span> <span style="color:#75715e"># Linux &amp; Termux</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改主题</span>
+</span></span><span style="display:flex;"><span>$SED_CMD <span style="color:#e6db74">&#39;s/^ZSH_THEME=&#34;.*&#34;/ZSH_THEME=&#34;powerlevel10k\/powerlevel10k&#34;/&#39;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注意：Termux 环境下 docker 插件通常无效，但保留也不会报错</span>
+</span></span><span style="display:flex;"><span>NEW_PLUGINS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;plugins=(git z extract web-search zsh-autosuggestions zsh-syntax-highlighting)&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果不是 MacOS 且不是 Termux (即普通 Linux 服务器)，加上 sudo 插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Termux 默认没 sudo，加上会报错；MacOS 也不常用 sudo 插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -z <span style="color:#e6db74">&#34;</span>$TERMUX_VERSION<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$OSTYPE<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;darwin&#34;</span>* <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>     NEW_PLUGINS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;plugins=(git z extract sudo web-search docker zsh-autosuggestions zsh-syntax-highlighting)&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$SED_CMD <span style="color:#e6db74">&#34;s/^plugins=(git)/</span>$NEW_PLUGINS<span style="color:#e6db74">/&#34;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 兜底检查</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ! grep -q <span style="color:#e6db74">&#34;zsh-autosuggestions&#34;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;\n</span>$NEW_PLUGINS<span style="color:#e6db74">&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">.zshrc 配置完成！</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. 设置默认 Shell</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>CURRENT_SHELL<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>basename <span style="color:#e6db74">&#34;</span>$SHELL<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CURRENT_SHELL<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zsh&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在设置 zsh 为默认 Shell...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> command -v chsh &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        chsh -s <span style="color:#66d9ef">$(</span>which zsh<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">无法自动修改默认 Shell，请手动执行: chsh -s zsh</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">当前 Shell 已经是 Zsh。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 7. 结束</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;\n</span><span style="color:#e6db74">${</span>BLUE<span style="color:#e6db74">}</span><span style="color:#e6db74">==============================================</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">  Termux / Linux / Mac 环境安装完成！</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>BLUE<span style="color:#e6db74">}</span><span style="color:#e6db74">==============================================</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;请执行: </span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">exec zsh</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74"> 或重启 Termux 以生效。&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;Powerlevel10k 配置向导将在首次进入 zsh 时启动。&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;\n💡 Termux 提示: 如果图标显示乱码，请长按 Termux 界面 -&gt; More -&gt; Style -&gt; Font&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;   并选择一款 Nerd Font (推荐 MesloLGS NF)。&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;==============================================\n&#34;</span>
+</span></span></code></pre></div><p>这个脚本是ai写的。不过这不重要，好用就行。</p>
+<p>理论上这段脚本具有一定的健壮性，对于多数的linux发行版、macos，乃至termux，这段脚本按理都可以正常工作，不过我没测试过。</p>
+<hr>
+<h3 id="如何使用">如何使用?<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<ol>
+<li>将这个脚本写入<code>xx.sh</code>中。xx可以是任意名字，比如<code>install_zsh.sh</code>。</li>
+<li><code>chmod +x xx.sh</code>，输入这个指令为脚本赋权。</li>
+<li>在当前目录下运行这个.sh文件，即输入<code>./xx.sh</code>。脚本就开始工作了。</li>
+</ol>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title=""><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+<div class="related-posts thin">
+	<h2></h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/curlwget/">工具不图鉴01：curl&amp;wget</a></li>
+	
+	<li><a href="/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">NeovimPlugins配置方法</a></li>
+	
+	<li><a href="/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/">Neovim配置如何入门</a></li>
+	
+	<li><a href="/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">零基础如何搭建博客</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title"></div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是zsh">什么是zsh？</a>
+      <ul>
+        <li><a href="#如何安装zsh">如何安装zsh？</a></li>
+      </ul>
+    </li>
+    <li><a href="#什么是ohmyzsh">什么是ohmyzsh？</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#ohmyzsh如何配置">ohmyzsh如何配置？</a>
+      <ul>
+        <li><a href="#常用插件">常用插件</a></li>
+        <li><a href="#启用插件">启用插件</a></li>
+        <li><a href="#常见美化方案">常见美化方案</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#如何使用">如何使用?</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="next-post" href="http://localhost:1313/zh-cn/posts/curlwget/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+   </svg>&nbsp;</span><br><span>工具不图鉴01：curl&amp;wget</span>
+			</a>
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/">
+				<span class="post-nav-label">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>Triton自学日志 02FusedSoftmax</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2025 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script></body>
+</html>

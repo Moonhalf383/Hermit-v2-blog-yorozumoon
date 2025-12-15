@@ -7,9 +7,493 @@
 		<generator>Hugo -- 0.152.2</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Wed, 10 Dec 2025 08:33:43 +0800</lastBuildDate>
+		<lastBuildDate>Mon, 15 Dec 2025 23:25:53 +0800</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>工具不图鉴01：curl&amp;wget</title>
+			<link>http://localhost:1313/zh-cn/posts/curlwget/</link>
+			<pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/curlwget/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>参考链接：</p>
+<p><a href="https://curl.se/">curl官网</a></p>
+<p><a href="https://www.gnu.org/software/wget/">wget官网</a></p>
+<p>curl和wget是在配置服务器时相当常用的终端工具。</p>
+<hr>
+<h2 id="什么是curl">什么是curl？<a href="#%e4%bb%80%e4%b9%88%e6%98%afcurl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。</p>
+<p>在我们的日常生活中，我们不可避免的要和网络打交道。最常见的方式就是通过浏览器来浏览网页和下载文件。浏览器通过图形化界面替你完成了写请求的步骤。所谓请求，就是一种规范化的和服务器对话的方式。你只需要点点屏幕就可以完成一系列与网络服务器的信息交换。</p>
+<p>但是对于没有图形化界面的终端来说，所有的信息都是基于文本来传递的，我们当然也没办法通过图形化的浏览器来获取网络资源。curl的功能就在于此。只不过不同于浏览器图形化界面的直白，你必须明确你递交的请求包含了哪些动作。</p>
+<p>理解curl，其实只需要理解一句话：</p>
+<blockquote>
+<p><strong>curl = 在命令行中手动发送http请求</strong></p>
+</blockquote>
+<p>一条http请求，本质上就是4个东西：</p>
+<ol>
+<li>请求方法</li>
+<li>请求地址（url）</li>
+<li>请求头</li>
+<li>请求体</li>
+</ol>
+<p>curl的最基本形式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl URL
+</span></span></code></pre></div><p>相当于说：让我看看这个url里有什么东西。</p>
+<p>关于curl语法的细则这里不再过多赘述。</p>
+<hr>
+<h3 id="如何使用curl">如何使用curl？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8curl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>光知道curl是发送网络协议的工具这点其实对你的使用过程没有太大帮助。事实上，大多数人都不会从http的原理层面来思考和使用curl。</p>
+<p>多数人的真实行为是：</p>
+<ul>
+<li>从网站/博客中复制一个curl指令。</li>
+<li>稍加修改或者根本不修改。</li>
+<li>用就完了。</li>
+</ul>
+<p>比如，如果你想下载ohmyzsh，你只需要把官网上的下载指令复制下来运行即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>这本身是一个原理相对复杂的指令，但是你根本不用关系这些事情。开发者已经替你考虑好了一切。</p>
+<p>而稍微复杂一点点的情况是，你想要下载一个文件，但是README.md中没有给出下载指令。</p>
+<p>我们举一个最简单的例子：</p>
+<hr>
+<p>比如，你想把一个github上的文件下载到本地。但是呢，没有任何网页告诉你应该输入什么指令来下载这个文件。你可能会想到另外用一个智能设备通过浏览器下载，然后上传到终端对应的机器。这是一个方法，但是不够直接。事实上，我们只需要一个curl指令就可以把文件下载到本地。</p>
+<p>比如，你看上了ohmyzsh的README.md。你很想把它下载到本地。你不需要动用浏览器，也不需要git clone整个仓库，你只需要在终端中输入：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>curl就开始帮你下载文件了。当然前提是你的网络环境支持你访问到这个网站，如果网络条件不佳，你可能必须要配置网络代理才能正常使用。</p>
+<p>但是，只要你实际尝试过，你就会发现，你下载得到的根本不是你想要的东西。你下载得到的是一大堆html代码，根本不是一个md文件。为什么呢？根本上原因在于你下载的实际是用来显示这个网页的代码，而非你想要的内容。</p>
+<p>不过，对于github而言，即使你不能直接curl来获取文件，github为你提供了一个另外的快捷途径，方便你直接使用curl来下载文件。你只需要将url中的<code>github.com</code>替换为<code>raw.githubusercontent.com</code>即可。</p>
+<p>然而，在这个网站中并不存有作者名以及plain之类的参数。所以，你还需要删除<code>/blob</code>以及<code>?plain=1</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+</span></span></code></pre></div><p>如果你觉得这个方法太麻烦，对于github来说还有另外一种方法可以使用：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -L -O <span style="color:#e6db74">&#34;https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?raw=1&#34;</span>
+</span></span></code></pre></div><p>因为我选取的这个README.md网页实际比较特殊，后面自带参数。在这个方法中，你只需要在前面添加<code>-L</code>参数，并为url后方添加<code>raw=1</code>参数即可下载。在本例子中，直接将<code>plain=1</code>替换为<code>raw=1</code>即可。</p>
+<hr>
+<h3 id="如何下载curl">如何下载curl？<a href="#%e5%a6%82%e4%bd%95%e4%b8%8b%e8%bd%bdcurl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>在绝大多数情况下，你的机器实际上已经配备了curl工具，因为这是一个非常基础的工具。</p>
+<p>假如你的机器上没有这个工具，通常来说你也不需要经过官网来下载最新版。直接使用系统级包管理器下载即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install curl <span style="color:#75715e"># 以ubuntu为例</span>
+</span></span></code></pre></div><hr>
+<h2 id="什么是wget">什么是wget?<a href="#%e4%bb%80%e4%b9%88%e6%98%afwget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<blockquote>
+<p>wget = <strong>World Wide Web + get</strong></p>
+</blockquote>
+<p>字面意思，从万维网上获取东西，就是wget。</p>
+<p>不同于curl丰富的功能，这是一个专注于下载内容的工具。它的设计目的很明确：<strong>稳定、自动化、可恢复的下载文件</strong>。</p>
+<hr>
+<h3 id="如何使用wget">如何使用wget？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8wget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>wget的使用方法比curl要简单的多。其中一个最简形式如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget url
+</span></span></code></pre></div><p>不需要任何参数。比如，我们仍然尝试下载ohmyzsh的README.md：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>当然，这仍然是个错误的指令，通过它你只能下载到网页代码。我写这句指令，意在说明wget的简便易用。真正有用的指令如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+</span></span></code></pre></div><p>你仍然需要得到文件真正存放的url。同时，wget也允许你想下载得到的文件直接用新文件名存入本地，你只需要加一个<code>-O</code>参数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -O myreadme.md https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+</span></span></code></pre></div><hr>
+<p>此外，对于一些体积较大的下载，下载过程可能相对漫长。假如下载过程中因为网络问题而意外终断，一般的wget下载进度就会归零。在此情况下，你可以使用<code>-c</code>参数来保存下载进度，这样即使中间下载中断，继续输入指令，文件就会在原有进度基础上继续下载，不会丢失进度。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -c https://example.com/bigfile.iso <span style="color:#75715e"># 这不是一个真实存在的网站，只是方便演示。</span>
+</span></span></code></pre></div><hr>
+<h3 id="如何下载wget">如何下载wget？<a href="#%e5%a6%82%e4%bd%95%e4%b8%8b%e8%bd%bdwget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>与curl情况基本类似，多数时候你的机器上已经自带wget了。在少数极简开发环境下可能出现不自带wget的情况。此时，只需要使用包管理器下载即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install wget <span style="color:#75715e"># 以Ubuntu为例</span>
+</span></span></code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>工具不图鉴02：zsh&amp;ohmyzsh</title>
+			<link>http://localhost:1313/zh-cn/posts/zshohmyzsh/</link>
+			<pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/zshohmyzsh/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>参考链接：</p>
+<p><a href="https://zh.wikipedia.org/wiki/Z_shell">zsh wiki</a></p>
+<p><a href="https://ohmyz.sh/">ohmyzsh</a></p>
+<h2 id="什么是zsh">什么是zsh？<a href="#%e4%bb%80%e4%b9%88%e6%98%afzsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>zsh是一个功能丰富的Unix shell，即<strong>命令行解释器</strong>。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。</p>
+<p>相较于其他命令行解释器如bash，zsh具有更强大的功能，如自动补全，历史记录，切换主题等。这一切都可以通过添加插件来完成。</p>
+<hr>
+<h3 id="如何安装zsh">如何安装zsh？<a href="#%e5%a6%82%e4%bd%95%e5%ae%89%e8%a3%85zsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>zsh并不是一个更新非常迅速的软件，这意味着你并不一定需要安装最新版才能确保最大程度的稳定和功能。通常来说，直接使用你的系统级包管理器来安装即可，不会导致兼容性问题。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install zsh
+</span></span></code></pre></div><hr>
+<h2 id="什么是ohmyzsh">什么是ohmyzsh？<a href="#%e4%bb%80%e4%b9%88%e6%98%afohmyzsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>ohmyzsh是一个开源的社区驱动的zsh配置管理框架。通常来说，直接为zsh添加插件并不方便。但是通过ohmyzsh，你只需要克隆一下插件仓库，再修改一下~/.zshrc即可使用插件。</p>
+<p>omz拥有非常丰富的插件生态以及活跃的贡献者社区，可以大大提高终端美观程度以及使用效率。</p>
+<hr>
+<h4 id="如何安装ohmyzsh">如何安装ohmyzsh？<a href="#%e5%a6%82%e4%bd%95%e5%ae%89%e8%a3%85ohmyzsh" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>不同于zsh以及很多其他的基本工具，ohmyzsh是一个迭代迅速的社区工具。这意味着如果想要使用更新更好的插件，最好通过官方渠道进行安装。</p>
+<p>这里罗列从<a href="https://ohmyz.sh/#install">omz官网</a>上摘录的下载指令。你只需要将指令输入终端运行即可。</p>
+<p>方法一：通过curl安装</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>方法二：通过wget安装</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>这两个指令是相对稳定的，它们不会随omz版本迭代而发生改变。</p>
+<hr>
+<h2 id="ohmyzsh如何配置">ohmyzsh如何配置？<a href="#ohmyzsh%e5%a6%82%e4%bd%95%e9%85%8d%e7%bd%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>将zsh设置为默认shell：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>chsh -s /bin/zsh
+</span></span></code></pre></div><hr>
+<h3 id="常用插件">常用插件<a href="#%e5%b8%b8%e7%94%a8%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<h4 id="1-zsh-autosuggestions-自动补全建议">1. zsh-autosuggestions (自动补全建议)<a href="#1-zsh-autosuggestions-%e8%87%aa%e5%8a%a8%e8%a1%a5%e5%85%a8%e5%bb%ba%e8%ae%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>根据历史记录给出自动补全建议，按下右键自动补全。</p>
+<p><a href="https://github.com/zsh-users/zsh-autosuggestions">github网页</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-autosuggestions <span style="color:#e6db74">${</span>ZSH_CUSTOM<span style="color:#66d9ef">:-</span>~/.oh-my-zsh/custom<span style="color:#e6db74">}</span>/plugins/zsh-autosuggestions
+</span></span></code></pre></div><hr>
+<h4 id="2-zsh-syntax-highlighting-语法高亮">2. zsh-syntax-highlighting (语法高亮)<a href="#2-zsh-syntax-highlighting-%e8%af%ad%e6%b3%95%e9%ab%98%e4%ba%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>当你输入命令时，正确的命令显示绿色，错误的显示红色，路径带有下划线。</p>
+<p><a href="https://github.com/zsh-users/zsh-syntax-highlighting">github网页</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-syntax-highlighting.git <span style="color:#e6db74">${</span>ZSH_CUSTOM<span style="color:#66d9ef">:-</span>~/.oh-my-zsh/custom<span style="color:#e6db74">}</span>/plugins/zsh-syntax-highlighting
+</span></span></code></pre></div><hr>
+<h4 id="3-git内置插件">3. git（内置插件）<a href="#3-git%e5%86%85%e7%bd%ae%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>提供git简写别名，并支持tab补全。</p>
+<ul>
+<li>常用别名：
+<ul>
+<li>gst -&gt; git status</li>
+<li>gco -&gt; git checkout</li>
+<li>gcm -&gt; git checkout master (或 main)</li>
+<li>gp -&gt; git push</li>
+<li>gl -&gt; git pull</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="4-z内置插件">4. z（内置插件）<a href="#4-z%e5%86%85%e7%bd%ae%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>记录你访问过的目录，之后只需输入 <code>z + 目录名片段</code> 即可直接跳转，无需输入完整路径。</p>
+<ul>
+<li>用法：<code>z down</code> (可能直接跳转到 <code>~/Downloads</code>)</li>
+</ul>
+<hr>
+<h4 id="5-extract内置插件">5. extract（内置插件）<a href="#5-extract%e5%86%85%e7%bd%ae%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>通用解压插件。不需要记住 <code>tar -xvf</code>、<code>unzip</code> 等繁琐参数，统一使用 <code>x</code> 命令解压任何格式的压缩包。</p>
+<ul>
+<li>用法：<code>x filename.tar.gz</code></li>
+</ul>
+<hr>
+<h3 id="启用插件">启用插件<a href="#%e5%90%af%e7%94%a8%e6%8f%92%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>下载完第三方插件后，必须在 <code>.zshrc</code> 文件中配置才能生效。</p>
+<p><strong>1. 编辑配置文件：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nano ~/.zshrc
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者使用 vim ~/.zshrc</span>
+</span></span></code></pre></div><p><strong>2. 找到 <code>plugins=(...)</code> 这一行，修改为：</strong>
+(注意：插件名之间用<strong>空格</strong>分隔，不要用逗号)（想使用哪些插件就写入哪些插件）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plugins<span style="color:#f92672">=(</span>
+</span></span><span style="display:flex;"><span>    git
+</span></span><span style="display:flex;"><span>    z
+</span></span><span style="display:flex;"><span>    extract
+</span></span><span style="display:flex;"><span>    sudo
+</span></span><span style="display:flex;"><span>    web-search
+</span></span><span style="display:flex;"><span>    docker
+</span></span><span style="display:flex;"><span>    zsh-autosuggestions       <span style="color:#75715e"># 第三方</span>
+</span></span><span style="display:flex;"><span>    zsh-syntax-highlighting   <span style="color:#75715e"># 第三方，建议放在列表最后</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><p><strong>3. 使配置生效：</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>source ~/.zshrc
+</span></span></code></pre></div><hr>
+<h3 id="常见美化方案">常见美化方案<a href="#%e5%b8%b8%e8%a7%81%e7%be%8e%e5%8c%96%e6%96%b9%e6%a1%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes">可视化主题百科</a></p>
+<p>在<code>~/.zshrc</code>中找到<code>ZSH_THEME</code>配置项，将对应位置的主题改为你下载的主题，之后<code>source ~/.zshrc</code>即可启用。</p>
+<hr>
+<h4 id="1-powerlevel10k">1. Powerlevel10k<a href="#1-powerlevel10k" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>目前相当流行的主题，配置方便，高度可自定义。</p>
+<p><a href="https://github.com/romkatv/powerlevel10k">github网页</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> https://github.com/romkatv/powerlevel10k.git <span style="color:#e6db74">${</span>ZSH_CUSTOM<span style="color:#66d9ef">:-</span>$HOME/.oh-my-zsh/custom<span style="color:#e6db74">}</span>/themes/powerlevel10k
+</span></span></code></pre></div><p>主题名：<code>powerlevel10k/powerlevel10k</code></p>
+<hr>
+<h4 id="2-ys">2. ys<a href="#2-ys" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>我个人比较喜欢的主题，非常简洁美观，并且是omz的内置主题。直接将主题名改为ys即可。</p>
+<hr>
+<h1 id="集成式配置脚本">集成式配置脚本<a href="#%e9%9b%86%e6%88%90%e5%bc%8f%e9%85%8d%e7%bd%ae%e8%84%9a%e6%9c%ac" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>一键配置zsh&amp;omz全套环境。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#  Zsh + OMZ + Plugins + P10k 一键安装脚本 (含 Termux 支持)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ============================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义颜色</span>
+</span></span><span style="display:flex;"><span>RED<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;31m&#39;</span>
+</span></span><span style="display:flex;"><span>GREEN<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;32m&#39;</span>
+</span></span><span style="display:flex;"><span>YELLOW<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;33m&#39;</span>
+</span></span><span style="display:flex;"><span>BLUE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0;34m&#39;</span>
+</span></span><span style="display:flex;"><span>NC<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;\033[0m&#39;</span> <span style="color:#75715e"># No Color</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义路径</span>
+</span></span><span style="display:flex;"><span>OMZ_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.oh-my-zsh&#34;</span>
+</span></span><span style="display:flex;"><span>ZSH_CUSTOM<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">/custom&#34;</span>
+</span></span><span style="display:flex;"><span>ZSHRC<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.zshrc&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>BLUE<span style="color:#e6db74">}</span><span style="color:#e6db74">&gt;&gt;&gt; 开始执行集成安装脚本...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 环境检测与软件安装</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>install_packages<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在检查系统环境...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    CMD_UPDATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检测是否为 Termux</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$TERMUX_VERSION<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">识别到 Termux 环境。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pkg install -y&#34;</span>
+</span></span><span style="display:flex;"><span>        CMD_UPDATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pkg update -y&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Termux 通常不需要 sudo，除非安装了 tsu，但常规包管理直接用 pkg</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检测 MacOS</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$OSTYPE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;darwin&#34;</span>* <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">识别到 MacOS 环境。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> command -v brew &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>            CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;brew install&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">未找到 Homebrew，请先安装 Homebrew。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 检测 Linux 发行版</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v apt-get &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo apt-get install -y&#34;</span>
+</span></span><span style="display:flex;"><span>        CMD_UPDATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo apt-get update&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v yum &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo yum install -y&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v dnf &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo dnf install -y&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> command -v pacman &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        CMD_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sudo pacman -S --noconfirm&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">未找到支持的包管理器 (pkg/apt/yum/dnf/pacman/brew)。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 更新源 (仅 Termux 和 Debian/Ubuntu)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -z <span style="color:#e6db74">&#34;</span>$CMD_UPDATE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;正在更新软件源...&#34;</span>
+</span></span><span style="display:flex;"><span>        $CMD_UPDATE
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 安装 git, zsh, curl, vim (vim用于防止sed有时需要编辑器环境)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Termux 基础包可能不含 vim/nano，建议安装一个编辑器</span>
+</span></span><span style="display:flex;"><span>    DEPENDENCIES<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;git zsh curl&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> pkg in $DEPENDENCIES; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ! command -v $pkg &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>            echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在安装 </span>$pkg<span style="color:#e6db74"> ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            $CMD_INSTALL $pkg
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>            echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span>$pkg<span style="color:#e6db74"> 已安装。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>install_packages
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 安装 Oh My Zsh</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -d <span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">Oh My Zsh 已安装，跳过下载。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在安装 Oh My Zsh...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 使用官方脚本</span>
+</span></span><span style="display:flex;"><span>    sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;&#34;</span> --unattended
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d <span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">Oh My Zsh 安装失败，请检查网络 (Termux可能需要开启VPN)。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 下载插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>install_plugin<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    local name<span style="color:#f92672">=</span>$1
+</span></span><span style="display:flex;"><span>    local repo<span style="color:#f92672">=</span>$2
+</span></span><span style="display:flex;"><span>    local target_dir<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ZSH_CUSTOM<span style="color:#e6db74">/plugins/</span>$name<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d <span style="color:#e6db74">&#34;</span>$target_dir<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在下载插件: </span>$name<span style="color:#e6db74"> ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>        git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> $repo $target_dir
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">插件 </span>$name<span style="color:#e6db74"> 已存在。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>install_plugin <span style="color:#e6db74">&#34;zsh-autosuggestions&#34;</span> <span style="color:#e6db74">&#34;https://github.com/zsh-users/zsh-autosuggestions&#34;</span>
+</span></span><span style="display:flex;"><span>install_plugin <span style="color:#e6db74">&#34;zsh-syntax-highlighting&#34;</span> <span style="color:#e6db74">&#34;https://github.com/zsh-users/zsh-syntax-highlighting.git&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 下载 Powerlevel10k 主题</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>THEME_DIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$ZSH_CUSTOM<span style="color:#e6db74">/themes/powerlevel10k&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> ! -d <span style="color:#e6db74">&#34;</span>$THEME_DIR<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在下载主题: Powerlevel10k ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    git clone --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> https://github.com/romkatv/powerlevel10k.git $THEME_DIR
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">主题 Powerlevel10k 已存在。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 5. 配置 .zshrc</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在配置 .zshrc ...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 备份</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    cp <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>ZSHRC<span style="color:#e6db74">}</span><span style="color:#e6db74">.backup.</span><span style="color:#66d9ef">$(</span>date +%Y%m%d%H%M%S<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 覆盖模板</span>
+</span></span><span style="display:flex;"><span>cp <span style="color:#e6db74">&#34;</span>$OMZ_DIR<span style="color:#e6db74">/templates/zshrc.zsh-template&#34;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 设置 sed 命令 (MacOS 需要 -i &#39;&#39;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$OSTYPE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;darwin&#34;</span>* <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    SED_CMD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sed -i &#39;&#39;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    SED_CMD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;sed -i&#34;</span> <span style="color:#75715e"># Linux &amp; Termux</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改主题</span>
+</span></span><span style="display:flex;"><span>$SED_CMD <span style="color:#e6db74">&#39;s/^ZSH_THEME=&#34;.*&#34;/ZSH_THEME=&#34;powerlevel10k\/powerlevel10k&#34;/&#39;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注意：Termux 环境下 docker 插件通常无效，但保留也不会报错</span>
+</span></span><span style="display:flex;"><span>NEW_PLUGINS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;plugins=(git z extract web-search zsh-autosuggestions zsh-syntax-highlighting)&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果不是 MacOS 且不是 Termux (即普通 Linux 服务器)，加上 sudo 插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Termux 默认没 sudo，加上会报错；MacOS 也不常用 sudo 插件</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -z <span style="color:#e6db74">&#34;</span>$TERMUX_VERSION<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">[[</span> <span style="color:#e6db74">&#34;</span>$OSTYPE<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;darwin&#34;</span>* <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>     NEW_PLUGINS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;plugins=(git z extract sudo web-search docker zsh-autosuggestions zsh-syntax-highlighting)&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$SED_CMD <span style="color:#e6db74">&#34;s/^plugins=(git)/</span>$NEW_PLUGINS<span style="color:#e6db74">/&#34;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 兜底检查</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ! grep -q <span style="color:#e6db74">&#34;zsh-autosuggestions&#34;</span> <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;\n</span>$NEW_PLUGINS<span style="color:#e6db74">&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$ZSHRC<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">.zshrc 配置完成！</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 6. 设置默认 Shell</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>CURRENT_SHELL<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>basename <span style="color:#e6db74">&#34;</span>$SHELL<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CURRENT_SHELL<span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zsh&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">正在设置 zsh 为默认 Shell...</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> command -v chsh &amp;&gt; /dev/null; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        chsh -s <span style="color:#66d9ef">$(</span>which zsh<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>RED<span style="color:#e6db74">}</span><span style="color:#e6db74">无法自动修改默认 Shell，请手动执行: chsh -s zsh</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">当前 Shell 已经是 Zsh。</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 7. 结束</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -----------------------------------------------------------</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;\n</span><span style="color:#e6db74">${</span>BLUE<span style="color:#e6db74">}</span><span style="color:#e6db74">==============================================</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>GREEN<span style="color:#e6db74">}</span><span style="color:#e6db74">  Termux / Linux / Mac 环境安装完成！</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>BLUE<span style="color:#e6db74">}</span><span style="color:#e6db74">==============================================</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;请执行: </span><span style="color:#e6db74">${</span>YELLOW<span style="color:#e6db74">}</span><span style="color:#e6db74">exec zsh</span><span style="color:#e6db74">${</span>NC<span style="color:#e6db74">}</span><span style="color:#e6db74"> 或重启 Termux 以生效。&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;Powerlevel10k 配置向导将在首次进入 zsh 时启动。&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;\n💡 Termux 提示: 如果图标显示乱码，请长按 Termux 界面 -&gt; More -&gt; Style -&gt; Font&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;   并选择一款 Nerd Font (推荐 MesloLGS NF)。&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;==============================================\n&#34;</span>
+</span></span></code></pre></div><p>这个脚本是ai写的。不过这不重要，好用就行。</p>
+<p>理论上这段脚本具有一定的健壮性，对于多数的linux发行版、macos，乃至termux，这段脚本按理都可以正常工作，不过我没测试过。</p>
+<hr>
+<h3 id="如何使用">如何使用?<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<ol>
+<li>将这个脚本写入<code>xx.sh</code>中。xx可以是任意名字，比如<code>install_zsh.sh</code>。</li>
+<li><code>chmod +x xx.sh</code>，输入这个指令为脚本赋权。</li>
+<li>在当前目录下运行这个.sh文件，即输入<code>./xx.sh</code>。脚本就开始工作了。</li>
+</ol>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Triton自学日志 02FusedSoftmax</title>
@@ -2091,6 +2575,271 @@ git push -u origin main - 第一次推送时用，之后可直接 git push
    </svg></a></h2>
 <p>这是我正式写的第一篇博客。码字码了半天。因为实际上本人也是刚刚开始接触博客，没有很丰富的经验与知识基础，希望多多见谅。</p>
 <p>因为现在没有图床，导入图片不太方便，之后希望能尽快解决。（2025-11-23，现在也没有解决）</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title></title>
+			<link>http://localhost:1313/zh-cn/posts/readme/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/readme/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>A fast and flexible static site generator built with love by <a href="https://github.com/bep">bep</a>, <a href="https://github.com/spf13">spf13</a>, and <a href="https://github.com/gohugoio/hugo/graphs/contributors">friends</a> in <a href="https://go.dev/">Go</a>.</p>
+<hr>
+<p><a href="https://godoc.org/github.com/gohugoio/hugo"><img src="https://godoc.org/github.com/gohugoio/hugo?status.svg" alt="GoDoc"></a>
+<a href="https://github.com/gohugoio/hugo/actions?query=workflow%3ATest"><img src="https://github.com/gohugoio/hugo/workflows/Test/badge.svg" alt="Tests on Linux, MacOS and Windows"></a>
+<a href="https://goreportcard.com/report/github.com/gohugoio/hugo"><img src="https://goreportcard.com/badge/github.com/gohugoio/hugo" alt="Go Report Card"></a></p>
+<p><a href="https://gohugo.io">Website</a> | <a href="https://gohugo.io/installation">Installation</a> | <a href="https://gohugo.io/documentation">Documentation</a> | <a href="https://discourse.gohugo.io">Support</a> | <a href="CONTRIBUTING.md">Contributing</a> | <!-- raw HTML omitted -->Mastodon<!-- raw HTML omitted --></p>
+<h2 id="overview">Overview<a href="#overview" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Hugo is a <a href="https://en.wikipedia.org/wiki/Static_site_generator">static site generator</a> written in <a href="https://go.dev/">Go</a>, optimized for speed and designed for flexibility. With its advanced templating system and fast asset pipelines, Hugo renders a complete site in seconds, often less.</p>
+<p>Due to its flexible framework, multilingual support, and powerful taxonomy system, Hugo is widely used to create:</p>
+<ul>
+<li>Corporate, government, nonprofit, education, news, event, and project sites</li>
+<li>Documentation sites</li>
+<li>Image portfolios</li>
+<li>Landing pages</li>
+<li>Business, professional, and personal blogs</li>
+<li>Resumes and CVs</li>
+</ul>
+<p>Use Hugo&rsquo;s embedded web server during development to instantly see changes to content, structure, behavior, and presentation. Then deploy the site to your host, or push changes to your Git provider for automated builds and deployment.</p>
+<p>Hugo&rsquo;s fast asset pipelines include:</p>
+<ul>
+<li>Image processing – Convert, resize, crop, rotate, adjust colors, apply filters, overlay text and images, and extract EXIF data</li>
+<li>JavaScript bundling – Transpile TypeScript and JSX to JavaScript, bundle, tree shake, minify, create source maps, and perform SRI hashing.</li>
+<li>Sass processing – Transpile Sass to CSS, bundle, tree shake, minify, create source maps, perform SRI hashing, and integrate with PostCSS</li>
+<li>Tailwind CSS processing – Compile Tailwind CSS utility classes into standard CSS, bundle, tree shake, optimize, minify, perform SRI hashing, and integrate with PostCSS</li>
+</ul>
+<p>And with <a href="https://gohugo.io/hugo-modules/">Hugo Modules</a>, you can share content, assets, data, translations, themes, templates, and configuration with other projects via public or private Git repositories.</p>
+<p>See the <a href="https://gohugo.io/about/features/">features</a> section of the documentation for a comprehensive summary of Hugo&rsquo;s capabilities.</p>
+<h2 id="sponsors">Sponsors<a href="#sponsors" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<!-- raw HTML omitted -->
+<h2 id="editions">Editions<a href="#editions" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Hugo is available in three editions: standard, extended, and extended/deploy. While the standard edition provides core functionality, the extended and extended/deploy editions offer advanced features.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Feature</th>
+          <th style="text-align: center">extended edition</th>
+          <th style="text-align: center">extended/deploy edition</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Encode to the WebP format when <a href="https://gohugo.io/content-management/image-processing/">processing images</a>. You can decode WebP images with any edition.</td>
+          <td style="text-align: center">&#x2714;&#xfe0f;</td>
+          <td style="text-align: center">&#x2714;&#xfe0f;</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><a href="https://gohugo.io/functions/css/sass/">Transpile Sass to CSS</a> using the embedded LibSass transpiler. You can use the <a href="https://gohugo.io/functions/css/sass/#dart-sass">Dart Sass</a> transpiler with any edition.</td>
+          <td style="text-align: center">&#x2714;&#xfe0f;</td>
+          <td style="text-align: center">&#x2714;&#xfe0f;</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Deploy your site directly to a Google Cloud Storage bucket, an AWS S3 bucket, or an Azure Storage container. See <a href="https://gohugo.io/hosting-and-deployment/hugo-deploy/">details</a>.</td>
+          <td style="text-align: center">&#x274c;</td>
+          <td style="text-align: center">&#x2714;&#xfe0f;</td>
+      </tr>
+  </tbody>
+</table>
+<p>Unless your specific deployment needs require the extended/deploy edition, we recommend the extended edition.</p>
+<h2 id="installation">Installation<a href="#installation" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Install Hugo from a <a href="https://github.com/gohugoio/hugo/releases/latest">prebuilt binary</a>, package manager, or package repository. Please see the installation instructions for your operating system:</p>
+<ul>
+<li><a href="https://gohugo.io/installation/macos">macOS</a></li>
+<li><a href="https://gohugo.io/installation/linux">Linux</a></li>
+<li><a href="https://gohugo.io/installation/windows">Windows</a></li>
+<li><a href="https://gohugo.io/installation/bsd">DragonFly BSD, FreeBSD, NetBSD, and OpenBSD</a></li>
+</ul>
+<h2 id="build-from-source">Build from source<a href="#build-from-source" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Prerequisites to build Hugo from source:</p>
+<ul>
+<li>Standard edition: Go 1.24.0 or later</li>
+<li>Extended edition: Go 1.24.0 or later, and GCC</li>
+<li>Extended/deploy edition: Go 1.24.0 or later, and GCC</li>
+</ul>
+<p>Build the standard edition:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>go install github.com/gohugoio/hugo@latest
+</span></span></code></pre></div><p>Build the extended edition:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
+</span></span></code></pre></div><p>Build the extended/deploy edition:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>CGO_ENABLED=1 go install -tags extended,withdeploy github.com/gohugoio/hugo@latest
+</span></span></code></pre></div><h2 id="star-history">Star History<a href="#star-history" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><a href="https://star-history.com/#gohugoio/hugo&amp;Timeline"><img src="https://api.star-history.com/svg?repos=gohugoio/hugo&amp;type=Timeline" alt="Star History Chart"></a></p>
+<h2 id="documentation">Documentation<a href="#documentation" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Hugo&rsquo;s <a href="https://gohugo.io/documentation">documentation</a> includes installation instructions, a quick start guide, conceptual explanations, reference information, and examples.</p>
+<p>Please submit documentation issues and pull requests to the <a href="https://github.com/gohugoio/hugoDocs">documentation repository</a>.</p>
+<h2 id="support">Support<a href="#support" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Please <strong>do not use the issue queue</strong> for questions or troubleshooting. Unless you are certain that your issue is a software defect, use the <a href="https://discourse.gohugo.io">forum</a>.</p>
+<p>Hugo’s <a href="https://discourse.gohugo.io">forum</a> is an active community of users and developers who answer questions, share knowledge, and provide examples. A quick search of over 20,000 topics will often answer your question. Please be sure to read about <a href="https://discourse.gohugo.io/t/requesting-help/9132">requesting help</a> before asking your first question.</p>
+<h2 id="contributing">Contributing<a href="#contributing" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>You can contribute to the Hugo project by:</p>
+<ul>
+<li>Answering questions on the <a href="https://discourse.gohugo.io">forum</a></li>
+<li>Improving the <a href="https://gohugo.io/documentation">documentation</a></li>
+<li>Monitoring the <a href="https://github.com/gohugoio/hugo/issues">issue queue</a></li>
+<li>Creating or improving <a href="https://themes.gohugo.io/">themes</a></li>
+<li>Squashing <a href="https://github.com/gohugoio/hugo/issues?q=is%3Aopen&#43;is%3Aissue&#43;label%3ABug">bugs</a></li>
+</ul>
+<p>Please submit documentation issues and pull requests to the <a href="https://github.com/gohugoio/hugoDocs">documentation repository</a>.</p>
+<p>If you have an idea for an enhancement or new feature, create a new topic on the <a href="https://discourse.gohugo.io">forum</a> in the &ldquo;Feature&rdquo; category. This will help you to:</p>
+<ul>
+<li>Determine if the capability already exists</li>
+<li>Measure interest</li>
+<li>Refine the concept</li>
+</ul>
+<p>If there is sufficient interest, <a href="https://github.com/gohugoio/hugo/issues/new?labels=Proposal%2C&#43;NeedsTriage&amp;template=feature_request.md">create a proposal</a>. Do not submit a pull request until the project lead accepts the proposal.</p>
+<p>For a complete guide to contributing to Hugo, see the <a href="CONTRIBUTING.md">Contribution Guide</a>.</p>
+<h2 id="dependencies">Dependencies<a href="#dependencies" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Hugo stands on the shoulders of great open source libraries. Run <code>hugo env --logLevel info</code> to display a list of dependencies.</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>github.com/BurntSushi/locker=&#34;v0.0.0-20171006230638-a6e239ea1c69&#34;
+</span></span><span style="display:flex;"><span>github.com/PuerkitoBio/goquery=&#34;v1.10.1&#34;
+</span></span><span style="display:flex;"><span>github.com/alecthomas/chroma/v2=&#34;v2.15.0&#34;
+</span></span><span style="display:flex;"><span>github.com/andybalholm/cascadia=&#34;v1.3.3&#34;
+</span></span><span style="display:flex;"><span>github.com/armon/go-radix=&#34;v1.0.1-0.20221118154546-54df44f2176c&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/clocks=&#34;v0.5.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/debounce=&#34;v1.2.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/gitmap=&#34;v1.6.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/goat=&#34;v0.5.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/godartsass/v2=&#34;v2.3.2&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/golibsass=&#34;v1.2.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/gowebp=&#34;v0.3.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/imagemeta=&#34;v0.8.4&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/lazycache=&#34;v0.7.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/logg=&#34;v0.4.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/mclib=&#34;v1.20400.20402&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/overlayfs=&#34;v0.9.2&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/simplecobra=&#34;v0.5.0&#34;
+</span></span><span style="display:flex;"><span>github.com/bep/tmc=&#34;v0.5.1&#34;
+</span></span><span style="display:flex;"><span>github.com/cespare/xxhash/v2=&#34;v2.3.0&#34;
+</span></span><span style="display:flex;"><span>github.com/clbanning/mxj/v2=&#34;v2.7.0&#34;
+</span></span><span style="display:flex;"><span>github.com/cpuguy83/go-md2man/v2=&#34;v2.0.4&#34;
+</span></span><span style="display:flex;"><span>github.com/disintegration/gift=&#34;v1.2.1&#34;
+</span></span><span style="display:flex;"><span>github.com/dlclark/regexp2=&#34;v1.11.5&#34;
+</span></span><span style="display:flex;"><span>github.com/dop251/goja=&#34;v0.0.0-20250125213203-5ef83b82af17&#34;
+</span></span><span style="display:flex;"><span>github.com/evanw/esbuild=&#34;v0.24.2&#34;
+</span></span><span style="display:flex;"><span>github.com/fatih/color=&#34;v1.18.0&#34;
+</span></span><span style="display:flex;"><span>github.com/frankban/quicktest=&#34;v1.14.6&#34;
+</span></span><span style="display:flex;"><span>github.com/fsnotify/fsnotify=&#34;v1.8.0&#34;
+</span></span><span style="display:flex;"><span>github.com/getkin/kin-openapi=&#34;v0.129.0&#34;
+</span></span><span style="display:flex;"><span>github.com/ghodss/yaml=&#34;v1.0.0&#34;
+</span></span><span style="display:flex;"><span>github.com/go-openapi/jsonpointer=&#34;v0.21.0&#34;
+</span></span><span style="display:flex;"><span>github.com/go-openapi/swag=&#34;v0.23.0&#34;
+</span></span><span style="display:flex;"><span>github.com/go-sourcemap/sourcemap=&#34;v2.1.4+incompatible&#34;
+</span></span><span style="display:flex;"><span>github.com/gobuffalo/flect=&#34;v1.0.3&#34;
+</span></span><span style="display:flex;"><span>github.com/gobwas/glob=&#34;v0.2.3&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/go-i18n/v2=&#34;v2.1.3-0.20230805085216-e63c13218d0e&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/hashstructure=&#34;v0.5.0&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/httpcache=&#34;v0.7.0&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/hugo-goldmark-extensions/extras=&#34;v0.2.0&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/hugo-goldmark-extensions/passthrough=&#34;v0.3.0&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/locales=&#34;v0.14.0&#34;
+</span></span><span style="display:flex;"><span>github.com/gohugoio/localescompressed=&#34;v1.0.1&#34;
+</span></span><span style="display:flex;"><span>github.com/golang/freetype=&#34;v0.0.0-20170609003504-e2365dfdc4a0&#34;
+</span></span><span style="display:flex;"><span>github.com/google/go-cmp=&#34;v0.6.0&#34;
+</span></span><span style="display:flex;"><span>github.com/google/pprof=&#34;v0.0.0-20250208200701-d0013a598941&#34;
+</span></span><span style="display:flex;"><span>github.com/gorilla/websocket=&#34;v1.5.3&#34;
+</span></span><span style="display:flex;"><span>github.com/hairyhenderson/go-codeowners=&#34;v0.7.0&#34;
+</span></span><span style="display:flex;"><span>github.com/hashicorp/golang-lru/v2=&#34;v2.0.7&#34;
+</span></span><span style="display:flex;"><span>github.com/jdkato/prose=&#34;v1.2.1&#34;
+</span></span><span style="display:flex;"><span>github.com/josharian/intern=&#34;v1.0.0&#34;
+</span></span><span style="display:flex;"><span>github.com/kr/pretty=&#34;v0.3.1&#34;
+</span></span><span style="display:flex;"><span>github.com/kr/text=&#34;v0.2.0&#34;
+</span></span><span style="display:flex;"><span>github.com/kyokomi/emoji/v2=&#34;v2.2.13&#34;
+</span></span><span style="display:flex;"><span>github.com/lucasb-eyer/go-colorful=&#34;v1.2.0&#34;
+</span></span><span style="display:flex;"><span>github.com/mailru/easyjson=&#34;v0.7.7&#34;
+</span></span><span style="display:flex;"><span>github.com/makeworld-the-better-one/dither/v2=&#34;v2.4.0&#34;
+</span></span><span style="display:flex;"><span>github.com/marekm4/color-extractor=&#34;v1.2.1&#34;
+</span></span><span style="display:flex;"><span>github.com/mattn/go-colorable=&#34;v0.1.13&#34;
+</span></span><span style="display:flex;"><span>github.com/mattn/go-isatty=&#34;v0.0.20&#34;
+</span></span><span style="display:flex;"><span>github.com/mattn/go-runewidth=&#34;v0.0.9&#34;
+</span></span><span style="display:flex;"><span>github.com/mazznoer/csscolorparser=&#34;v0.1.5&#34;
+</span></span><span style="display:flex;"><span>github.com/mitchellh/mapstructure=&#34;v1.5.1-0.20231216201459-8508981c8b6c&#34;
+</span></span><span style="display:flex;"><span>github.com/mohae/deepcopy=&#34;v0.0.0-20170929034955-c48cc78d4826&#34;
+</span></span><span style="display:flex;"><span>github.com/muesli/smartcrop=&#34;v0.3.0&#34;
+</span></span><span style="display:flex;"><span>github.com/niklasfasching/go-org=&#34;v1.7.0&#34;
+</span></span><span style="display:flex;"><span>github.com/oasdiff/yaml3=&#34;v0.0.0-20241210130736-a94c01f36349&#34;
+</span></span><span style="display:flex;"><span>github.com/oasdiff/yaml=&#34;v0.0.0-20241210131133-6b86fb107d80&#34;
+</span></span><span style="display:flex;"><span>github.com/olekukonko/tablewriter=&#34;v0.0.5&#34;
+</span></span><span style="display:flex;"><span>github.com/pbnjay/memory=&#34;v0.0.0-20210728143218-7b4eea64cf58&#34;
+</span></span><span style="display:flex;"><span>github.com/pelletier/go-toml/v2=&#34;v2.2.3&#34;
+</span></span><span style="display:flex;"><span>github.com/perimeterx/marshmallow=&#34;v1.1.5&#34;
+</span></span><span style="display:flex;"><span>github.com/pkg/browser=&#34;v0.0.0-20240102092130-5ac0b6a4141c&#34;
+</span></span><span style="display:flex;"><span>github.com/pkg/errors=&#34;v0.9.1&#34;
+</span></span><span style="display:flex;"><span>github.com/rivo/uniseg=&#34;v0.4.7&#34;
+</span></span><span style="display:flex;"><span>github.com/rogpeppe/go-internal=&#34;v1.13.1&#34;
+</span></span><span style="display:flex;"><span>github.com/russross/blackfriday/v2=&#34;v2.1.0&#34;
+</span></span><span style="display:flex;"><span>github.com/sass/libsass=&#34;3.6.6&#34;
+</span></span><span style="display:flex;"><span>github.com/spf13/afero=&#34;v1.11.0&#34;
+</span></span><span style="display:flex;"><span>github.com/spf13/cast=&#34;v1.7.1&#34;
+</span></span><span style="display:flex;"><span>github.com/spf13/cobra=&#34;v1.8.1&#34;
+</span></span><span style="display:flex;"><span>github.com/spf13/fsync=&#34;v0.10.1&#34;
+</span></span><span style="display:flex;"><span>github.com/spf13/pflag=&#34;v1.0.6&#34;
+</span></span><span style="display:flex;"><span>github.com/tdewolff/minify/v2=&#34;v2.20.37&#34;
+</span></span><span style="display:flex;"><span>github.com/tdewolff/parse/v2=&#34;v2.7.15&#34;
+</span></span><span style="display:flex;"><span>github.com/tetratelabs/wazero=&#34;v1.8.2&#34;
+</span></span><span style="display:flex;"><span>github.com/webmproject/libwebp=&#34;v1.3.2&#34;
+</span></span><span style="display:flex;"><span>github.com/yuin/goldmark-emoji=&#34;v1.0.4&#34;
+</span></span><span style="display:flex;"><span>github.com/yuin/goldmark=&#34;v1.7.8&#34;
+</span></span><span style="display:flex;"><span>go.uber.org/automaxprocs=&#34;v1.5.3&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/crypto=&#34;v0.33.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/exp=&#34;v0.0.0-20250210185358-939b2ce775ac&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/image=&#34;v0.24.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/mod=&#34;v0.23.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/net=&#34;v0.35.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/sync=&#34;v0.11.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/sys=&#34;v0.30.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/text=&#34;v0.22.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/tools=&#34;v0.30.0&#34;
+</span></span><span style="display:flex;"><span>golang.org/x/xerrors=&#34;v0.0.0-20240903120638-7835f813f4da&#34;
+</span></span><span style="display:flex;"><span>gonum.org/v1/plot=&#34;v0.15.0&#34;
+</span></span><span style="display:flex;"><span>google.golang.org/protobuf=&#34;v1.36.5&#34;
+</span></span><span style="display:flex;"><span>gopkg.in/yaml.v2=&#34;v2.4.0&#34;
+</span></span><span style="display:flex;"><span>gopkg.in/yaml.v3=&#34;v3.0.1&#34;
+</span></span><span style="display:flex;"><span>oss.terrastruct.com/d2=&#34;v0.6.9&#34;
+</span></span><span style="display:flex;"><span>oss.terrastruct.com/util-go=&#34;v0.0.0-20241005222610-44c011a04896&#34;
+</span></span><span style="display:flex;"><span>rsc.io/qr=&#34;v0.2.0&#34;
+</span></span><span style="display:flex;"><span>software.sslmate.com/src/go-pkcs12=&#34;v0.2.0&#34;
+</span></span></code></pre></div><!-- raw HTML omitted -->
 ]]></content>
 		</item>
 		

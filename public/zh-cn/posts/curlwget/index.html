@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="工具不图鉴01：curl&wget">
+  <meta itemprop="description" content="参考链接：
+curl官网
+wget官网
+curl和wget是在配置服务器时相当常用的终端工具。
+什么是curl？ curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。">
+  <meta itemprop="datePublished" content="2025-12-15T23:25:53+08:00">
+  <meta itemprop="dateModified" content="2025-12-15T23:25:53+08:00">
+  <meta itemprop="wordCount" content="2140">
+  <meta itemprop="keywords" content="工具不图鉴,教程,Curl,Wget"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/curlwget/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="工具不图鉴01：curl&wget">
+  <meta property="og:description" content="参考链接：
+curl官网
+wget官网
+curl和wget是在配置服务器时相当常用的终端工具。
+什么是curl？ curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-15T23:25:53+08:00">
+    <meta property="article:modified_time" content="2025-12-15T23:25:53+08:00">
+    <meta property="article:tag" content="工具不图鉴">
+    <meta property="article:tag" content="教程">
+    <meta property="article:tag" content="Curl">
+    <meta property="article:tag" content="Wget">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="工具不图鉴01：curl&wget">
+  <meta name="twitter:description" content="参考链接：
+curl官网
+wget官网
+curl和wget是在配置服务器时相当常用的终端工具。
+什么是curl？ curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "工具不图鉴01：curl\u0026wget",
+    "name": "工具不图鉴01：curl\u0026wget",
+    "description": "参考链接：\ncurl官网\nwget官网\ncurl和wget是在配置服务器时相当常用的终端工具。\n什么是curl？ curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。\n",
+    "keywords": ["工具不图鉴", "教程", "curl", "wget"],
+    "articleBody": "参考链接：\ncurl官网\nwget官网\ncurl和wget是在配置服务器时相当常用的终端工具。\n什么是curl？ curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。\n在我们的日常生活中，我们不可避免的要和网络打交道。最常见的方式就是通过浏览器来浏览网页和下载文件。浏览器通过图形化界面替你完成了写请求的步骤。所谓请求，就是一种规范化的和服务器对话的方式。你只需要点点屏幕就可以完成一系列与网络服务器的信息交换。\n但是对于没有图形化界面的终端来说，所有的信息都是基于文本来传递的，我们当然也没办法通过图形化的浏览器来获取网络资源。curl的功能就在于此。只不过不同于浏览器图形化界面的直白，你必须明确你递交的请求包含了哪些动作。\n理解curl，其实只需要理解一句话：\ncurl = 在命令行中手动发送http请求\n一条http请求，本质上就是4个东西：\n请求方法 请求地址（url） 请求头 请求体 curl的最基本形式：\ncurl URL 相当于说：让我看看这个url里有什么东西。\n关于curl语法的细则这里不再过多赘述。\n如何使用curl？ 光知道curl是发送网络协议的工具这点其实对你的使用过程没有太大帮助。事实上，大多数人都不会从http的原理层面来思考和使用curl。\n多数人的真实行为是：\n从网站/博客中复制一个curl指令。 稍加修改或者根本不修改。 用就完了。 比如，如果你想下载ohmyzsh，你只需要把官网上的下载指令复制下来运行即可。\nsh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" 这本身是一个原理相对复杂的指令，但是你根本不用关系这些事情。开发者已经替你考虑好了一切。\n而稍微复杂一点点的情况是，你想要下载一个文件，但是README.md中没有给出下载指令。\n我们举一个最简单的例子：\n比如，你想把一个github上的文件下载到本地。但是呢，没有任何网页告诉你应该输入什么指令来下载这个文件。你可能会想到另外用一个智能设备通过浏览器下载，然后上传到终端对应的机器。这是一个方法，但是不够直接。事实上，我们只需要一个curl指令就可以把文件下载到本地。\n比如，你看上了ohmyzsh的README.md。你很想把它下载到本地。你不需要动用浏览器，也不需要git clone整个仓库，你只需要在终端中输入：\ncurl -O https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain=1 curl就开始帮你下载文件了。当然前提是你的网络环境支持你访问到这个网站，如果网络条件不佳，你可能必须要配置网络代理才能正常使用。\n但是，只要你实际尝试过，你就会发现，你下载得到的根本不是你想要的东西。你下载得到的是一大堆html代码，根本不是一个md文件。为什么呢？根本上原因在于你下载的实际是用来显示这个网页的代码，而非你想要的内容。\n不过，对于github而言，即使你不能直接curl来获取文件，github为你提供了一个另外的快捷途径，方便你直接使用curl来下载文件。你只需要将url中的github.com替换为raw.githubusercontent.com即可。\n然而，在这个网站中并不存有作者名以及plain之类的参数。所以，你还需要删除/blob以及?plain=1。\ncurl -O https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md 如果你觉得这个方法太麻烦，对于github来说还有另外一种方法可以使用：\ncurl -L -O \"https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?raw=1\" 因为我选取的这个README.md网页实际比较特殊，后面自带参数。在这个方法中，你只需要在前面添加-L参数，并为url后方添加raw=1参数即可下载。在本例子中，直接将plain=1替换为raw=1即可。\n如何下载curl？ 在绝大多数情况下，你的机器实际上已经配备了curl工具，因为这是一个非常基础的工具。\n假如你的机器上没有这个工具，通常来说你也不需要经过官网来下载最新版。直接使用系统级包管理器下载即可。\nsudo apt install curl # 以ubuntu为例 什么是wget? wget = World Wide Web + get\n字面意思，从万维网上获取东西，就是wget。\n不同于curl丰富的功能，这是一个专注于下载内容的工具。它的设计目的很明确：稳定、自动化、可恢复的下载文件。\n如何使用wget？ wget的使用方法比curl要简单的多。其中一个最简形式如下：\nwget url 不需要任何参数。比如，我们仍然尝试下载ohmyzsh的README.md：\nwget https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain=1 当然，这仍然是个错误的指令，通过它你只能下载到网页代码。我写这句指令，意在说明wget的简便易用。真正有用的指令如下：\nwget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md 你仍然需要得到文件真正存放的url。同时，wget也允许你想下载得到的文件直接用新文件名存入本地，你只需要加一个-O参数。\nwget -O myreadme.md https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md 此外，对于一些体积较大的下载，下载过程可能相对漫长。假如下载过程中因为网络问题而意外终断，一般的wget下载进度就会归零。在此情况下，你可以使用-c参数来保存下载进度，这样即使中间下载中断，继续输入指令，文件就会在原有进度基础上继续下载，不会丢失进度。\nwget -c https://example.com/bigfile.iso # 这不是一个真实存在的网站，只是方便演示。 如何下载wget？ 与curl情况基本类似，多数时候你的机器上已经自带wget了。在少数极简开发环境下可能出现不自带wget的情况。此时，只需要使用包管理器下载即可。\nsudo apt install wget # 以Ubuntu为例 ",
+    "wordCount" : "2140",
+    "inLanguage": "zh-cn",
+    "datePublished": "2025-12-15T23:25:53+08:00",
+    "dateModified": "2025-12-15T23:25:53+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/curlwget/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>工具不图鉴01：curl&amp;wget</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Dec 15, 2025</span></div>
+				<h1>工具不图鉴01：curl&amp;wget</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4">工具不图鉴</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B">教程</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/curl">curl</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/wget">wget</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>2140&nbsp  阅读时长9 Minutes, 43 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2025-12-15 23:25 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <p>参考链接：</p>
+<p><a href="https://curl.se/">curl官网</a></p>
+<p><a href="https://www.gnu.org/software/wget/">wget官网</a></p>
+<p>curl和wget是在配置服务器时相当常用的终端工具。</p>
+<hr>
+<h2 id="什么是curl">什么是curl？<a href="#%e4%bb%80%e4%b9%88%e6%98%afcurl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>curl，全称为Client URL，是一个通用的网络协议客户端工具。功能涵盖请求网页，下载文件，发送http请求，调试接口等。可以说这个工具就是一把网络世界的瑞士军刀。不过对于大多数普通使用者，最常见的用途是用它来下载文件。</p>
+<p>在我们的日常生活中，我们不可避免的要和网络打交道。最常见的方式就是通过浏览器来浏览网页和下载文件。浏览器通过图形化界面替你完成了写请求的步骤。所谓请求，就是一种规范化的和服务器对话的方式。你只需要点点屏幕就可以完成一系列与网络服务器的信息交换。</p>
+<p>但是对于没有图形化界面的终端来说，所有的信息都是基于文本来传递的，我们当然也没办法通过图形化的浏览器来获取网络资源。curl的功能就在于此。只不过不同于浏览器图形化界面的直白，你必须明确你递交的请求包含了哪些动作。</p>
+<p>理解curl，其实只需要理解一句话：</p>
+<blockquote>
+<p><strong>curl = 在命令行中手动发送http请求</strong></p>
+</blockquote>
+<p>一条http请求，本质上就是4个东西：</p>
+<ol>
+<li>请求方法</li>
+<li>请求地址（url）</li>
+<li>请求头</li>
+<li>请求体</li>
+</ol>
+<p>curl的最基本形式：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl URL
+</span></span></code></pre></div><p>相当于说：让我看看这个url里有什么东西。</p>
+<p>关于curl语法的细则这里不再过多赘述。</p>
+<hr>
+<h3 id="如何使用curl">如何使用curl？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8curl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>光知道curl是发送网络协议的工具这点其实对你的使用过程没有太大帮助。事实上，大多数人都不会从http的原理层面来思考和使用curl。</p>
+<p>多数人的真实行为是：</p>
+<ul>
+<li>从网站/博客中复制一个curl指令。</li>
+<li>稍加修改或者根本不修改。</li>
+<li>用就完了。</li>
+</ul>
+<p>比如，如果你想下载ohmyzsh，你只需要把官网上的下载指令复制下来运行即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>这本身是一个原理相对复杂的指令，但是你根本不用关系这些事情。开发者已经替你考虑好了一切。</p>
+<p>而稍微复杂一点点的情况是，你想要下载一个文件，但是README.md中没有给出下载指令。</p>
+<p>我们举一个最简单的例子：</p>
+<hr>
+<p>比如，你想把一个github上的文件下载到本地。但是呢，没有任何网页告诉你应该输入什么指令来下载这个文件。你可能会想到另外用一个智能设备通过浏览器下载，然后上传到终端对应的机器。这是一个方法，但是不够直接。事实上，我们只需要一个curl指令就可以把文件下载到本地。</p>
+<p>比如，你看上了ohmyzsh的README.md。你很想把它下载到本地。你不需要动用浏览器，也不需要git clone整个仓库，你只需要在终端中输入：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>curl就开始帮你下载文件了。当然前提是你的网络环境支持你访问到这个网站，如果网络条件不佳，你可能必须要配置网络代理才能正常使用。</p>
+<p>但是，只要你实际尝试过，你就会发现，你下载得到的根本不是你想要的东西。你下载得到的是一大堆html代码，根本不是一个md文件。为什么呢？根本上原因在于你下载的实际是用来显示这个网页的代码，而非你想要的内容。</p>
+<p>不过，对于github而言，即使你不能直接curl来获取文件，github为你提供了一个另外的快捷途径，方便你直接使用curl来下载文件。你只需要将url中的<code>github.com</code>替换为<code>raw.githubusercontent.com</code>即可。</p>
+<p>然而，在这个网站中并不存有作者名以及plain之类的参数。所以，你还需要删除<code>/blob</code>以及<code>?plain=1</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+</span></span></code></pre></div><p>如果你觉得这个方法太麻烦，对于github来说还有另外一种方法可以使用：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -L -O <span style="color:#e6db74">&#34;https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?raw=1&#34;</span>
+</span></span></code></pre></div><p>因为我选取的这个README.md网页实际比较特殊，后面自带参数。在这个方法中，你只需要在前面添加<code>-L</code>参数，并为url后方添加<code>raw=1</code>参数即可下载。在本例子中，直接将<code>plain=1</code>替换为<code>raw=1</code>即可。</p>
+<hr>
+<h3 id="如何下载curl">如何下载curl？<a href="#%e5%a6%82%e4%bd%95%e4%b8%8b%e8%bd%bdcurl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>在绝大多数情况下，你的机器实际上已经配备了curl工具，因为这是一个非常基础的工具。</p>
+<p>假如你的机器上没有这个工具，通常来说你也不需要经过官网来下载最新版。直接使用系统级包管理器下载即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install curl <span style="color:#75715e"># 以ubuntu为例</span>
+</span></span></code></pre></div><hr>
+<h2 id="什么是wget">什么是wget?<a href="#%e4%bb%80%e4%b9%88%e6%98%afwget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<blockquote>
+<p>wget = <strong>World Wide Web + get</strong></p>
+</blockquote>
+<p>字面意思，从万维网上获取东西，就是wget。</p>
+<p>不同于curl丰富的功能，这是一个专注于下载内容的工具。它的设计目的很明确：<strong>稳定、自动化、可恢复的下载文件</strong>。</p>
+<hr>
+<h3 id="如何使用wget">如何使用wget？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8wget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>wget的使用方法比curl要简单的多。其中一个最简形式如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget url
+</span></span></code></pre></div><p>不需要任何参数。比如，我们仍然尝试下载ohmyzsh的README.md：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>当然，这仍然是个错误的指令，通过它你只能下载到网页代码。我写这句指令，意在说明wget的简便易用。真正有用的指令如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+</span></span></code></pre></div><p>你仍然需要得到文件真正存放的url。同时，wget也允许你想下载得到的文件直接用新文件名存入本地，你只需要加一个<code>-O</code>参数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -O myreadme.md https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+</span></span></code></pre></div><hr>
+<p>此外，对于一些体积较大的下载，下载过程可能相对漫长。假如下载过程中因为网络问题而意外终断，一般的wget下载进度就会归零。在此情况下，你可以使用<code>-c</code>参数来保存下载进度，这样即使中间下载中断，继续输入指令，文件就会在原有进度基础上继续下载，不会丢失进度。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -c https://example.com/bigfile.iso <span style="color:#75715e"># 这不是一个真实存在的网站，只是方便演示。</span>
+</span></span></code></pre></div><hr>
+<h3 id="如何下载wget">如何下载wget？<a href="#%e5%a6%82%e4%bd%95%e4%b8%8b%e8%bd%bdwget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>与curl情况基本类似，多数时候你的机器上已经自带wget了。在少数极简开发环境下可能出现不自带wget的情况。此时，只需要使用包管理器下载即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install wget <span style="color:#75715e"># 以Ubuntu为例</span>
+</span></span></code></pre></div>
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title=""><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+<div class="related-posts thin">
+	<h2></h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/zshohmyzsh/">工具不图鉴02：zsh&amp;ohmyzsh</a></li>
+	
+	<li><a href="/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">NeovimPlugins配置方法</a></li>
+	
+	<li><a href="/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/">Neovim配置如何入门</a></li>
+	
+	<li><a href="/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">零基础如何搭建博客</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title"></div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是curl">什么是curl？</a>
+      <ul>
+        <li><a href="#如何使用curl">如何使用curl？</a></li>
+        <li><a href="#如何下载curl">如何下载curl？</a></li>
+      </ul>
+    </li>
+    <li><a href="#什么是wget">什么是wget?</a>
+      <ul>
+        <li><a href="#如何使用wget">如何使用wget？</a></li>
+        <li><a href="#如何下载wget">如何下载wget？</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/zshohmyzsh/">
+				<span class="post-nav-label">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>工具不图鉴02：zsh&amp;ohmyzsh</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2025 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script></body>
+</html>
