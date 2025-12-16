@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Mon, 15 Dec 2025 23:25:53 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 16 Dec 2025 23:23:35 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工具不图鉴03：虚拟环境&amp;conda</title>
+      <link>http://localhost:1313/zh-cn/posts/venvminiconda/</link>
+      <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/venvminiconda/</guid>
+      <description>&lt;h2 id=&#34;什么是虚拟环境&#34;&gt;什么是虚拟环境?&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>工具不图鉴01：curl&amp;wget</title>
       <link>http://localhost:1313/zh-cn/posts/curlwget/</link>
@@ -22,13 +29,6 @@
       <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
       <guid>http://localhost:1313/zh-cn/posts/zshohmyzsh/</guid>
       <description>&lt;p&gt;参考链接：&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/Z_shell&#34;&gt;zsh wiki&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://ohmyz.sh/&#34;&gt;ohmyzsh&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;什么是zsh&#34;&gt;什么是zsh？&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%afzsh&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;zsh是一个功能丰富的Unix shell，即&lt;strong&gt;命令行解释器&lt;/strong&gt;。就像安装git时附送的git bash和windows系统下自带的powershell一样，你把指令输进去，按下回车，指令就运行起来了。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>工具不图鉴03：虚拟环境&amp;conda</title>
-      <link>http://localhost:1313/zh-cn/posts/venvminiconda/</link>
-      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/venvminiconda/</guid>
-      <description>&lt;h2 id=&#34;什么是虚拟环境&#34;&gt;什么是虚拟环境?&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。&lt;/p&gt;</description>
     </item>
     <item>
       <title>NeovimPlugins配置方法</title>
