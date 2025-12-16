@@ -10,6 +10,13 @@
     <lastBuildDate>Mon, 15 Dec 2025 23:25:53 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Conda</title>
+      <link>http://localhost:1313/zh-cn/tags/conda/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/tags/conda/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Curl</title>
       <link>http://localhost:1313/zh-cn/tags/curl/</link>
       <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
@@ -21,6 +28,20 @@
       <link>http://localhost:1313/zh-cn/tags/ohmyzsh/</link>
       <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
       <guid>http://localhost:1313/zh-cn/tags/ohmyzsh/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>http://localhost:1313/zh-cn/tags/python/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Venv</title>
+      <link>http://localhost:1313/zh-cn/tags/venv/</link>
+      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/tags/venv/</guid>
       <description></description>
     </item>
     <item>
@@ -56,13 +77,6 @@
       <link>http://localhost:1313/zh-cn/tags/ascend/</link>
       <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
       <guid>http://localhost:1313/zh-cn/tags/ascend/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>http://localhost:1313/zh-cn/tags/python/</link>
-      <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/python/</guid>
       <description></description>
     </item>
     <item>
