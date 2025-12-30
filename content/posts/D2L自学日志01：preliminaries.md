@@ -1,7 +1,7 @@
 ---
 title: "D2L自学日志01：preliminaries"
 date: 2025-12-30T18:14:36+08:00
-draft: true
+draft: false 
 toc: true 
 images:
 tags: ['D2L','python', 'torch', '机器学习'] 
