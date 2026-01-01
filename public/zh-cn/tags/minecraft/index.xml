@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Minecraft on Yorozumoon</title>
+    <link>http://localhost:1313/zh-cn/tags/minecraft/</link>
+    <description>Recent content in Minecraft on Yorozumoon</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <copyright>copyright by Moonhalf.</copyright>
+    <lastBuildDate>Thu, 01 Jan 2026 21:00:42 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh-cn/tags/minecraft/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fabric自学日志01：农夫乐事重织版</title>
+      <link>http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/</link>
+      <pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/</guid>
+      <description>&lt;p&gt;我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

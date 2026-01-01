@@ -7,8 +7,29 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Tue, 16 Dec 2025 23:23:35 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 01 Jan 2026 21:00:42 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fabric自学日志01：农夫乐事重织版</title>
+      <link>http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/</link>
+      <pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/</guid>
+      <description>&lt;p&gt;我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>D2L自学日志01：preliminaries</title>
+      <link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</link>
+      <pubDate>Tue, 30 Dec 2025 18:14:36 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</guid>
+      <description>&lt;h1 id=&#34;机器学习基础知识&#34;&gt;机器学习基础知识&lt;a href=&#34;#%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;多维数组&lt;/li&gt;&#xA;&lt;li&gt;pandas（数据处理）&lt;/li&gt;&#xA;&lt;li&gt;linear-algebra（线性代数）&lt;/li&gt;&#xA;&lt;li&gt;calculus（微积分）&lt;/li&gt;&#xA;&lt;li&gt;autograd（自动微分）&lt;/li&gt;&#xA;&lt;li&gt;probability（概率）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;多维数组基本知识&#34;&gt;多维数组基本知识&lt;a href=&#34;#%e5%a4%9a%e7%bb%b4%e6%95%b0%e7%bb%84%e5%9f%ba%e6%9c%ac%e7%9f%a5%e8%af%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) &lt;span style=&#34;color:#75715e&#34;&gt;# tensor([0,1,2,3,4,5,6,7,8,9,10,11])&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;torch.arange(x,y,z)&lt;/code&gt;的语法和python原生的&lt;code&gt;range()&lt;/code&gt;语法一致，左闭右开，第三个参数为步长。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>再用腾讯云我就是🐶</title>
+      <link>http://localhost:1313/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/</link>
+      <pubDate>Thu, 25 Dec 2025 10:27:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/</guid>
+      <description>&lt;p&gt;今天突然发现&lt;code&gt;whois.com&lt;/code&gt;里可以直接通过我的域名查到我的真实姓名，赶紧跑到腾讯云想来开启隐私保护，结果发现要.cn域名要花额外39大洋。迫于问题太严重（虽然裸奔了这么长时间也不差这几天了）直接就付钱了，发现也没办法退。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>工具不图鉴03：虚拟环境&amp;conda</title>
       <link>http://localhost:1313/zh-cn/posts/venvminiconda/</link>

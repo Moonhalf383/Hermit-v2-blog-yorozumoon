@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>日常 on Yorozumoon</title>
+    <link>http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/</link>
+    <description>Recent content in 日常 on Yorozumoon</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <copyright>copyright by Moonhalf.</copyright>
+    <lastBuildDate>Thu, 25 Dec 2025 10:27:53 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>再用腾讯云我就是🐶</title>
+      <link>http://localhost:1313/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/</link>
+      <pubDate>Thu, 25 Dec 2025 10:27:53 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/</guid>
+      <description>&lt;p&gt;今天突然发现&lt;code&gt;whois.com&lt;/code&gt;里可以直接通过我的域名查到我的真实姓名，赶紧跑到腾讯云想来开启隐私保护，结果发现要.cn域名要花额外39大洋。迫于问题太严重（虽然裸奔了这么长时间也不差这几天了）直接就付钱了，发现也没办法退。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

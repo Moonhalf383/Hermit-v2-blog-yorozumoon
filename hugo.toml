@@ -71,14 +71,14 @@ tag = "tags"
 # category = "categories"
 
 # Enable to get proper Mathjax support
-#[markup]
-#  [markup.goldmark]
-#    [markup.goldmark.extensions]
-#      [markup.goldmark.extensions.passthrough]
-#        enable = true
-#        [markup.goldmark.extensions.passthrough.delimiters]
-#          block = [['\[', '\]'], ['$$', '$$']]
-#          inline = [['\(', '\)']]
+[markup]
+[markup.goldmark]
+[markup.goldmark.extensions]
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['\[', '\]'], ['$$', '$$']]
+inline = [['\(', '\)']]
 
 
 [params]
@@ -100,7 +100,7 @@ code_copy_button = true
 
 homeSubtitlePrinter = true
 scrollToTop = true
-global_mathjax = false
+global_mathjax = true
 readTime = true
 readTimeSeparator = "阅读时长"
 # legacyLayout = false
