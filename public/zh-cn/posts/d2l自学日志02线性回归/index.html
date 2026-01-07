@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="D2L自学日志02：线性回归">
+  <meta itemprop="description" content="线性回归 线性假设是指目标可以表示为特征的加权和。
+举个例子：我想做一个预测房屋售价的模型。">
+  <meta itemprop="datePublished" content="2026-01-07T19:27:51+08:00">
+  <meta itemprop="dateModified" content="2026-01-07T19:27:51+08:00">
+  <meta itemprop="wordCount" content="8618">
+  <meta itemprop="keywords" content="D2L,Python,Torch,机器学习"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="D2L自学日志02：线性回归">
+  <meta property="og:description" content="线性回归 线性假设是指目标可以表示为特征的加权和。
+举个例子：我想做一个预测房屋售价的模型。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-07T19:27:51+08:00">
+    <meta property="article:modified_time" content="2026-01-07T19:27:51+08:00">
+    <meta property="article:tag" content="D2L">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Torch">
+    <meta property="article:tag" content="机器学习">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="D2L自学日志02：线性回归">
+  <meta name="twitter:description" content="线性回归 线性假设是指目标可以表示为特征的加权和。
+举个例子：我想做一个预测房屋售价的模型。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "D2L自学日志02：线性回归",
+    "name": "D2L自学日志02：线性回归",
+    "description": "线性回归 线性假设是指目标可以表示为特征的加权和。\n举个例子：我想做一个预测房屋售价的模型。\n",
+    "keywords": ["D2L", "python", "torch", "机器学习"],
+    "articleBody": "线性回归 线性假设是指目标可以表示为特征的加权和。\n举个例子：我想做一个预测房屋售价的模型。\n房屋售价相关的数量特征有：房屋面积、房龄。那么我们就可以得到这样的式子（虽然不一定有道理）： $$ price = w_{area} \\cdot area + w_{age} \\cdot age + b $$ 其中$w_{area}$和$w_{age}$称为权重，代表这个特征对于结果的影响大小，比如在这个例子中，房屋面积和房龄对于售价的影响力可能不同；$b$代表偏置，用来拓展模型的表达能力（不加偏置模型只能进行线性变换，加了偏置模型可以实现仿射变换）。\n在机器学习领域中，我们处理的对象往往是高维数据集，即特证数很可能非常多。我们可以将所有的相关特征全部塞进一个向量中。比如，我们的目标可以用$x_1,x_2,x_3,...$来描述，那么我们可以这样来表示我们的预测值$\\hat{y}$： $$ \\hat{y} = \\sum_{i = 1}^{n}{w_ix_i} + b $$ 将所有特征塞进向量$\\vec{x}$后，我们可以得到： $$ \\hat{y} = w^Tx + b $$ 其中$w^T$表示权重向量，每个元素表示对应的特征的权重大小。这样，我们就用点积的形式简洁的表示了模型。\n通过这样的模型，我们已经可以实现将一个样本的特征与其预测值实现映射。但是通常情况下，这样做并不足以解决问题，因为我们多数时候不会只有一个样本。我们理想的效果是这样：通过同一套映射规则，将多个样本的特征分别映射到各自的预测值。非常巧的是，对于线性回归模型，我们恰好有一个强大的工具可以实现这一功能：矩阵。\n对于一个样本的特征$x_{1},x_{2},x_{3},...$，我们可以把它塞进一个行向量$\\vec{x}^T$中，组成一个特征行向量；随后，让这些行向量从上至下排列，我们就得到了一个由特征数值组成的矩阵。\n比如，对于样本a，特征行向量为$[x_{a_{1}}, x_{a_{2}}, x_{a_{3}}, ... ,x_{as}]$;对于样本b，我们有特征行向量$[x_{b_{1}},x_{b_{2}},...]$，以此类推，我们可以最后得到每一个样本的特征行向量，随后我们将它拼在一起，得到如下矩阵： $$ X = \\begin{pmatrix} x_{a_{1}}\u0026x_{a_{2}}\u0026x_{a_{3}}\u0026{...}\u0026x_{as} \\\\ x_{b_{1}}\u0026x_{b_{2}}\u0026x_{b_{3}}\u0026{...}\u0026x_{bs} \\\\ \\vdots \\\\ \\end{pmatrix} $$ 这样，我们就将整个数据集的所有样本的所以特征汇总在了一个矩阵中。我们同样将预测值从上至下排列为一个列向量$\\hat{y}$，这样我们就得到了： $$ \\hat{y}= Xw + b $$ 对于给定训练数据特征$\\mathbf{X}$和对应的已知标签$\\mathbf{y}$，线性回归的目标是找到一组权重向量$\\mathbf{w}$和偏置$b$：当给定从$\\mathbf{X}$的同分布中取样的新样本特征时，这组权重向量和偏置能够使得新样本预测标签的误差尽可能小。说白了，我们认为$\\hat{y}$和$X$之间可能有线性关系，而我们所做的其实是希望让机器通过学习已有的样本数据来自行归纳这种潜在的线性关系。\n但是，一个很现实的问题是：以上的所有假设都建立在目标与特征真的存在线性关系这一前提，然而现实世界中我们几乎不可能找到严格线性的数据集（现实数据的浮点数误差，你可以这么理解）。\n所以，既然这种误差不可避免，一个很天才的想法是：我们引入一个噪声项来观察误差带来的影响。这就像听歌的时候音质不好，所以你干脆放点噪音让音质的缺陷显得非常合理。\n总而言之，我们的根本目标是寻找描述$X$和$\\hat{y}$之间映射关系最好的一组$w,b$。但是在正式开始寻找之前，我们需要回答两个颇具哲理的问题：\n什么是最好？ 如何寻找？ 他们分别对应于：\n模型质量的度量方式。 一种能更新模型进而提高模型质量的方式。 度量质量：损失函数 对于第一个问题，我们希望通过我们的模型，最好输入$x$就能直接精确预测到$y$，换言之，什么样的映射能让$\\hat{y}$和$y$之间差距最小，这样的映射就是我们所在寻找的。因此，我们可以通过量化模型的误差进而体现模型的质量。而这种量化的方式就是所谓的损失函数（loss funciton）。\n对于一个通常的误差函数，我们希望它的输出值为非负数，这样他的大小即直接展现损失大小。在回归问题中，一个常用的损失函数是平方误差函数。我们记样本$i$的预测值为$\\hat{y}^{(i)}$，其对应的真实标签为$y^{(i)}$，那么平方误差就可以定义为如下的式子： $$ l^{(i)}(w, b)=\\frac{1}{2}(\\hat{y}^{(i)}-y^{(i)})^2 $$ 这里，之所以有一个$\\frac{1}{2}$，只是因为这样做后续求导系数为1，稍微方便一点。\n你会注意到这个式子的作用对象是一个标量，即它只反应了一个样本中的损失，但是我们希望能作用于一个数据集的所有样本。于是有一个很简单粗暴的方法：让我们算出每一个样本的损失，然后求平均。 $$ L(w,b) = \\frac{1}{n}\\sum_{i = 1}^{n}{l^{(i)}(w,b)} $$ 这样，我们就将我们训练模型时的目的明确为：\n寻找一组参数$w^*,b^*$使得这组参数可以最小化所有训练样本中的总损失。\n解析解 不同于我们后续会涉及到的大多数模型，线性回归的解可以用一个公式简单表达出来，即：在给定了一个数据集的时候，我们可以直接算出来最优的参数$w^*,b^*$，而无需复杂的训练过程。\n首先，对于偏置量$b$来说，我们没必要去专门考察它在什么时候最优。我们可以对公式$\\hat{y} = Xw + b$做如下调整：我们在X最左侧强行加上一列全为1的向量，然后在$w$中强行插入一个$b$，变为$\\beta = [b, w_1,w_2,...]$。这样，我们可以让b的地位和其他权重保持一致。我们将问题简化为：求使得$\\hat{y} = X\\beta$误差最小的权重向量$\\beta$。\n对于解答这个问题，我们可以使用线性代数优美的几何本质。$X$是一个已知的矩阵，它可以把一个空间中的所有向量映射到另一个空间（即$X$的列空间）中，假如$y$就在$X$的列空间中，这就意味着我们可以用一个向量通过X变换严丝合缝的映射到$y$，这种情况就对应与数据集中的特征与目标呈现严格的线性关系。但是现实世界中我们找不到如此理想的数据集，这意味着$y$多数时候并不在$X$的列空间中。\n此时我们回顾前面的误差函数定义，我们会发现其实我们所计算的误差是$\\hat{y}$和$y$对应坐标之间的欧几里得距离（平方和，只是没开根号）。我们可以将问题简化如下：\n已知$\\hat{y}$被约束在$X$的列空间中，$y$不一定在$X$的列空间中，什么情况下$\\hat{y}$和$y$之间的欧几里得距离会最小？\n如果这还是很抽象，我们来看一个三维空间下的表述：\n已知$\\hat{y}$在$X$列向量张成的平面或直线上，而$y$并不一定在这个平面或直线上，什么情况下$\\hat{y}$和$y$之间的欧几里得距离最小？\n答案很显然：$\\hat{y}$与$y$之间的差向量垂直于$X$的列空间。\n我们令$e = y - X\\beta$表示误差向量，我们希望$e$可以垂直于$X$的每一个列向量，这就意味着$e$与每个$X$列向量的点积都为0。也就是说： $$ X^Te = 0 $$ 将$e$的表达式代入，我们就可以直接求得最佳的$\\beta$： $$ \\beta = (X^TX)^{-1}X^Ty $$ 这样我们就一次性求得了线性回归中的最优解$w^*,b^*$。\n但是，虽然像线性回归这样的简单问题存在解析解，但是对于更加复杂的问题，我们大概率找不到一个解析解。事实上，很多问题找不到解析解并不是因为难算，而是数学意义上的无解，即我们很可能无法将特征与目标的最佳映射写成一个简单的数学公式。因此，我们没办法通过求解析解来处理深度学习的所有问题。\n随机梯度下降 即使我们不知道解析解长成什么样，但是有一点我们是确定的：特征与目标之间是存在映射关系的，即特征和目标的分布之间存在着某种规律。\n虽然我还没有更深入地学习机器学习，但是我隐约感觉这有点像人类物理学家对物理规律的总结。比如当我们遇到一些从来没有人解释过的现象时，我们会尝试提出各种各样的猜想，并尝试依据猜想，从相关因素去预测结果。最后，我们只会留下预测最精准的猜想作为我们的科学理论。\n但是，人类会改变思考的角度，机器不会。比如在尝试分析天体问题时，过去人们站在地球的视角用本轮和均轮描述天体运动，但是后来发现似乎从太阳的视角分析问题得到的结论会更简单。但是机器学习的原理就类似于无限地调整本轮均轮尺寸来让预测值和实际值靠近。我们只能输入数据来训练机器，让它构建一套精密的本轮均轮模型来进行预测，但是我们没办法直接从机器中提取简洁的规律，因为我们能从机器中得到的也只是那一套本轮均轮模型罢了。\n对于几乎所有的深度学习模型，有这样一种普适的优化方法：梯度下降。它的本质是让我们在损失函数递减的方向上更新参数（即各种权重）来降低误差。\n我们已经构建起了由特征值到预测值的映射，对于给定的数据集，我们已知了特征和对应的真实值，而预测值可以通过我们构建的映射得到，这就意味着在给定数据集中我们实际上构建了由特征值到误差的映射，而我们要做的事情实际就是调整这套映射来让误差尽可能小。\n我们可以用一个经典的比喻来理解梯度下降的工作原理：我们将参数视作经纬度，而误差视作一座山的海拔。对于每一个样本，我们都有这样的一座山，但是每一个样本心中的山的形状并不一样。比如，假如我们的模型有两个参数$a,b$，在样本A中可能${(a = 3, b = 2)}$的时候预测的误差最小，但是对于样本B，可能$(a = 4, b =5)$的时候误差才最小。不过，尽管山的形状大概率不同，我们仍然认为不同样本的山的形状存在一定的分布规律。\n对于一个数据集，我们很可能有成千上万个样本，每个样本的山都堆叠在相同的经纬度，而我们一次只能存在于一个经纬度。现在我们希望找到这样的一个经纬度能让我们在每一座山上的海拔的平均值最低。\n梯度下降法认为我们可以这样实现目的：首先，我们不再去想象山的全貌，而是只去想象我们所在的经纬度的山的切面。山是一个曲面，在我们所在经纬度上与这个曲面相切的平面就是我们要找的切面。\n然后，我们想象分别在每一个参数对应的方向上移动一个微小的位移（比如1），这样每个样本的误差山的切面上高度都会改变，有的高度会增大，有的高度会减小，我们将所有高度变化求平均值，就得到了这个参数对于平均误差变化的贡献值。\n这个贡献值为正数时，意味着随着参数变大，平均误差值也将会变大；当这个贡献值为负数时，参数变大，平均误差值则会随之变小。贡献值的绝对值越大，平均误差值随参数变化的速度也会越快。这个贡献值在数学上实际就是误差关于参数的偏导数 。\n我们求得所有参数对误差的贡献值，然后让每个参数的贡献值乘以这个参数对应方向的单位向量，最后做矢量和，我们就得到了让平均参数上升最快的参数改变方向，而它的反向则是使平均参数下降最快的参数改变方向。\n在物理上，当一个标量随着空间位置而发生改变，我们称之为标量场。比如，一个中心天体附近的引力势符合一定的空间分布。在经典力学的范畴下，我们可以这样描述一个中心天体附近的引力势分布： $$ \\phi = -\\frac{GM}{\\sqrt{ x^2 + y^2 + z^2} } $$ 其中$x,y,z$是在以天体为中心的坐标轴下的三维坐标。对于在这个坐标系下坐标为$(x,y,z)$处质量为$m$的小天体，它的引力势能等于： $$ E_p = -\\frac{GMm}{\\sqrt{ x^2+y^2+z^2 }} $$ 这时候，你会思考：沿着什么方向这个引力势能减小的速度最大呢？如果你有一定物理知识，你会知道等势面与保守力方向垂直，保守力的方向就是势下降最快的方向。回忆起高中物理知识，我们知道引力的表达式（不考虑相对论效应）为： $$ \\vec{F} = -\\frac{GMm}{(x^2+y^2+z^2)^\\frac{5}{2}}(x\\hat{i} + y \\hat{j} + z \\hat{k}) $$ 如果你注意力惊人，你会发现这个表达式实际上还有另一种写法： $$ \\vec{F} = -(\\hat{i}\\frac{\\partial E_p}{\\partial x}+\\hat{j}\\frac{\\partial E_p}{\\partial y}+\\hat{k}\\frac{\\partial E_p}{\\partial z}) $$ 进一步缩写： $$ \\vec{F} = -\\nabla E_p $$ 而我们知道，误差$L=\\sum w^Tx + b=F(w_{1},w_{2},w_{3},...)$，其中$L,w_{1},w_{2},w_{3},...$均为标量；引力势$\\phi=F(x_{1},x_{2},x_{3})$，其中$\\phi,x_{1},x_{2},x_{3}$均为标量。一个合理的猜想是：如果我们想像引力那样沿最快改变方向修改参数来降低误差，我们只需要沿着： $$ -\\nabla L $$ 的方向修改参数即可。\n事实上，这样做既在数学上是正确的，同时也是工程上已经成熟使用的方法。比如在机器学习中我们可以算出平均误差之后通过反向传播算出平均误差关于各个参数的梯度，继而通过让参数减去梯度向量的特定倍数来更新参数进而降低误差。这就是梯度下降的含义。\n但是，在机器学习中我们往往需要调整大量的参数并计算数以万计的样本，假如每一次更新参数都必须遍历所有的样本，这样做就必然会导致训练效率极其底下。\n假如我们仔细思考，不难发现，其实如果我们只是确定一个大致的方向，我们用不着遍历所有的样本。理论上我们只需要从数据集中随机抽取几个样本，这几个样本同样可以一定程度反应整个数据集的特征。这就是目前工程上使用更广泛的随机梯度下降法。如果我们更新参数时只从全数据集中抽取一个固定的小数量的样本，这就是所谓的小批量随机梯度下降法。\n在每次迭代时，我们随机抽取一个固定大小的小批量样本$\\mathcal{B}$，然后我们计算这个小批量$\\mathcal{B}$的平均损失，并求它对于参数的梯度，进而更新参数。\n我们可以用下面这一公式来表示这一过程： $$(\\mathbf{w},b) \\leftarrow (\\mathbf{w},b) - \\frac{\\eta}{|\\mathcal{B}|} \\sum_{i \\in \\mathcal{B}} \\partial_{(\\mathbf{w},b)} l^{(i)}(\\mathbf{w},b).$$ 从零实现线性回归 包括：\n数据流水线 模型 损失函数 小批量随机梯度下降优化器 step01：生成数据集 为了训练模型，我们需要准备训练用的数据集。因为我们将要实现的是线性回归模型，理所当然的，我们希望我们的数据在一定误差范围内符合线性关系。所以，我们生成数据集的思路是在一个线性模型的基础上添加随机噪声。\n在本例中，我们构建一个这样的线性模型：一个标签，两个特征。其中参数$w = [2,-3.4]^T,b = 4.2$，此外还有一个随机噪声$\\epsilon$，服从均值为0，标准差为0.01的正态分布： $$ y = xw + b + \\epsilon $$ 实现如下：\nimport random import torch from d2l import torch as d2l def synthetic_data(w, b, num_examples): #@save \"\"\"生成y=Xw+b+噪声\"\"\" X = torch.normal(0, 1, (num_examples, len(w))) y = torch.matmul(X, w) + b y += torch.normal(0, 0.01, y.shape) return X, y.reshape((-1, 1)) torch.normal()：三个参数依次是平均值、标准差、形状。\ntorch.matmul()：顾名思义，矩阵乘法。\ntrue_w = torch.Tensor([2,-3.4]) true_b = 4.2 features, labels = synthetic_data(true_w, true_b, 1000) 按照计划设置数据集参数。如果一切正常，features将会是一个形状为(1000, 2)的tensor，labels将会是一个形状为(1000, 1)的tensor。\n我们尝试打印某次生成的数据的前10个：\nprint(\"features: \", features[0:10], \"\\nlabels: \", labels[0:10]) 结果：\nfeatures: tensor([[ 0.6174, 0.7957], [ 1.5489, -0.3956], [ 0.0109, 1.5542], [ 0.5645, 1.4945], [ 0.7462, 0.4104], [ 0.8710, -0.4334], [-0.2848, 0.1450], [-1.0261, -1.5976], [ 1.0452, 0.4699], [ 0.0985, -0.5582]]) labels: tensor([[ 2.7369], [ 8.6462], [-1.0495], [ 0.2449], [ 4.2774], [ 7.4146], [ 3.1246], [ 7.5757], [ 4.6824], [ 6.2991]]) 简单计算可以验证这组数据大致符合我们的需求。\nstep02：读取数据集 成功建立数据集之后我们需要读取数据集。在前文中我们介绍了小批量随机梯度下降，此处我们尝试来实现这一模型优化策略。我们定义一个data_iter()函数来从数据集中随机采样，返回一个大小为batch_size的小批量，每个小批量包含一组标签和特征。\n实现如下：\ndef data_iter(batch_size, features, labels): num_examples = len(features) indices = list(range(num_examples)) # 这些样本是随机读取的，没有特定的顺序 random.shuffle(indices) for i in range(0, num_examples, batch_size): batch_indices = torch.tensor( indices[i: min(i + batch_size, num_examples)]) yield features[batch_indices], labels[batch_indices] 此处使用了python独有的生成器语法。简单来说，调用这个函数我们并不直接得到小批量样本，而是得到一个迭代器。比如iter = data_iter(...)后，iter并不是一个小批量样本张量。想要从中提取一组样本，我们需要调用next(iter)，或者使用for循环遍历。这样做的好处是节省内存，做到流式内容读取，适用于处理大数据集。（ps：如果学过CS61A，你会很熟悉这个语法。）\n如上的采样实现原理是：先生成一个打乱的索引列表，然后从中每batch_size个索引组成一个batch，并返回对应的特征以及标签。\nBATCH_SIZE = 10 counter = 0 for X, y in data_iter(BATCH_SIZE, features, labels): print(X, \"\\n\", y) counter += 1 if counter \u003e= 4: break data_iter本质上一次性生成了所有的batch。在如上的检验代码中，我们设定一个batch大小为10，并从生成的batch中读取前4个。在某次读取后结果如下：\ntensor([[-1.1099, 1.6687], [ 0.3618, 0.1041], [-0.0529, -0.2535], [-1.2494, -0.7070], [ 2.1251, -2.0001], [ 1.4389, -0.8865], [ 0.2365, -0.4293], [-1.3268, -0.2949], [-1.1298, -0.2571], [ 2.1921, 0.2929]]) tensor([[-3.7069], [ 4.5750], [ 4.9620], [ 4.0994], [15.2621], [10.0946], [ 6.1369], [ 2.5313], [ 2.8041], [ 7.5802]]) tensor([[-1.6883, 1.4908], [ 1.0874, -0.0492], [ 0.4867, -0.2907], [-1.6112, -0.7551], [-0.6087, 0.1846], [ 0.5941, -1.2927], [ 1.2502, -2.2800], [-1.9777, 0.4598], [-0.2728, 1.0429], [ 0.2092, 1.1009]]) tensor([[-4.2361], [ 6.5448], [ 6.1642], [ 3.5481], [ 2.3488], [ 9.7791], [14.4587], [-1.3148], [ 0.1061], [ 0.8728]]) tensor([[-0.1582, -0.5111], [ 0.0206, -1.8523], [-0.6847, 0.0036], [ 1.1984, 0.6702], [-0.5487, 1.7227], [ 3.1342, -1.0611], [-0.8778, 0.0670], [-2.2774, 1.6131], [-0.4362, 0.2129], [ 0.4503, -0.7968]]) tensor([[ 5.6233], [10.5495], [ 2.8155], [ 4.3185], [-2.7354], [14.0680], [ 2.2155], [-5.8575], [ 2.6139], [ 7.8082]]) tensor([[-0.1396, -0.8441], [ 0.4309, -0.8643], [-0.3181, -0.7736], [ 1.1347, 0.1844], [ 0.3201, -0.1031], [ 0.1408, 0.5805], [ 0.2353, -0.6993], [ 0.6425, 1.3151], [ 0.4438, -1.0837], [-2.6588, -0.6255]]) tensor([[6.7791], [7.9966], [6.1920], [5.8500], [5.1947], [2.5164], [7.0426], [1.0002], [8.7780], [0.9943]]) 每两个tensor构成一组feature和label。\nstep03：初始化模型参数 随机创建一组初始参数作为初始值。在下面的代码中，我们通过均值为0、标准差为0.01的正态分布采样来初始化权重，并将偏置初始化为0。\nw = torch.normal(0, 0.01, size=(2,1), requires_grad=True) b = torch.zeros(1, requires_grad=True) 在初始化参数之后，我们的任务是更新这些参数，直到这些参数足够拟合我们的数据。每次更新都需要计算损失函数关于模型参数的梯度。有了这个梯度，我们就可以向减小损失的方向更新每个参数。\nstep04：定义模型 我们已经获得了数据集，得到了参数张量，现在我们想要计算得到预测值，所以我们需要按照我们之前规划的参数、特征与目标之间的映射关系建立模型。\ndef linreg(X, w, b): \"\"\"线性回归模型\"\"\" return torch.matmul(X, w) + b 此处使用了pytorch以及很多其他数据科学库中常见的广播机制，b是一个数字，但是前面的torch.matmul()会得到一个向量。向量+数字，结果是向量中的每个元素都加上数字。\n模型的地位是我们希望产出的产品。我们希望通过训练来得到参数最优的模型。因此，训练的过程本质就是不断的让模型进行计算，每次计算后根据结果更新参数，参数达到最优后，这套嵌入了最优参数的模型就可以用作实际用途，你可以输入特征让它预测结果。\nstep05：定义损失函数 按照计划，我们将预测值与真实值之差的平方值的$\\frac{1}{2}$作为损失值。\ndef squared_loss(y_hat, y): \"\"\"均方损失\"\"\" return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2 得到的是一个损失向量，每个元素代表对应的样本在当前模型计算下的损失值。\nstep06：定义优化算法 尽管线性回归存在解析解，此处我们仍然使用小批量梯度下降法来尝试找到最优解。\ndef sgd(params, lr, batch_size): \"\"\"小批量随机梯度下降\"\"\" with torch.no_grad(): for param in params: param -= lr * param.grad / batch_size param.grad.zero_() with torch.no_grad()明确在此代码块中进行的计算不会被记入torch计算图中。我们优化参数不免要利用一些和参数相关的计算，但是这些计算并不在模型的计算过程内，更新参数的计算过程和误差的产生毫无关联，因此我们需要这样做来与计算图隔离。\n你可能会注意到，我们前面定义的损失函数并不是一个平均值，而是单纯的平方和，这就意味着损失大小会随着batch大小改变而改变。因此在更新参数的时候我们需要做一步额外的标准化操作：让param的改变值除以batch_size，这样对于相同的样本，不管batch_size大小如何，我们都可以得到一样的改变量。\n最后，每次更新完一个参数，我们将参数的梯度归零，方便进行下一次训练。\nstep07：训练 训练的过程中我们不断地会经历正向传播、反向传播、更新参数的循环，周而复始直到完成一个数据集全部数据的训练，我们称这样一个过程为一个迭代周期。我们大致要做这样的逻辑：\n初始化参数 重复以下训练直到完成所有数据集的训练： 计算梯度 更新参数 在每个迭代周期中，我们将使用data_iter遍历数据集中的每个样本。在此过程中迭代周期数量以及学习率都是所谓的超参数，它们并不是我们通过训练可以优化的，只能通过实验经验来调整优化。\nlr = 0.03 num_epochs = 3 net = linreg loss = squared_loss 规定一下后续会用到的参数和相关函数。\nfor epoch in range(num_epochs): for X, y in data_iter(batch_size, features, labels): l = loss(net(X, w, b), y) # X和y的小批量损失 # 因为l形状是(batch_size,1)，而不是一个标量。l中的所有元素被加到一起， # 并以此计算关于[w,b]的梯度 l.sum().backward() sgd([w, b], lr, batch_size) # 使用参数的梯度更新参数 with torch.no_grad(): train_l = loss(net(features, w, b), labels) print(f'epoch {epoch + 1}, loss {float(train_l.mean()):f}') 因为数据集是我们自己生成的，我们知道最优参数的标准答案为$w = [2,-3.4]^T,b = 4.2$，所以我们可以据此来衡量模型训练的成效。\nprint(f'w的估计误差: {true_w - w.reshape(true_w.shape)}') print(f'b的估计误差: {true_b - b}') 完整代码：\nimport random import torch from d2l import torch as d2l def synthetic_data(w: torch.Tensor, b: float, num_examples: int): X = torch.normal(0, 1, (num_examples, len(w))) y = torch.matmul(X, w) + b y += torch.normal(0, 0.01, y.shape) return X, y.reshape((-1, 1)) true_w = torch.Tensor([2, -3.4]) true_b = 4.2 features, labels = synthetic_data(true_w, true_b, 1000) # print(\"features: \", features[0:10], \"\\nlabels: \", labels[0:10]) def data_iter(batch_size, features, labels): num_examples = len(features) indices = list(range(num_examples)) random.shuffle(indices) for i in range(0, num_examples, batch_size): batch_indices = torch.tensor(indices[i : min(i + batch_size, num_examples)]) yield features[batch_indices], labels[batch_indices] w = torch.normal(0, 0.01, size=(2, 1), requires_grad=True) b = torch.zeros(1, requires_grad=True) def linreg(X, w, b): \"\"\"线性回归模型\"\"\" return torch.matmul(X, w) + b def squared_loss(y_hat, y): \"\"\"均方损失\"\"\" return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2 def sgd(params, lr, batch_size): \"\"\"小批量随机梯度下降\"\"\" with torch.no_grad(): for param in params: param -= lr * param.grad / batch_size param.grad.zero_() lr = 0.03 num_epochs = 3 net = linreg loss = squared_loss batch_size = 10 for epoch in range(num_epochs): for X, y in data_iter(batch_size, features, labels): l = loss(net(X, w, b), y) # X和y的小批量损失 # 因为l形状是(batch_size,1)，而不是一个标量。l中的所有元素被加到一起， # 并以此计算关于[w,b]的梯度 l.sum().backward() sgd([w, b], lr, batch_size) # 使用参数的梯度更新参数 with torch.no_grad(): train_l = loss(net(features, w, b), labels) print(f\"epoch {epoch + 1}, loss {float(train_l.mean()):f}\") print(f\"w的估计误差: {true_w - w.reshape(true_w.shape)}\") print(f\"b的估计误差: {true_b - b}\") 某次输出：\nepoch 1, loss 0.036131 epoch 2, loss 0.000128 epoch 3, loss 0.000046 w的估计误差: tensor([-0.0004, -0.0010], grad_fn=\u003cSubBackward0\u003e) b的估计误差: tensor([0.0002], grad_fn=\u003cRsubBackward1\u003e) 训练了3个迭代周期，最后得到的参数与最优参数之间误差在e-04数量级。\n总结来说，使用梯度下降法无法得到最优参数的真实值，我们也并不关心如何恢复真实参数。我们真正希望实现的是高度准确的预测参数。\n",
+    "wordCount" : "8618",
+    "inLanguage": "zh-cn",
+    "datePublished": "2026-01-07T19:27:51+08:00",
+    "dateModified": "2026-01-07T19:27:51+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>D2L自学日志02：线性回归</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Jan 7, 2026</span></div>
+				<h1>D2L自学日志02：线性回归</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/d2l">D2L</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/python">python</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/torch">torch</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>8618&nbspWords 阅读时长39 Minutes, 10 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2026-01-07 19:27 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h1 id="线性回归">线性回归<a href="#%e7%ba%bf%e6%80%a7%e5%9b%9e%e5%bd%92" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>线性假设是指目标可以表示为特征的加权和。</p>
+<blockquote>
+<p>举个例子：我想做一个预测房屋售价的模型。</p>
+</blockquote>
+<p>房屋售价相关的数量特征有：房屋面积、房龄。那么我们就可以得到这样的式子（虽然不一定有道理）：
+</p>
+$$
+price = w_{area} \cdot area + w_{age} \cdot age + b
+$$<p>
+其中$w_{area}$和$w_{age}$称为<strong>权重</strong>，代表这个特征对于结果的影响大小，比如在这个例子中，房屋面积和房龄对于售价的影响力可能不同；$b$代表<strong>偏置</strong>，用来拓展模型的表达能力（不加偏置模型只能进行线性变换，加了偏置模型可以实现仿射变换）。</p>
+<p>在机器学习领域中，我们处理的对象往往是<strong>高维数据集</strong>，即特证数很可能非常多。我们可以将所有的相关特征全部塞进一个向量中。比如，我们的目标可以用$x_1,x_2,x_3,...$来描述，那么我们可以这样来表示我们的预测值$\hat{y}$：
+</p>
+$$
+\hat{y} = \sum_{i = 1}^{n}{w_ix_i} + b
+$$<p>
+将所有特征塞进向量$\vec{x}$后，我们可以得到：
+</p>
+$$
+\hat{y} = w^Tx + b
+$$<p>
+其中$w^T$表示权重向量，每个元素表示对应的特征的权重大小。这样，我们就用点积的形式简洁的表示了模型。</p>
+<p>通过这样的模型，我们已经可以实现将一个样本的特征与其预测值实现映射。但是通常情况下，这样做并不足以解决问题，因为我们多数时候不会只有一个样本。我们理想的效果是这样：通过同一套映射规则，将多个样本的特征分别映射到各自的预测值。非常巧的是，对于线性回归模型，我们恰好有一个强大的工具可以实现这一功能：矩阵。</p>
+<p>对于一个样本的特征$x_{1},x_{2},x_{3},...$，我们可以把它塞进一个行向量$\vec{x}^T$中，组成一个特征行向量；随后，让这些行向量从上至下排列，我们就得到了一个由特征数值组成的矩阵。</p>
+<p>比如，对于样本a，特征行向量为$[x_{a_{1}}, x_{a_{2}}, x_{a_{3}}, ... ,x_{as}]$;对于样本b，我们有特征行向量$[x_{b_{1}},x_{b_{2}},...]$，以此类推，我们可以最后得到每一个样本的特征行向量，随后我们将它拼在一起，得到如下矩阵：
+</p>
+$$
+X = \begin{pmatrix}
+x_{a_{1}}&x_{a_{2}}&x_{a_{3}}&{...}&x_{as} \\
+x_{b_{1}}&x_{b_{2}}&x_{b_{3}}&{...}&x_{bs} \\
+\vdots \\
+\end{pmatrix}
+$$<p>
+这样，我们就将整个数据集的所有样本的所以特征汇总在了一个矩阵中。我们同样将预测值从上至下排列为一个列向量$\hat{y}$，这样我们就得到了：
+</p>
+$$
+\hat{y}= Xw + b
+$$<p>
+对于给定训练数据特征$\mathbf{X}$和对应的已知标签$\mathbf{y}$，线性回归的目标是找到一组权重向量$\mathbf{w}$和偏置$b$：当给定从$\mathbf{X}$的同分布中取样的新样本特征时，这组权重向量和偏置能够使得新样本预测标签的误差尽可能小。说白了，我们认为$\hat{y}$和$X$之间可能有线性关系，而我们所做的其实是希望让机器通过学习已有的样本数据来自行归纳这种潜在的线性关系。</p>
+<p>但是，一个很现实的问题是：以上的所有假设都建立在目标与特征真的存在线性关系这一前提，然而现实世界中我们几乎不可能找到严格线性的数据集（现实数据的浮点数误差，你可以这么理解）。</p>
+<p>所以，既然这种误差不可避免，一个很天才的想法是：我们引入一个噪声项来观察误差带来的影响。这就像听歌的时候音质不好，所以你干脆放点噪音让音质的缺陷显得非常合理。</p>
+<hr>
+<p>总而言之，我们的根本目标是寻找描述$X$和$\hat{y}$之间映射关系最好的一组$w,b$。但是在正式开始寻找之前，我们需要回答两个颇具哲理的问题：</p>
+<ol>
+<li>什么是<strong>最好</strong>？</li>
+<li>如何寻找？</li>
+</ol>
+<p>他们分别对应于：</p>
+<ol>
+<li>模型质量的度量方式。</li>
+<li>一种能更新模型进而提高模型质量的方式。</li>
+</ol>
+<hr>
+<h2 id="度量质量损失函数">度量质量：损失函数<a href="#%e5%ba%a6%e9%87%8f%e8%b4%a8%e9%87%8f%e6%8d%9f%e5%a4%b1%e5%87%bd%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>对于第一个问题，我们希望通过我们的模型，最好输入$x$就能直接精确预测到$y$，换言之，什么样的映射能让$\hat{y}$和$y$之间差距最小，这样的映射就是我们所在寻找的。因此，我们可以通过量化模型的误差进而体现模型的质量。而这种量化的方式就是所谓的<strong>损失函数（loss funciton）</strong>。</p>
+<p>对于一个通常的误差函数，我们希望它的输出值为非负数，这样他的大小即直接展现损失大小。在回归问题中，一个常用的损失函数是<strong>平方误差函数</strong>。我们记样本$i$的预测值为$\hat{y}^{(i)}$，其对应的真实标签为$y^{(i)}$，那么平方误差就可以定义为如下的式子：
+</p>
+$$
+l^{(i)}(w, b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2
+$$<p>
+这里，之所以有一个$\frac{1}{2}$，只是因为这样做后续求导系数为1，稍微方便一点。</p>
+<p>你会注意到这个式子的作用对象是一个标量，即它只反应了一个样本中的损失，但是我们希望能作用于一个数据集的所有样本。于是有一个很简单粗暴的方法：让我们算出每一个样本的损失，然后求平均。
+</p>
+$$
+L(w,b) = \frac{1}{n}\sum_{i = 1}^{n}{l^{(i)}(w,b)}
+$$<p>
+这样，我们就将我们训练模型时的目的明确为：</p>
+<blockquote>
+<p>寻找一组参数$w^*,b^*$使得这组参数可以最小化所有训练样本中的总损失。</p>
+</blockquote>
+<hr>
+<h2 id="解析解">解析解<a href="#%e8%a7%a3%e6%9e%90%e8%a7%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>不同于我们后续会涉及到的大多数模型，线性回归的解可以用一个公式简单表达出来，即：在给定了一个数据集的时候，我们可以直接算出来最优的参数$w^*,b^*$，而无需复杂的训练过程。</p>
+<p>首先，对于偏置量$b$来说，我们没必要去专门考察它在什么时候最优。我们可以对公式$\hat{y} = Xw + b$做如下调整：我们在X最左侧强行加上一列全为1的向量，然后在$w$中强行插入一个$b$，变为$\beta = [b, w_1,w_2,...]$。这样，我们可以让b的地位和其他权重保持一致。我们将问题简化为：求使得$\hat{y} = X\beta$误差最小的权重向量$\beta$。</p>
+<p>对于解答这个问题，我们可以使用线性代数优美的几何本质。$X$是一个已知的矩阵，它可以把一个空间中的所有向量映射到另一个空间（即$X$的列空间）中，假如$y$就在$X$的列空间中，这就意味着我们可以用一个向量通过X变换严丝合缝的映射到$y$，这种情况就对应与数据集中的特征与目标呈现严格的线性关系。但是现实世界中我们找不到如此理想的数据集，这意味着$y$多数时候并不在$X$的列空间中。</p>
+<p>此时我们回顾前面的误差函数定义，我们会发现其实我们所计算的误差是$\hat{y}$和$y$对应坐标之间的欧几里得距离（平方和，只是没开根号）。我们可以将问题简化如下：</p>
+<blockquote>
+<p>已知$\hat{y}$被约束在$X$的列空间中，$y$不一定在$X$的列空间中，什么情况下$\hat{y}$和$y$之间的欧几里得距离会最小？</p>
+</blockquote>
+<p>如果这还是很抽象，我们来看一个三维空间下的表述：</p>
+<blockquote>
+<p>已知$\hat{y}$在$X$列向量张成的平面或直线上，而$y$并不一定在这个平面或直线上，什么情况下$\hat{y}$和$y$之间的欧几里得距离最小？</p>
+</blockquote>
+<p>答案很显然：$\hat{y}$与$y$之间的差向量垂直于$X$的列空间。</p>
+<p>我们令$e = y - X\beta$表示误差向量，我们希望$e$可以垂直于$X$的每一个列向量，这就意味着$e$与每个$X$列向量的点积都为0。也就是说：
+</p>
+$$
+X^Te = 0
+$$<p>
+将$e$的表达式代入，我们就可以直接求得最佳的$\beta$：
+</p>
+$$
+\beta = (X^TX)^{-1}X^Ty
+$$<p>
+这样我们就一次性求得了线性回归中的最优解$w^*,b^*$。</p>
+<p>但是，虽然像线性回归这样的简单问题存在解析解，但是对于更加复杂的问题，我们大概率找不到一个解析解。事实上，很多问题找不到解析解并不是因为难算，而是数学意义上的无解，即我们很可能无法将特征与目标的最佳映射写成一个简单的数学公式。因此，我们没办法通过求解析解来处理深度学习的所有问题。</p>
+<hr>
+<h2 id="随机梯度下降">随机梯度下降<a href="#%e9%9a%8f%e6%9c%ba%e6%a2%af%e5%ba%a6%e4%b8%8b%e9%99%8d" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>即使我们不知道解析解长成什么样，但是有一点我们是确定的：特征与目标之间是存在映射关系的，即特征和目标的分布之间存在着某种规律。</p>
+<p>虽然我还没有更深入地学习机器学习，但是我隐约感觉这有点像人类物理学家对物理规律的总结。比如当我们遇到一些从来没有人解释过的现象时，我们会尝试提出各种各样的猜想，并尝试依据猜想，从相关因素去预测结果。最后，我们只会留下预测最精准的猜想作为我们的科学理论。</p>
+<p>但是，人类会改变思考的角度，机器不会。比如在尝试分析天体问题时，过去人们站在地球的视角用本轮和均轮描述天体运动，但是后来发现似乎从太阳的视角分析问题得到的结论会更简单。但是机器学习的原理就类似于无限地调整本轮均轮尺寸来让预测值和实际值靠近。我们只能输入数据来训练机器，让它构建一套精密的本轮均轮模型来进行预测，但是我们没办法直接从机器中提取简洁的规律，因为我们能从机器中得到的也只是那一套本轮均轮模型罢了。</p>
+<hr>
+<p>对于几乎所有的深度学习模型，有这样一种普适的优化方法：<em><strong>梯度下降</strong></em>。它的本质是让我们在损失函数递减的方向上更新参数（即各种权重）来降低误差。</p>
+<p>我们已经构建起了由特征值到预测值的映射，对于给定的数据集，我们已知了特征和对应的真实值，而预测值可以通过我们构建的映射得到，这就意味着在给定数据集中我们实际上构建了由特征值到误差的映射，而我们要做的事情实际就是调整这套映射来让误差尽可能小。</p>
+<p>我们可以用一个经典的比喻来理解梯度下降的工作原理：我们将参数视作经纬度，而误差视作一座山的海拔。对于每一个样本，我们都有这样的一座山，但是每一个样本心中的山的形状并不一样。比如，假如我们的模型有两个参数$a,b$，在样本A中可能${(a = 3, b = 2)}$的时候预测的误差最小，但是对于样本B，可能$(a = 4, b =5)$的时候误差才最小。不过，尽管山的形状大概率不同，我们仍然认为不同样本的山的形状存在一定的分布规律。</p>
+<p>对于一个数据集，我们很可能有成千上万个样本，每个样本的山都堆叠在相同的经纬度，而我们一次只能存在于一个经纬度。现在我们希望找到这样的一个经纬度能让我们在每一座山上的海拔的平均值最低。</p>
+<p><strong>梯度下降</strong>法认为我们可以这样实现目的：首先，我们不再去想象山的全貌，而是只去想象我们所在的经纬度的山的<strong>切面</strong>。山是一个曲面，在我们所在经纬度上与这个曲面相切的平面就是我们要找的切面。</p>
+<p>然后，我们想象<strong>分别</strong>在每一个参数对应的方向上移动一个微小的位移（比如1），这样每个样本的误差山的切面上高度都会改变，有的高度会增大，有的高度会减小，我们将所有高度变化求平均值，就得到了<strong>这个参数对于平均误差变化的贡献值。</strong></p>
+<p>这个贡献值为正数时，意味着随着参数变大，平均误差值也将会变大；当这个贡献值为负数时，参数变大，平均误差值则会随之变小。贡献值的绝对值越大，平均误差值随参数变化的速度也会越快。这个贡献值在数学上实际就是<strong>误差关于参数的偏导数</strong> 。</p>
+<p>我们求得所有参数对误差的贡献值，然后让每个参数的贡献值乘以这个参数对应方向的单位向量，最后做矢量和，我们就得到了让<strong>平均参数上升最快的参数改变方向</strong>，而它的反向则是使平均参数下降最快的参数改变方向。</p>
+<hr>
+<p>在物理上，当一个标量随着空间位置而发生改变，我们称之为<strong>标量场</strong>。比如，一个中心天体附近的引力势符合一定的空间分布。在经典力学的范畴下，我们可以这样描述一个中心天体附近的引力势分布：
+</p>
+$$
+\phi = -\frac{GM}{\sqrt{ x^2 + y^2 + z^2} }
+$$<p>
+其中$x,y,z$是在以天体为中心的坐标轴下的三维坐标。对于在这个坐标系下坐标为$(x,y,z)$处质量为$m$的小天体，它的引力势能等于：
+</p>
+$$
+E_p = -\frac{GMm}{\sqrt{ x^2+y^2+z^2 }}
+$$<p>
+这时候，你会思考：沿着什么方向这个引力势能减小的速度最大呢？如果你有一定物理知识，你会知道等势面与保守力方向垂直，保守力的方向就是势下降最快的方向。回忆起高中物理知识，我们知道引力的表达式（不考虑相对论效应）为：
+</p>
+$$
+\vec{F} = -\frac{GMm}{(x^2+y^2+z^2)^\frac{5}{2}}(x\hat{i} + y \hat{j} + z \hat{k})
+$$<p>
+如果你注意力惊人，你会发现这个表达式实际上还有另一种写法：
+</p>
+$$
+\vec{F} = -(\hat{i}\frac{\partial E_p}{\partial x}+\hat{j}\frac{\partial E_p}{\partial y}+\hat{k}\frac{\partial E_p}{\partial z})
+$$<p>
+进一步缩写：
+</p>
+$$
+\vec{F} = -\nabla E_p
+$$<p>
+而我们知道，误差$L=\sum w^Tx + b=F(w_{1},w_{2},w_{3},...)$，其中$L,w_{1},w_{2},w_{3},...$均为标量；引力势$\phi=F(x_{1},x_{2},x_{3})$，其中$\phi,x_{1},x_{2},x_{3}$均为标量。一个合理的猜想是：如果我们想像引力那样沿最快改变方向修改参数来降低误差，我们只需要沿着：
+</p>
+$$
+-\nabla L
+$$<p>
+的方向修改参数即可。</p>
+<p>事实上，这样做既在数学上是正确的，同时也是工程上已经成熟使用的方法。比如在机器学习中我们可以算出平均误差之后通过反向传播算出平均误差关于各个参数的梯度，继而通过让参数减去梯度向量的特定倍数来更新参数进而降低误差。这就是梯度下降的含义。</p>
+<hr>
+<p>但是，在机器学习中我们往往需要调整大量的参数并计算数以万计的样本，假如每一次更新参数都必须遍历所有的样本，这样做就必然会导致训练效率极其底下。</p>
+<p>假如我们仔细思考，不难发现，其实如果我们只是确定一个大致的方向，我们用不着遍历所有的样本。理论上我们只需要从数据集中随机抽取几个样本，这几个样本同样可以一定程度反应整个数据集的特征。这就是目前工程上使用更广泛的<em><strong>随机梯度下降法</strong></em>。如果我们更新参数时只从全数据集中抽取一个固定的小数量的样本，这就是所谓的<em><strong>小批量随机梯度下降法</strong></em>。</p>
+<p>在每次迭代时，我们随机抽取一个固定大小的小批量样本$\mathcal{B}$，然后我们计算这个小批量$\mathcal{B}$的平均损失，并求它对于参数的梯度，进而更新参数。</p>
+<p>我们可以用下面这一公式来表示这一过程：
+</p>
+$$(\mathbf{w},b) \leftarrow (\mathbf{w},b) - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{(\mathbf{w},b)} l^{(i)}(\mathbf{w},b).$$<hr>
+<h1 id="从零实现线性回归">从零实现线性回归<a href="#%e4%bb%8e%e9%9b%b6%e5%ae%9e%e7%8e%b0%e7%ba%bf%e6%80%a7%e5%9b%9e%e5%bd%92" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>包括：</p>
+<ul>
+<li>数据流水线</li>
+<li>模型</li>
+<li>损失函数</li>
+<li>小批量随机梯度下降优化器</li>
+</ul>
+<h2 id="step01生成数据集">step01：生成数据集<a href="#step01%e7%94%9f%e6%88%90%e6%95%b0%e6%8d%ae%e9%9b%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>为了训练模型，我们需要准备训练用的数据集。因为我们将要实现的是线性回归模型，理所当然的，我们希望我们的数据在一定误差范围内符合线性关系。所以，我们生成数据集的思路是在一个线性模型的基础上添加随机噪声。</p>
+<p>在本例中，我们构建一个这样的线性模型：一个标签，两个特征。其中参数$w = [2,-3.4]^T,b = 4.2$，此外还有一个随机噪声$\epsilon$，服从均值为0，标准差为0.01的正态分布：
+</p>
+$$
+y = xw + b + \epsilon
+$$<p>
+实现如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">synthetic_data</span>(w, b, num_examples):  <span style="color:#75715e">#@save</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;生成y=Xw+b+噪声&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, (num_examples, len(w)))
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">+=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, y<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X, y<span style="color:#f92672">.</span>reshape((<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>))
+</span></span></code></pre></div><p><code>torch.normal()</code>：三个参数依次是平均值、标准差、形状。</p>
+<p><code>torch.matmul()</code>：顾名思义，矩阵乘法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>true_w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>Tensor([<span style="color:#ae81ff">2</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
+</span></span><span style="display:flex;"><span>true_b <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.2</span> 
+</span></span><span style="display:flex;"><span>features, labels <span style="color:#f92672">=</span> synthetic_data(true_w, true_b, <span style="color:#ae81ff">1000</span>)
+</span></span></code></pre></div><p>按照计划设置数据集参数。如果一切正常，<code>features</code>将会是一个形状为(1000, 2)的tensor，<code>labels</code>将会是一个形状为(1000, 1)的tensor。</p>
+<p>我们尝试打印某次生成的数据的前10个：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;features: &#34;</span>, features[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">10</span>], <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">labels: &#34;</span>, labels[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">10</span>])
+</span></span></code></pre></div><p>结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>features:  tensor([[ <span style="color:#ae81ff">0.6174</span>,  <span style="color:#ae81ff">0.7957</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.5489</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.3956</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.0109</span>,  <span style="color:#ae81ff">1.5542</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.5645</span>,  <span style="color:#ae81ff">1.4945</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.7462</span>,  <span style="color:#ae81ff">0.4104</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.8710</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.4334</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.2848</span>,  <span style="color:#ae81ff">0.1450</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.0261</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.5976</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.0452</span>,  <span style="color:#ae81ff">0.4699</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.0985</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.5582</span>]]) 
+</span></span><span style="display:flex;"><span>labels:  tensor([[ <span style="color:#ae81ff">2.7369</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">8.6462</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.0495</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.2449</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">4.2774</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">7.4146</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">3.1246</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">7.5757</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">4.6824</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">6.2991</span>]])
+</span></span></code></pre></div><p>简单计算可以验证这组数据大致符合我们的需求。</p>
+<h2 id="step02读取数据集">step02：读取数据集<a href="#step02%e8%af%bb%e5%8f%96%e6%95%b0%e6%8d%ae%e9%9b%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>成功建立数据集之后我们需要读取数据集。在前文中我们介绍了<strong>小批量随机梯度下降</strong>，此处我们尝试来实现这一模型优化策略。我们定义一个<code>data_iter()</code>函数来从数据集中随机采样，返回一个大小为<code>batch_size</code>的小批量，每个小批量包含一组标签和特征。</p>
+<p>实现如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">data_iter</span>(batch_size, features, labels):
+</span></span><span style="display:flex;"><span>    num_examples <span style="color:#f92672">=</span> len(features)
+</span></span><span style="display:flex;"><span>    indices <span style="color:#f92672">=</span> list(range(num_examples))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 这些样本是随机读取的，没有特定的顺序</span>
+</span></span><span style="display:flex;"><span>    random<span style="color:#f92672">.</span>shuffle(indices)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, num_examples, batch_size):
+</span></span><span style="display:flex;"><span>        batch_indices <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(
+</span></span><span style="display:flex;"><span>            indices[i: min(i <span style="color:#f92672">+</span> batch_size, num_examples)])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> features[batch_indices], labels[batch_indices]
+</span></span></code></pre></div><p>此处使用了python独有的生成器语法。简单来说，调用这个函数我们并不直接得到小批量样本，而是得到一个迭代器。比如<code>iter = data_iter(...)</code>后，<code>iter</code>并不是一个小批量样本张量。想要从中提取一组样本，我们需要调用<code>next(iter)</code>，或者使用for循环遍历。这样做的好处是节省内存，做到流式内容读取，适用于处理大数据集。（ps：如果学过CS61A，你会很熟悉这个语法。）</p>
+<p>如上的采样实现原理是：先生成一个打乱的索引列表，然后从中每<code>batch_size</code>个索引组成一个batch，并返回对应的特征以及标签。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter(BATCH_SIZE, features, labels):
+</span></span><span style="display:flex;"><span>    print(X, <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, y)
+</span></span><span style="display:flex;"><span>    counter <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> counter <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">4</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span></code></pre></div><p><code>data_iter</code>本质上一次性生成了所有的batch。在如上的检验代码中，我们设定一个batch大小为10，并从生成的batch中读取前4个。在某次读取后结果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tensor([[<span style="color:#f92672">-</span><span style="color:#ae81ff">1.1099</span>,  <span style="color:#ae81ff">1.6687</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.3618</span>,  <span style="color:#ae81ff">0.1041</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0529</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.2535</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.2494</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.7070</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.1251</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">2.0001</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.4389</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.8865</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.2365</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.4293</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.3268</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.2949</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.1298</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.2571</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.1921</span>,  <span style="color:#ae81ff">0.2929</span>]]) 
+</span></span><span style="display:flex;"><span> tensor([[<span style="color:#f92672">-</span><span style="color:#ae81ff">3.7069</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">4.5750</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">4.9620</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">4.0994</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">15.2621</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">10.0946</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">6.1369</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.5313</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.8041</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">7.5802</span>]])
+</span></span><span style="display:flex;"><span>tensor([[<span style="color:#f92672">-</span><span style="color:#ae81ff">1.6883</span>,  <span style="color:#ae81ff">1.4908</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.0874</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0492</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.4867</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.2907</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.6112</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.7551</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.6087</span>,  <span style="color:#ae81ff">0.1846</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.5941</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.2927</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.2502</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">2.2800</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.9777</span>,  <span style="color:#ae81ff">0.4598</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.2728</span>,  <span style="color:#ae81ff">1.0429</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.2092</span>,  <span style="color:#ae81ff">1.1009</span>]]) 
+</span></span><span style="display:flex;"><span> tensor([[<span style="color:#f92672">-</span><span style="color:#ae81ff">4.2361</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">6.5448</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">6.1642</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">3.5481</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.3488</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">9.7791</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">14.4587</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">1.3148</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.1061</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.8728</span>]])
+</span></span><span style="display:flex;"><span>tensor([[<span style="color:#f92672">-</span><span style="color:#ae81ff">0.1582</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.5111</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.0206</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.8523</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.6847</span>,  <span style="color:#ae81ff">0.0036</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.1984</span>,  <span style="color:#ae81ff">0.6702</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5487</span>,  <span style="color:#ae81ff">1.7227</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">3.1342</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.0611</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.8778</span>,  <span style="color:#ae81ff">0.0670</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">2.2774</span>,  <span style="color:#ae81ff">1.6131</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.4362</span>,  <span style="color:#ae81ff">0.2129</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.4503</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.7968</span>]]) 
+</span></span><span style="display:flex;"><span> tensor([[ <span style="color:#ae81ff">5.6233</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">10.5495</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.8155</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">4.3185</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">2.7354</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">14.0680</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.2155</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">5.8575</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">2.6139</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">7.8082</span>]])
+</span></span><span style="display:flex;"><span>tensor([[<span style="color:#f92672">-</span><span style="color:#ae81ff">0.1396</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.8441</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.4309</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.8643</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.3181</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.7736</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">1.1347</span>,  <span style="color:#ae81ff">0.1844</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.3201</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.1031</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.1408</span>,  <span style="color:#ae81ff">0.5805</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.2353</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.6993</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.6425</span>,  <span style="color:#ae81ff">1.3151</span>],
+</span></span><span style="display:flex;"><span>        [ <span style="color:#ae81ff">0.4438</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.0837</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">2.6588</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.6255</span>]]) 
+</span></span><span style="display:flex;"><span> tensor([[<span style="color:#ae81ff">6.7791</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">7.9966</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">6.1920</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">5.8500</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">5.1947</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">2.5164</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">7.0426</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">1.0002</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">8.7780</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">0.9943</span>]])
+</span></span></code></pre></div><p>每两个tensor构成一组feature和label。</p>
+<h2 id="step03初始化模型参数">step03：初始化模型参数<a href="#step03%e5%88%9d%e5%a7%8b%e5%8c%96%e6%a8%a1%e5%9e%8b%e5%8f%82%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>随机创建一组初始参数作为初始值。在下面的代码中，我们通过均值为0、标准差为0.01的正态分布采样来初始化权重，并将偏置初始化为0。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(<span style="color:#ae81ff">1</span>, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><p>在初始化参数之后，我们的任务是更新这些参数，直到这些参数足够拟合我们的数据。每次更新都需要计算损失函数关于模型参数的梯度。有了这个梯度，我们就可以向减小损失的方向更新每个参数。</p>
+<h2 id="step04定义模型">step04：定义模型<a href="#step04%e5%ae%9a%e4%b9%89%e6%a8%a1%e5%9e%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>我们已经获得了数据集，得到了参数张量，现在我们想要计算得到预测值，所以我们需要按照我们之前规划的参数、特征与目标之间的映射关系建立模型。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">linreg</span>(X, w, b): 
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;线性回归模型&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> b
+</span></span></code></pre></div><p>此处使用了pytorch以及很多其他数据科学库中常见的广播机制，b是一个数字，但是前面的<code>torch.matmul()</code>会得到一个向量。向量+数字，结果是向量中的每个元素都加上数字。</p>
+<p>模型的地位是我们希望产出的产品。我们希望通过训练来得到参数最优的模型。因此，训练的过程本质就是不断的让模型进行计算，每次计算后根据结果更新参数，参数达到最优后，这套嵌入了最优参数的模型就可以用作实际用途，你可以输入特征让它预测结果。</p>
+<h2 id="step05定义损失函数">step05：定义损失函数<a href="#step05%e5%ae%9a%e4%b9%89%e6%8d%9f%e5%a4%b1%e5%87%bd%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>按照计划，我们将预测值与真实值之差的平方值的$\frac{1}{2}$作为损失值。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">squared_loss</span>(y_hat, y):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;均方损失&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (y_hat <span style="color:#f92672">-</span> y<span style="color:#f92672">.</span>reshape(y_hat<span style="color:#f92672">.</span>shape)) <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><p>得到的是一个损失向量，每个元素代表对应的样本在当前模型计算下的损失值。</p>
+<h2 id="step06定义优化算法">step06：定义优化算法<a href="#step06%e5%ae%9a%e4%b9%89%e4%bc%98%e5%8c%96%e7%ae%97%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>尽管线性回归存在解析解，此处我们仍然使用小批量梯度下降法来尝试找到最优解。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sgd</span>(params, lr, batch_size):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;小批量随机梯度下降&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> param <span style="color:#f92672">in</span> params:
+</span></span><span style="display:flex;"><span>            param <span style="color:#f92672">-=</span> lr <span style="color:#f92672">*</span> param<span style="color:#f92672">.</span>grad <span style="color:#f92672">/</span> batch_size
+</span></span><span style="display:flex;"><span>            param<span style="color:#f92672">.</span>grad<span style="color:#f92672">.</span>zero_()
+</span></span></code></pre></div><p><code>with torch.no_grad()</code>明确在此代码块中进行的计算不会被记入torch计算图中。我们优化参数不免要利用一些和参数相关的计算，但是这些计算并不在模型的计算过程内，更新参数的计算过程和误差的产生毫无关联，因此我们需要这样做来与计算图隔离。</p>
+<p>你可能会注意到，我们前面定义的损失函数并不是一个平均值，而是单纯的平方和，这就意味着损失大小会随着batch大小改变而改变。因此在更新参数的时候我们需要做一步额外的标准化操作：让<code>param</code>的改变值除以<code>batch_size</code>，这样对于相同的样本，不管<code>batch_size</code>大小如何，我们都可以得到一样的改变量。</p>
+<p>最后，每次更新完一个参数，我们将参数的梯度归零，方便进行下一次训练。</p>
+<h2 id="step07训练">step07：训练<a href="#step07%e8%ae%ad%e7%bb%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>训练的过程中我们不断地会经历正向传播、反向传播、更新参数的循环，周而复始直到完成一个数据集全部数据的训练，我们称这样一个过程为一个<em>迭代周期</em>。我们大致要做这样的逻辑：</p>
+<ul>
+<li>初始化参数</li>
+<li>重复以下训练直到完成所有数据集的训练：
+<ul>
+<li>计算梯度</li>
+<li>更新参数</li>
+</ul>
+</li>
+</ul>
+<p>在每个迭代周期中，我们将使用<code>data_iter</code>遍历数据集中的每个样本。在此过程中迭代周期数量以及学习率都是所谓的<em>超参数</em>，它们并不是我们通过训练可以优化的，只能通过实验经验来调整优化。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.03</span>
+</span></span><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> linreg
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> squared_loss
+</span></span></code></pre></div><p>规定一下后续会用到的参数和相关函数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter(batch_size, features, labels):
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X, w, b), y)  <span style="color:#75715e"># X和y的小批量损失</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 因为l形状是(batch_size,1)，而不是一个标量。l中的所有元素被加到一起，</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 并以此计算关于[w,b]的梯度</span>
+</span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>        sgd([w, b], lr, batch_size)  <span style="color:#75715e"># 使用参数的梯度更新参数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        train_l <span style="color:#f92672">=</span> loss(net(features, w, b), labels)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;epoch </span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss </span><span style="color:#e6db74">{</span>float(train_l<span style="color:#f92672">.</span>mean())<span style="color:#e6db74">:</span><span style="color:#e6db74">f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span></code></pre></div><p>因为数据集是我们自己生成的，我们知道最优参数的标准答案为$w = [2,-3.4]^T,b = 4.2$，所以我们可以据此来衡量模型训练的成效。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;w的估计误差: </span><span style="color:#e6db74">{</span>true_w <span style="color:#f92672">-</span> w<span style="color:#f92672">.</span>reshape(true_w<span style="color:#f92672">.</span>shape)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;b的估计误差: </span><span style="color:#e6db74">{</span>true_b <span style="color:#f92672">-</span> b<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span></code></pre></div><p>完整代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">synthetic_data</span>(w: torch<span style="color:#f92672">.</span>Tensor, b: float, num_examples: int):
+</span></span><span style="display:flex;"><span>    X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, (num_examples, len(w)))
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">+=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, y<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X, y<span style="color:#f92672">.</span>reshape((<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>true_w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>Tensor([<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
+</span></span><span style="display:flex;"><span>true_b <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.2</span>
+</span></span><span style="display:flex;"><span>features, labels <span style="color:#f92672">=</span> synthetic_data(true_w, true_b, <span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(&#34;features: &#34;, features[0:10], &#34;\nlabels: &#34;, labels[0:10])</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">data_iter</span>(batch_size, features, labels):
+</span></span><span style="display:flex;"><span>    num_examples <span style="color:#f92672">=</span> len(features)
+</span></span><span style="display:flex;"><span>    indices <span style="color:#f92672">=</span> list(range(num_examples))
+</span></span><span style="display:flex;"><span>    random<span style="color:#f92672">.</span>shuffle(indices)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, num_examples, batch_size):
+</span></span><span style="display:flex;"><span>        batch_indices <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(indices[i : min(i <span style="color:#f92672">+</span> batch_size, num_examples)])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> features[batch_indices], labels[batch_indices]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(<span style="color:#ae81ff">1</span>, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">linreg</span>(X, w, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;线性回归模型&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">squared_loss</span>(y_hat, y):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;均方损失&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (y_hat <span style="color:#f92672">-</span> y<span style="color:#f92672">.</span>reshape(y_hat<span style="color:#f92672">.</span>shape)) <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sgd</span>(params, lr, batch_size):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;小批量随机梯度下降&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> param <span style="color:#f92672">in</span> params:
+</span></span><span style="display:flex;"><span>            param <span style="color:#f92672">-=</span> lr <span style="color:#f92672">*</span> param<span style="color:#f92672">.</span>grad <span style="color:#f92672">/</span> batch_size
+</span></span><span style="display:flex;"><span>            param<span style="color:#f92672">.</span>grad<span style="color:#f92672">.</span>zero_()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.03</span>
+</span></span><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> linreg
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> squared_loss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter(batch_size, features, labels):
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X, w, b), y)  <span style="color:#75715e"># X和y的小批量损失</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 因为l形状是(batch_size,1)，而不是一个标量。l中的所有元素被加到一起，</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 并以此计算关于[w,b]的梯度</span>
+</span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>        sgd([w, b], lr, batch_size)  <span style="color:#75715e"># 使用参数的梯度更新参数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        train_l <span style="color:#f92672">=</span> loss(net(features, w, b), labels)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;epoch </span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss </span><span style="color:#e6db74">{</span>float(train_l<span style="color:#f92672">.</span>mean())<span style="color:#e6db74">:</span><span style="color:#e6db74">f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;w的估计误差: </span><span style="color:#e6db74">{</span>true_w <span style="color:#f92672">-</span> w<span style="color:#f92672">.</span>reshape(true_w<span style="color:#f92672">.</span>shape)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;b的估计误差: </span><span style="color:#e6db74">{</span>true_b <span style="color:#f92672">-</span> b<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>某次输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>epoch <span style="color:#ae81ff">1</span>, loss <span style="color:#ae81ff">0.036131</span>
+</span></span><span style="display:flex;"><span>epoch <span style="color:#ae81ff">2</span>, loss <span style="color:#ae81ff">0.000128</span>
+</span></span><span style="display:flex;"><span>epoch <span style="color:#ae81ff">3</span>, loss <span style="color:#ae81ff">0.000046</span>
+</span></span><span style="display:flex;"><span>w的估计误差: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0004</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0010</span>], grad_fn<span style="color:#f92672">=&lt;</span>SubBackward0<span style="color:#f92672">&gt;</span>)
+</span></span><span style="display:flex;"><span>b的估计误差: tensor([<span style="color:#ae81ff">0.0002</span>], grad_fn<span style="color:#f92672">=&lt;</span>RsubBackward1<span style="color:#f92672">&gt;</span>)
+</span></span></code></pre></div><p>训练了3个迭代周期，最后得到的参数与最优参数之间误差在e-04数量级。</p>
+<p>总结来说，使用梯度下降法无法得到最优参数的真实值，我们也并不关心如何恢复真实参数。我们真正希望实现的是高度准确的预测参数。</p>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+<div class="related-posts thin">
+	<h2>See Also</h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/">D2L自学日志01：preliminaries</a></li>
+	
+	<li><a href="/zh-cn/posts/venvminiconda/">工具不图鉴03：虚拟环境&amp;conda</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#度量质量损失函数">度量质量：损失函数</a></li>
+    <li><a href="#解析解">解析解</a></li>
+    <li><a href="#随机梯度下降">随机梯度下降</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#step01生成数据集">step01：生成数据集</a></li>
+    <li><a href="#step02读取数据集">step02：读取数据集</a></li>
+    <li><a href="#step03初始化模型参数">step03：初始化模型参数</a></li>
+    <li><a href="#step04定义模型">step04：定义模型</a></li>
+    <li><a href="#step05定义损失函数">step05：定义损失函数</a></li>
+    <li><a href="#step06定义优化算法">step06：定义优化算法</a></li>
+    <li><a href="#step07训练">step07：训练</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>Fabric自学日志01：农夫乐事重织版</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script id="MathJax-script" type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" crossorigin="anonymous"></script>
+<script type="text/javascript" id="MathJax-script-helper" async src="http://localhost:1313/js/mathjax-assistant.min.b6e452ac49b739070ae701f60d5e2bace83fb751cc957bc95e37e66811752b49.js" integrity="sha256-tuRSrEm3OQcK5wH2DV4rrOg/t1HMlXvJXjfmaBF1K0k=" crossorigin="anonymous"></script>
+</body>
+</html>
