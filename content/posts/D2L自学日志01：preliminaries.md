@@ -4,6 +4,7 @@ date: 2025-12-30T18:14:36+08:00
 draft: false 
 toc: true 
 images:
+math: true
 tags: ['D2L','python', 'torch', '机器学习'] 
 ---
 # 机器学习基础知识
