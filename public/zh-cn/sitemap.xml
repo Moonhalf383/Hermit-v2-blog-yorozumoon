@@ -2,25 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/zh-cn/posts/autoblog_test_3/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/blog/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/test/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/d2l/</loc>
     <lastmod>2026-01-07T19:27:51+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</loc>
     <lastmod>2026-01-07T19:27:51+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/</loc>
-    <lastmod>2026-01-07T19:27:51+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/python/</loc>
     <lastmod>2026-01-07T19:27:51+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/torch/</loc>
-    <lastmod>2026-01-07T19:27:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/</loc>
-    <lastmod>2026-01-07T19:27:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/</loc>
     <lastmod>2026-01-07T19:27:51+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
@@ -61,6 +70,12 @@
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2025-12-16T23:23:35+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/condaandvenv/</loc>
+    <lastmod>2025-12-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</loc>
+    <lastmod>2025-12-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/curl/</loc>
     <lastmod>2025-12-15T23:25:53+08:00</lastmod>
@@ -145,7 +160,5 @@
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2025-09-20T20:49:03+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/readme/</loc>
   </url>
 </urlset>

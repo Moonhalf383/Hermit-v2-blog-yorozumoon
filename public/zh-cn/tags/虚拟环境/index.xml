@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>虚拟环境 on Yorozumoon</title>
+    <link>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
+    <description>Recent content in 虚拟环境 on Yorozumoon</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <copyright>copyright by Moonhalf.</copyright>
+    <lastBuildDate>Tue, 16 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>condaAndVenv</title>
+      <link>http://localhost:1313/zh-cn/posts/condaandvenv/</link>
+      <pubDate>Tue, 16 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/condaandvenv/</guid>
+      <description>&lt;h2 id=&#34;什么是虚拟环境&#34;&gt;什么是虚拟环境?&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

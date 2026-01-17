@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="condaAndVenv">
+  <meta itemprop="description" content="什么是虚拟环境? 多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。">
+  <meta itemprop="datePublished" content="2025-12-16T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-12-16T00:00:00+00:00">
+  <meta itemprop="wordCount" content="3042">
+  <meta itemprop="keywords" content="虚拟环境,Python,Conda"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/condaandvenv/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="condaAndVenv">
+  <meta property="og:description" content="什么是虚拟环境? 多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-12-16T00:00:00+00:00">
+    <meta property="article:tag" content="虚拟环境">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Conda">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="condaAndVenv">
+  <meta name="twitter:description" content="什么是虚拟环境? 多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "condaAndVenv",
+    "name": "condaAndVenv",
+    "description": "什么是虚拟环境? 多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。\n",
+    "keywords": ["虚拟环境", "python", "conda"],
+    "articleBody": "什么是虚拟环境? 多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。\n想要解决这种困境倒也并不困难。我们不妨设想这样的场景：假如你养了一只猫和一条狗，但是猫狗放在一起就会开始打架，你又想同时养这两个动物，该怎么办呢？很简单，你只需要将猫和狗隔开来养即可，比如给它们各自安排一个房间。\n这样的一个房间，在python语境下就是一个虚拟环境。通常来说，你最好让给每个项目都单独创建一个虚拟环境，这样它们之间就可以互不干扰，可以相互重复，也可以独立删除。就像一个动物园，假如把所有动物关在一起就会开始饥饿游戏，但是把每种动物分开关在各自的园区，彼此之间就可以相安无事。\n虚拟环境是怎么实现的？ 在计算机世界，程序员为了环境隔离实际上有过相当多的尝试，比如虚拟机可以模拟一个操作系统，docker容器可以把进程装在一个看起来像独立系统的盒子里。\n但是一个python虚拟环境所做的事情远比上述尝试轻量的多。一个python虚拟环境只做三件事：\n使用独立的python可执行文件。隔离不同python版本。 使用独立的第三方目录库，隔离第三方库。 控制导入顺序。 如何创建一个虚拟环境？ 一个虚拟环境在机器中的表现形式其实就是一个文件夹，里面包含了这个环境的各种信息。通常来说，人们会把这个文件夹建立在项目文件中。\n但是，需要注意的是，在一个虚拟环境被激活之后，你无论处在哪个目录下，只要不关闭这个虚拟环境，你都处在这个虚拟环境中。也就是说，虚拟环境与你的目录位置没有任何关系。理论上只要找的到，你把它放在任何一个犄角旮旯里都可以正常工作。\n尽管如此，仍然建议你直接把虚拟环境直接建在项目目录中，这样项目和环境可以方便的同步迁移，并且可以确保你的ide可以识别到这个虚拟环境。\nvenv 这是python自带的虚拟环境创建方法。\npython3.10 -m venv .venv 这句指令的意义是在当前目录下创建一个.venv文件夹，里面装的就是这个虚拟环境的信息。\n针对每个参数，逐一分析一下这句指令：\npython3.10 指定启动这个虚拟环境的python版本。以防你不知道，一台机器是可以同时存在多个python版本的。比如pkg install python3.10就可以强制要求安装3.10版本的python。\n-m 让后面的名字（在我们这里是venv）作为一个python模块来运行。\nvenv 这是一个python标准库中的模块，功能是创建一个虚拟环境。因为它本质上不是一个位于当前目录下的文件，你没办法直接通过运行文件的方式来使用。这也就是为什么前面必须要加-m参数才能使用。\n.venv 在当前目录下生成的虚拟环境文件夹名称。这只是一个名称而已，你可以随意把它换成你喜欢的名字。\n比如：\npython3.12 -m venv .asdf1234 之所以加.是为了让这个文件夹成为一个隐藏文件夹，这是一个工程惯例。实际上不加.也无所谓。\n如何使用一个虚拟环境？ 在你创建的虚拟环境文件夹下，你可以看到大致这样的目录结构：\n你可以很清晰的看到这个文件夹里包含了什么：有虚拟环境自己的python、pip，以及专门存放lib的文件目录。此外，在bin目录下，你还可以找到activate文件，这就是虚拟环境的启动脚本。\nsource .venv/bin/activate 运行这个指令，虚拟环境就成功激活了。想要关闭虚拟环境，输入以下指令：\ndeactivate 在虚拟环境中，你拥有一套和外界环境隔离的第三方库目录。你可以随意增删当前虚拟环境中的第三方库，这些操作都不会对外界环境造成影响。作为补充，这里罗列一些pip常用的指令。\npython -m pip install numpy # 下载numpy库 注意，这里之所以先写python -m再写pip，是为了确保使用当前虚拟环境下的pip。pip是一个模块，而模块永远属于某个python。使用-m参数可以确保永远不会装错环境。\npython -m pip install numpy==1.26.4 # 指定安装版本 python -m pip list # 列出当前环境下安装了哪些包 python -m pip uninstall numpy # 卸载numpy python -m pip show numpy # 显示某个包的详细信息，包括版本、安装路径、依赖关系。 python -m pip install --upgrade numpy # 在已经安装了numpy的基础上对它进行更新 python -m pip freeze \u003e requirements.txt # 导出当前环境依赖到requirements.txt文件 python -m pip install -r requirements.txt # 从requirements.txt安装 如果你想要删除一个虚拟环境，不需要使用什么特殊的指令，直接rm掉你建立的虚拟环境文件夹即可。\nConda是什么? 一句话定位conda:\nconda不是更高级的venv， 而是：“一个跨语言+跨平台+可管理python版本的环境与包管理系统”\npython官方的pip以及venv只能管理python包，但是在现实中的科学计算以及机器学习等应用场景中，一个完整的环境会涉及很多非python的依赖，并且需要处理各种跨平台问题。这就已经触及到了python原生工具的能力边界。\nconda的出现旨在一次性解决这些问题。conda同时是一个环境管理器（你可以用它建立虚拟环境，并且比venv隔离的更加彻底）、包管理器（conda install numpy），兼python版本管理器（不管你系统中有没有安装python）。\nAnaconda/Miniconda是什么？ Anaconda = conda + 一大堆科学计算库\nMiniconda = conda + Python\n通常认为Anaconda更适合用来快速上手，但是比较冗余。如果想要更轻量可控的环境，更建议使用Miniconda。\n如何安装conda? 这里以Miniconda为例。\nMiniconda官网\n方法一：去官网下载安装脚本 根据你的cpu架构去官网下载对应的.sh脚本，然后在你的终端运行。\n注意：在我写博客文的同时，我发现conda不支持termux。如果你想使用conda，请确保你处在一个真正的电脑上。\n方法二：使用curl \u0026 wget wget方法：\nwget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 或者curl方法：\ncurl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 下载得到.sh脚本之后，仍然运行该脚本。注意这里给出的指令是x86_64架构且为linux，aarch64需要做出相应修改。\n大致流程参考上图。\n如何使用conda？ 此处仍然以miniconda为例。\nconda create -n asdf1234 python=3.10 这段指令的意义是：\n创建一个名为“asdf1234”的虚拟环境，其中python版本为3.10。\n其中，-n参数含义为\"name\"，等价于--name。\n需要注意的是，conda的虚拟环境并不像venv那样直接作为当前项目的一个子目录存在，conda的环境被conda视为自己管理的资源，默认集中存放。这意味着在创建这个环境之后，你不会在你的目录下得到任何新的内容。\n这样的设计哲学意义在于当不同的环境中请求同样的包时，conda不用将额外的空间资源浪费在重复下载上，而是可以通过内部构建软链接的方式来实现资源复用。\nconda允许你通过--prefix ./env参数来实现类似venv的存储行为。这里不过多展开。\nconda activate asdf1234 # 激活名为asdf1234的虚拟环境 conda deactivate # 退出当前环境 conda install numpy # 安装包 conda env list # 列出所有创建的环境，以及现在所处的环境 conda remove -n asdf1234 --all # 删除一个环境 conda env export \u003e environment.yml # 导出环境 conda env create -f environment.yml # 从配置文件复现环境 注意：使用conda下载包的时候，conda有一个专属名词：channel。某些时候，使用conda下载某些包的时候会提示你要下载的包不在当前channel中。这时候你需要自行寻找对应的channel，然后通过-c参数指定下载渠道。\nconda install pytorch==1.12.0 -c pytorch 在一个conda虚拟环境中，你可以混用pip安装方式和conda安装方式。但是建议只在conda中找不到你想要的包，或者你要的包是纯python写的时再用pip。\n",
+    "wordCount" : "3042",
+    "inLanguage": "zh-cn",
+    "datePublished": "2025-12-16T00:00:00Z",
+    "dateModified": "2025-12-16T00:00:00Z",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/condaandvenv/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>condaAndVenv</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Dec 16, 2025</span></div>
+				<h1>condaAndVenv</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83">虚拟环境</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/python">python</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/conda">conda</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>3042&nbspWords 阅读时长13 Minutes, 49 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2025-12-16 00:00 &#43;0000
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h2 id="什么是虚拟环境">什么是虚拟环境?<a href="#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。</p>
+<p>想要解决这种困境倒也并不困难。我们不妨设想这样的场景：假如你养了一只猫和一条狗，但是猫狗放在一起就会开始打架，你又想同时养这两个动物，该怎么办呢？很简单，你只需要将猫和狗隔开来养即可，比如给它们各自安排一个房间。</p>
+<p>这样的一个房间，在python语境下就是一个<strong>虚拟环境</strong>。通常来说，你最好让给每个项目都单独创建一个虚拟环境，这样它们之间就可以互不干扰，可以相互重复，也可以独立删除。就像一个动物园，假如把所有动物关在一起就会开始饥饿游戏，但是把每种动物分开关在各自的园区，彼此之间就可以相安无事。</p>
+<h3 id="虚拟环境是怎么实现的">虚拟环境是怎么实现的？<a href="#%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83%e6%98%af%e6%80%8e%e4%b9%88%e5%ae%9e%e7%8e%b0%e7%9a%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>在计算机世界，程序员为了环境隔离实际上有过相当多的尝试，比如虚拟机可以模拟一个操作系统，docker容器可以把进程装在一个看起来像独立系统的盒子里。</p>
+<p>但是一个python虚拟环境所做的事情远比上述尝试轻量的多。一个python虚拟环境只做三件事：</p>
+<ol>
+<li>使用独立的python可执行文件。隔离不同python版本。</li>
+<li>使用独立的第三方目录库，隔离第三方库。</li>
+<li>控制导入顺序。</li>
+</ol>
+<h3 id="如何创建一个虚拟环境">如何创建一个虚拟环境？<a href="#%e5%a6%82%e4%bd%95%e5%88%9b%e5%bb%ba%e4%b8%80%e4%b8%aa%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>一个虚拟环境在机器中的表现形式其实就是一个文件夹，里面包含了这个环境的各种信息。通常来说，人们会把这个文件夹建立在项目文件中。</p>
+<p>但是，需要注意的是，在一个虚拟环境被激活之后，你无论处在哪个目录下，只要不关闭这个虚拟环境，你都处在这个虚拟环境中。也就是说，虚拟环境与你的目录位置没有任何关系。理论上只要找的到，你把它放在任何一个犄角旮旯里都可以正常工作。</p>
+<p>尽管如此，仍然建议你直接把虚拟环境直接建在项目目录中，这样项目和环境可以方便的同步迁移，并且可以确保你的ide可以识别到这个虚拟环境。</p>
+<h4 id="venv">venv<a href="#venv" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>这是python自带的虚拟环境创建方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.10 -m venv .venv
+</span></span></code></pre></div><p>这句指令的意义是在当前目录下创建一个.venv文件夹，里面装的就是这个虚拟环境的信息。</p>
+<p>针对每个参数，逐一分析一下这句指令：</p>
+<h5 id="python310">python3.10<a href="#python310" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h5>
+<p>指定启动这个虚拟环境的python版本。以防你不知道，一台机器是可以同时存在多个python版本的。比如<code>pkg install python3.10</code>就可以强制要求安装3.10版本的python。</p>
+<h5 id="-m">-m<a href="#-m" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h5>
+<p>让后面的名字（在我们这里是venv）作为一个python模块来运行。</p>
+<h5 id="venv-1">venv<a href="#venv-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h5>
+<p>这是一个python标准库中的模块，功能是创建一个虚拟环境。因为它本质上不是一个位于当前目录下的文件，你没办法直接通过运行文件的方式来使用。这也就是为什么前面必须要加<code>-m</code>参数才能使用。</p>
+<h5 id="venv-2">.venv<a href="#venv-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h5>
+<p>在当前目录下生成的虚拟环境文件夹名称。这只是一个名称而已，你可以随意把它换成你喜欢的名字。</p>
+<p>比如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.12 -m venv .asdf1234
+</span></span></code></pre></div><p>之所以加<code>.</code>是为了让这个文件夹成为一个隐藏文件夹，这是一个工程惯例。实际上不加<code>.</code>也无所谓。</p>
+<h3 id="如何使用一个虚拟环境">如何使用一个虚拟环境？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e4%b8%80%e4%b8%aa%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>在你创建的虚拟环境文件夹下，你可以看到大致这样的目录结构：</p>
+<p><img src="venv%201.png" alt=""></p>
+<p>你可以很清晰的看到这个文件夹里包含了什么：有虚拟环境自己的python、pip，以及专门存放lib的文件目录。此外，在bin目录下，你还可以找到<code>activate</code>文件，这就是虚拟环境的启动脚本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>source .venv/bin/activate
+</span></span></code></pre></div><p>运行这个指令，虚拟环境就成功激活了。想要关闭虚拟环境，输入以下指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>deactivate
+</span></span></code></pre></div><p>在虚拟环境中，你拥有一套和外界环境隔离的第三方库目录。你可以随意增删当前虚拟环境中的第三方库，这些操作都不会对外界环境造成影响。作为补充，这里罗列一些pip常用的指令。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install numpy <span style="color:#75715e"># 下载numpy库</span>
+</span></span></code></pre></div><p>注意，这里之所以先写<code>python -m</code>再写pip，是为了确保使用当前虚拟环境下的pip。pip是一个模块，而模块永远属于某个python。使用<code>-m</code>参数可以确保永远不会装错环境。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install numpy<span style="color:#f92672">==</span>1.26.4 <span style="color:#75715e"># 指定安装版本</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip list <span style="color:#75715e"># 列出当前环境下安装了哪些包</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip uninstall numpy <span style="color:#75715e"># 卸载numpy</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip show numpy <span style="color:#75715e"># 显示某个包的详细信息，包括版本、安装路径、依赖关系。</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install --upgrade numpy <span style="color:#75715e"># 在已经安装了numpy的基础上对它进行更新</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip freeze &gt; requirements.txt <span style="color:#75715e"># 导出当前环境依赖到requirements.txt文件</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install -r requirements.txt <span style="color:#75715e"># 从requirements.txt安装</span>
+</span></span></code></pre></div><p>如果你想要删除一个虚拟环境，不需要使用什么特殊的指令，直接rm掉你建立的虚拟环境文件夹即可。</p>
+<h2 id="conda是什么">Conda是什么?<a href="#conda%e6%98%af%e4%bb%80%e4%b9%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>一句话定位conda:</p>
+<blockquote>
+<p>conda不是更高级的venv，
+而是：“<strong>一个跨语言+跨平台+可管理python版本的环境与包管理系统</strong>”</p>
+</blockquote>
+<p>python官方的pip以及venv只能管理python包，但是在现实中的科学计算以及机器学习等应用场景中，一个完整的环境会涉及很多非python的依赖，并且需要处理各种跨平台问题。这就已经触及到了python原生工具的能力边界。</p>
+<p>conda的出现旨在一次性解决这些问题。conda<strong>同时</strong>是一个<strong>环境管理器</strong>（你可以用它建立虚拟环境，并且比venv隔离的更加彻底）、<strong>包管理器</strong>（conda install numpy），兼<strong>python版本管理器</strong>（不管你系统中有没有安装python）。</p>
+<h3 id="anacondaminiconda是什么">Anaconda/Miniconda是什么？<a href="#anacondaminiconda%e6%98%af%e4%bb%80%e4%b9%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>Anaconda = conda + 一大堆科学计算库</p>
+<p>Miniconda = conda + Python</p>
+<p>通常认为Anaconda更适合用来快速上手，但是比较冗余。如果想要更轻量可控的环境，更建议使用Miniconda。</p>
+<h3 id="如何安装conda">如何安装conda?<a href="#%e5%a6%82%e4%bd%95%e5%ae%89%e8%a3%85conda" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>这里以Miniconda为例。</p>
+<p><a href="https://www.anaconda.com/docs/getting-started/miniconda/main">Miniconda官网</a></p>
+<h4 id="方法一去官网下载安装脚本">方法一：去官网下载安装脚本<a href="#%e6%96%b9%e6%b3%95%e4%b8%80%e5%8e%bb%e5%ae%98%e7%bd%91%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85%e8%84%9a%e6%9c%ac" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>根据你的cpu架构去官网下载对应的.sh脚本，然后在你的终端运行。</p>
+<blockquote>
+<p>注意：在我写博客文的同时，我发现conda不支持termux。如果你想使用conda，请确保你处在一个真正的电脑上。</p>
+</blockquote>
+<h4 id="方法二使用curl--wget">方法二：使用curl &amp; wget<a href="#%e6%96%b9%e6%b3%95%e4%ba%8c%e4%bd%bf%e7%94%a8curl--wget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>wget方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</span></span></code></pre></div><p>或者curl方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+</span></span></code></pre></div><p>下载得到.sh脚本之后，仍然运行该脚本。注意这里给出的指令是x86_64架构且为linux，aarch64需要做出相应修改。</p>
+<p><img src="/zh-cn/posts/condaandvenv/conda.png" alt=""></p>
+<p>大致流程参考上图。</p>
+<h3 id="如何使用conda">如何使用conda？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8conda" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>此处仍然以miniconda为例。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda create -n asdf1234 python<span style="color:#f92672">=</span>3.10
+</span></span></code></pre></div><p>这段指令的意义是：</p>
+<blockquote>
+<p>创建一个名为“asdf1234”的虚拟环境，其中python版本为3.10。</p>
+</blockquote>
+<p>其中，<code>-n</code>参数含义为&quot;name&quot;，等价于<code>--name</code>。</p>
+<p><strong>需要注意的是</strong>，conda的虚拟环境并不像venv那样直接作为当前项目的一个子目录存在，conda的环境被conda视为自己管理的资源，默认集中存放。这意味着在创建这个环境之后，你不会在你的目录下得到任何新的内容。</p>
+<p>这样的设计哲学意义在于当不同的环境中请求同样的包时，conda不用将额外的空间资源浪费在重复下载上，而是可以通过内部构建软链接的方式来实现资源复用。</p>
+<p>conda允许你通过<code>--prefix ./env</code>参数来实现类似venv的存储行为。这里不过多展开。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda activate asdf1234 <span style="color:#75715e"># 激活名为asdf1234的虚拟环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda deactivate <span style="color:#75715e"># 退出当前环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda install numpy <span style="color:#75715e"># 安装包</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env list <span style="color:#75715e"># 列出所有创建的环境，以及现在所处的环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda remove -n asdf1234 --all <span style="color:#75715e"># 删除一个环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env export &gt; environment.yml <span style="color:#75715e"># 导出环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env create -f environment.yml <span style="color:#75715e"># 从配置文件复现环境</span>
+</span></span></code></pre></div><p>注意：使用conda下载包的时候，conda有一个专属名词：<strong>channel</strong>。某些时候，使用conda下载某些包的时候会提示你要下载的包不在当前channel中。这时候你需要自行寻找对应的channel，然后通过<code>-c</code>参数指定下载渠道。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda install pytorch<span style="color:#f92672">==</span>1.12.0 -c pytorch
+</span></span></code></pre></div><blockquote>
+<p>在一个conda虚拟环境中，你可以混用pip安装方式和conda安装方式。但是建议只在conda中找不到你想要的包，或者你要的包是纯python写的时再用pip。</p>
+</blockquote>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是虚拟环境">什么是虚拟环境?</a>
+      <ul>
+        <li><a href="#虚拟环境是怎么实现的">虚拟环境是怎么实现的？</a></li>
+        <li><a href="#如何创建一个虚拟环境">如何创建一个虚拟环境？</a></li>
+        <li><a href="#如何使用一个虚拟环境">如何使用一个虚拟环境？</a></li>
+      </ul>
+    </li>
+    <li><a href="#conda是什么">Conda是什么?</a>
+      <ul>
+        <li><a href="#anacondaminiconda是什么">Anaconda/Miniconda是什么？</a></li>
+        <li><a href="#如何安装conda">如何安装conda?</a></li>
+        <li><a href="#如何使用conda">如何使用conda？</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="next-post" href="http://localhost:1313/zh-cn/posts/venvminiconda/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+   </svg>&nbsp;Newer</span><br><span>工具不图鉴03：虚拟环境&amp;conda</span>
+			</a>
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/curlwget/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>工具不图鉴01：curl&amp;wget</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
