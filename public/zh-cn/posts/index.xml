@@ -12,17 +12,6 @@
 		
 		
 		<item>
-			<title>autoblog_test_3</title>
-			<link>http://localhost:1313/zh-cn/posts/autoblog_test_3/</link>
-			<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/autoblog_test_3/</guid>
-			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>自动打包测试。</p>
-<p><img src="/zh-cn/posts/autoblog_test_3/autoblog_test_3-20260117-1.jpg" alt=""></p>
-<p><img src="/zh-cn/posts/autoblog_test_3/autoblog_test_3-20260117-1.png" alt=""></p>
-<p><img src="/zh-cn/posts/autoblog_test_3/autoblog_test_3-20260117-2.png" alt=""></p>
-]]></content>
-		</item>
-		
-		<item>
 			<title>核动力博客发射器测试</title>
 			<link>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</link>
 			<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</guid>
