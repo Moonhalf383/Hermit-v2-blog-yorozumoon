@@ -1,6 +1,6 @@
 ---
 date: 2026-01-17
-draft: true
+draft: false
 images: []
 math: true
 tags:
@@ -17,3 +17,4 @@ toc: true
 ![](autoblog_test_3-20260117-1.png)
 
 ![](autoblog_test_3-20260117-2.png)
+
