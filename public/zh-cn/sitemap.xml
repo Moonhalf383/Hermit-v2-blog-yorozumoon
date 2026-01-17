@@ -11,6 +11,9 @@
     <loc>http://localhost:1313/zh-cn/posts/</loc>
     <lastmod>2026-01-17T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/python/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/test/</loc>
     <lastmod>2026-01-17T00:00:00+00:00</lastmod>
   </url><url>
@@ -20,13 +23,19 @@
     <loc>http://localhost:1313/zh-cn/tags/</loc>
     <lastmod>2026-01-17T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2026-01-17T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/d2l/</loc>
     <lastmod>2026-01-07T19:27:51+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</loc>
-    <lastmod>2026-01-07T19:27:51+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/python/</loc>
     <lastmod>2026-01-07T19:27:51+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/torch/</loc>
@@ -50,12 +59,6 @@
     <loc>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</loc>
     <lastmod>2025-12-30T18:14:36+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/</loc>
-    <lastmod>2025-12-25T10:27:53+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/</loc>
-    <lastmod>2025-12-25T10:27:53+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/conda/</loc>
     <lastmod>2025-12-16T23:23:35+08:00</lastmod>
   </url><url>
@@ -70,12 +73,6 @@
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2025-12-16T23:23:35+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/condaandvenv/</loc>
-    <lastmod>2025-12-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</loc>
-    <lastmod>2025-12-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/curl/</loc>
     <lastmod>2025-12-15T23:25:53+08:00</lastmod>
@@ -125,15 +122,6 @@
     <loc>http://localhost:1313/zh-cn/links/</loc>
     <lastmod>2025-11-21T14:21:21+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/test/</loc>
-    <lastmod>2025-11-21T14:06:57+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2025-11-21T14:06:57+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2025-11-21T14:06:57+08:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/zh-cn/about/</loc>
     <lastmod>2025-11-20T23:03:14+08:00</lastmod>
   </url><url>
@@ -154,9 +142,6 @@
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/hellohugo/</loc>
     <lastmod>2025-11-19T23:20:43+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
-    <lastmod>2025-09-20T20:49:03+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2025-09-20T20:49:03+08:00</lastmod>

@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Wed, 07 Jan 2026 19:27:51 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 17 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>核动力博客发射器测试</title>
+      <link>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</guid>
+      <description>&lt;p&gt;测试用。这个博客采用了一套全新的工作流。如果你能在网站上看到这个文章，且一切显示正常，证明新的工作流成功了。成功后我就可以用比以前快一伯倍的速度在我的博客上堆砌日常产出的学术废料。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>D2L自学日志02：线性回归</title>
       <link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</link>
@@ -28,13 +35,6 @@
       <link>http://localhost:1313/zh-cn/posts/venvminiconda/</link>
       <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
       <guid>http://localhost:1313/zh-cn/posts/venvminiconda/</guid>
-      <description>&lt;h2 id=&#34;什么是虚拟环境&#34;&gt;什么是虚拟环境?&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>condaAndVenv</title>
-      <link>http://localhost:1313/zh-cn/posts/condaandvenv/</link>
-      <pubDate>Tue, 16 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/condaandvenv/</guid>
       <description>&lt;h2 id=&#34;什么是虚拟环境&#34;&gt;什么是虚拟环境?&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;p&gt;多数语境下，虚拟环境是一个独属于python的术语。python因其对第三方库的高度依赖性以及python自身版本本来就比较混乱，导致经常出现python与各路依赖和第三方库乱成一锅粥的情况。&lt;/p&gt;</description>
     </item>
     <item>
