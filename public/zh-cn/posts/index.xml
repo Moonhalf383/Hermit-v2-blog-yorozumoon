@@ -75,6 +75,675 @@
 		</item>
 		
 		<item>
+			<title>SEU程序设计复习01：基础语法</title>
+			<link>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+			<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="本学期涉及内容">本学期涉及内容：<a href="#%e6%9c%ac%e5%ad%a6%e6%9c%9f%e6%b6%89%e5%8f%8a%e5%86%85%e5%ae%b9" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<ul>
+<li>第二章：C++程序入门、输入输出和运算符</li>
+<li>第三章：类、对象、字符串</li>
+<li>第四章：控制语句、赋值、自增、自减</li>
+<li>第五章：控制语句和逻辑运算符</li>
+<li>第六章：函数和递归入门</li>
+<li>第七章：类模版array和vector、异常捕捉（没学）</li>
+<li>第八章：指针</li>
+</ul>
+<h1 id="第一章省流版">第一章省流版：<a href="#%e7%ac%ac%e4%b8%80%e7%ab%a0%e7%9c%81%e6%b5%81%e7%89%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><img src="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001-20260117-1.png" alt=""></p>
+<p>欢迎进入C++的世界！
+C++功能很多。
+计算机由各种基本单元组成。（不知道会不会考，但是反正是开卷的也无所谓了）
+计算机有各种各样的编程语言。</p>
+<p><strong>面向对象</strong></p>
+<ul>
+<li>小汽车：对象</li>
+<li>小汽车会跑：成员函数</li>
+<li>小汽车蓝图：类</li>
+<li>由蓝图制造小汽车：实例化、重用</li>
+<li>踩踏板：成员函数调用</li>
+<li>小汽车速度：属性、数据成员</li>
+<li>驾驶员无需知道汽车工作原理：封装</li>
+<li>由一般性的汽车细化设计得到敞篷车：继承</li>
+<li>无论什么车都可以用方向盘控制：多态</li>
+</ul>
+<h1 id="各种内容总结">各种内容总结<a href="#%e5%90%84%e7%a7%8d%e5%86%85%e5%ae%b9%e6%80%bb%e7%bb%93" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>直接从书上复制内容太无聊了，所以后面的内容可能和书本章节并不对应，主打一个随心所欲。</p>
+<h2 id="良好的编程习惯">良好的编程习惯<a href="#%e8%89%af%e5%a5%bd%e7%9a%84%e7%bc%96%e7%a8%8b%e4%b9%a0%e6%83%af" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001-20260117-2.png" alt=""></p>
+<h2 id="main函数">main函数<a href="#main%e5%87%bd%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>每个C++程序都要有，表示程序运行的入口。除非你要做并行计算，不管你的程序文件结构有多复杂，机器永远是像读纸带八音盒那样一条一条读你的程序。所以需要有一个函数作为入口是理所当然的，就像纸带必须要有个一端接入八音盒（我们不考虑某种环形或者莫比乌斯环形的纸带）。</p>
+<p>一个简单的不能再简单的程序：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Helloworld!!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>语句要用英文键盘的分号结尾。</p>
+<p>你可以在开头使用<code>using namespace std;</code>来在后续写代码过程中省略<code>std::</code>的书写，但是一般认为这样做是可能带来不好后果的（比如假如你自己定义了某个函数名字恰好和std下的某个函数重合了，程序就会开始打架）。所以如果追求更好的程序质量，最好不要省略<code>std::</code>。</p>
+<h2 id="多个语句输出在一行">多个语句输出在一行：<a href="#%e5%a4%9a%e4%b8%aa%e8%af%ad%e5%8f%a5%e8%be%93%e5%87%ba%e5%9c%a8%e4%b8%80%e8%a1%8c" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Welcome to&#34;</span>;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;C++&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>感觉这个地方太简单了，我们稍微略过一些内容。</p>
+<p>以下解答一些术语上的误区和一些我个人没那么有把握熟练掌握的东西：</p>
+<h2 id="什么是关键字什么是标识符">什么是关键字？什么是标识符？<a href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%85%b3%e9%94%ae%e5%ad%97%e4%bb%80%e4%b9%88%e6%98%af%e6%a0%87%e8%af%86%e7%ac%a6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>关键字就是程序语言自己定义的具有特定语义的单词，比如<code>int</code>表示整型，<code>if</code>表示条件判断，标识符则是程序员自己定义的，比如随便一个变量<code>int thisIsARandomNumble = 1</code>，没有人会把一个变量命名为<code>if</code>或者<code>int</code>（比如某人写<code>int int = 1</code>）。</p>
+<h2 id="using的用法">using的用法<a href="#using%e7%9a%84%e7%94%a8%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>一个最简单的用法：引用整个命名空间：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+</span></span></code></pre></div><p>这样做是合法的，但是可能导致名字冲突，并降低代码可读性。一般不推荐省这一点代码量。</p>
+<p>与之相比，只引入某个函数名是更加推荐的写法，可以更加灵活的避免命名冲突的同时加快写代码的速度。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> std<span style="color:#f92672">::</span>cout;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 表示后面的代码中不用写std::cout或者std::endl，直接写cout或者endl即可。
+</span></span></span></code></pre></div><p>但是using的用法不止于此。比如如果你要处理一个比较大的数字，你可能需要用到容量比int更大的数据类型，一般的考虑对象就是<code>long long</code>，因为它的大小在各种环境下是固定的64个bit。但是，<code>long long</code>写起来太长了，这时候你就可以写<code>using ll = long long;</code>来给<code>long long</code>起个别名。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> ll <span style="color:#f92672">=</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  ll temp <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    temp <span style="color:#f92672">&lt;&lt;=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> counter <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (temp <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> temp <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(<span style="color:#ae81ff">4</span>) <span style="color:#f92672">&lt;&lt;</span> counter <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    counter<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    temp <span style="color:#f92672">/=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这段代码的功能是计算了2的60次方，随后一直除2直到为0，记录其中的计算次数，证明一开始算出来的确实是2的60次方。输出结果如下：</p>
+<pre tabindex="0"><code>1152921504606846976   0
+576460752303423488   1
+288230376151711744   2
+144115188075855872   3
+72057594037927936   4
+36028797018963968   5
+18014398509481984   6
+9007199254740992   7
+4503599627370496   8
+2251799813685248   9
+1125899906842624  10
+562949953421312  11
+281474976710656  12
+140737488355328  13
+70368744177664  14
+35184372088832  15
+17592186044416  16
+8796093022208  17
+4398046511104  18
+2199023255552  19
+1099511627776  20
+549755813888  21
+274877906944  22
+137438953472  23
+68719476736  24
+34359738368  25
+17179869184  26
+8589934592  27
+4294967296  28
+2147483648  29
+1073741824  30
+536870912  31
+268435456  32
+134217728  33
+67108864  34
+33554432  35
+16777216  36
+8388608  37
+4194304  38
+2097152  39
+1048576  40
+524288  41
+262144  42
+131072  43
+65536  44
+32768  45
+16384  46
+8192  47
+4096  48
+2048  49
+1024  50
+512  51
+256  52
+128  53
+64  54
+32  55
+16  56
+8  57
+4  58
+2  59
+1  60
+</code></pre><p>但是如果我们开头不写<code>using ll = long long;</code>，而是写<code>using ll = int;</code>，程序就不会有任何输出（或者某些环境下会报错），原因是数据溢出了。</p>
+<h2 id="随机数生成">随机数生成<a href="#%e9%9a%8f%e6%9c%ba%e6%95%b0%e7%94%9f%e6%88%90" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>在cpp中有很多种方式可以用来生成随机数。其中，最省事的方法是直接使用<code>&lt;cstdlib&gt;</code>提供的<code>rand()</code>函数。这是一种从C语言时代遗留下来的老古董，应该说正经写cpp代码的时候不应该再使用这个函数了，但是不得不说在做一些小功能的时候这种写法非常方便。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdlib&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (true) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> rand();
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> i <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> state;
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cin <span style="color:#f92672">&gt;&gt;</span> state;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (state)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>以上例子中，程序会一直生成一个随机数直到你输入1或者某个表示true的文本。某次输出如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">1804289383</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">846930886</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1681692777</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1714636915</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1957747793</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">424238335</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>看起来确实挺随机的，但是这样做有一个很大的问题：每次运行程序输出的随机数都一样。原因就在于其实<code>rand()</code>函数实现随机数的方式非常的蠢，蠢到你可以自己手算。<code>rand()</code>函数通常的实现方式如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">rand</span>(<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>    next <span style="color:#f92672">=</span> next <span style="color:#f92672">*</span> A <span style="color:#f92672">+</span> C;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (next <span style="color:#f92672">/</span> D) <span style="color:#f92672">%</span> M;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>其中next是一个静态全局变量。你很容易发现：<code>rand()</code>的实现方式其实就是加减乘除。毫不夸张的说，你可以随便拉一个小学生过来给他一个初始值，让他帮你计算随机数。但是之所以这样做仍然得到推广，就在于它的实现效果比意料中的其实要好。</p>
+<p>一个常见的参数如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>A <span style="color:#f92672">=</span> <span style="color:#ae81ff">1103515245</span>
+</span></span><span style="display:flex;"><span>C <span style="color:#f92672">=</span> <span style="color:#ae81ff">12345</span>
+</span></span><span style="display:flex;"><span>M <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">^</span><span style="color:#ae81ff">31</span>
+</span></span></code></pre></div><p>假如你随便告诉小学生一个初始值，让他帮你按照前面的算法一步步计算数值，虽然每一步都完全确定，但是对于一个不知道计算算法也不知道初始值的人，就很难看出生成的数值有什么规律。这就是伪随机的本质。</p>
+<p>但是，这一切的前提是，你要给小学生一个随机的初始值。假如你每次都给他一个一样的值，他每次也都会计算出一样的答案（除非他算错了，当然这是很可能的事），这样就不随机了。可惜的是，<code>rand()</code>函数并不负责提供这个随机的初始值，它只负责采样，而这个初始值在没有人为设定的情况下每次都是一样的，这就导致每次运行程序生成的随机数都一样。</p>
+<p>那么，假如我们想要一开始时提供一个随机的初始值（此处专业术语即“种子”），一个比较容易想到的方案是：用时间作为种子。<code>&lt;time&gt;</code>标准库提供了获取时间和时间计算的方法。其中，<code>time(nullptr)</code>获取的是从公元某某年开始到现在的<strong>秒数</strong>。</p>
+<p>我们来做一个简单的实验：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstddef&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ctime&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ios&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>fixed;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (true) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> t <span style="color:#f92672">=</span> time(<span style="color:#66d9ef">nullptr</span>);
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> t <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> state;
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cin <span style="color:#f92672">&gt;&gt;</span> state;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (state)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这段函数的作用是每次输出一下当前的秒数。因为<code>cin</code>是阻塞的，所以理论上每次输出的数值间隔取决于你输入的频率。</p>
+<p>以下是某次输出的结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>1768788441.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>1768788443.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>1768788445.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>1768788449.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>1768788450.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>1768788451.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>1768788454.000000
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>可以看到，<code>time(nullptr)</code>获取的时间本质上是一个整数，只能精确到秒。通过以上的输出，你其实可以推算出我运行这段程序时的绝对时间。</p>
+<p>回归正题，我们需要生成一系列随机数，直接使用<code>rand()</code>函数无法实现每次都随机，直接使用<code>time()</code>函数更不是随机。但是假如我们用<code>time()</code>来作为随机数计算的“种子”，整个过程感官上就非常随机了。</p>
+<p>实现方法是，在程序开始前使用<code>srand(time(nullptr))</code>来以当前时间作为种子，之后每次使用<code>rand()</code>函数，我们就可以实现随机数的获取了。</p>
+<p>我们来做一个简单的掷骰子小游戏：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdlib&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ctime&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> maxHealth <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">throwADice</span>() { <span style="color:#66d9ef">return</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>srand(time(<span style="color:#66d9ef">nullptr</span>));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> currentHealth <span style="color:#f92672">=</span> maxHealth;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (true) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> answer <span style="color:#f92672">=</span> throwADice();
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;I throw a dice, guess the value of it:&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> assumption;
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cin <span style="color:#f92672">&gt;&gt;</span> assumption;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (assumption <span style="color:#f92672">==</span> answer) {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Dawn! You get it!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (abs(assumption <span style="color:#f92672">-</span> answer) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Almost figured out.&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Current Health:&#34;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;&lt;</span> (currentHealth <span style="color:#f92672">&gt;=</span> maxHealth <span style="color:#f92672">?</span> maxHealth : <span style="color:#f92672">++</span>currentHealth)
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;You completely WRONG!!!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Current Health:&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">--</span>currentHealth <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (currentHealth <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;You failed.&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>每回合会投一个六面骰子，假如你猜中了它的点数你就赢了，假如猜测的值和真实值只相差1，那么你会恢复一个生命值，否则你减一点生命值。</p>
+<p>某次的输出结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>I throw a dice, guess the value of it:3
+</span></span><span style="display:flex;"><span>Almost figured out.
+</span></span><span style="display:flex;"><span>Current Health:3
+</span></span><span style="display:flex;"><span>I throw a dice, guess the value of it:3
+</span></span><span style="display:flex;"><span>Almost figured out.
+</span></span><span style="display:flex;"><span>Current Health:3
+</span></span><span style="display:flex;"><span>I throw a dice, guess the value of it:3
+</span></span><span style="display:flex;"><span>You completely WRONG!!!
+</span></span><span style="display:flex;"><span>Current Health:2
+</span></span><span style="display:flex;"><span>I throw a dice, guess the value of it:3
+</span></span><span style="display:flex;"><span>You completely WRONG!!!
+</span></span><span style="display:flex;"><span>Current Health:1
+</span></span><span style="display:flex;"><span>I throw a dice, guess the value of it:3
+</span></span><span style="display:flex;"><span>You completely WRONG!!!
+</span></span><span style="display:flex;"><span>Current Health:0
+</span></span><span style="display:flex;"><span>You failed.
+</span></span></code></pre></div><p>总之，考试会涉及的随机数生成方法大致就是如上了。但是从上面的分析过程中，你会发现这种原始的生成随机数的方法实际上有很多缺点，一方面它的计算算法简单导致随机数周期很短，另一方面在同一程序中你没办法“并发”的生成多个不同的随机数，因为所有随机数共用用一套种子。此外还有种种缺点，此处不再赘述。</p>
+<p>如果想要更加现代的实现方式，我们需要使用C++的<code>&lt;random&gt;</code>库。但是我现在有点懒得写了。</p>
+<h2 id="template函数模板">template函数模板<a href="#template%e5%87%bd%e6%95%b0%e6%a8%a1%e6%9d%bf" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>这是一个非常强大的功能，可以让你的函数用同一套逻辑处理多种类型的数据。</p>
+<p>一个简单的例子：假如你想要实现一个“加法”功能，返回两数之和，你可能会这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>但是这样写没办法用来计算double类型的数据，所以为了计算double类型的数据，你又写了一个同名的函数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) { <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">double</span> a, <span style="color:#66d9ef">double</span> b) { <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> x, y;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cin <span style="color:#f92672">&gt;&gt;</span> x <span style="color:#f92672">&gt;&gt;</span> y;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> add(x, y) <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">double</span> m, n;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cin <span style="color:#f92672">&gt;&gt;</span> m <span style="color:#f92672">&gt;&gt;</span> n;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> add(m, n) <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样，你就可以实现整数和整数相加、浮点数和浮点数相加。</p>
+<p>但是“对于聪明的懒程序员”，既然这两个函数除了类型外完全一样，那我们为什么不写在一起呢？所以，我们完全可以这样写一个新的可以处理所有类型的<code>add</code>函数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> thisIsAType<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>thisIsAType add(thisIsAType a, thisIsAType b){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>之所以写<code>thisIsAType</code>意在说明这个地方写啥都行。实现的效果和写两个函数完全一致。需要注意的是，虽然后续你可以直接写<code>add</code>来表示两数相加，但是本质上经过了一个隐式的实例化过程。比如你想将两个整数相加，程序会先隐式转换为<code>add&lt;int&gt;</code>，之后再进行计算。也就是说，真正调用的是<code>add&lt;int&gt;</code>，add本身只是一个函数模版而非一个实际可以直接使用的函数。比如，对于两个<code>int</code>类型的变量a,b，你可以写<code>add(a, b)</code>，但是你也可以显式实例化的写作<code>add&lt;int&gt;(a, b)</code>，两者完全一致。</p>
+<p>这里的<code>typename</code>表示这里是随便某个类型的代称。但是，这并不代表这里只能写typename，比如你可以这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T, <span style="color:#66d9ef">int</span> N<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Array</span> {
+</span></span><span style="display:flex;"><span>    T data[N];
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>使用方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Array<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">10</span><span style="color:#f92672">&gt;</span> arr;
+</span></span></code></pre></div><p>这样你就可以创建一个长度为10、类型为int的自定义数据类型<code>Array</code>。<code>template&lt;int N&gt;</code>在这里表示输入数据为一个常量，所以他可以直接塞进数组后缀中。</p>
+<p>template的能力远远不止于此。一个更加强大的功能是：它可以把一个函数塞进去。比如，此处我们来实现一个可以自定义排序规则的冒泡排序算法。</p>
+<p>首先，我们先来写一个基础的冒泡排序算法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdlib&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ctime&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;utility&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> bubbleSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>targetVector) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> targetVector.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> swapped; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    swapped <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> targetVector.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> i; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (targetVector[j] <span style="color:#f92672">&gt;</span> targetVector[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>swap(targetVector[j], targetVector[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]);
+</span></span><span style="display:flex;"><span>        swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">throwADice</span>() { <span style="color:#66d9ef">return</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>srand(time(<span style="color:#66d9ef">nullptr</span>));
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> test <span style="color:#f92672">=</span> {};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    test.push_back(throwADice());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  bubbleSort(test);
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>left;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> it : test) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(<span style="color:#ae81ff">4</span>) <span style="color:#f92672">&lt;&lt;</span> it;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这段代码综合了前面讲的随机数生成和后面会涉及的流运算符。总而言之，核心的逻辑就是<code>bubbleSort</code>函数，它会接受一个随便一个类型的vector，然后把里面的元素从小到大排列。这里我们还额外写了一个骰子函数，来生成测试数据。</p>
+<p>某次的结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">3</span>   <span style="color:#ae81ff">3</span>   <span style="color:#ae81ff">4</span>   <span style="color:#ae81ff">5</span>   <span style="color:#ae81ff">5</span>   <span style="color:#ae81ff">5</span>   <span style="color:#ae81ff">5</span>   <span style="color:#ae81ff">6</span>   <span style="color:#ae81ff">6</span>   <span style="color:#ae81ff">6</span>   
+</span></span></code></pre></div><p>但是，我现在希望让它来按照与某个数的差的绝对值来从小到大排列，那么显然这样的代码就没办法正常工作了。我们当然可以重写<code>bubbleSort</code>函数，但是每次定义新的规则我们都要重写一遍的话实在是太麻烦了。</p>
+<p>所以我们为什么不把函数直接传进去呢？我们可以定义一个比较函数，用来处理排序规则，返回值为false，则顺序保持不变；返回值为true，则需要交换顺序。</p>
+<p>为了显示体现这样做的意义，我们修改骰子，使它变为一个&quot;100面骰&quot;，同时，我们定义这样的一个比较函数，用来辅助排序：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">bool</span> cmp(T a, T b) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (abs(<span style="color:#ae81ff">50</span> <span style="color:#f92672">-</span> a) <span style="color:#f92672">&lt;</span> abs(<span style="color:#ae81ff">50</span> <span style="color:#f92672">-</span> b))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> false;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>当与目标(50)的绝对距离前者小于后者时，意味着两者无需调换顺序，否则需要调换顺序。</p>
+<p>我们再来对<code>bubbleSort</code>函数进行调整，让它可以接受一个函数作为参数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T, <span style="color:#66d9ef">typename</span> Func<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> bubbleSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>targetVector, Func cmpFunc) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> targetVector.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> swapped; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    swapped <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> targetVector.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> i; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (cmpFunc(targetVector[j], targetVector[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>])) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>swap(targetVector[j], targetVector[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]);
+</span></span><span style="display:flex;"><span>        swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>完整代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdlib&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ctime&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;utility&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">bool</span> cmp(T a, T b) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (abs(<span style="color:#ae81ff">50</span> <span style="color:#f92672">-</span> a) <span style="color:#f92672">&lt;</span> abs(<span style="color:#ae81ff">50</span> <span style="color:#f92672">-</span> b))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> false;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T, <span style="color:#66d9ef">typename</span> Func<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> bubbleSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>targetVector, Func cmpFunc) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> targetVector.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> swapped; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    swapped <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> targetVector.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> i; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (cmpFunc(targetVector[j], targetVector[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>])) {
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>swap(targetVector[j], targetVector[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]);
+</span></span><span style="display:flex;"><span>        swapped <span style="color:#f92672">=</span> true; <span style="color:#75715e">//直接比较大小改为了调用比较函数。
+</span></span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">throwADice</span>() { <span style="color:#66d9ef">return</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>srand(time(<span style="color:#66d9ef">nullptr</span>));
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> test <span style="color:#f92672">=</span> {};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    test.push_back(throwADice());
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  bubbleSort(test, cmp<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>) <span style="color:#75715e">//注意这个地方需要显式实例化！
+</span></span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>left;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> it : test) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(<span style="color:#ae81ff">4</span>) <span style="color:#f92672">&lt;&lt;</span> it;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>某次的运行结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">51</span>  <span style="color:#ae81ff">48</span>  <span style="color:#ae81ff">52</span>  <span style="color:#ae81ff">34</span>  <span style="color:#ae81ff">76</span>  <span style="color:#ae81ff">22</span>  <span style="color:#ae81ff">80</span>  <span style="color:#ae81ff">86</span>  <span style="color:#ae81ff">93</span>  <span style="color:#ae81ff">96</span>  
+</span></span></code></pre></div><p>随机抽取的10个数按照和50的绝对距离从小到大排列。</p>
+<p>通常来说，函数模版需要直接完整的写在头文件里。如果你硬要做原型和实现的分离，编译器会直接让你飞起来。</p>
+<h2 id="iomanip库">iomanip库<a href="#iomanip%e5%ba%93" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><code>&lt;iomanip&gt;</code>库是一个用来控制输入输出格式的头文件，它提供的是一组<strong>I/O操作符</strong>，即插入在输入输出流中的格式指令。</p>
+<p>需要注意的是，流式运算符有两类格式控制，一种是修改<strong>流状态</strong>的操作符，而另一种是修改下一次输出的操作符。</p>
+<p>简单理解来说，<code>cout</code>是一个“流对象”，但是它的实例化过程是在程序尚未开始运行前就在标准库中完成的。这个流对象有很多的状态来描述它的输出格式，比如输出的数字精度，比如输出的宽度以及向哪一侧对齐。在整个程序的生命周期中，<code>cout</code>只在程序开始之前被实例化，程序结束后被析构。</p>
+<h3 id="setw">setw<a href="#setw" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>在<code>&lt;iomanip&gt;</code>中，只修改下一次输出的状态符几乎只有一个：<code>setw()</code>。它会控制下一次输出的“宽度”，输出结束后这个宽度会自动复位为0。</p>
+<p>我们来举个简单的例子说明此事：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> test <span style="color:#f92672">=</span> <span style="color:#ae81ff">12345</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> test <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(i) <span style="color:#f92672">&lt;&lt;</span> test <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>猜猜这段代码会输出什么?</p>
+<p>答案揭晓：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">1234512345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1234512345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1234512345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1234512345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1234512345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1234512345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">12345</span> <span style="color:#ae81ff">12345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">12345</span>  <span style="color:#ae81ff">12345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">12345</span>   <span style="color:#ae81ff">12345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">12345</span>    <span style="color:#ae81ff">12345</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">12345</span>     <span style="color:#ae81ff">12345</span>
+</span></span></code></pre></div><p>每一次输出都有一个隐藏的“输出宽度”，当本次输出的文本长度大于宽度时，下一次输出就会直接接在后面；如果文本长度小于宽度，下一次输出就会先补全所要求的宽度，再接上下一次的输出。默认的输出宽度为0，意味着默认情况下哪怕你只输出一个字符，下一次的输出也会直接接在后面。</p>
+<h3 id="流状态操作符">流状态操作符<a href="#%e6%b5%81%e7%8a%b6%e6%80%81%e6%93%8d%e4%bd%9c%e7%ac%a6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>因为除了<code>setw</code>的所有流式操作符都直接修改cout的全局状态，所以你完全可以不必每次输出时都设置一遍。比如，你可以这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ios&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> pi <span style="color:#f92672">=</span> <span style="color:#ae81ff">123.456789</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setprecision(<span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>fixed;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setprecision(<span style="color:#ae81ff">6</span>);
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>scientific;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>输出结果为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>123.5
+</span></span><span style="display:flex;"><span>123.4568
+</span></span><span style="display:flex;"><span>123.456789
+</span></span><span style="display:flex;"><span>1.234568e+02
+</span></span></code></pre></div><p>其实说到底，对于像<code>cout</code>这样的流对象，使用<code>&lt;&lt;</code>来写入内容时把所有东西写在一个std::cout&laquo;&hellip;中和每行写一个cout没有任何区别。比如上面的这段代码你也完全可以这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ios&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">double</span> pi <span style="color:#f92672">=</span> <span style="color:#ae81ff">123.456789</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setprecision(<span style="color:#ae81ff">4</span>) <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>fixed <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setprecision(<span style="color:#ae81ff">6</span>) <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>scientific <span style="color:#f92672">&lt;&lt;</span> pi <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>全部塞在一个<code>cout</code>里，结果完全一致。</p>
+<p>以下罗列一些常用的<code>&lt;iomanip&gt;</code>函数：</p>
+<ul>
+<li><code>setprecision(n)</code>设置输出的有效位数</li>
+<li><code>fixed/scientific</code>设置有效位数的模式，fixed表示小数点后若干位为有效位数，scientific表示使用科学技术法表示有效位数。</li>
+<li><code>left/right</code>表示对齐的方式。在一个输出宽度内，你的文本可以是左对齐，也可以是右对齐。</li>
+<li><code>setfill(ch)</code>设置一个输出宽度内空白部分的填充字符。默认啥也没有。</li>
+<li><code>showpoint</code>强制显示小数点</li>
+<li><code>dec/oct/hex</code>显示十进制、八进制、十六进制。</li>
+</ul>
+<p>我们来举个经典例子：九九乘法表。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Vector2D</span> {
+</span></span><span style="display:flex;"><span>  T x;
+</span></span><span style="display:flex;"><span>  T y;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>string content;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> state;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> tableMap(Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>{inputVector.y, inputVector.x, inputVector.content,
+</span></span><span style="display:flex;"><span>                       inputVector.x <span style="color:#f92672">&gt;=</span> inputVector.y};
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> Func<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> tablePrinter(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> vec01, std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> vec02,
+</span></span><span style="display:flex;"><span>                  Func tableFunc) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>left;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&gt;&gt;</span> table(
+</span></span><span style="display:flex;"><span>      vec01.size(), std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&gt;</span>(vec02.size()));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> vec01.size(); i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> vec02.size(); j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector <span style="color:#f92672">=</span> {i, j,
+</span></span><span style="display:flex;"><span>                                   std<span style="color:#f92672">::</span>to_string(vec01[i]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;*&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                                       std<span style="color:#f92672">::</span>to_string(vec02[j]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;=&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                                       std<span style="color:#f92672">::</span>to_string(vec01[i] <span style="color:#f92672">*</span> vec02[j]),
+</span></span><span style="display:flex;"><span>                                   true};
+</span></span><span style="display:flex;"><span>      Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> outputVec <span style="color:#f92672">=</span> tableFunc(inputVector);
+</span></span><span style="display:flex;"><span>      table[outputVec.x][outputVec.y] <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>          outputVec.state <span style="color:#f92672">?</span> outputVec.content : <span style="color:#e6db74">&#34; &#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> it : table) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> unit : it) {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(<span style="color:#ae81ff">10</span>) <span style="color:#f92672">&lt;&lt;</span> unit;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> numbles <span style="color:#f92672">=</span> {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>};
+</span></span><span style="display:flex;"><span>  tablePrinter(numbles, numbles, tableMap);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>输出结果：</p>
+<p><img src="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95-20260119-1.png" alt=""></p>
+<p>你可能注意到了，这段代码中<code>tablePrinter</code>函数接受了一个映射函数。这意味着我们可以通过修改映射规则的方式调整打印格式。通过这样的写法，我们可以快速的写出所有方位角度的乘法表，甚至可以整出一些花活。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Vector2D</span> {
+</span></span><span style="display:flex;"><span>  T x;
+</span></span><span style="display:flex;"><span>  T y;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>string content;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> state;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> Leftdown(Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>{inputVector.y, inputVector.x, inputVector.content,
+</span></span><span style="display:flex;"><span>                       inputVector.y <span style="color:#f92672">&gt;=</span> inputVector.x};
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> LeftUp(Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>{<span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> inputVector.y, inputVector.x, inputVector.content,
+</span></span><span style="display:flex;"><span>                       inputVector.y <span style="color:#f92672">&gt;=</span> inputVector.x};
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> RightDown(Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>{inputVector.y, <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> inputVector.x, inputVector.content,
+</span></span><span style="display:flex;"><span>                       inputVector.y <span style="color:#f92672">&gt;=</span> inputVector.x};
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> RightUp(Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>{<span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> inputVector.y, <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> inputVector.x,
+</span></span><span style="display:flex;"><span>                       inputVector.content, inputVector.y <span style="color:#f92672">&gt;=</span> inputVector.x};
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> Func<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> tablePrinter(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> vec01, std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> vec02,
+</span></span><span style="display:flex;"><span>                  Func tableFunc) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>left <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#39;\n&#39;</span>;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&gt;&gt;</span> table(
+</span></span><span style="display:flex;"><span>      vec01.size(), std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>string<span style="color:#f92672">&gt;</span>(vec02.size(), <span style="color:#e6db74">&#34; &#34;</span>));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> vec01.size(); i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> vec02.size(); j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> inputVector <span style="color:#f92672">=</span> {i, j,
+</span></span><span style="display:flex;"><span>                                   std<span style="color:#f92672">::</span>to_string(vec01[i]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;*&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                                       std<span style="color:#f92672">::</span>to_string(vec02[j]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;=&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                                       std<span style="color:#f92672">::</span>to_string(vec01[i] <span style="color:#f92672">*</span> vec02[j]),
+</span></span><span style="display:flex;"><span>                                   true};
+</span></span><span style="display:flex;"><span>      Vector2D<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> outputVec <span style="color:#f92672">=</span> tableFunc(inputVector);
+</span></span><span style="display:flex;"><span>      table[outputVec.x][outputVec.y] <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>          outputVec.state <span style="color:#f92672">?</span> outputVec.content : <span style="color:#e6db74">&#34; &#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> it : table) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> unit : it) {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(<span style="color:#ae81ff">10</span>) <span style="color:#f92672">&lt;&lt;</span> unit;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> numbles <span style="color:#f92672">=</span> {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>};
+</span></span><span style="display:flex;"><span>  tablePrinter(numbles, numbles, Leftdown);
+</span></span><span style="display:flex;"><span>  tablePrinter(numbles, numbles, LeftUp);
+</span></span><span style="display:flex;"><span>  tablePrinter(numbles, numbles, RightDown);
+</span></span><span style="display:flex;"><span>  tablePrinter(numbles, numbles, RightUp);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><img src="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95-20260119-2.png" alt=""></p>
+]]></content>
+		</item>
+		
+		<item>
 			<title>核动力博客发射器测试</title>
 			<link>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</link>
 			<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/</guid>
