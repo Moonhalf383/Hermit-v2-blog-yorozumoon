@@ -7,9 +7,476 @@
 		<generator>Hugo -- 0.154.5</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Sun, 18 Jan 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Mon, 19 Jan 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>SEU程序设计复习02：远古老登</title>
+			<link>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</link>
+			<pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="本篇要素">本篇要素：<a href="#%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<ul>
+<li>指针</li>
+<li>C风格字符串</li>
+<li>C风格数组</li>
+<li>基本算法</li>
+</ul>
+<h1 id="指针">指针<a href="#%e6%8c%87%e9%92%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><img src="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB-20260119-1.png" alt=""></p>
+<p>众所周知，无论是什么程序语言，程序运行时的数据都缓存在内存上。内存就像一张超级大的草稿纸。对于机器来说，除了对内存写入的数据本身外，数据写入的位置同样重要。知道了数据写入的位置，我们才能随时利用我们写入的数据进行计算。</p>
+<p>于是指针诞生了。如果说一般的变量是用来存储有价值的数据本身，指针的作用则是存储这些变量的内存地址，方便我们随时随地的调用这些变量。指针的本质仍然是变量，只不过它存储的内容是一个长十六进制的内存地址。</p>
+<p>我们来举一个简单的例子：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">114514</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>y <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>x;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> y <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">*</span>y <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>输出结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>0x7fc7cf03ac
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">114514</span>
+</span></span></code></pre></div><p>其中第一个输出结果就是这个指针指向的变量的地址，而第二个输出结果则是这个变量的值。事实上，<code>*y</code>可以看做是x的一个别名，两者的行为完全一致，因为他们都是同一个地址上相同数据类型的变量。你可以给<code>*y</code>赋值，<code>x</code>的值就会被同步改变，因为在内存上它们的意义是相同的。</p>
+<p>由于内存可以表示为一个长十六进制整数，所以自然我们对一个已知的内存进行加减就可以访问到它周围的数据。访问一个内存附近的元素有两种办法：直接对指针做加法，或者给指针追加下标：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">114514</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>y <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>x;
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">*</span>(y <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">191981</span>;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> y <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">*</span>y <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> y[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>其中，<code>*(y+1)</code>访问y的内存的后一位并将其赋值为<code>191981</code>。在整个程序中，我们没有任何一个变量直接代表这个内存地址，我们是通过解引用的方式间接地访问到了这个地址。之后在输出阶段，我们调用<code>y[1]</code>同样表示的是y的内存的下一位的内容，所以理论上输出结果也应该是<code>191981</code>。</p>
+<p>输出结果如下，符合预期：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>0x7fd11438cc
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">114514</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">191981</span>
+</span></span></code></pre></div><p>这时候你会发现下标运算符似乎和数组中指定访问某个元素使用的操作符都是中括号。事实上，在C语言以及C++中，数组和指针在行为上确实非常类似，但是从根本上看两者是完全不同的东西。后面会提到。</p>
+<p>接下来是比较八股的部分，在实际的C++编程中没有人类会这么写，但是出题人会。</p>
+<ul>
+<li><code>int *a, b</code>，这个语句中a是指针，b则是一个普通的变量。没有为什么，硬要理解的话<code>*a</code>和<code>b</code>都是int类型的变量。</li>
+<li><code>int *p[4]</code>表示的是一个数组，每个元素为一个<code>*int</code>指针。</li>
+<li><code>int (*p)[4]</code>表示的是一个数组，但是每个元素都是int数据。</li>
+</ul>
+<p>直接看这个是没用的，真正要尝试理解这种设计，我们必须要站在老登语言C语言的角度看待问题。</p>
+<h2 id="如何站在c语言老登的视角看待指针">如何站在C语言老登的视角看待指针<a href="#%e5%a6%82%e4%bd%95%e7%ab%99%e5%9c%a8c%e8%af%ad%e8%a8%80%e8%80%81%e7%99%bb%e7%9a%84%e8%a7%86%e8%a7%92%e7%9c%8b%e5%be%85%e6%8c%87%e9%92%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>在C语言中几乎没有高级的数据结构，最高级的数据结构就是结构体和原始数组了。这时候处理问题就不得不直面手动内存管理的问题。</p>
+<p>C语言一个最恶心的点在于，C语言有意识的在鼓励指针和数组之间的混淆。比如，很多时候指针和数组名的表现完全一致，甚至在将数组传参进入一个函数的时候完全就是指针。但是问题在于，数组和指针的底层实现完全不一致。</p>
+<p>比如在下面这个例子中：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> a[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>p <span style="color:#f92672">=</span> a;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, p[<span style="color:#ae81ff">1</span>]);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>a是一个数组，p是一个指针，<code>int *p = a</code>之后p和a看起来指向的都是一个值，但是在底层上：</p>
+<ul>
+<li>p是一个变量，它自身有一个地址，而地址上存储的是数组第一个元素的地址。</li>
+<li>a是一个<strong>别名</strong>。a没有地址，a就是这个数组第一个元素地址的别名。</li>
+</ul>
+<p>而对于一个常量指针，比如某个<code>int * const q = a</code>，它又有另一重底层意义：</p>
+<ul>
+<li>q是一个常量，但是它有自己的地址，它的地址上存储的数据是数组的第一个元素的地址。</li>
+</ul>
+<p>这就意味着数组和指针是完全不同的数据类型。a虽然可以隐式退化为指针，原因完全是因为他们的意义基本一致，但是这不代表它们是同一个东西。</p>
+<p>同样，二维数组和二级指针根本上也不是一个东西。当我们写<code>int a[3][4]</code>时，a的类型是一个二维数组，当我们通过<code>a[1][1]</code>来访问元素的时候，C语言的底层实现方法不是通过指针进行间接访问，而是直接由下标计算偏移量。但是对于一个二级指针，我们可以让这个二级指针指向一个一级指针数组，再让一级指针指向一维数组，但是当我们想要访问元素时，底层的汇编指令是：先访问二级指针的地址，读取二级指针的存储的地址，再由这个地址加上偏移量访问一级指针，再由一级存储的地址加上偏移量访问元素。</p>
+<p>所以，虽然你可以造出一个和二维数组行为完全一致的二级指针，但是归根结底它们是完全不同的两个东西。回到我们原本的问题，我们来重新的明确阐述一下我们原本想讨论的问题：</p>
+<p>已知：</p>
+<ul>
+<li><code>int a[3]</code>是一个数组</li>
+<li><code>int* p</code>是一个指针
+问：</li>
+<li><code>int* p[3]</code>是什么？</li>
+<li><code>int (*p)[3]</code>是什么？</li>
+</ul>
+<p>其实这个问题的根本就在于：凭什么<code>int (*p)[3]</code>的写法是<strong>合法的</strong>？</p>
+<p>比如，我们绝对不会写<code>int (x+1) = 2</code>然后希望x = 1。如果你在代码中这么写，那么你会喜提报错。但是<code>int (*p)[3]</code>却是合法的，它成功定义了一个变量，并且它的名字就是p。真正的诡异之处就在这里。</p>
+<p>假如我们把<code>int*</code>看做一个整体，表示后面的东西是一个指针，那么<code>int* p[3]</code>是容易理解的，它代表的就是一个存放了一级指针的指针数组。但是在<code>int (*p)[3]</code>里，我们会觉得中间的<code>*p</code>放在这里是不讲道理的，因为我们理应认为这个地方不应该进行任何的计算操作，而*p表示的是对p解引用。</p>
+<p>问题的答案是，C语言不是现代语言，而是远古老登。现代语言中我们会希望类型和标识符做到完全区分，而C语言的设计者遵循的原则是：声明的样子和使用时的样子应该完全一致。虽然我觉得这样也是不太讲道理的，但是对于理解这个问题意外的好用。</p>
+<p>比如，在<code>int (*p)[3]</code>定义后，本质上说明了一件事情：假如我想使用p寻找某个元素，我就应该写<code>(*p)[i]</code>来做到这件事，即：对p进行一个<code>(*p)[i]</code>的操作后，得到的应该是一个整数。</p>
+<p>那么，<code>(*p)</code>进行一个下标索引的操作后，得到的是一个整数，这就意味着<code>(*p)</code>本质上是一个数组，<code>p</code>的本质就是一个指针。对p解引用得到数组，就意味着p指针的基本类型就是数组。而p++就是下一个位置的数组，因此p和一个二维数组的行为是一致的，它们都可以表示连续内存中的一系列一维数组。此处的p叫做<strong>数组指针</strong>。</p>
+<p>而同样的，假如我们要去理解<code>int *p[3]</code>，我们就会知道如果我们要使用p来找到某个元素，我们就会写<code>*p[3]</code>，而我们知道下标索引的优先级高于解引用，这就意味着<code>p[3]</code>得到的是一个指针，所以<code>p</code>的本质是一个数组，内部的元素是指针。此处的p叫做<strong>指针数组</strong>。</p>
+<h3 id="常量指针指针常量">常量指针&amp;指针常量<a href="#%e5%b8%b8%e9%87%8f%e6%8c%87%e9%92%88%e6%8c%87%e9%92%88%e5%b8%b8%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>常量指针：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>; 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>; 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> p <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>a;
+</span></span></code></pre></div><p>之后你可以使用<code>p = &amp;b</code>来修改p的指向，但是不能使用<code>*p = 30</code>来修改对应的值。</p>
+<p>指针常量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>; 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>; 
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> <span style="color:#66d9ef">const</span> p <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>a;
+</span></span></code></pre></div><p>可以通过<code>*p = 30</code>来修改值，但是不能改变指向的地址。</p>
+<h2 id="c风格数组">C风格数组<a href="#c%e9%a3%8e%e6%a0%bc%e6%95%b0%e7%bb%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>当我们将C风格数组作为参数传入函数时，数组名会<strong>退化为指针</strong>。这里就是完全意义上变为指针。</p>
+<p>比如，当我们写：<code>void func(int arr[10]){...}</code>的时候，我们就等同于写<code>void func(int* arr)</code>。虽然我们前文中提到数组和指针是完全不同的两种东西，但是这里，数组退化为指针的事情就是真实地发生了。</p>
+<p>这样的退化带来的第一个问题就是，我们没办法使用sizeof来获取一个数组的长度。最传统的做法就是添加一个参数来手动传入数组大小。</p>
+<p>C风格数组传参时，以下写法是完全等价的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">f</span>(<span style="color:#66d9ef">int</span> arr[]);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">f</span>(<span style="color:#66d9ef">int</span> arr[<span style="color:#ae81ff">10</span>]);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">f</span>(<span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> arr);
+</span></span></code></pre></div><p>等价的原因就在于无论原本是什么东西，在这里全部都会退化为指针。</p>
+<p>但是假如我们需要传入一个多维数组，比如某个<code>int a[3][4]</code>，此时我们就不能写<code>f(a)</code>，原因在我们前面分析指针原则的时候其实涉及到了，程序员有各种各样的方式实现多维数组，所以多维数组没办法直接退化为某个指针。</p>
+<p>以二维数组为例，原教旨主义的二维数组就是数组，内存连续。和它的行为最接近的是<strong>数组指针</strong>，所以传参时可以这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">foo</span>(<span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>a)[<span style="color:#ae81ff">4</span>]);
+</span></span></code></pre></div><p>此外，如果确定了列数，你也可以这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">foo</span>(<span style="color:#66d9ef">int</span> a[][<span style="color:#ae81ff">4</span>]);
+</span></span></code></pre></div><p>但是<strong>不能</strong>这么写：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">foo</span>(<span style="color:#66d9ef">int</span> a[][]);
+</span></span></code></pre></div><h2 id="c风格字符串">C风格字符串<a href="#c%e9%a3%8e%e6%a0%bc%e5%ad%97%e7%ac%a6%e4%b8%b2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> s1[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello&#34;</span>;
+</span></span></code></pre></div><p>等价于：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> s1[] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;h&#39;</span>,<span style="color:#e6db74">&#39;e&#39;</span>,<span style="color:#e6db74">&#39;l&#39;</span>,<span style="color:#e6db74">&#39;l&#39;</span>,<span style="color:#e6db74">&#39;o&#39;</span>,<span style="color:#e6db74">&#39;\0&#39;</span>};
+</span></span></code></pre></div><p>注意，<code>\0</code>标志一个字符串结束。</p>
+<p>例子：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> str[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Helloworld!&#34;</span>;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> str <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> str1[] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;H&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;l&#39;</span>, <span style="color:#e6db74">&#39;l&#39;</span>, <span style="color:#e6db74">&#39;o&#39;</span>, <span style="color:#e6db74">&#39;\0&#39;</span>};
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> str1 <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> str2[] <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;H&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;\0&#39;</span>, <span style="color:#e6db74">&#39;l&#39;</span>, <span style="color:#e6db74">&#39;l&#39;</span>, <span style="color:#e6db74">&#39;o&#39;</span>};
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> str2 <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>输出结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Helloworld<span style="color:#f92672">!</span>
+</span></span><span style="display:flex;"><span>Hello
+</span></span><span style="display:flex;"><span>He
+</span></span></code></pre></div><h1 id="基本算法">基本算法<a href="#%e5%9f%ba%e6%9c%ac%e7%ae%97%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>在工程实践中，手写排序是被严格禁止的，因为你几乎不可能写的比标准库更好。但是对于考试只能说是不得不品的一环。</p>
+<h2 id="冒泡排序">冒泡排序<a href="#%e5%86%92%e6%b3%a1%e6%8e%92%e5%ba%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>最佳实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;algorithm&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> bubbleSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> arr) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> arr.size();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span> swapped;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>        swapped <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">-</span> i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#f92672">++</span>j) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (arr[j] <span style="color:#f92672">&gt;</span> arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]) {
+</span></span><span style="display:flex;"><span>                std<span style="color:#f92672">::</span>swap(arr[j], arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]);
+</span></span><span style="display:flex;"><span>                swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 如果没有发生交换，直接跳出循环
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>swapped) <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>基本原理就是进行多次迭代，每次都遍历一遍，如果某个位置前一个数字大于后一个，就将其交换；如果某次迭代的遍历过程中没有进行任何交换，就证明已经完成了从小到大的排序，可以结束计算了。</p>
+<p>我们也可以使用原始数组来重写一遍：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">bubbleSort</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> len) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> swapped; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    swapped <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> i; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (arr[j] <span style="color:#f92672">&gt;</span> arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> temp <span style="color:#f92672">=</span> arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>        arr[j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> arr[j];
+</span></span><span style="display:flex;"><span>        arr[j] <span style="color:#f92672">=</span> temp;
+</span></span><span style="display:flex;"><span>        swapped <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> arr[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>};
+</span></span><span style="display:flex;"><span>  bubbleSort(arr, <span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> arr[i] <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="选择排序">选择排序<a href="#%e9%80%89%e6%8b%a9%e6%8e%92%e5%ba%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> selectionSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> arr) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> arr.size();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> minIndex <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&lt;</span> n; <span style="color:#f92672">++</span>j) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (arr[j] <span style="color:#f92672">&lt;</span> arr[minIndex]) {
+</span></span><span style="display:flex;"><span>                minIndex <span style="color:#f92672">=</span> j;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (minIndex <span style="color:#f92672">!=</span> i) {
+</span></span><span style="display:flex;"><span>            std<span style="color:#f92672">::</span>swap(arr[i], arr[minIndex]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>原理是每次遍历后把遍历涉及的元素中最小的元素移到前面，之后的遍历不再关注前面的元素。时间复杂度和冒泡排序一致。（但是冒泡排序更方便设定排序规则，所以我更喜欢冒泡排序。）</p>
+<p>同样使用原始数组实现一遍：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">selectionSort</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> len) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> len; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> minIndex <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> i; j <span style="color:#f92672">&lt;</span> len; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (arr[j] <span style="color:#f92672">&lt;</span> arr[minIndex]) {
+</span></span><span style="display:flex;"><span>        minIndex <span style="color:#f92672">=</span> j;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> temp <span style="color:#f92672">=</span> arr[i];
+</span></span><span style="display:flex;"><span>    arr[i] <span style="color:#f92672">=</span> arr[minIndex];
+</span></span><span style="display:flex;"><span>    arr[minIndex] <span style="color:#f92672">=</span> temp;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> arr[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>  selectionSort(arr, <span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> arr[i] <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="快速排序">快速排序<a href="#%e5%bf%ab%e9%80%9f%e6%8e%92%e5%ba%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> partition(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> arr, <span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 优化：三数取中选基准
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> low <span style="color:#f92672">+</span> (high <span style="color:#f92672">-</span> low) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (arr[mid] <span style="color:#f92672">&lt;</span> arr[low]) std<span style="color:#f92672">::</span>swap(arr[mid], arr[low]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (arr[high] <span style="color:#f92672">&lt;</span> arr[low]) std<span style="color:#f92672">::</span>swap(arr[high], arr[low]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (arr[high] <span style="color:#f92672">&lt;</span> arr[mid]) std<span style="color:#f92672">::</span>swap(arr[high], arr[mid]);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    T pivot <span style="color:#f92672">=</span> arr[mid];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> low <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> high <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (true) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">do</span> { i<span style="color:#f92672">++</span>; } <span style="color:#66d9ef">while</span> (arr[i] <span style="color:#f92672">&lt;</span> pivot);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">do</span> { j<span style="color:#f92672">--</span>; } <span style="color:#66d9ef">while</span> (arr[j] <span style="color:#f92672">&gt;</span> pivot);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">&gt;=</span> j) <span style="color:#66d9ef">return</span> j;
+</span></span><span style="display:flex;"><span>        std<span style="color:#f92672">::</span>swap(arr[i], arr[j]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> quickSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> arr, <span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (low <span style="color:#f92672">&lt;</span> high) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> p <span style="color:#f92672">=</span> partition(arr, low, high);
+</span></span><span style="display:flex;"><span>        quickSort(arr, low, p);
+</span></span><span style="display:flex;"><span>        quickSort(arr, p <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, high);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 辅助调用接口
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> quickSort(std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> arr) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>arr.empty()) {
+</span></span><span style="display:flex;"><span>        quickSort(arr, <span style="color:#ae81ff">0</span>, arr.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>顾名思义，快速排序算法确实非常快。冒泡排序和选择排序的速度都是$O(n^2)$，而快速排序的时间复杂度则是$O(n\log n)$。我们来尝试理解下它的工作原理。</p>
+<p>快速排序的基本思想是：每次从一个分区中选取一个<strong>基准值</strong>，比它大的数字全部移动到右边，比它小的全部移动到左边，以交换过程最后的临界点作为分区界线形成了两个分区，之后再在这两个分区中重复这个过程。这样，每次进行分区就意味着一个数字找到了正确的位置，而分区量呈指数级增长，每次分区计算的用时和总数成正比，故时间复杂度为$O(n\log n)$。</p>
+<p>在上面这段代码中，选取基准值的方法是在一个分区的最左、最右和最中间的三个元素中选出中间的那个数字，然后动用两个指针向基准值收缩，实现分区，之后再通过递归完成整体的排序。</p>
+<p>原始数组实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">swap</span>(<span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>a, <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>b) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> temp <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>a;
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">*</span>a <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>b;
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">*</span>b <span style="color:#f92672">=</span> temp;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">partition</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> low <span style="color:#f92672">+</span> (high <span style="color:#f92672">-</span> low) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arr[mid] <span style="color:#f92672">&lt;</span> arr[low])
+</span></span><span style="display:flex;"><span>    swap(arr <span style="color:#f92672">+</span> mid, arr <span style="color:#f92672">+</span> low);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arr[high] <span style="color:#f92672">&lt;</span> arr[low])
+</span></span><span style="display:flex;"><span>    swap(arr <span style="color:#f92672">+</span> high, arr <span style="color:#f92672">+</span> low);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (arr[high] <span style="color:#f92672">&lt;</span> arr[mid])
+</span></span><span style="display:flex;"><span>    swap(arr <span style="color:#f92672">+</span> high, arr <span style="color:#f92672">+</span> mid);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> pivot <span style="color:#f92672">=</span> arr[mid];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> low <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> high <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (true) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">do</span> {
+</span></span><span style="display:flex;"><span>      i<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">while</span> (arr[i] <span style="color:#f92672">&lt;</span> arr[mid]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">do</span> {
+</span></span><span style="display:flex;"><span>      j<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">while</span> (arr[j] <span style="color:#f92672">&gt;</span> arr[mid]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">&gt;=</span> j)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> j;
+</span></span><span style="display:flex;"><span>    swap(arr <span style="color:#f92672">+</span> i, arr <span style="color:#f92672">+</span> j);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">quickSort</span>(<span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (low <span style="color:#f92672">&lt;</span> high) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> p <span style="color:#f92672">=</span> partition(arr, low, high);
+</span></span><span style="display:flex;"><span>    quickSort(arr, low, p);
+</span></span><span style="display:flex;"><span>    quickSort(arr, low <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, high);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> arr[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>  quickSort(arr, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">9</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> arr[i] <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="线性查找">线性查找<a href="#%e7%ba%bf%e6%80%a7%e6%9f%a5%e6%89%be" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>从头到尾依次查找最符合条件的元素。就像苏格拉底最大的麦穗的寓言故事。</p>
+<p>懒得写了。</p>
+<h2 id="二分查找">二分查找<a href="#%e4%ba%8c%e5%88%86%e6%9f%a5%e6%89%be" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>假如你要查找的元素总体是按照从小到大或者从大到小的顺序排列的，那么如果你要找到某个元素的位置就不需要把所有元素都搜一遍。我们只需要每次找到最中间的点，之后如果目标比中值大，则向右寻找，否则想左寻找。这样时间复杂度就大大减少。</p>
+<p>以下提供一种基于递归的解法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;algorithm&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;cstdlib&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ctime&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iomanip&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> arr[<span style="color:#ae81ff">10</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//这一部分是搜索算法。
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">binartSearch</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> arr[], <span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high, <span style="color:#66d9ef">int</span> target) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (low <span style="color:#f92672">&gt;</span> high)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> low <span style="color:#f92672">+</span> (high <span style="color:#f92672">-</span> low) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (target <span style="color:#f92672">==</span> arr[mid])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mid;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (target <span style="color:#f92672">&lt;</span> arr[mid])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> binartSearch(arr, low, mid <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, target);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> binartSearch(arr, mid <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, high, target);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">renewArray</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#66d9ef">sizeof</span>(arr) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>); i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    arr[i] <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>sort(arr, arr <span style="color:#f92672">+</span> <span style="color:#ae81ff">9</span>); <span style="color:#75715e">//注意，这里需要进行排序，原因是二分查找只能适用于已经排序的数组。
+</span></span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>srand(time(<span style="color:#66d9ef">nullptr</span>));
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>left;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">20</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    renewArray();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>setw(<span style="color:#ae81ff">8</span>) <span style="color:#f92672">&lt;&lt;</span> arr[j];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Index: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> binartSearch(arr, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">50</span>) <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然而，虽然说着容易，实际实践的时候经常会出现内存越界和死循环的问题。原因是分区的边界情况非常的不好考虑。以下罗列两种公认的最优写法。</p>
+<p>第一种被称为“经典精确查找”，做了很多防范问题的措施。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> binarySearch(<span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> nums, T target) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> left <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> right <span style="color:#f92672">=</span> nums.size() <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// [left, right] 闭区间
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (left <span style="color:#f92672">&lt;=</span> right) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 防止溢出的写法，等同于 (left + right) / 2
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> left <span style="color:#f92672">+</span> (high <span style="color:#f92672">-</span> low) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>; 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (nums[mid] <span style="color:#f92672">==</span> target) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> mid; <span style="color:#75715e">// 找到了
+</span></span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#a6e22e">if</span> (nums[mid] <span style="color:#f92672">&lt;</span> target) {
+</span></span><span style="display:flex;"><span>            left <span style="color:#f92672">=</span> mid <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// 目标在右半部分
+</span></span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            right <span style="color:#f92672">=</span> mid <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// 目标在左半部分
+</span></span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; <span style="color:#75715e">// 未找到
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>另一种是所谓的“寻找边界写法”，在有目标值的时候返回符合的值中第一个目标的索引值，如果没有则返回第一个大于目标值的位置。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> lowerBound(<span style="color:#66d9ef">const</span> std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> nums, T target) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> left <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> right <span style="color:#f92672">=</span> nums.size(); <span style="color:#75715e">// [left, right) 左闭右开区间
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (left <span style="color:#f92672">&lt;</span> right) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> mid <span style="color:#f92672">=</span> left <span style="color:#f92672">+</span> (right <span style="color:#f92672">-</span> left) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (nums[mid] <span style="color:#f92672">&lt;</span> target) {
+</span></span><span style="display:flex;"><span>            left <span style="color:#f92672">=</span> mid <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 当 nums[mid] &gt;= target 时，收缩右边界
+</span></span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 这样会不断向左逼近第一个等于 target 的位置
+</span></span></span><span style="display:flex;"><span>            right <span style="color:#f92672">=</span> mid;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> left; <span style="color:#75715e">// 此时 left == right
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="最小公倍数">最小公倍数<a href="#%e6%9c%80%e5%b0%8f%e5%85%ac%e5%80%8d%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">gcd</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> b <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> a : gcd(b, a <span style="color:#f92672">%</span> b);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>原理是$gcd(a,b) = gcd(b,a\%b)$。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>近日神必脑洞合集</title>

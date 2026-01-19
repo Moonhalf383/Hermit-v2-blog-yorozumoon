@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Sun, 18 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SEU程序设计复习02：远古老登</title>
+      <link>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</link>
+      <pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</guid>
+      <description>&lt;h1 id=&#34;本篇要素&#34;&gt;本篇要素：&lt;a href=&#34;#%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;指针&lt;/li&gt;&#xA;&lt;li&gt;C风格字符串&lt;/li&gt;&#xA;&lt;li&gt;C风格数组&lt;/li&gt;&#xA;&lt;li&gt;基本算法&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;指针&#34;&gt;指针&lt;a href=&#34;#%e6%8c%87%e9%92%88&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB-20260119-1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>近日神必脑洞合集</title>
       <link>http://localhost:1313/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/</link>
