@@ -472,15 +472,15 @@ int main(int argc, char *argv[]) {
 int arr[10];
 
 //这一部分是搜索算法。
-int binartSearch(const int arr[], int low, int high, int target) {
+int binarySearch(const int arr[], int low, int high, int target) {
   if (low > high)
     return -1;
   int mid = low + (high - low) / 2;
   if (target == arr[mid])
     return mid;
   if (target < arr[mid])
-    return binartSearch(arr, low, mid - 1, target);
-  return binartSearch(arr, mid + 1, high, target);
+    return binarySearch(arr, low, mid - 1, target);
+  return binarySearch(arr, mid + 1, high, target);
 }
 
 void renewArray() {
