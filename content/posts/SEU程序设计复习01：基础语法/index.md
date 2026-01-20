@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 
 这段代码的功能是计算了2的60次方，随后一直除2直到为0，记录其中的计算次数，证明一开始算出来的确实是2的60次方。输出结果如下：
 
-```
+```sh
 1152921504606846976   0
 576460752303423488   1
 288230376151711744   2
@@ -325,7 +325,7 @@ int main(int argc, char *argv[]) {
     int assumption;
     std::cin >> assumption;
     if (assumption == answer) {
-      std::cout << "Dawn! You get it!" << std::endl;
+      std::cout << "Damn! You get it!" << std::endl;
       break;
     } else if (abs(assumption - answer) <= 1) {
       std::cout << "Almost figured out." << std::endl;
