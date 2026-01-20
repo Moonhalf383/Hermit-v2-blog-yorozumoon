@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="平板游戏环境部署计划">
+  <meta itemprop="description" content="今日计划 实现平板上配置游戏环境。 由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。">
+  <meta itemprop="datePublished" content="2026-01-20T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-01-20T00:00:00+00:00">
+  <meta itemprop="wordCount" content="2638">
+  <meta itemprop="keywords" content="Blog,随意探索"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="平板游戏环境部署计划">
+  <meta property="og:description" content="今日计划 实现平板上配置游戏环境。 由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-01-20T00:00:00+00:00">
+    <meta property="article:tag" content="Blog">
+    <meta property="article:tag" content="随意探索">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="平板游戏环境部署计划">
+  <meta name="twitter:description" content="今日计划 实现平板上配置游戏环境。 由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "平板游戏环境部署计划",
+    "name": "平板游戏环境部署计划",
+    "description": "今日计划 实现平板上配置游戏环境。 由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。\n",
+    "keywords": ["blog", "随意探索"],
+    "articleBody": "今日计划 实现平板上配置游戏环境。 由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。\n本篇要素： wine：一个让windows程序可以跑在linux系统的工具； box64：一个将x86_64指令翻译为arm64指令的工具； mesa：一套开源图像驱动集合； dxvk：图像api翻译器 turnip \u0026 zink：mesa组件，负责驱动vulkan和翻译图像api指令； Wine Wine Is Not Emulator，一个递归式的缩写。wine是一个兼容层，旨在让POSIX兼容的操作系统（如Linux）上可以运行原本为Windows开发的应用程序。它的实现方法与虚拟机有巨大差异，并不模拟硬件，而是在运行时实时地将windows api调用翻译为POSIX调用。所以wine的理论性能显著优于虚拟机。\n几个核心概念：\nWINEPREFIX（Wine前缀） 类似python的虚拟环境，一个wine前缀代表了一个独立的windows虚拟环境。不过在实现层面，wine的行为可能更加类似于conda，都采用了集中式文件管理架构。\nwineprefix存在的意义在于避免前置地狱的痛苦。通过环境隔离，你可以在同一台机器上运行前置相互冲突的程序，只要你把它们放在不同的前缀中。\nWINEARCH（Wine架构） 初始化前缀时指定模拟的是32位windows还是64位windows。\nDLL覆盖 windows程序的运行依赖于大量的动态链接库（即dll）。wine内置了这些dll的开源实现，但是有时出于兼容性考虑需要用windows提取原装版本来替换内建版本。\nWinetricks 一个shell脚本，用来下载和安装各种windows运行时库，辅助wine环境配置。\nWoW64 Mode wine的新能力，可以将32位windows api调用转换为64位windows api调用。\n局限： 内核级反作弊的网络游戏无法运行。 配置复杂。 不是所有软件都能完美运行。 Box64 一个二进制指令翻译器，用来在非x86_64架构的Linux系统（尤其是树莓派和Andriod平板或手机）上运行原本为x86_64处理器编译的Linux程序。与wine类似的，它的实现也不是使用虚拟机。核心功能是在Linux程序运行时将x86_64架构CPU指令实时地转换为arm64能理解的指令。\nBox64性能优异的原因有二，一方面它采用了动态重编译技术，并不100%的解释运行所有指令，而是运行时动态的将指令重写为arm64机器码。此外，box64采用了原生库包装技术，在一些图形处理上直接调用arm64原生库，使得图像处理上几乎可以以原生速度进行。\nBox64最夯的应用即和Wine一起打出combo。Box64提供硬件适配，Wine提供系统适配，一同使用就可以在一个树莓派或者高性能arm机器上几乎不损失性能地运行windows程序以及游戏。\nMesa Mesa是一个开源图形驱动集合，实现了跨平台图形api规范。当我们在Linux上运行游戏时，Mesa会接收游戏发出的绘图指令，并将它们翻译为特定的GPU硬件指令。\n由于本人从未涉足过图形学编程的领域，此处额外补充一些必备的图形学知识。所谓的图形api，常见的图像api有OpenGL和Vulkan，它们的作用是将CPU给出的图形绘制指令翻译为GPU指令。其中，OpenGL是一个老资历图形api，特点是相对容易上手，缺点是性能一般；而Vulkan是一个相对更新的图形api，特点是上手难度地狱，但是性能可以比OpenGL强的多。如果类比的话，OpenGL就类似于Python，它帮你做了很多事，代价是性能不够理想；Vulkan则是C语言，所有事情都要你自己控制，所以没有中间商赚差价，性能也自然很高，代价是配置和学习痛苦。\n此外，在微软windows系统中还存在Direct3D图形api。同样是一个相较于OpenGL更加现代的图形api。很多windows应用和游戏以Direct3D为图像api。\nDXVK DirectX over VulKan，即将微软Direct3D图像api调用翻译为Vulkan api调用。\n在dxvk出现前，wine默认将direct3d指令翻译为openGL指令，由于Direct3D和OpenGL架构差异巨大，这种翻译效率低下，导致CPU瓶颈严重。DXVK的理念是在Direct3D和与它架构更接近、性能更优的Vulkan api之间建立映射。\n在Wine容器中运行windows游戏时，Wine会调用DXVK提供的动态链接库，将指令转换为Vulkan并发送给Mesa，Mesa接受到指令后指挥GPU绘制图像。\n在winetricks中可以通过winetricks dxvk来一键安装dxvk并覆盖动态链接库。\nTurnip\u0026Zink Turnip和zink是arm64架构设备上运行桌面级应用的热门mesa组件。\n其中turnip是linux上运行vulkan应用的首选驱动。不同于Vulkan官方的驱动，Turnip由社区维护，更新速度快，并且针对DXVK做了大量的优化。主要的应用场景是Andriod运行PC游戏。\nZink的功能则是将OpenGL翻译为Vulkan。对于一个老旧的OpenGL游戏，只使用Turnip无法运行，这时就需要Zink将OpenGL指令翻译为Vulkan指令。因为OpenGL过于老旧臃肿，即使加上了Zink这一翻译层，Vulkan的运行速度也会比原生的OpenGL更快。\n全要素再放送 宿主层 (Host): Android Kernel + Termux (基础终端环境)。 容器层 (Container): PRoot Distro (Ubuntu)。必须是纯 64 位环境。 显示层 (Display): Termux:X11 (X Server) + Ubuntu 桌面环境 (XFCE4/MATE) 或 窗口管理器。 指令翻译层 (Translator): Box64 (将 x86_64 翻译为 ARM64)。 图形驱动层 (Driver): Mesa (Turnip + Zink)。这是 Adreno 显卡的生命线。 兼容层 (Compatibility): Wine (WoW64 Build)，负责在纯 64 位环境下运行 32 位 Windows 程序。 图形转译层 (Graphics Wrapper): DXVK (DX11 -\u003e Vulkan)。 应用层 (App): Windows Steam 客户端 + 游戏。 环境配置阶段性任务： 完成基本环境配置，纯净64位ubuntu distro环境+termux x11桌面环境基本配置； 构建指令翻译器，安装box64并注册Binfmt； 部署图形驱动，获取Mesa并验证Vulkan支持； 部署wine兼容层； 部署steam； 测试游戏运行； 目前进度： 基本环境配置完成，可以打开桌面环境并在桌面环境中运行终端。\n",
+    "wordCount" : "2638",
+    "inLanguage": "zh-cn",
+    "datePublished": "2026-01-20T00:00:00Z",
+    "dateModified": "2026-01-20T00:00:00Z",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>平板游戏环境部署计划</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Jan 20, 2026</span></div>
+				<h1>平板游戏环境部署计划</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/blog">blog</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2">随意探索</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>2638&nbspWords 阅读时长11 Minutes, 59 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2026-01-20 00:00 &#43;0000
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h2 id="今日计划">今日计划<a href="#%e4%bb%8a%e6%97%a5%e8%ae%a1%e5%88%92" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>实现平板上配置游戏环境。</li>
+</ul>
+<p>由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台<strong>arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的</strong>环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。</p>
+<h1 id="本篇要素">本篇要素：<a href="#%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<ul>
+<li>wine：一个让windows程序可以跑在linux系统的工具；</li>
+<li>box64：一个将x86_64指令翻译为arm64指令的工具；</li>
+<li>mesa：一套开源图像驱动集合；</li>
+<li>dxvk：图像api翻译器</li>
+<li>turnip &amp; zink：mesa组件，负责驱动vulkan和翻译图像api指令；</li>
+</ul>
+<h1 id="wine">Wine<a href="#wine" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><strong>W</strong>ine <strong>I</strong>s <strong>N</strong>ot <strong>E</strong>mulator，一个递归式的缩写。wine是一个<strong>兼容层</strong>，旨在让POSIX兼容的操作系统（如Linux）上可以运行原本为Windows开发的应用程序。它的实现方法与虚拟机有巨大差异，并不模拟硬件，而是在运行时实时地将windows api调用翻译为POSIX调用。所以wine的理论性能显著优于虚拟机。</p>
+<p>几个核心概念：</p>
+<h3 id="wineprefixwine前缀">WINEPREFIX（Wine前缀）<a href="#wineprefixwine%e5%89%8d%e7%bc%80" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>类似python的虚拟环境，一个wine前缀代表了一个独立的windows虚拟环境。不过在实现层面，wine的行为可能更加类似于conda，都采用了集中式文件管理架构。</p>
+<p>wineprefix存在的意义在于避免前置地狱的痛苦。通过环境隔离，你可以在同一台机器上运行前置相互冲突的程序，只要你把它们放在不同的前缀中。</p>
+<h3 id="winearchwine架构">WINEARCH（Wine架构）<a href="#winearchwine%e6%9e%b6%e6%9e%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>初始化前缀时指定模拟的是32位windows还是64位windows。</p>
+<h3 id="dll覆盖">DLL覆盖<a href="#dll%e8%a6%86%e7%9b%96" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>windows程序的运行依赖于大量的动态链接库（即dll）。wine内置了这些dll的开源实现，但是有时出于兼容性考虑需要用windows提取原装版本来替换内建版本。</p>
+<h3 id="winetricks">Winetricks<a href="#winetricks" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>一个shell脚本，用来下载和安装各种windows运行时库，辅助wine环境配置。</p>
+<h3 id="wow64-mode">WoW64 Mode<a href="#wow64-mode" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>wine的新能力，可以将32位windows api调用转换为64位windows api调用。</p>
+<h3 id="局限">局限：<a href="#%e5%b1%80%e9%99%90" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<ul>
+<li>内核级反作弊的网络游戏无法运行。</li>
+<li>配置复杂。</li>
+<li>不是所有软件都能完美运行。</li>
+</ul>
+<h2 id="box64">Box64<a href="#box64" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>一个二进制指令翻译器，用来在非x86_64架构的Linux系统（尤其是树莓派和Andriod平板或手机）上运行原本为x86_64处理器编译的Linux程序。与wine类似的，它的实现也不是使用虚拟机。核心功能是在Linux程序运行时将x86_64架构CPU指令实时地转换为arm64能理解的指令。</p>
+<p>Box64性能优异的原因有二，一方面它采用了<strong>动态重编译</strong>技术，并不100%的解释运行所有指令，而是运行时动态的将指令重写为arm64机器码。此外，box64采用了<strong>原生库包装</strong>技术，在一些图形处理上直接调用arm64原生库，使得图像处理上几乎可以以原生速度进行。</p>
+<p>Box64最夯的应用即和Wine一起打出combo。Box64提供硬件适配，Wine提供系统适配，一同使用就可以在一个树莓派或者高性能arm机器上几乎不损失性能地运行windows程序以及游戏。</p>
+<h2 id="mesa">Mesa<a href="#mesa" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Mesa是一个<strong>开源图形驱动集合</strong>，实现了跨平台图形api规范。当我们在Linux上运行游戏时，Mesa会接收游戏发出的绘图指令，并将它们翻译为特定的GPU硬件指令。</p>
+<p>由于本人从未涉足过图形学编程的领域，此处额外补充一些必备的图形学知识。所谓的图形api，常见的图像api有OpenGL和Vulkan，它们的作用是将CPU给出的图形绘制指令翻译为GPU指令。其中，OpenGL是一个老资历图形api，特点是相对容易上手，缺点是性能一般；而Vulkan是一个相对更新的图形api，特点是上手难度地狱，但是性能可以比OpenGL强的多。如果类比的话，OpenGL就类似于Python，它帮你做了很多事，代价是性能不够理想；Vulkan则是C语言，所有事情都要你自己控制，所以没有中间商赚差价，性能也自然很高，代价是配置和学习痛苦。</p>
+<p>此外，在微软windows系统中还存在Direct3D图形api。同样是一个相较于OpenGL更加现代的图形api。很多windows应用和游戏以Direct3D为图像api。</p>
+<h2 id="dxvk">DXVK<a href="#dxvk" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><strong>D</strong>irect<strong>X</strong> over <strong>V</strong>ul<strong>K</strong>an，即将微软Direct3D图像api调用翻译为Vulkan api调用。</p>
+<p>在dxvk出现前，wine默认将direct3d指令翻译为openGL指令，由于Direct3D和OpenGL架构差异巨大，这种翻译效率低下，导致CPU瓶颈严重。DXVK的理念是在Direct3D和与它架构更接近、性能更优的Vulkan api之间建立映射。</p>
+<p>在Wine容器中运行windows游戏时，Wine会调用DXVK提供的动态链接库，将指令转换为Vulkan并发送给Mesa，Mesa接受到指令后指挥GPU绘制图像。</p>
+<p>在winetricks中可以通过<code>winetricks dxvk</code>来一键安装dxvk并覆盖动态链接库。</p>
+<h2 id="turnipzink">Turnip&amp;Zink<a href="#turnipzink" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>Turnip和zink是arm64架构设备上运行桌面级应用的热门mesa组件。</p>
+<p>其中turnip是linux上运行vulkan应用的首选驱动。不同于Vulkan官方的驱动，Turnip由社区维护，更新速度快，并且针对DXVK做了大量的优化。主要的应用场景是Andriod运行PC游戏。</p>
+<p>Zink的功能则是将OpenGL翻译为Vulkan。对于一个老旧的OpenGL游戏，只使用Turnip无法运行，这时就需要Zink将OpenGL指令翻译为Vulkan指令。因为OpenGL过于老旧臃肿，即使加上了Zink这一翻译层，Vulkan的运行速度也会比原生的OpenGL更快。</p>
+<h1 id="全要素再放送">全要素再放送<a href="#%e5%85%a8%e8%a6%81%e7%b4%a0%e5%86%8d%e6%94%be%e9%80%81" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<ol>
+<li><strong>宿主层 (Host)</strong>: Android Kernel + Termux (基础终端环境)。</li>
+<li><strong>容器层 (Container)</strong>: PRoot Distro (Ubuntu)。<strong>必须是纯 64 位环境</strong>。</li>
+<li><strong>显示层 (Display)</strong>: Termux:X11 (X Server) + Ubuntu 桌面环境 (XFCE4/MATE) 或 窗口管理器。</li>
+<li><strong>指令翻译层 (Translator)</strong>: <strong>Box64</strong> (将 x86_64 翻译为 ARM64)。</li>
+<li><strong>图形驱动层 (Driver)</strong>: <strong>Mesa (Turnip + Zink)</strong>。这是 Adreno 显卡的生命线。</li>
+<li><strong>兼容层 (Compatibility)</strong>: <strong>Wine (WoW64 Build)</strong>，负责在纯 64 位环境下运行 32 位 Windows 程序。</li>
+<li><strong>图形转译层 (Graphics Wrapper)</strong>: <strong>DXVK</strong> (DX11 -&gt; Vulkan)。</li>
+<li><strong>应用层 (App)</strong>: Windows Steam 客户端 + 游戏。</li>
+</ol>
+<h2 id="环境配置阶段性任务">环境配置阶段性任务：<a href="#%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae%e9%98%b6%e6%ae%b5%e6%80%a7%e4%bb%bb%e5%8a%a1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ol>
+<li>完成基本环境配置，纯净64位ubuntu distro环境+termux x11桌面环境基本配置；</li>
+<li>构建指令翻译器，安装box64并注册Binfmt；</li>
+<li>部署图形驱动，获取Mesa并验证Vulkan支持；</li>
+<li>部署wine兼容层；</li>
+<li>部署steam；</li>
+<li>测试游戏运行；</li>
+</ol>
+<h1 id="目前进度">目前进度：<a href="#%e7%9b%ae%e5%89%8d%e8%bf%9b%e5%ba%a6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>基本环境配置完成，可以打开桌面环境并在桌面环境中运行终端。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/%E4%BB%8A%E6%97%A5%E9%9A%8F%E7%AC%94-20260120-1.png" alt=""></p>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+<div class="related-posts thin">
+	<h2>See Also</h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/">SEU程序设计复习02：远古老登</a></li>
+	
+	<li><a href="/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/">近日神必脑洞合集</a></li>
+	
+	<li><a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">SEU程序设计复习01：基础语法</a></li>
+	
+	<li><a href="/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/">核动力博客发射器测试</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#今日计划">今日计划</a></li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#wineprefixwine前缀">WINEPREFIX（Wine前缀）</a></li>
+        <li><a href="#winearchwine架构">WINEARCH（Wine架构）</a></li>
+        <li><a href="#dll覆盖">DLL覆盖</a></li>
+        <li><a href="#winetricks">Winetricks</a></li>
+        <li><a href="#wow64-mode">WoW64 Mode</a></li>
+        <li><a href="#局限">局限：</a></li>
+      </ul>
+    </li>
+    <li><a href="#box64">Box64</a></li>
+    <li><a href="#mesa">Mesa</a></li>
+    <li><a href="#dxvk">DXVK</a></li>
+    <li><a href="#turnipzink">Turnip&amp;Zink</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#环境配置阶段性任务">环境配置阶段性任务：</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>SEU程序设计复习02：远古老登</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
