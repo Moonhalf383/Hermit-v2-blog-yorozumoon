@@ -156,6 +156,170 @@
 		</item>
 		
 		<item>
+			<title>平板游戏环境配置计划：2&amp;3阶段</title>
+			<link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</link>
+			<pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="参考链接">参考链接：<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://github.com/ptitSeb/box64/blob/main/README_CN.md">box64中文主页</a></p>
+<p><a href="https://github.com/K11MCH1/WinlatorTurnipDrivers/releases/tag/winlator_v25.1_r2">turnip driver</a></p>
+<p><a href="https://docs.mesa3d.org/install.html">mesa3D主页</a></p>
+<h1 id="第二阶段box64部署">第二阶段：box64部署<a href="#%e7%ac%ac%e4%ba%8c%e9%98%b6%e6%ae%b5box64%e9%83%a8%e7%bd%b2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>基础编译工具链：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt-get update
+</span></span><span style="display:flex;"><span>apt-get install -y git cmake build-essential python3 python3-setuptoolsapt-get update
+</span></span><span style="display:flex;"><span>apt-get install -y git cmake build-essential python3 python3-setuptools
+</span></span></code></pre></div><p>编译指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 克隆官方仓库</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/ptitSeb/box64
+</span></span><span style="display:flex;"><span>cd box64
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 创建构建目录</span>
+</span></span><span style="display:flex;"><span>mkdir build; cd build
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 配置 CMake (关键步骤)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -DSD8G2=1 : 针对骁龙8Gen2/3架构优化</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -DCMAKE_BUILD_TYPE=RelWithDebInfo : 保持高性能的同时保留调试信息(对崩溃排查很重要)</span>
+</span></span><span style="display:flex;"><span>cmake .. -DSD8G2<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> -DCMAKE_BUILD_TYPE<span style="color:#f92672">=</span>RelWithDebInfo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 开始编译 (利用 8s Gen 3 的多核性能，-j8)</span>
+</span></span><span style="display:flex;"><span>make -j8
+</span></span></code></pre></div><p>安装二进制文件到系统目录：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 安装二进制文件到系统路径 </span>
+</span></span><span style="display:flex;"><span>make install
+</span></span></code></pre></div><p>在<code>~/box64/system</code>目录下找到了<code>box64.box64rc</code>，显然是box64的配置文件。将其复制到<code>/etc</code>目录下。</p>
+<p>我本来想复制一下这个配置文件的内容，奈何有1000多行，遂放弃。</p>
+<p>合影留念：</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-1.png" alt=""></p>
+<p>在推进到第三阶段前，我们先用一个简单的x86_64的Helloworld文件测试一下box64有没有在正常工作。</p>
+<p>让我们随便创建一个<code>hello.c</code>文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;#include &lt;stdio.h&gt; int main() { printf(&#34;Hello, Box64! Integration test successful.\\n&#34;); return 0; }&#39;</span> &gt; hello.c
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-2.png" alt=""></p>
+<p>安装交叉编译器：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt-get update
+</span></span><span style="display:flex;"><span>apt-get install -y gcc-x86-64-linux-gnu file
+</span></span></code></pre></div><p>使用x86_64编译链来编译c文件，并使用<code>file</code>指令验证它确实是x86_64文件。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-3.png" alt=""></p>
+<p>测试成功。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-4.png" alt=""></p>
+<h1 id="第三阶段图形驱动与vulkan支持验证">第三阶段：图形驱动与vulkan支持验证<a href="#%e7%ac%ac%e4%b8%89%e9%98%b6%e6%ae%b5%e5%9b%be%e5%bd%a2%e9%a9%b1%e5%8a%a8%e4%b8%8evulkan%e6%94%af%e6%8c%81%e9%aa%8c%e8%af%81" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>对于本阶段，我们需要实现的是让proot distro ubuntu知道显卡的存在并去调用显卡进行图像计算。目前ubuntu认为自己处在一个没有显卡的服务器上，所以使用CPU来逐个像素的计算图像。对于一般性的桌面环境来说可能足够了，但是对于游戏来说，这样的性能是远远不够的。</p>
+<p>所以我们本步需要做的是：寻找这样一个文件，它不是一个普通的软件，而是一个特定的驱动程序，即动态链接库<code>.so</code>文件，并且由于我们环境的特殊性，这个驱动文件必须满足以下条件：</p>
+<ol>
+<li>必须使用Andriod的KGSL接口来管理显卡；</li>
+<li>必须使用Glibc编译的版本，这样ubuntu才能正常运行；</li>
+<li>必须是二进制文件成品，因为在proot环境下直接编译极其困难（我已经试过了）；</li>
+</ol>
+<p>总结关键词：mesa，glibc，turnip，kgsl。这个文件将会是我们的proot环境中mesa+vulkan的全链条实现者。</p>
+<p>经过一番探索，我发现自己之前遗漏了两个重要的术语，以下进行补充：mesa是是一个巨大的开源项目，其中包含了多种显卡的驱动，而其中<strong>Freedreno</strong>是专门负责高通Adreno GPU项目的总称。所以，我们需要寻找的并非是一个原生态的mesa驱动，而是找freedreno。</p>
+<p>此外，winlator是一个专门用来在andriod系统上运行win程序的封装好的应用。但是适用于winlator的驱动理论上也可以适用于proot distro。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-1.png" alt=""></p>
+<p>如图是阶段成功的标志，实际效果是一个旋转的立方体。出现了这个，意味着vulkan驱动的路被完全打通，proot环境可以直接调用你的GPU进行计算并呈现在你的termux x11窗口中。</p>
+<p>在正式开始配置之前，我们需要知道proot环境下我们期待图形渲染的工作流是什么。以我们阶段成果vkcube为例，我们来逐步分析它的工作流。</p>
+<p>vkcube并不是某个vulkan工具，而是一个调用了vulkan api的程序。当我们运行<code>vkcube --wsi xcb</code>时，vkcube作为一个vulkan程序，它会首先读取一个<code>.json</code>文件（学名ICD，Installable Client Driver）来确定系统中有哪些驱动程序。这意味着，如果我们希望这个程序能成功运行，它必须知道哪里能找到这个<code>.json</code>文件，而想让一个程序可以无视位置地锁定另一个文件意味着我们需要设置环境变量。在vulkan的语境下，这个环境变量即<code>VK_ICD_FILENAMES</code>。</p>
+<p>确认了驱动程序后，vulkan程序就会直接通过驱动程序来调用显卡进行计算。如果你的驱动程序版本和硬件不匹配，或者根本没有权限访问显卡，那么vulkan程序就无法调用显卡进行计算。</p>
+<p>假如一切顺利，图像渲染成功，我们还需要让它呈现在屏幕上。而一个vulkan程序呈现图像的方式是调用vulkan api，通过vulkan wsi(window system integration)来显示窗口。在我们的proot环境下，我们采用了termux x11来显示桌面环境，所以我们希望wsi协商时调用x11(xcb)接口来实现图像显示。</p>
+<p>具体的实施方案上，经过了一番寻找，我终于找到了理论上可用的<code>turnip driver</code>，链接已经放在文章开头了。K11MCH1维护了一个为winlator做驱动支持的turnip driver仓库，理论上这个驱动程序对于proot环境也同样适用。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-2.png" alt=""></p>
+<p>我们将其中的<code>.so</code>文件随意的下载并放置在某个自己知道的位置。随后，由于作者并没有提供一个直接可用的ICD文件，我们需要自己来写这个文件。 随便在某个你自己知道的目录下创建一个<code>.json</code>文件，我对它的命名为<code>freedreno_icd.aarch64.json</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;file_format_version&#34;</span>: <span style="color:#e6db74">&#34;1.0.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ICD&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;library_path&#34;</span>: <span style="color:#e6db74">&#34;/root/test/libvulkan_freedreno.so&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;api_version&#34;</span>: <span style="color:#e6db74">&#34;1.3.255&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>以上代码块中<code>&quot;/root/test/libvulkan_freedreno.so&quot;</code>应该被替换为你的实际的<code>.so</code>存放目录。可以看到我真的就是随便开了个test目录就放了，这个还是看个人的文件管理习惯吧。</p>
+<p>此外我们需要设置环境变量来让这个icd可以被识别，顺便的，我们需要设定一下显示端口来对接wsi。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 在proot环境内运行。</span>
+</span></span><span style="display:flex;"><span>export VK_ICD_FILENAMES<span style="color:#f92672">=</span>/root/test/freedreno_icd.aarch64.json
+</span></span><span style="display:flex;"><span>export DISPLAY<span style="color:#f92672">=</span>:1
+</span></span></code></pre></div><p>此外，这是我使用的proot distro ubuntu桌面环境启动脚本，放在termux宿主机中。原理看注释。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- 1. 环境清理 ---</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Cleaning up...&#34;</span>
+</span></span><span style="display:flex;"><span>pkill -9 termux-x11
+</span></span><span style="display:flex;"><span>pkill -9 virgl_test
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 尝试删除端口1相关的锁</span>
+</span></span><span style="display:flex;"><span>rm -f $TMPDIR/.X1-lock 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- 2. 启动服务端 ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注意这里改成了 :1</span>
+</span></span><span style="display:flex;"><span>am start -n com.termux.x11/com.termux.x11.MainActivity
+</span></span><span style="display:flex;"><span>termux-x11 :1 -ac &amp;
+</span></span><span style="display:flex;"><span>virgl_test_server_android &amp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sleep <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># --- 3. 进入 PRoot 并启动 ---</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 确保所有 DISPLAY 都指向 :1</span>
+</span></span><span style="display:flex;"><span>proot-distro login ubuntu --shared-tmp --bind /dev --bind /sys --bind ~/share:/share -- /bin/bash -c <span style="color:#e6db74">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    export DISPLAY=:1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    export XDG_RUNTIME_DIR=/tmp
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    # 强制重新设置 dbus
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    rm -rf /var/run/dbus/pid
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    dbus-daemon --system --fork 2&gt;/dev/null
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    export \$(dbus-launch)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    # 3D 加速相关
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    export GALLIUM_DRIVER=virpipe
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    export MESA_GL_VERSION_OVERRIDE=4.0
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    echo &#39;Starting XFCE4 on DISPLAY :1...&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    startxfce4
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>以上是我能回忆的起来的主要配置过程（因为中间实际上经历了很多的错误尝试，以上是我最后能确定的正确尝试，实际配置可能还需要依据情况做额外的调整）。为了检测我们的配置成果，首先我们需要安装<code>vulkan-tools</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt install vulkan-tools
+</span></span></code></pre></div><p>以下罗列一些可能使用到的检查状态的指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>vulkaninfo | grep <span style="color:#e6db74">&#34;deviceName&#34;</span>
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-3.png" alt=""></p>
+<p>以上是我未启动桌面环境时输出的信息。其中<code>XDG_RUNTIME_DIR</code>是一个proot环境下没有预设的目录。虽然弹出了很多警告，但是都是无害噪音，并不会影响最终运行。</p>
+<p>输出信息中最重要的是<code>deviceName = Turnip Adreno (TM) 735</code>，表示turnip驱动已经处在了待命状态，并且成功穿透容器访问到了显卡。安卓设备的厂商通常会默认将显卡的详细版本信息隐藏起来，此处<code>735</code>版本号出现证明了确实访问到了真正的显卡。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 需安装 mesa-utils</span>
+</span></span><span style="display:flex;"><span>MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink glxinfo | grep <span style="color:#e6db74">&#34;renderer&#34;</span>
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-4.png" alt=""></p>
+<p>同样出现了大量无害噪音。其中最关键的信息是<code>zink Vulkan 1.4(Turnip Adreno (TM) 735 (MESA_TURNIP))</code>，表示zink成功启动并挂载在turnip上。zink将OpenGL调用翻译为Vulkan调用，此处如果能成功显示意味着你的系统可以高效的渲染OpenGL图像。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>glxinfo | grep <span style="color:#e6db74">&#34;Mesa&#34;</span>
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-5.png" alt=""></p>
+<p>显示mesa版本。出现mesa版本号意味着mesa驱动包已经部署。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>glxgears
+</span></span></code></pre></div><p>这是一个mesa/glx体系下常用的用来演示和诊断OpenGL支持的小程序，主要功能有：</p>
+<ul>
+<li>测试X11是否正常工作；</li>
+<li>GLX是否可用；</li>
+<li>OpenGL上下文是否创建；</li>
+</ul>
+<p>在此处，由于我们部署了mesa，理论上我们可以用zink来将OpenGL翻译为Vulkan再进一步渲染。具体的实施方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制使用 Zink 渲染 OpenGL</span>
+</span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink
+</span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 运行 glxinfo 看看 renderer 是否变成了 Turnip</span>
+</span></span><span style="display:flex;"><span>glxinfo | grep <span style="color:#e6db74">&#34;renderer&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 运行 glmark2 或简单的 glxgears 测试性能</span>
+</span></span><span style="display:flex;"><span>glxgears
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-6.png" alt=""></p>
+<p>理想的输出结果如上。可以看到OpenGL的渲染器显示为zink。不理想的情况是显示为<code>llvmpipe</code>，表示此时正在使用CPU来跑图形，图像显示性能远远不比GPU。</p>
+<p>glxgears运行成功vkcube也仍然可能运行失败，因为glxgears全链路运行在mesa这个超级聚合物中，而vkcube有很多东西需要自己手动配置，对于显示环境要求也更加严格。但是glxgears可以成功运行意味着mesa已经可以直接访问显卡，证明了访问显卡是可能的。</p>
+<p>总之，一切顺利的话，运行<code>vkcube --wsi xcb</code>后，你应该可以得到旋转立方。这标志了三阶段的工作顺利结束。</p>
+]]></content>
+		</item>
+		
+		<item>
 			<title>SEU程序设计复习02：远古老登</title>
 			<link>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</link>
 			<pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</guid>
@@ -802,68 +966,68 @@ C++功能很多。
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>这段代码的功能是计算了2的60次方，随后一直除2直到为0，记录其中的计算次数，证明一开始算出来的确实是2的60次方。输出结果如下：</p>
-<pre tabindex="0"><code>1152921504606846976   0
-576460752303423488   1
-288230376151711744   2
-144115188075855872   3
-72057594037927936   4
-36028797018963968   5
-18014398509481984   6
-9007199254740992   7
-4503599627370496   8
-2251799813685248   9
-1125899906842624  10
-562949953421312  11
-281474976710656  12
-140737488355328  13
-70368744177664  14
-35184372088832  15
-17592186044416  16
-8796093022208  17
-4398046511104  18
-2199023255552  19
-1099511627776  20
-549755813888  21
-274877906944  22
-137438953472  23
-68719476736  24
-34359738368  25
-17179869184  26
-8589934592  27
-4294967296  28
-2147483648  29
-1073741824  30
-536870912  31
-268435456  32
-134217728  33
-67108864  34
-33554432  35
-16777216  36
-8388608  37
-4194304  38
-2097152  39
-1048576  40
-524288  41
-262144  42
-131072  43
-65536  44
-32768  45
-16384  46
-8192  47
-4096  48
-2048  49
-1024  50
-512  51
-256  52
-128  53
-64  54
-32  55
-16  56
-8  57
-4  58
-2  59
-1  60
-</code></pre><p>但是如果我们开头不写<code>using ll = long long;</code>，而是写<code>using ll = int;</code>，程序就不会有任何输出（或者某些环境下会报错），原因是数据溢出了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">1152921504606846976</span>   <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">576460752303423488</span>   <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">288230376151711744</span>   <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">144115188075855872</span>   <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">72057594037927936</span>   <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">36028797018963968</span>   <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">18014398509481984</span>   <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">9007199254740992</span>   <span style="color:#ae81ff">7</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4503599627370496</span>   <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2251799813685248</span>   <span style="color:#ae81ff">9</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1125899906842624</span>  <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">562949953421312</span>  <span style="color:#ae81ff">11</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">281474976710656</span>  <span style="color:#ae81ff">12</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">140737488355328</span>  <span style="color:#ae81ff">13</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">70368744177664</span>  <span style="color:#ae81ff">14</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">35184372088832</span>  <span style="color:#ae81ff">15</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">17592186044416</span>  <span style="color:#ae81ff">16</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8796093022208</span>  <span style="color:#ae81ff">17</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4398046511104</span>  <span style="color:#ae81ff">18</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2199023255552</span>  <span style="color:#ae81ff">19</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1099511627776</span>  <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">549755813888</span>  <span style="color:#ae81ff">21</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">274877906944</span>  <span style="color:#ae81ff">22</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">137438953472</span>  <span style="color:#ae81ff">23</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">68719476736</span>  <span style="color:#ae81ff">24</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">34359738368</span>  <span style="color:#ae81ff">25</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">17179869184</span>  <span style="color:#ae81ff">26</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8589934592</span>  <span style="color:#ae81ff">27</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4294967296</span>  <span style="color:#ae81ff">28</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2147483648</span>  <span style="color:#ae81ff">29</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1073741824</span>  <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">536870912</span>  <span style="color:#ae81ff">31</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">268435456</span>  <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">134217728</span>  <span style="color:#ae81ff">33</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">67108864</span>  <span style="color:#ae81ff">34</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">33554432</span>  <span style="color:#ae81ff">35</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">16777216</span>  <span style="color:#ae81ff">36</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8388608</span>  <span style="color:#ae81ff">37</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4194304</span>  <span style="color:#ae81ff">38</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2097152</span>  <span style="color:#ae81ff">39</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1048576</span>  <span style="color:#ae81ff">40</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">524288</span>  <span style="color:#ae81ff">41</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">262144</span>  <span style="color:#ae81ff">42</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">131072</span>  <span style="color:#ae81ff">43</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">65536</span>  <span style="color:#ae81ff">44</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">32768</span>  <span style="color:#ae81ff">45</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">16384</span>  <span style="color:#ae81ff">46</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8192</span>  <span style="color:#ae81ff">47</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4096</span>  <span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2048</span>  <span style="color:#ae81ff">49</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1024</span>  <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">512</span>  <span style="color:#ae81ff">51</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">256</span>  <span style="color:#ae81ff">52</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">128</span>  <span style="color:#ae81ff">53</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span>  <span style="color:#ae81ff">54</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">32</span>  <span style="color:#ae81ff">55</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">16</span>  <span style="color:#ae81ff">56</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">8</span>  <span style="color:#ae81ff">57</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">4</span>  <span style="color:#ae81ff">58</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>  <span style="color:#ae81ff">59</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>  <span style="color:#ae81ff">60</span>
+</span></span></code></pre></div><p>但是如果我们开头不写<code>using ll = long long;</code>，而是写<code>using ll = int;</code>，程序就不会有任何输出（或者某些环境下会报错），原因是数据溢出了。</p>
 <h2 id="随机数生成">随机数生成<a href="#%e9%9a%8f%e6%9c%ba%e6%95%b0%e7%94%9f%e6%88%90" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
@@ -963,7 +1127,7 @@ C++功能很多。
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> assumption;
 </span></span><span style="display:flex;"><span>    std<span style="color:#f92672">::</span>cin <span style="color:#f92672">&gt;&gt;</span> assumption;
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (assumption <span style="color:#f92672">==</span> answer) {
-</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Dawn! You get it!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+</span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Damn! You get it!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
 </span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (abs(assumption <span style="color:#f92672">-</span> answer) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">1</span>) {
 </span></span><span style="display:flex;"><span>      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Almost figured out.&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;

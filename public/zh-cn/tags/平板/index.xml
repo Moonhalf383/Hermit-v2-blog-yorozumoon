@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>随意探索 on Yorozumoon</title>
-    <link>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</link>
-    <description>Recent content in 随意探索 on Yorozumoon</description>
+    <title>平板 on Yorozumoon</title>
+    <link>http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF/</link>
+    <description>Recent content in 平板 on Yorozumoon</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
     <lastBuildDate>Tue, 20 Jan 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>平板游戏环境部署计划</title>
-      <link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/</link>
-      <pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/</guid>
-      <description>&lt;h2 id=&#34;今日计划&#34;&gt;今日计划&lt;a href=&#34;#%e4%bb%8a%e6%97%a5%e8%ae%a1%e5%88%92&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;实现平板上配置游戏环境。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台&lt;strong&gt;arm64架构的·andriod系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的&lt;/strong&gt;环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。&lt;/p&gt;</description>
-    </item>
+    <atom:link href="http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>平板游戏环境配置计划：2&amp;3阶段</title>
       <link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</link>
