@@ -11,13 +11,14 @@ title: 平板游戏环境配置计划：2&3阶段
 toc: true
 ---
 
-# 参考链接：
+# 参考链接
 
 [box64中文主页](https://github.com/ptitSeb/box64/blob/main/README_CN.md)
 
 [turnip driver](https://github.com/K11MCH1/WinlatorTurnipDrivers/releases/tag/winlator_v25.1_r2)
 
 [mesa3D主页](https://docs.mesa3d.org/install.html)
+
 # 第二阶段：box64部署
 
 基础编译工具链：
@@ -93,7 +94,7 @@ apt-get install -y gcc-x86-64-linux-gnu file
 
 所以我们本步需要做的是：寻找这样一个文件，它不是一个普通的软件，而是一个特定的驱动程序，即动态链接库`.so`文件，并且由于我们环境的特殊性，这个驱动文件必须满足以下条件：
 
-1. 必须使用Andriod的KGSL接口来管理显卡；
+1. 必须使用Android的KGSL接口来管理显卡；
 2. 必须使用Glibc编译的版本，这样ubuntu才能正常运行；
 3. 必须是二进制文件成品，因为在proot环境下直接编译极其困难（我已经试过了）；
 
@@ -101,7 +102,7 @@ apt-get install -y gcc-x86-64-linux-gnu file
 
 经过一番探索，我发现自己之前遗漏了两个重要的术语，以下进行补充：mesa是是一个巨大的开源项目，其中包含了多种显卡的驱动，而其中**Freedreno**是专门负责高通Adreno GPU项目的总称。所以，我们需要寻找的并非是一个原生态的mesa驱动，而是找freedreno。
 
-此外，winlator是一个专门用来在andriod系统上运行win程序的封装好的应用。但是适用于winlator的驱动理论上也可以适用于proot distro。
+此外，winlator是一个专门用来在android系统上运行win程序的封装好的应用。但是适用于winlator的驱动理论上也可以适用于proot distro。
 
 ![](配置过程记录-20260121-1.png)
 
