@@ -7,9 +7,181 @@
 		<generator>Hugo -- 0.154.5</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Tue, 20 Jan 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Thu, 22 Jan 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>平板游戏环境配置计划：4阶段</title>
+			<link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/</link>
+			<pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="参考链接">参考链接：<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://github.com/Kron4ek/Wine-Builds">我所使用的wine预编译包</a></p>
+<p><a href="https://www.techpowerup.com/325637/techpowerup-releases-gpu-z-v2-60-0">GPU-Z</a></p>
+<p><a href="https://www.techpowerup.com/download/futuremark-3dmark06/">3Dmark6</a></p>
+<h2 id="目前进度">目前进度：<a href="#%e7%9b%ae%e5%89%8d%e8%bf%9b%e5%ba%a6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>termux x11 + proot distro ubuntu桌面环境工作正常；</li>
+<li>box64运行x86_64程序成功；</li>
+<li>vulkan驱动正常工作；
+<ul>
+<li>运行<code>glxgears | grep &quot;renderer&quot;</code>渲染齿轮动画并显示渲染器为<code>zink</code>；</li>
+<li>运行<code>vkcube --wsi xcb</code>可以渲染旋转立方</li>
+</ul>
+</li>
+</ul>
+<h1 id="第四阶段wine">第四阶段：Wine<a href="#%e7%ac%ac%e5%9b%9b%e9%98%b6%e6%ae%b5wine" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）</p>
+<p>为了能实现我们需要的效果，这里我们先对环境配置工作做一个大致的规划：</p>
+<ul>
+<li>首先，对于wine的选取，我们不能直接使用<code>apt install wine</code>来安装一个通用版的wine，因为官方仓库的wine会安装<code>lib32</code>相关的armhf包，这些包在我的机器上无法运行。我们需要的是一个<strong>Wine的·WOW64版的·预编译包</strong>，原因在于一方面我们需要wow64来将32位指令翻译为64位指令，另一方面proot环境极其孱弱，我们需要直接寻找社区维护的arm64预编译包。</li>
+<li>其次，此阶段应该专注于创造一个纯净的wow64环境。对于第五阶段steam部署，由于proton本身是为x86_64架构的机器设计的，里面包含了很多32位的x86二进制文件（沾了哪个都运行不了），我们到时候会需要使用一些proton的核心组件。</li>
+<li>对于最终效果的预期，我们希望以以下三个测试点作为阶段性成功的标志：
+<ol>
+<li>基础启动，运行<code>wine winecfg</code>可以弹出图形化配置界面；</li>
+<li>32位测试，使用<code>box64 wine &lt;name&gt;</code>可以运行某个32位程序；</li>
+<li>图形测试，确认wine可以使用第三阶段的图形链路。</li>
+</ol>
+</li>
+</ul>
+<p>现在，让我们开始寻找wine并部署。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-1.png" alt=""></p>
+<p>由Kron4ek维护的wine仓库中，我们需要使用的是<code>wine-11.0-staging-amd64-wow64.tar.xz</code>，它提供了wow64特性，并且staging分支拥有更多的游戏补丁。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-2.png" alt=""></p>
+<p>创建了一个专门的<code>wine-wow64</code>仓库用来存放wine源文件，使用wget下载release。之后，使用tar解压：</p>
+<p><img src="assets/blog/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92%EF%BC%9A4%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-3.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-5.png" alt=""></p>
+<p>以上是wine的文件结构。</p>
+<p>为了让系统识别到wine并让box64能正常翻译，我们需要添加如下环境变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Wine 的路径 (假设你解压到了 ~/wine-wow64)</span>
+</span></span><span style="display:flex;"><span>export WINEPREFIX<span style="color:#f92672">=</span>$HOME/.wine
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin:$PATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 让 Wine 寻找刚才解压出来的库（Wine 自身的依赖库）</span>
+</span></span><span style="display:flex;"><span>export LD_LIBRARY_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib:$LD_LIBRARY_PATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开启 Box64 的某些特性以提高 Wine 性能</span>
+</span></span><span style="display:flex;"><span>export BOX64_LOG<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>             <span style="color:#75715e"># 初始化阶段看日志很有帮助</span>
+</span></span><span style="display:flex;"><span>export BOX64_DYNAREC_SAFEFLAGS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># 提高稳定性</span>
+</span></span></code></pre></div><p>以防万一，以下列出完整的<code>~/.zshrc</code>开头部分环境变量配置（我用的是zsh）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span></span><span style="display:flex;"><span>export WINE_ROOT<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64
+</span></span><span style="display:flex;"><span>export WINEPREFIX<span style="color:#f92672">=</span>$HOME/.wine
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$WINE_ROOT/bin:$PATH
+</span></span><span style="display:flex;"><span>export LD_LIBRARY_PATH<span style="color:#f92672">=</span>$WINE_ROOT/lib:$WINE_ROOT/lib/wine/x86_64-unix:$LD_LIBRARY_PATH
+</span></span><span style="display:flex;"><span>export BOX64_LOG<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>export BOX64_DYNAREC_SAFEFLAGS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>export BOX64_DYNAREC_STRONGMEM<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> 
+</span></span><span style="display:flex;"><span>export DISPLAY<span style="color:#f92672">=</span>:1
+</span></span><span style="display:flex;"><span>export VK_ICD_FILENAMES<span style="color:#f92672">=</span>/root/test/freedreno_icd.aarch64.json
+</span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink
+</span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
+</span></span><span style="display:flex;"><span>export XDG_RUNTIME_DIR<span style="color:#f92672">=</span>/tmp
+</span></span><span style="display:flex;"><span>export TU_DEBUG<span style="color:#f92672">=</span>sysmem
+</span></span></code></pre></div><p>接下来，我们进行首次启动与初始化。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-6.png" alt=""></p>
+<p>一开始尝试直接输入<code>wine winecfg</code>提示command not found，后来发现运行的是一个x86_64的二进制文件wine。没关系，我们有box64来引导wine运行。在终端输入<code>box64 wine winecfg</code>后得到了如图的结果。</p>
+<p>为了一步到位，这里我们选择手动下载<code>.msi</code>文件。（使用自动下载大概率会失败，通常会因为下载时间过长而被挂起）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>https://dl.winehq.org/wine/wine-mono/9.4.0/wine-mono-9.4.0-x86.msi
+</span></span></code></pre></div><p>这个网址不要直接用wget下载。使用自己的系统浏览器下载速度会快的多。下载完将这个文件传进proot。使用以下指令进行安装：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>box64 wine msiexec /i wine-mono-9.4.0-x86.msi
+</span></span></code></pre></div><p>安装完之后进入以下界面，确保图示的两个选项开启。标志测试点A顺利通过。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-7.png" alt=""></p>
+<p>在进行下一步之前，我们先做一些优化调整。</p>
+<p>先为<code>~/.zshrc</code>添加以下内容，省得每次都要写box64。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>alias wine<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
+</span></span><span style="display:flex;"><span>alias wine64<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
+</span></span></code></pre></div><p>添加以下内容来精细化box64的寻找目录：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 确保 Box64 知道去哪里找 wine 的 x86_64 库</span>
+</span></span><span style="display:flex;"><span>export BOX64_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin/
+</span></span><span style="display:flex;"><span>export BOX64_LD_LIBRARY_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/wine/x86_64-unix/:$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/
+</span></span></code></pre></div><p>理论上，我们现在已经完成了wine部分的配置。如果一切顺利，我们此时的环境应当可以在这个只支持64位的机器上运行32位程序。接下来，让我们完成测试点B和C来检验我们的环境配置成果，也只有完成了这两个测试点，我们才能进一步解决最终挑战：部署steam。</p>
+<p>对于测试点B，我们来尝试在这个环境下运行<strong>7-zip</strong>，一个既32位又有图形界面的软件，甚至还是一个纯x86程序，简直和我的机器原生环境八字不合。但是，我们可以让它在我们的环境下正常运行。</p>
+<p>运行以下指令安装7-zip。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://www.7-zip.org/a/7z2301.exe
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine 7z2301.exe <span style="color:#75715e"># 这里假定你已经写入了alias wine=&#34;box64 wine&#34;</span>
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-8.png" alt=""></p>
+<p>就这样，我们成功在一个既不x86也不32的环境下成功运行了一个和它水火不容的程序。一切都在box64和wine的掌控之下。</p>
+<p>由于7-zip本身使用时似乎确实没有图形界面，我们运行<code>wine 7-zip.exe</code>后可以得到这样的输出结果，代表它确实可以工作。（7-zip的正常使用需要输入参数，对于一个实质linux的环境我们有更好的工具）。为了演示，我们可以用它来打个包试试。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-9.png" alt=""></p>
+<p>随便往桌面上扔两个文件和一个文件夹：</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-10.png" alt=""></p>
+<p>然后运行<code>wine 7z.exe a test.7z ~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/</code> 。返回了如下结果：</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-11.png" alt=""></p>
+<p>可以看到在7-zip的目录下我们得到了打包好的<code>test.7z</code>。证明7z.exe已经可以正常工作了。7-zip之所以可以直接访问像<code>~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/</code>这样的路径，原因在于wine的实现方法并不是像虚拟机那样建立完全隔离的硬盘镜像，而是逻辑映射：将linux的根目录/映射为windows的<code>Z:</code>盘。在运行指令时，wine会自动将linux风格地址重定向为windows风格的对应地址并让7z运行。由于C盘与Z盘只是一个文件系统的不同挂载点，他们当然可以相互访问。</p>
+<p>对于测试点C，我们使用GPU-Z来测试wine内的OpenGL请求是否被正确路由到zink。GPU-Z不能通过wget下载，所以访问GPU-Z下载网站进行下载。（链接在开头）</p>
+<p>同样将下载得到的<code>.exe</code>文件传入proot环境，运行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 以防万一手动配置一下环境变量，确保zink被强制调用。</span>
+</span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink 
+</span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine GPU-Z.2.68.0.exe
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-1.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-2.png" alt=""></p>
+<p>然而，最终程序运行失败了。报错信息大致如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>BOX64<span style="color:#f92672">]</span> Using emulated /usr/x86_64-linux-gnu/lib/libgcc_s.so.1
+</span></span><span style="display:flex;"><span>0154:err:seh:install_bpf Native libs are being loaded in low addresses, sc_seccomp 0x3f0023fe00, syscall 0x60030320, not installing seccomp.
+</span></span><span style="display:flex;"><span>0154:err:seh:install_bpf The known reasons are /proc/sys/vm/legacy_va_layout set to <span style="color:#ae81ff">1</span> or <span style="color:#e6db74">&#39;ulimit -s&#39;</span> being <span style="color:#e6db74">&#39;unlimited&#39;</span>.
+</span></span><span style="display:flex;"><span>0160:fixme:ntoskrnl:IoCreateDeviceSecure <span style="color:#f92672">(</span>0000000000C54030, 16, L<span style="color:#e6db74">&#34;\\Device\\GPU-Z-v3&#34;</span>, 34, 100, 0, L<span style="color:#e6db74">&#34;D:P(A;;GA;;;SY)(A;;GA;;;BA)&#34;</span>, <span style="color:#f92672">(</span>null<span style="color:#f92672">)</span>, 0000000000A4FC60<span style="color:#f92672">)</span>: semi-stub
+</span></span><span style="display:flex;"><span>0160:fixme:ntoskrnl:IoRegisterShutdownNotification stub: 0000000000C54BF0
+</span></span><span style="display:flex;"><span>0164:fixme:ntoskrnl:MmMapIoSpace stub: 0x00000000000e0000, 131072, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>0164:fixme:ntoskrnl:MmMapIoSpace stub: 0x000000000000040e, 2, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>0164:fixme:int:emulate_instruction reg 0x2a, returning 0.
+</span></span><span style="display:flex;"><span>0140:fixme:setupapi:CM_Get_Parent 0030CE0C 0x00000001 0x00000000 stub
+</span></span><span style="display:flex;"><span>0140:fixme:shell:InitNetworkAddressControl stub
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span></code></pre></div><p>根据分析，GPU-Z为了读取显卡的频率、温度和底层参数，会装一些windows底层驱动程序，box64无法将这种“试图直接读写硬件寄存器”的内核代码翻译给安卓底层。总之，GPU-Z似乎在本机器上是无解的。</p>
+<p>但是这并不代表我们的图形链路是失败的，我们可以用一些其他的benchmark。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-3.png" alt=""></p>
+<p>总之经过了一些暗箱操作（其实和前面没区别），在虚拟环境中安装了3Dmark6。可以看到wine环境下成功识别到了Turnip Adreno 735，说明 Wine 环境成功地通过 Zink 将 DirectX 调用转换为 Vulkan，并完美识别到了骁龙 8s Gen 3 的核心显卡。</p>
+<p>此外，3Dmark6将我的系统识别为了<code>Microsoft Windows 10</code>，已经符合了steam及大部分游戏的基础需求。</p>
+<p>但是此时又一个新的问题出现：运行3Dmark后黑屏，但是可以esc退出。此时vkcube和glxgears都仍然可以正常工作。</p>
+<p>给出的box64日志如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#f92672">[</span>BOX64<span style="color:#f92672">]</span> Using native<span style="color:#f92672">(</span>wrapped<span style="color:#f92672">)</span> libcups.so.2
+</span></span><span style="display:flex;"><span>0480:fixme:wbemprox:client_security_SetBlanket 799C3954, 001160B0, 10, 0, <span style="color:#f92672">(</span>null<span style="color:#f92672">)</span>, 3, 3, 00000000, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>0480:fixme:wbemprox:client_security_Release 799C3954
+</span></span><span style="display:flex;"><span>0480:fixme:wbemprox:enum_class_object_Next timeout not supported
+</span></span><span style="display:flex;"><span>00e0:fixme:d3d:wined3d_guess_card No card selector available <span style="color:#66d9ef">for</span> card vendor <span style="color:#ae81ff">0000</span> <span style="color:#f92672">(</span>using GL_RENDERER <span style="color:#e6db74">&#34;zink Vulkan 1.4(Turnip Adreno (TM) 735 (MESA_TURNIP))&#34;</span><span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>vkd3d:00e0:fixme:D3DCompile2VKD3D Ignoring flags 0x1000.
+</span></span><span style="display:flex;"><span>vkd3d:00e0:fixme:D3DCompile2VKD3D Ignoring flags 0x1000.
+</span></span><span style="display:flex;"><span>048c:fixme:d3d:state_linepattern_w Setting line patterns is not supported in OpenGL core contexts.
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span></code></pre></div><p>原因在于目前的工作链路是使用wine自带的wineD3D来将directX指令转换为OpenGL指令，而WineD3D的工作效果并不尽如人意。我们现在需要按照最开始的规划，为虚拟环境部署<strong>DXVK</strong>，直接将directX转换为vulkan。这样效率更高，兼容性理论上也更好。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar -xzf dxvk-2.7.1.tar.gz
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-4.png" alt=""></p>
+<p>里面大致是这样的结构。我们需要将<code>x32</code>中的<code>d3d9.dll, dxgi.dll</code>复制到<code>$WINEPREFIX/drive_c/windows/syswow64/</code>，将<code>x64</code>中的<code>d3d9.dll, dxgi.dll</code>复制到<code>$WINEPREFIX/drive_c/windows/system32/</code>。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-5.png" alt=""></p>
+<p>之后我们需要配置函数库覆盖。输入<code>wine winecfg</code>打开配置界面，在libraries标签页中添加d3d9和dxgi，确保均为原生优先。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-6.png" alt=""></p>
+<p>微调环境变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制开启高性能性能，防止 Proot 功耗缩减</span>
+</span></span><span style="display:flex;"><span>export TU_DEBUG<span style="color:#f92672">=</span>sysmem
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果仍然黑屏，可以尝试跳过一些冗余转换</span>
+</span></span><span style="display:flex;"><span>export MESA_VK_WSI_DEBUG<span style="color:#f92672">=</span>sw
+</span></span></code></pre></div><p>再次尝试运行3DMark，测试一二顺利通过（尽管帧数感人），测试三测试CPU时因为使用了很多非常古老的指令，在目前这套激进的方案下非常难以通过，遂放弃。总之，这并不意味着环境有问题，对于大多数现代游戏来说当前的环境配置已经可以让它基本能运行了。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-7.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-8.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-9.png" alt=""></p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>平板游戏环境部署计划</title>
@@ -812,7 +984,7 @@
    </svg></a></h2>
 <p>数位板通常接在电脑上用来画画，但是为什么不能把数位板接在平板上来记笔记呢？</p>
 <p>我知道这听起来可能很蠢，都用平板了为什么不直接用电容笔。对我来说一个不得不关注的现实情况是：我没有电容笔，但是我有数位板。其次是数位板的手感可能比电容笔要好得多，毕竟电容笔是直接在玻璃板上划拉的。</p>
-<p>虽然这个理由对我来说足够充分了，但是对于Andriod设备厂商来说并非如此。在平板上使用数位板在这个世界中是一个小众需求。所以我——没办法，我也没办法让平板和数位板很好的相互支持。所以如果有富哥看到这个文章可以考虑赞助我一个vivo电容笔。</p>
+<p>虽然这个理由对我来说足够充分了，但是对于Android设备厂商来说并非如此。在平板上使用数位板在这个世界中是一个小众需求。所以我——没办法，我也没办法让平板和数位板很好的相互支持。所以如果有富哥看到这个文章可以考虑赞助我一个vivo电容笔。</p>
 <p>我一开始尝试通过本地运行一个proot distro +termux x11的方式来适配数位板，理论上如果proot distro真的就是一个独立的linux系统，这样做是没问题的，可惜不是。经过一天的折腾最后也没办法让数位板在平板上稳定工作，遂放弃。</p>
 <p>可能之后会考虑购入一个电容笔。</p>
 <h2 id="minecraft模组">Minecraft模组<a href="#minecraft%e6%a8%a1%e7%bb%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

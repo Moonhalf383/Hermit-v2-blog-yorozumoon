@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="平板游戏环境配置计划：4阶段">
+  <meta itemprop="description" content="参考链接： 我所使用的wine预编译包
+GPU-Z
+3Dmark6
+目前进度： termux x11 &#43; proot distro ubuntu桌面环境工作正常； box64运行x86_64程序成功； vulkan驱动正常工作； 运行glxgears | grep &#34;renderer&#34;渲染齿轮动画并显示渲染器为zink； 运行vkcube --wsi xcb可以渲染旋转立方 第四阶段：Wine 回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）">
+  <meta itemprop="datePublished" content="2026-01-22T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-01-22T00:00:00+00:00">
+  <meta itemprop="wordCount" content="3504">
+  <meta itemprop="keywords" content="Blog,随意探索,平板"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="平板游戏环境配置计划：4阶段">
+  <meta property="og:description" content="参考链接： 我所使用的wine预编译包
+GPU-Z
+3Dmark6
+目前进度： termux x11 &#43; proot distro ubuntu桌面环境工作正常； box64运行x86_64程序成功； vulkan驱动正常工作； 运行glxgears | grep &#34;renderer&#34;渲染齿轮动画并显示渲染器为zink； 运行vkcube --wsi xcb可以渲染旋转立方 第四阶段：Wine 回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-22T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-01-22T00:00:00+00:00">
+    <meta property="article:tag" content="Blog">
+    <meta property="article:tag" content="随意探索">
+    <meta property="article:tag" content="平板">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="平板游戏环境配置计划：4阶段">
+  <meta name="twitter:description" content="参考链接： 我所使用的wine预编译包
+GPU-Z
+3Dmark6
+目前进度： termux x11 &#43; proot distro ubuntu桌面环境工作正常； box64运行x86_64程序成功； vulkan驱动正常工作； 运行glxgears | grep &#34;renderer&#34;渲染齿轮动画并显示渲染器为zink； 运行vkcube --wsi xcb可以渲染旋转立方 第四阶段：Wine 回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "平板游戏环境配置计划：4阶段",
+    "name": "平板游戏环境配置计划：4阶段",
+    "description": "参考链接： 我所使用的wine预编译包\nGPU-Z\n3Dmark6\n目前进度： termux x11 + proot distro ubuntu桌面环境工作正常； box64运行x86_64程序成功； vulkan驱动正常工作； 运行glxgears | grep \u0026quot;renderer\u0026quot;渲染齿轮动画并显示渲染器为zink； 运行vkcube --wsi xcb可以渲染旋转立方 第四阶段：Wine 回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）\n",
+    "keywords": ["blog", "随意探索", "平板"],
+    "articleBody": "参考链接： 我所使用的wine预编译包\nGPU-Z\n3Dmark6\n目前进度： termux x11 + proot distro ubuntu桌面环境工作正常； box64运行x86_64程序成功； vulkan驱动正常工作； 运行glxgears | grep \"renderer\"渲染齿轮动画并显示渲染器为zink； 运行vkcube --wsi xcb可以渲染旋转立方 第四阶段：Wine 回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）\n为了能实现我们需要的效果，这里我们先对环境配置工作做一个大致的规划：\n首先，对于wine的选取，我们不能直接使用apt install wine来安装一个通用版的wine，因为官方仓库的wine会安装lib32相关的armhf包，这些包在我的机器上无法运行。我们需要的是一个Wine的·WOW64版的·预编译包，原因在于一方面我们需要wow64来将32位指令翻译为64位指令，另一方面proot环境极其孱弱，我们需要直接寻找社区维护的arm64预编译包。 其次，此阶段应该专注于创造一个纯净的wow64环境。对于第五阶段steam部署，由于proton本身是为x86_64架构的机器设计的，里面包含了很多32位的x86二进制文件（沾了哪个都运行不了），我们到时候会需要使用一些proton的核心组件。 对于最终效果的预期，我们希望以以下三个测试点作为阶段性成功的标志： 基础启动，运行wine winecfg可以弹出图形化配置界面； 32位测试，使用box64 wine 可以运行某个32位程序； 图形测试，确认wine可以使用第三阶段的图形链路。 现在，让我们开始寻找wine并部署。\n由Kron4ek维护的wine仓库中，我们需要使用的是wine-11.0-staging-amd64-wow64.tar.xz，它提供了wow64特性，并且staging分支拥有更多的游戏补丁。\n创建了一个专门的wine-wow64仓库用来存放wine源文件，使用wget下载release。之后，使用tar解压：\n以上是wine的文件结构。\n为了让系统识别到wine并让box64能正常翻译，我们需要添加如下环境变量：\n# Wine 的路径 (假设你解压到了 ~/wine-wow64) export WINEPREFIX=$HOME/.wine export PATH=$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin:$PATH # 让 Wine 寻找刚才解压出来的库（Wine 自身的依赖库） export LD_LIBRARY_PATH=$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib:$LD_LIBRARY_PATH # 开启 Box64 的某些特性以提高 Wine 性能 export BOX64_LOG=1 # 初始化阶段看日志很有帮助 export BOX64_DYNAREC_SAFEFLAGS=1 # 提高稳定性 以防万一，以下列出完整的~/.zshrc开头部分环境变量配置（我用的是zsh）：\nexport PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin export WINE_ROOT=$HOME/wine-wow64/wine-11.0-staging-amd64-wow64 export WINEPREFIX=$HOME/.wine export PATH=$WINE_ROOT/bin:$PATH export LD_LIBRARY_PATH=$WINE_ROOT/lib:$WINE_ROOT/lib/wine/x86_64-unix:$LD_LIBRARY_PATH export BOX64_LOG=1 export BOX64_DYNAREC_SAFEFLAGS=1 export BOX64_DYNAREC_STRONGMEM=1 export DISPLAY=:1 export VK_ICD_FILENAMES=/root/test/freedreno_icd.aarch64.json export MESA_LOADER_DRIVER_OVERRIDE=zink export GALLIUM_DRIVER=zink export XDG_RUNTIME_DIR=/tmp export TU_DEBUG=sysmem 接下来，我们进行首次启动与初始化。\n一开始尝试直接输入wine winecfg提示command not found，后来发现运行的是一个x86_64的二进制文件wine。没关系，我们有box64来引导wine运行。在终端输入box64 wine winecfg后得到了如图的结果。\n为了一步到位，这里我们选择手动下载.msi文件。（使用自动下载大概率会失败，通常会因为下载时间过长而被挂起）\nhttps://dl.winehq.org/wine/wine-mono/9.4.0/wine-mono-9.4.0-x86.msi 这个网址不要直接用wget下载。使用自己的系统浏览器下载速度会快的多。下载完将这个文件传进proot。使用以下指令进行安装：\nbox64 wine msiexec /i wine-mono-9.4.0-x86.msi 安装完之后进入以下界面，确保图示的两个选项开启。标志测试点A顺利通过。\n在进行下一步之前，我们先做一些优化调整。\n先为~/.zshrc添加以下内容，省得每次都要写box64。\nalias wine='box64 wine' alias wine64='box64 wine' 添加以下内容来精细化box64的寻找目录：\n# 确保 Box64 知道去哪里找 wine 的 x86_64 库 export BOX64_PATH=$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin/ export BOX64_LD_LIBRARY_PATH=$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/wine/x86_64-unix/:$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/ 理论上，我们现在已经完成了wine部分的配置。如果一切顺利，我们此时的环境应当可以在这个只支持64位的机器上运行32位程序。接下来，让我们完成测试点B和C来检验我们的环境配置成果，也只有完成了这两个测试点，我们才能进一步解决最终挑战：部署steam。\n对于测试点B，我们来尝试在这个环境下运行7-zip，一个既32位又有图形界面的软件，甚至还是一个纯x86程序，简直和我的机器原生环境八字不合。但是，我们可以让它在我们的环境下正常运行。\n运行以下指令安装7-zip。\nwget https://www.7-zip.org/a/7z2301.exe wine 7z2301.exe # 这里假定你已经写入了alias wine=\"box64 wine\" 就这样，我们成功在一个既不x86也不32的环境下成功运行了一个和它水火不容的程序。一切都在box64和wine的掌控之下。\n由于7-zip本身使用时似乎确实没有图形界面，我们运行wine 7-zip.exe后可以得到这样的输出结果，代表它确实可以工作。（7-zip的正常使用需要输入参数，对于一个实质linux的环境我们有更好的工具）。为了演示，我们可以用它来打个包试试。\n随便往桌面上扔两个文件和一个文件夹：\n然后运行wine 7z.exe a test.7z ~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/ 。返回了如下结果：\n可以看到在7-zip的目录下我们得到了打包好的test.7z。证明7z.exe已经可以正常工作了。7-zip之所以可以直接访问像~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/这样的路径，原因在于wine的实现方法并不是像虚拟机那样建立完全隔离的硬盘镜像，而是逻辑映射：将linux的根目录/映射为windows的Z:盘。在运行指令时，wine会自动将linux风格地址重定向为windows风格的对应地址并让7z运行。由于C盘与Z盘只是一个文件系统的不同挂载点，他们当然可以相互访问。\n对于测试点C，我们使用GPU-Z来测试wine内的OpenGL请求是否被正确路由到zink。GPU-Z不能通过wget下载，所以访问GPU-Z下载网站进行下载。（链接在开头）\n同样将下载得到的.exe文件传入proot环境，运行：\n# 以防万一手动配置一下环境变量，确保zink被强制调用。 export MESA_LOADER_DRIVER_OVERRIDE=zink export GALLIUM_DRIVER=zink wine GPU-Z.2.68.0.exe 然而，最终程序运行失败了。报错信息大致如下：\nBOX64] Using emulated /usr/x86_64-linux-gnu/lib/libgcc_s.so.1 0154:err:seh:install_bpf Native libs are being loaded in low addresses, sc_seccomp 0x3f0023fe00, syscall 0x60030320, not installing seccomp. 0154:err:seh:install_bpf The known reasons are /proc/sys/vm/legacy_va_layout set to 1 or 'ulimit -s' being 'unlimited'. 0160:fixme:ntoskrnl:IoCreateDeviceSecure (0000000000C54030, 16, L\"\\\\Device\\\\GPU-Z-v3\", 34, 100, 0, L\"D:P(A;;GA;;;SY)(A;;GA;;;BA)\", (null), 0000000000A4FC60): semi-stub 0160:fixme:ntoskrnl:IoRegisterShutdownNotification stub: 0000000000C54BF0 0164:fixme:ntoskrnl:MmMapIoSpace stub: 0x00000000000e0000, 131072, 0 0164:fixme:ntoskrnl:MmMapIoSpace stub: 0x000000000000040e, 2, 0 0164:fixme:int:emulate_instruction reg 0x2a, returning 0. 0140:fixme:setupapi:CM_Get_Parent 0030CE0C 0x00000001 0x00000000 stub 0140:fixme:shell:InitNetworkAddressControl stub 0060:fixme:file:errno_to_status Converting errno 17 to STATUS_UNSUCCESSFUL 0060:err:mountmgr:registry_flush_thread Failed flushing registry. 0060:fixme:file:errno_to_status Converting errno 17 to STATUS_UNSUCCESSFUL 0060:err:mountmgr:registry_flush_thread Failed flushing registry. 0060:fixme:file:errno_to_status Converting errno 17 to STATUS_UNSUCCESSFUL 0060:err:mountmgr:registry_flush_thread Failed flushing registry. 根据分析，GPU-Z为了读取显卡的频率、温度和底层参数，会装一些windows底层驱动程序，box64无法将这种“试图直接读写硬件寄存器”的内核代码翻译给安卓底层。总之，GPU-Z似乎在本机器上是无解的。\n但是这并不代表我们的图形链路是失败的，我们可以用一些其他的benchmark。\n总之经过了一些暗箱操作（其实和前面没区别），在虚拟环境中安装了3Dmark6。可以看到wine环境下成功识别到了Turnip Adreno 735，说明 Wine 环境成功地通过 Zink 将 DirectX 调用转换为 Vulkan，并完美识别到了骁龙 8s Gen 3 的核心显卡。\n此外，3Dmark6将我的系统识别为了Microsoft Windows 10，已经符合了steam及大部分游戏的基础需求。\n但是此时又一个新的问题出现：运行3Dmark后黑屏，但是可以esc退出。此时vkcube和glxgears都仍然可以正常工作。\n给出的box64日志如下：\n[BOX64] Using native(wrapped) libcups.so.2 0480:fixme:wbemprox:client_security_SetBlanket 799C3954, 001160B0, 10, 0, (null), 3, 3, 00000000, 0 0480:fixme:wbemprox:client_security_Release 799C3954 0480:fixme:wbemprox:enum_class_object_Next timeout not supported 00e0:fixme:d3d:wined3d_guess_card No card selector available for card vendor 0000 (using GL_RENDERER \"zink Vulkan 1.4(Turnip Adreno (TM) 735 (MESA_TURNIP))\"). vkd3d:00e0:fixme:D3DCompile2VKD3D Ignoring flags 0x1000. vkd3d:00e0:fixme:D3DCompile2VKD3D Ignoring flags 0x1000. 048c:fixme:d3d:state_linepattern_w Setting line patterns is not supported in OpenGL core contexts. 0060:fixme:file:errno_to_status Converting errno 17 to STATUS_UNSUCCESSFUL 0060:err:mountmgr:registry_flush_thread Failed flushing registry. 原因在于目前的工作链路是使用wine自带的wineD3D来将directX指令转换为OpenGL指令，而WineD3D的工作效果并不尽如人意。我们现在需要按照最开始的规划，为虚拟环境部署DXVK，直接将directX转换为vulkan。这样效率更高，兼容性理论上也更好。\nwget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz tar -xzf dxvk-2.7.1.tar.gz 里面大致是这样的结构。我们需要将x32中的d3d9.dll, dxgi.dll复制到$WINEPREFIX/drive_c/windows/syswow64/，将x64中的d3d9.dll, dxgi.dll复制到$WINEPREFIX/drive_c/windows/system32/。\n之后我们需要配置函数库覆盖。输入wine winecfg打开配置界面，在libraries标签页中添加d3d9和dxgi，确保均为原生优先。\n微调环境变量：\n# 强制开启高性能性能，防止 Proot 功耗缩减 export TU_DEBUG=sysmem # 如果仍然黑屏，可以尝试跳过一些冗余转换 export MESA_VK_WSI_DEBUG=sw 再次尝试运行3DMark，测试一二顺利通过（尽管帧数感人），测试三测试CPU时因为使用了很多非常古老的指令，在目前这套激进的方案下非常难以通过，遂放弃。总之，这并不意味着环境有问题，对于大多数现代游戏来说当前的环境配置已经可以让它基本能运行了。\n",
+    "wordCount" : "3504",
+    "inLanguage": "zh-cn",
+    "datePublished": "2026-01-22T00:00:00Z",
+    "dateModified": "2026-01-22T00:00:00Z",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>平板游戏环境配置计划：4阶段</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>Jan 22, 2026</span></div>
+				<h1>平板游戏环境配置计划：4阶段</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/blog">blog</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2">随意探索</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF">平板</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>3504&nbspWords 阅读时长15 Minutes, 55 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2026-01-22 00:00 &#43;0000
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h1 id="参考链接">参考链接：<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://github.com/Kron4ek/Wine-Builds">我所使用的wine预编译包</a></p>
+<p><a href="https://www.techpowerup.com/325637/techpowerup-releases-gpu-z-v2-60-0">GPU-Z</a></p>
+<p><a href="https://www.techpowerup.com/download/futuremark-3dmark06/">3Dmark6</a></p>
+<h2 id="目前进度">目前进度：<a href="#%e7%9b%ae%e5%89%8d%e8%bf%9b%e5%ba%a6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>termux x11 + proot distro ubuntu桌面环境工作正常；</li>
+<li>box64运行x86_64程序成功；</li>
+<li>vulkan驱动正常工作；
+<ul>
+<li>运行<code>glxgears | grep &quot;renderer&quot;</code>渲染齿轮动画并显示渲染器为<code>zink</code>；</li>
+<li>运行<code>vkcube --wsi xcb</code>可以渲染旋转立方</li>
+</ul>
+</li>
+</ul>
+<h1 id="第四阶段wine">第四阶段：Wine<a href="#%e7%ac%ac%e5%9b%9b%e9%98%b6%e6%ae%b5wine" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）</p>
+<p>为了能实现我们需要的效果，这里我们先对环境配置工作做一个大致的规划：</p>
+<ul>
+<li>首先，对于wine的选取，我们不能直接使用<code>apt install wine</code>来安装一个通用版的wine，因为官方仓库的wine会安装<code>lib32</code>相关的armhf包，这些包在我的机器上无法运行。我们需要的是一个<strong>Wine的·WOW64版的·预编译包</strong>，原因在于一方面我们需要wow64来将32位指令翻译为64位指令，另一方面proot环境极其孱弱，我们需要直接寻找社区维护的arm64预编译包。</li>
+<li>其次，此阶段应该专注于创造一个纯净的wow64环境。对于第五阶段steam部署，由于proton本身是为x86_64架构的机器设计的，里面包含了很多32位的x86二进制文件（沾了哪个都运行不了），我们到时候会需要使用一些proton的核心组件。</li>
+<li>对于最终效果的预期，我们希望以以下三个测试点作为阶段性成功的标志：
+<ol>
+<li>基础启动，运行<code>wine winecfg</code>可以弹出图形化配置界面；</li>
+<li>32位测试，使用<code>box64 wine &lt;name&gt;</code>可以运行某个32位程序；</li>
+<li>图形测试，确认wine可以使用第三阶段的图形链路。</li>
+</ol>
+</li>
+</ul>
+<p>现在，让我们开始寻找wine并部署。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-1.png" alt=""></p>
+<p>由Kron4ek维护的wine仓库中，我们需要使用的是<code>wine-11.0-staging-amd64-wow64.tar.xz</code>，它提供了wow64特性，并且staging分支拥有更多的游戏补丁。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-2.png" alt=""></p>
+<p>创建了一个专门的<code>wine-wow64</code>仓库用来存放wine源文件，使用wget下载release。之后，使用tar解压：</p>
+<p><img src="assets/blog/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92%EF%BC%9A4%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-3.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-5.png" alt=""></p>
+<p>以上是wine的文件结构。</p>
+<p>为了让系统识别到wine并让box64能正常翻译，我们需要添加如下环境变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Wine 的路径 (假设你解压到了 ~/wine-wow64)</span>
+</span></span><span style="display:flex;"><span>export WINEPREFIX<span style="color:#f92672">=</span>$HOME/.wine
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin:$PATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 让 Wine 寻找刚才解压出来的库（Wine 自身的依赖库）</span>
+</span></span><span style="display:flex;"><span>export LD_LIBRARY_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib:$LD_LIBRARY_PATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开启 Box64 的某些特性以提高 Wine 性能</span>
+</span></span><span style="display:flex;"><span>export BOX64_LOG<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>             <span style="color:#75715e"># 初始化阶段看日志很有帮助</span>
+</span></span><span style="display:flex;"><span>export BOX64_DYNAREC_SAFEFLAGS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># 提高稳定性</span>
+</span></span></code></pre></div><p>以防万一，以下列出完整的<code>~/.zshrc</code>开头部分环境变量配置（我用的是zsh）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span></span><span style="display:flex;"><span>export WINE_ROOT<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64
+</span></span><span style="display:flex;"><span>export WINEPREFIX<span style="color:#f92672">=</span>$HOME/.wine
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$WINE_ROOT/bin:$PATH
+</span></span><span style="display:flex;"><span>export LD_LIBRARY_PATH<span style="color:#f92672">=</span>$WINE_ROOT/lib:$WINE_ROOT/lib/wine/x86_64-unix:$LD_LIBRARY_PATH
+</span></span><span style="display:flex;"><span>export BOX64_LOG<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>export BOX64_DYNAREC_SAFEFLAGS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>export BOX64_DYNAREC_STRONGMEM<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> 
+</span></span><span style="display:flex;"><span>export DISPLAY<span style="color:#f92672">=</span>:1
+</span></span><span style="display:flex;"><span>export VK_ICD_FILENAMES<span style="color:#f92672">=</span>/root/test/freedreno_icd.aarch64.json
+</span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink
+</span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
+</span></span><span style="display:flex;"><span>export XDG_RUNTIME_DIR<span style="color:#f92672">=</span>/tmp
+</span></span><span style="display:flex;"><span>export TU_DEBUG<span style="color:#f92672">=</span>sysmem
+</span></span></code></pre></div><p>接下来，我们进行首次启动与初始化。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-6.png" alt=""></p>
+<p>一开始尝试直接输入<code>wine winecfg</code>提示command not found，后来发现运行的是一个x86_64的二进制文件wine。没关系，我们有box64来引导wine运行。在终端输入<code>box64 wine winecfg</code>后得到了如图的结果。</p>
+<p>为了一步到位，这里我们选择手动下载<code>.msi</code>文件。（使用自动下载大概率会失败，通常会因为下载时间过长而被挂起）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>https://dl.winehq.org/wine/wine-mono/9.4.0/wine-mono-9.4.0-x86.msi
+</span></span></code></pre></div><p>这个网址不要直接用wget下载。使用自己的系统浏览器下载速度会快的多。下载完将这个文件传进proot。使用以下指令进行安装：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>box64 wine msiexec /i wine-mono-9.4.0-x86.msi
+</span></span></code></pre></div><p>安装完之后进入以下界面，确保图示的两个选项开启。标志测试点A顺利通过。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-7.png" alt=""></p>
+<p>在进行下一步之前，我们先做一些优化调整。</p>
+<p>先为<code>~/.zshrc</code>添加以下内容，省得每次都要写box64。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>alias wine<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
+</span></span><span style="display:flex;"><span>alias wine64<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
+</span></span></code></pre></div><p>添加以下内容来精细化box64的寻找目录：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 确保 Box64 知道去哪里找 wine 的 x86_64 库</span>
+</span></span><span style="display:flex;"><span>export BOX64_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin/
+</span></span><span style="display:flex;"><span>export BOX64_LD_LIBRARY_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/wine/x86_64-unix/:$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/
+</span></span></code></pre></div><p>理论上，我们现在已经完成了wine部分的配置。如果一切顺利，我们此时的环境应当可以在这个只支持64位的机器上运行32位程序。接下来，让我们完成测试点B和C来检验我们的环境配置成果，也只有完成了这两个测试点，我们才能进一步解决最终挑战：部署steam。</p>
+<p>对于测试点B，我们来尝试在这个环境下运行<strong>7-zip</strong>，一个既32位又有图形界面的软件，甚至还是一个纯x86程序，简直和我的机器原生环境八字不合。但是，我们可以让它在我们的环境下正常运行。</p>
+<p>运行以下指令安装7-zip。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://www.7-zip.org/a/7z2301.exe
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine 7z2301.exe <span style="color:#75715e"># 这里假定你已经写入了alias wine=&#34;box64 wine&#34;</span>
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-8.png" alt=""></p>
+<p>就这样，我们成功在一个既不x86也不32的环境下成功运行了一个和它水火不容的程序。一切都在box64和wine的掌控之下。</p>
+<p>由于7-zip本身使用时似乎确实没有图形界面，我们运行<code>wine 7-zip.exe</code>后可以得到这样的输出结果，代表它确实可以工作。（7-zip的正常使用需要输入参数，对于一个实质linux的环境我们有更好的工具）。为了演示，我们可以用它来打个包试试。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-9.png" alt=""></p>
+<p>随便往桌面上扔两个文件和一个文件夹：</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-10.png" alt=""></p>
+<p>然后运行<code>wine 7z.exe a test.7z ~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/</code> 。返回了如下结果：</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-11.png" alt=""></p>
+<p>可以看到在7-zip的目录下我们得到了打包好的<code>test.7z</code>。证明7z.exe已经可以正常工作了。7-zip之所以可以直接访问像<code>~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/</code>这样的路径，原因在于wine的实现方法并不是像虚拟机那样建立完全隔离的硬盘镜像，而是逻辑映射：将linux的根目录/映射为windows的<code>Z:</code>盘。在运行指令时，wine会自动将linux风格地址重定向为windows风格的对应地址并让7z运行。由于C盘与Z盘只是一个文件系统的不同挂载点，他们当然可以相互访问。</p>
+<p>对于测试点C，我们使用GPU-Z来测试wine内的OpenGL请求是否被正确路由到zink。GPU-Z不能通过wget下载，所以访问GPU-Z下载网站进行下载。（链接在开头）</p>
+<p>同样将下载得到的<code>.exe</code>文件传入proot环境，运行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 以防万一手动配置一下环境变量，确保zink被强制调用。</span>
+</span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink 
+</span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine GPU-Z.2.68.0.exe
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-1.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-2.png" alt=""></p>
+<p>然而，最终程序运行失败了。报错信息大致如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>BOX64<span style="color:#f92672">]</span> Using emulated /usr/x86_64-linux-gnu/lib/libgcc_s.so.1
+</span></span><span style="display:flex;"><span>0154:err:seh:install_bpf Native libs are being loaded in low addresses, sc_seccomp 0x3f0023fe00, syscall 0x60030320, not installing seccomp.
+</span></span><span style="display:flex;"><span>0154:err:seh:install_bpf The known reasons are /proc/sys/vm/legacy_va_layout set to <span style="color:#ae81ff">1</span> or <span style="color:#e6db74">&#39;ulimit -s&#39;</span> being <span style="color:#e6db74">&#39;unlimited&#39;</span>.
+</span></span><span style="display:flex;"><span>0160:fixme:ntoskrnl:IoCreateDeviceSecure <span style="color:#f92672">(</span>0000000000C54030, 16, L<span style="color:#e6db74">&#34;\\Device\\GPU-Z-v3&#34;</span>, 34, 100, 0, L<span style="color:#e6db74">&#34;D:P(A;;GA;;;SY)(A;;GA;;;BA)&#34;</span>, <span style="color:#f92672">(</span>null<span style="color:#f92672">)</span>, 0000000000A4FC60<span style="color:#f92672">)</span>: semi-stub
+</span></span><span style="display:flex;"><span>0160:fixme:ntoskrnl:IoRegisterShutdownNotification stub: 0000000000C54BF0
+</span></span><span style="display:flex;"><span>0164:fixme:ntoskrnl:MmMapIoSpace stub: 0x00000000000e0000, 131072, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>0164:fixme:ntoskrnl:MmMapIoSpace stub: 0x000000000000040e, 2, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>0164:fixme:int:emulate_instruction reg 0x2a, returning 0.
+</span></span><span style="display:flex;"><span>0140:fixme:setupapi:CM_Get_Parent 0030CE0C 0x00000001 0x00000000 stub
+</span></span><span style="display:flex;"><span>0140:fixme:shell:InitNetworkAddressControl stub
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span></code></pre></div><p>根据分析，GPU-Z为了读取显卡的频率、温度和底层参数，会装一些windows底层驱动程序，box64无法将这种“试图直接读写硬件寄存器”的内核代码翻译给安卓底层。总之，GPU-Z似乎在本机器上是无解的。</p>
+<p>但是这并不代表我们的图形链路是失败的，我们可以用一些其他的benchmark。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-3.png" alt=""></p>
+<p>总之经过了一些暗箱操作（其实和前面没区别），在虚拟环境中安装了3Dmark6。可以看到wine环境下成功识别到了Turnip Adreno 735，说明 Wine 环境成功地通过 Zink 将 DirectX 调用转换为 Vulkan，并完美识别到了骁龙 8s Gen 3 的核心显卡。</p>
+<p>此外，3Dmark6将我的系统识别为了<code>Microsoft Windows 10</code>，已经符合了steam及大部分游戏的基础需求。</p>
+<p>但是此时又一个新的问题出现：运行3Dmark后黑屏，但是可以esc退出。此时vkcube和glxgears都仍然可以正常工作。</p>
+<p>给出的box64日志如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#f92672">[</span>BOX64<span style="color:#f92672">]</span> Using native<span style="color:#f92672">(</span>wrapped<span style="color:#f92672">)</span> libcups.so.2
+</span></span><span style="display:flex;"><span>0480:fixme:wbemprox:client_security_SetBlanket 799C3954, 001160B0, 10, 0, <span style="color:#f92672">(</span>null<span style="color:#f92672">)</span>, 3, 3, 00000000, <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>0480:fixme:wbemprox:client_security_Release 799C3954
+</span></span><span style="display:flex;"><span>0480:fixme:wbemprox:enum_class_object_Next timeout not supported
+</span></span><span style="display:flex;"><span>00e0:fixme:d3d:wined3d_guess_card No card selector available <span style="color:#66d9ef">for</span> card vendor <span style="color:#ae81ff">0000</span> <span style="color:#f92672">(</span>using GL_RENDERER <span style="color:#e6db74">&#34;zink Vulkan 1.4(Turnip Adreno (TM) 735 (MESA_TURNIP))&#34;</span><span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>vkd3d:00e0:fixme:D3DCompile2VKD3D Ignoring flags 0x1000.
+</span></span><span style="display:flex;"><span>vkd3d:00e0:fixme:D3DCompile2VKD3D Ignoring flags 0x1000.
+</span></span><span style="display:flex;"><span>048c:fixme:d3d:state_linepattern_w Setting line patterns is not supported in OpenGL core contexts.
+</span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
+</span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
+</span></span></code></pre></div><p>原因在于目前的工作链路是使用wine自带的wineD3D来将directX指令转换为OpenGL指令，而WineD3D的工作效果并不尽如人意。我们现在需要按照最开始的规划，为虚拟环境部署<strong>DXVK</strong>，直接将directX转换为vulkan。这样效率更高，兼容性理论上也更好。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar -xzf dxvk-2.7.1.tar.gz
+</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-4.png" alt=""></p>
+<p>里面大致是这样的结构。我们需要将<code>x32</code>中的<code>d3d9.dll, dxgi.dll</code>复制到<code>$WINEPREFIX/drive_c/windows/syswow64/</code>，将<code>x64</code>中的<code>d3d9.dll, dxgi.dll</code>复制到<code>$WINEPREFIX/drive_c/windows/system32/</code>。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-5.png" alt=""></p>
+<p>之后我们需要配置函数库覆盖。输入<code>wine winecfg</code>打开配置界面，在libraries标签页中添加d3d9和dxgi，确保均为原生优先。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-6.png" alt=""></p>
+<p>微调环境变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制开启高性能性能，防止 Proot 功耗缩减</span>
+</span></span><span style="display:flex;"><span>export TU_DEBUG<span style="color:#f92672">=</span>sysmem
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果仍然黑屏，可以尝试跳过一些冗余转换</span>
+</span></span><span style="display:flex;"><span>export MESA_VK_WSI_DEBUG<span style="color:#f92672">=</span>sw
+</span></span></code></pre></div><p>再次尝试运行3DMark，测试一二顺利通过（尽管帧数感人），测试三测试CPU时因为使用了很多非常古老的指令，在目前这套激进的方案下非常难以通过，遂放弃。总之，这并不意味着环境有问题，对于大多数现代游戏来说当前的环境配置已经可以让它基本能运行了。</p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-7.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-8.png" alt=""></p>
+<p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-9.png" alt=""></p>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+<div class="related-posts thin">
+	<h2>See Also</h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/">平板游戏环境配置计划：2&amp;3阶段</a></li>
+	
+	<li><a href="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/">平板游戏环境部署计划</a></li>
+	
+	<li><a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/">SEU程序设计复习02：远古老登</a></li>
+	
+	<li><a href="/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/">近日神必脑洞合集</a></li>
+	
+	<li><a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">SEU程序设计复习01：基础语法</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#目前进度">目前进度：</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>平板游戏环境部署计划</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
