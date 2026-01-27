@@ -7,9 +7,146 @@
 		<generator>Hugo -- 0.154.5</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Thu, 22 Jan 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Tue, 27 Jan 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>TUI图像显示方案</title>
+			<link>http://localhost:1313/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/</link>
+			<pubDate>Tue, 27 Jan 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="参考链接">参考链接<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://github.com/piccolomo/plotext">plotext</a></p>
+<p>最近迫于生计不得不开始学习机器学习，然而因为自己一贯喜欢用neovim写代码，用jupyter lab感觉非常的难受。但是由于termux是一个纯文本终端，我又没办法把图像直接显示在终端中。总之，最后找到了一个神奇的python库可以让我这种懒人直接在终端中查看图片，具体的实现方法就是用unicode字符拼成一个糊的一比的轮廓。不过，如果只是看一个图像的趋势的话也基本够用了。</p>
+<p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-1.png" alt=""></p>
+<h1 id="简单的使用方法">简单的使用方法：<a href="#%e7%ae%80%e5%8d%95%e7%9a%84%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>安装指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pip install plotext
+</span></span></code></pre></div><p>随便的一个测试代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">100</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(y)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Sine Wave via Plotext&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p>运行效果：</p>
+<p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-2.png" alt=""></p>
+<p>以下是纯人工无添加的基于本人能工智人之力的introduction翻译：</p>
+<p><strong>用之前要知道的头几件事：</strong>:</p>
+<ul>
+<li>默认情况下，<strong>图像尺寸</strong>会随着终端大小自动调整， 不过你也可以用<code>plotsize()</code>方法手动修改。<a href="https://github.com/piccolomo/plotext/blob/master/readme/settings.md#plot-size">plotsize使用指南</a>.</li>
+<li>使用<code>subplots()</code>和<code>subplot()</code>方法可以创建<strong>子图像</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/subplots.md#subplots">subplots使用指南</a>.</li>
+<li>多数的绘图函数中的<code>marker</code>参数可以用来指定绘图的“marker”（废话）（总之就是这个图像的线条格式）。<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#markers">marker使用指南</a>。 你可以使用一些比较高精度的线条格式，如<code>hd</code>，<code>fhd</code>，更极端一点的有<code>brailla</code>。</li>
+<li><code>color</code>参数可以设定绘图<strong>颜色</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#colors">color使用指南</a>.</li>
+<li>你可以分别使用<code>sin()</code>方法和<code>square()</code>方法来快速生成<strong>正弦和方波图像</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/utilities.md#useful-functions">实用函数</a>.</li>
+<li>你可以使用<code>title()</code>，<code>xlabel()</code>，<code>ylabel()</code>方法来为图像添加<strong>标签</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#plot-labels">label使用指南</a>，同时你也可以通过设定绘图函数<code>label</code>参数的方式添加<strong>图像说明</strong><a href="https://github.com/piccolomo/plotext/blob/master/readme/basic.md#multiple-data-sets">plot legend使用指南</a>.</li>
+<li>你可以使用<code>axes_color()</code>, <code>canvas_color()</code>, <code>ticks_color()</code>, <code>ticks_style()</code>方法来调整<strong>图像颜色</strong>和<strong>坐标轴以及其刻度的颜色</strong>，<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#colors">color使用指南</a>，或者直接使用<code>theme()</code>方法，<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#themes">theme使用指南</a>。</li>
+<li>使用<code>grid()</code>, <code>horizontal_line()</code> or <code>vertical_line()</code>方法来添加<strong>线条</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#plot-lines">plot-line使用指南</a></li>
+<li>使用<code>xaxes()</code>, <code>yaxes()</code>方法来添加和移除<strong>坐标轴</strong>，或者直接使用<code>frame()</code>，<a href="https://github.com/piccolomo/plotext/blob/master/readme/aspect.md#plot-lines">plot-line使用指南</a></li>
+<li>使用<code>xfrequency()</code>, <code>xticks()</code>, <code>yfrequency()</code>和<code>yticks()</code>来改变<strong>刻度</strong><a href="https://github.com/piccolomo/plotext/blob/master/readme/settings.md#axes-ticks">axe-ticks使用指南</a></li>
+<li>和<code>matplotlib</code>类似，图像只有在<code>show()</code>被调用的时候才会<strong>显示</strong>。</li>
+<li>如果你想要图像<strong>交互式显示</strong>，不要使用<code>show()</code>，而是使用<code>interactive(True)</code>方法。<a href="https://github.com/piccolomo/plotext/blob/master/readme/utilities.md#canvas-utilities">canvas-utilities</a>（这个东西的用途是在python shell中一边改一边输出图像，不是让你的图像本身可以交互）</li>
+<li>使用<code>savefig(path)</code>来<strong>保存图像</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/utilities.md#canvas-utilities">canvas-utilities</a></li>
+<li>分别使用<code>clear_figure()</code>, <code>clear_data()</code>和<code>clear_color()</code>来<strong>清除</strong>图像、数据和颜色。<a href="https://github.com/piccolomo/plotext/blob/master/readme/utilities.md#clearing-functions">clearing-functions</a></li>
+<li>使用<code>clear_terminal()</code>方法在绘图前后<strong>清空屏幕</strong>。<a href="https://github.com/piccolomo/plotext/blob/master/readme/utilities.md#clearing-functions">clearing-funtions</a>.</li>
+<li>doc容器中存放了所有的pytext方法和绘图函数的文档。<a href="https://github.com/piccolomo/plotext/blob/master/readme/utilities.md#docstrings">utilities.md</a></li>
+</ul>
+<h1 id="一些使用例">一些使用例<a href="#%e4%b8%80%e4%ba%9b%e4%bd%bf%e7%94%a8%e4%be%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">=</span> X <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">40</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>clear_figure()
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(X, Y, style<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bold&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Y and X.&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#34;pro&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-3.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2000</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1000</span>, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>w <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
+</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> <span style="color:#ae81ff">4.2</span>
+</span></span><span style="display:flex;"><span>print(Y)
+</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">+=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#34;pro&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plotsize(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">30</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(X[:, <span style="color:#ae81ff">1</span>], Y, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dot&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;synthetic data&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Linear model synthetic data&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;label&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;features&#34;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-4.png" alt=""></p>
+<p>动态图像（强行clc()+show()实现动态效果）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 准备初始数据</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>shift <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Press Ctrl+C to stop the animation.&#34;</span>)
+</span></span><span style="display:flex;"><span>time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 1. 计算移动后的 Y 值 ---</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 让正弦波随 shift 变量移动</span>
+</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(x <span style="color:#f92672">+</span> shift)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 2. 绘图流程 ---</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>clc()  <span style="color:#75715e"># 清屏</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>clear_figure()  <span style="color:#75715e"># 清数据</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#34;dark&#34;</span>)  <span style="color:#75715e"># 适合 Termux</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 绘制填充图，视觉效果更好</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>plot(x, y, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Live Signal&#34;</span>, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fhd&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Real-time Sine Wave | Phase: </span><span style="color:#e6db74">{</span>shift<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.5</span>, <span style="color:#ae81ff">1.5</span>)  <span style="color:#75715e"># 务必固定坐标轴范围，否则画面会随数据跳变</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>show()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 3. 更新状态 ---</span>
+</span></span><span style="display:flex;"><span>        shift <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0.1</span>
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.05</span>)  <span style="color:#75715e"># 20fps 左右</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyboardInterrupt</span>:
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>clc()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Animation stopped.&#34;</span>)
+</span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-5.png" alt=""></p>
+<p>显示本地图片（都用终端显示了，效果这块就只能委屈一下了）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>image_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./5pebbles.png&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>image_plot(image_path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>frame(<span style="color:#66d9ef">False</span>)  <span style="color:#75715e"># 去掉边框</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xticks(<span style="color:#66d9ef">None</span>)  <span style="color:#75715e"># 去掉刻度</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>yticks(<span style="color:#66d9ef">None</span>)  <span style="color:#75715e"># 去掉刻度</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>canvas_color(<span style="color:#e6db74">&#34;none&#34;</span>)  <span style="color:#75715e"># 背景透明</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-6.png" alt=""></p>
+<p>图取自<a href="https://www.bilibili.com/video/BV1t8411z7Rn/?spm_id_from=333.1387.favlist.content.click&amp;vd_source=31ba3d75fa2995f7e1b776de7a637bd4">bilibili</a>，侵删。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>平板游戏环境配置计划：4阶段</title>
