@@ -7,20 +7,34 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Tue, 27 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 28 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Blog</title>
       <link>http://localhost:1313/zh-cn/tags/blog/</link>
-      <pubDate>Tue, 27 Jan 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/zh-cn/tags/blog/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
       <link>http://localhost:1313/zh-cn/tags/python/</link>
-      <pubDate>Tue, 27 Jan 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/zh-cn/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Shell</title>
+      <link>http://localhost:1313/zh-cn/tags/shell/</link>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/tags/shell/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>教程</title>
+      <link>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</link>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>
@@ -140,13 +154,6 @@
       <link>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</link>
       <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
       <guid>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>教程</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</link>
-      <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</guid>
       <description></description>
     </item>
     <item>

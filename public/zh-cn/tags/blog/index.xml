@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Tue, 27 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 28 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>工具不图鉴04：环境变量&amp;shell脚本</title>
+      <link>http://localhost:1313/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;p&gt;D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>TUI图像显示方案</title>
       <link>http://localhost:1313/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/</link>
