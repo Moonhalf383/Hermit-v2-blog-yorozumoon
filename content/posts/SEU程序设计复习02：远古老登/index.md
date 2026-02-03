@@ -555,7 +555,7 @@ int lowerBound(const std::vector<T>& nums, T target) {
 }
 ```
 
-## 最小公倍数
+## 最大公因数
 
 ```cpp
 int gcd(int a, int b) {

@@ -1497,7 +1497,7 @@
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> left; <span style="color:#75715e">// 此时 left == right
 </span></span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="最小公倍数">最小公倍数<a href="#%e6%9c%80%e5%b0%8f%e5%85%ac%e5%80%8d%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+</span></span></code></pre></div><h2 id="最大公因数">最大公因数<a href="#%e6%9c%80%e5%a4%a7%e5%85%ac%e5%9b%a0%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
