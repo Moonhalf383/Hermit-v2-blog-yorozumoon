@@ -7,9 +7,1387 @@
 		<generator>Hugo -- 0.154.5</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Wed, 28 Jan 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 04 Feb 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>D2L自学日志03：线性神经网络完结</title>
+			<link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/</link>
+			<pubDate>Wed, 04 Feb 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。</p>
+<p>因为本科导师下了kpi一个寒假推完d2l，动用了简单的小学数学知识，我惊讶地发现如果我要一个寒假学完D2L，我可能每2～3天就必须推完一章。这下不得不开工了。</p>
+<h2 id="线性神经网络回顾">线性神经网络回顾<a href="#%e7%ba%bf%e6%80%a7%e7%a5%9e%e7%bb%8f%e7%bd%91%e7%bb%9c%e5%9b%9e%e9%a1%be" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>从零开始的线性神经网络实现：</p>
+<ol>
+<li>生成数据集；
+<ol>
+<li>两个特征，三个参数</li>
+<li>生成若干个随机的符合正态分布的特征，算出严格符合指定参数的预测值，再加上一个随机数得到标签。</li>
+</ol>
+</li>
+<li>读取数据集
+<ol>
+<li>打乱索引列表，实现不重不漏的随机读取。</li>
+<li>使用生成器语法。</li>
+</ol>
+</li>
+<li>初始化模型参数</li>
+<li>定义模型</li>
+<li>定义损失函数</li>
+<li>定义优化算法</li>
+<li>训练</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">synthetic_data</span>(w, b, num_examples):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 生成一个长为num_examples，宽为w长度的随机张量，其中的数值分布符合正态分布。</span>
+</span></span><span style="display:flex;"><span>    X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, (num_examples, len(w)))
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">+=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, y<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X, y<span style="color:#f92672">.</span>reshape(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>true_w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
+</span></span><span style="display:flex;"><span>true_b <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.2</span>
+</span></span><span style="display:flex;"><span>features, labels <span style="color:#f92672">=</span> synthetic_data(true_w, true_b, <span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">data_iter</span>(batch_size, features, labels):
+</span></span><span style="display:flex;"><span>    num_examples <span style="color:#f92672">=</span> len(labels)
+</span></span><span style="display:flex;"><span>    indices <span style="color:#f92672">=</span> list(range(num_examples))
+</span></span><span style="display:flex;"><span>    random<span style="color:#f92672">.</span>shuffle(indices)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, num_examples, batch_size):
+</span></span><span style="display:flex;"><span>        batch_indices <span style="color:#f92672">=</span> indices[i : min(i <span style="color:#f92672">+</span> batch_size, num_examples)]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> features[batch_indices], labels[batch_indices]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(<span style="color:#ae81ff">1</span>, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">linreg</span>(X, w, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">squared_loss</span>(y_hat, y):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (y_hat <span style="color:#f92672">-</span> y) <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sgd</span>(params, lr, batch_size):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> param <span style="color:#f92672">in</span> params:
+</span></span><span style="display:flex;"><span>            param <span style="color:#f92672">-=</span> lr <span style="color:#f92672">*</span> param<span style="color:#f92672">.</span>grad <span style="color:#f92672">/</span> batch_size
+</span></span><span style="display:flex;"><span>            param<span style="color:#f92672">.</span>grad<span style="color:#f92672">.</span>zero_()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.03</span>
+</span></span><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> linreg
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> squared_loss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter(BATCH_SIZE, features, labels):
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X, w, b), y)
+</span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>        sgd([w, b], lr, BATCH_SIZE)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        train_l <span style="color:#f92672">=</span> loss(net(features, w, b), labels)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;epoch:</span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss:</span><span style="color:#e6db74">{</span>float(train_l<span style="color:#f92672">.</span>mean())<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;w误差：</span><span style="color:#e6db74">{</span>true_w <span style="color:#f92672">-</span> w<span style="color:#f92672">.</span>reshape(true_w<span style="color:#f92672">.</span>shape)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;b误差：</span><span style="color:#e6db74">{</span>true_b <span style="color:#f92672">-</span> b<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p><em>重新照着答案敲了一遍，毕竟一个月没写了。</em></p>
+<p>对于一个简单的线性神经网络，首先我们可以先来明确它的模型：$X \cdot w + b$。明确了模型，其实具体的实现方法是大同小异的。我们需要定义什么样的预测结果是好的，什么样的是不好的，此处我们的选择是以预测值和真实值的差的平方作为误差，误差越大模型预测的效果越不好。每个参数在当前的数值下对于这个预测的误差有着不同的贡献值（即误差对参数的梯度），贡献值越大，我们就朝着相反的方向对这个参数调整越多。最后，我们可以得到一个误差相当小的参数组合。</p>
+<p>其中，学习速率lr以及迭代周期数都属于所谓的<strong>超参数</strong>，和$w,b$不同，它们决定的是训练的效果，无法通过训练得到最优数值。</p>
+<p>但是，假如我们要做的不再是这样的简单的线性模型，而是更加复杂的模型，我们会发现其实很多部分的实现实际上是重复性工作，比如我们将误差描述为差的绝对值的平方，这样的描述实际上相当普遍，对于很多模型我们都可以用这个方法去描述误差；再比如我们所写的<code>for epoch in range(num_epoches):</code>循环，其实即使我们去替换其中的优化函数、误差函数，这个训练过程照样可以完成。所以，为什么不把这些重复性较高的框架封装起来呢？</p>
+<h2 id="读取数据">读取数据<a href="#%e8%af%bb%e5%8f%96%e6%95%b0%e6%8d%ae" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils <span style="color:#f92672">import</span> data
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>true_w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
+</span></span><span style="display:flex;"><span>true_b <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>features, labels <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>synthetic_data(true_w, true_b, <span style="color:#ae81ff">1000</span>)
+</span></span></code></pre></div><p>依然先生成数据集。（这里直接使用了d2l保存的上一次定义的synthetic_data函数）</p>
+<p>对于读取数据，我们可以直接使用<code>torch.utils</code>中提供的接口。</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260126-1.png" alt=""></p>
+<p><code>torch.utils.data</code>中提供了一个<code>TensorDataset</code>类，作用是将若干个张量绑定为一个数据集，前提是这几个张量的第一维大小一致。</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260126-2.png" alt=""></p>
+<p><code>DataLoader</code>类，顾名思义是一个“数据加载器”，是数据集和采样器的结合。一个DataLoader和迭代器的行为类似，每次调用都会吐出一批数据。</p>
+<p>我们最终可以得到这样的代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_array</span>(data_array, batch_size, is_train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    dataset <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>TensorDataset(<span style="color:#f92672">*</span>data_array)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data<span style="color:#f92672">.</span>DataLoader(dataset, batch_size, is_train)
+</span></span><span style="display:flex;"><span>batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>data_iter <span style="color:#f92672">=</span> load_array((features, labels), batch_size)
+</span></span></code></pre></div><p>这段代码的功能和我们开始的<code>data_iter</code>函数的功能完全一致，只不过没有使用python原本的生成器语法。当然，尽管DataLoader的行为和python原生iter类似，如果我们想要直接使用的话还是需要<code>iter(load_array(...))</code>来转换一下。</p>
+<p>我们随便打印一个看看：</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260126-3.png" alt=""></p>
+<p>符合预期，第一个tensor是特征，有两个特征；第二个tensor是标签。</p>
+<h2 id="定义模型">定义模型<a href="#%e5%ae%9a%e4%b9%89%e6%a8%a1%e5%9e%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># nn是神经网络的缩写</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>))
+</span></span></code></pre></div><p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260126-4.png" alt=""></p>
+<p><code>Sequential</code>类，顺序的类。可以想见，每个模型的计算都免不了挨个进行一个个的计算步骤，Sequential描述的就是这样的过程。一个<code>Sequential</code>的实例就是一个神经网络net。Sequential会自动为我们把这些net串联起来，当我们把数据喂给第一层后，Sequential会自动把第一层的输出喂给第二层，以此类推。对于我们已经做成的“线性神经网络”，本质上是一个单层神经网络，没有所谓的顺序计算。但是在可以预见的未来，大多数模型都会使用多层的结构。这就像我们终于学会了1+1，现在我们要学1+1+1。这里的所谓的“层”，我个人觉得本质就是某种映射，将输出映射到结果的过程。</p>
+<p>在我们的线性层中，每一个输出经过了这个层的计算后都会有一个输出与之对应（如果不知道为什么建议重修线性代数），因此我们称这样的一个层为<em>全连接层</em>。</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260126-5.png" alt=""></p>
+<p><code>nn.Linear</code>类定义了一个线性变换。在<code>net = nn.Sequential(nn.Linear(2, 1))</code>中，第一个参数<code>2</code>表示的是输入特征的形状，我们此处定义了两个特征，所以为2；第二个参数<code>1</code>表示输出特征形状，输出特征形状为单个标量，所以填1。</p>
+<p>定义了net之后，net本身就成为了一个映射。我们可以用<code>net(X)</code>由特征X得到一个预测的结果。</p>
+<h2 id="初始化模型参数">初始化模型参数<a href="#%e5%88%9d%e5%a7%8b%e5%8c%96%e6%a8%a1%e5%9e%8b%e5%8f%82%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>normal_(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>fill_(<span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><p><code>net</code>是一个<code>nn.Sequential</code>实例，对<code>net</code>做下标索引得到的是<code>nn.Module</code>，也就是所有的“层”的基类。而weight和bias是<code>nn.Linear</code>的特有的attribute。因为我们现在确定了<code>net[0]</code>就是一个nn.Linear层，所以我们这样写程序是可以正常工作的。然而pyright（你可能在使用的静态语法检测器）看不出来这里实际上没有问题，它会给你的程序标上语法错误。</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260127-1.png" alt=""></p>
+<p>解决方法是无视即可。程序仍然可以正常运行。</p>
+<h2 id="定义损失函数">定义损失函数<a href="#%e5%ae%9a%e4%b9%89%e6%8d%9f%e5%a4%b1%e5%87%bd%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()
+</span></span></code></pre></div><p>计算均方误差使用<code>MSEloss</code>类，也称平方L2范数，默认情况下返回所有样本损失的均值。后续使用中可以通过<code>loss(net(X), y)</code>来计算误差。</p>
+<h2 id="定义优化算法">定义优化算法<a href="#%e5%ae%9a%e4%b9%89%e4%bc%98%e5%8c%96%e7%ae%97%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>SGD(net<span style="color:#f92672">.</span>parameters(),lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.03</span>)
+</span></span></code></pre></div><p>训练器是参数和超参数以及训练算法的整合。在计算得到的损失backward之后，我们无需自己手写小批量随机梯度下降，直接调用trainer的<code>step()</code>方法即可实现。</p>
+<h2 id="训练">训练<a href="#%e8%ae%ad%e7%bb%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter:
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X), y)
+</span></span><span style="display:flex;"><span>        trainer<span style="color:#f92672">.</span>zero_grad()
+</span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>        trainer<span style="color:#f92672">.</span>step()
+</span></span><span style="display:flex;"><span>    l <span style="color:#f92672">=</span> loss(net(features), labels)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;epoch: </span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss: </span><span style="color:#e6db74">{</span>l<span style="color:#e6db74">:</span><span style="color:#e6db74">f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>我们原本更加繁琐的实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter(BATCH_SIZE, features, labels):
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X, w, b), y)
+</span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>        sgd([w, b], lr, BATCH_SIZE)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        train_l <span style="color:#f92672">=</span> loss(net(features, w, b), labels)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;epoch:</span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss:</span><span style="color:#e6db74">{</span>float(train_l<span style="color:#f92672">.</span>mean())<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><h2 id="完整代码">完整代码：<a href="#%e5%ae%8c%e6%95%b4%e4%bb%a3%e7%a0%81" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils <span style="color:#f92672">import</span> data
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>true_w <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
+</span></span><span style="display:flex;"><span>true_b <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>features, labels <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>synthetic_data(true_w, true_b, <span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_array</span>(data_array, batch_size, is_train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>    dataset <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>TensorDataset(<span style="color:#f92672">*</span>data_array)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data<span style="color:#f92672">.</span>DataLoader(dataset, batch_size, is_train)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>data_iter <span style="color:#f92672">=</span> load_array((features, labels), batch_size)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(next(iter(data_iter)))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>normal_(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>fill_(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>SGD(net<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span><span style="color:#ae81ff">0.03</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter:
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X), y)
+</span></span><span style="display:flex;"><span>        trainer<span style="color:#f92672">.</span>zero_grad()
+</span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>        trainer<span style="color:#f92672">.</span>step()
+</span></span><span style="display:flex;"><span>    l <span style="color:#f92672">=</span> loss(net(features), labels)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;epoch: </span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss: </span><span style="color:#e6db74">{</span>l<span style="color:#e6db74">:</span><span style="color:#e6db74">f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w <span style="color:#f92672">=</span> net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;w loss:&#34;</span>, true_w <span style="color:#f92672">-</span> w<span style="color:#f92672">.</span>reshape(true_w<span style="color:#f92672">.</span>shape))
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;b loss:&#34;</span>, true_b <span style="color:#f92672">-</span> b)
+</span></span></code></pre></div><p>输出结果:</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260127-2.png" alt=""></p>
+<h2 id="课后练习">课后练习<a href="#%e8%af%be%e5%90%8e%e7%bb%83%e4%b9%a0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<h3 id="q1如果用小批量的总损失替代平均值应该如何修改学习率">Q1：如果用小批量的总损失替代平均值，应该如何修改学习率？<a href="#q1%e5%a6%82%e6%9e%9c%e7%94%a8%e5%b0%8f%e6%89%b9%e9%87%8f%e7%9a%84%e6%80%bb%e6%8d%9f%e5%a4%b1%e6%9b%bf%e4%bb%a3%e5%b9%b3%e5%9d%87%e5%80%bc%e5%ba%94%e8%af%a5%e5%a6%82%e4%bd%95%e4%bf%ae%e6%94%b9%e5%ad%a6%e4%b9%a0%e7%8e%87" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260127-3.png" alt=""></p>
+<p>reduce在这个语境下的意思是<strong>收敛</strong>。在这里，<code>nn.MSEloss</code>提供了一个可选的参数<code>reduction</code>表示的是这个损失函数最终收敛到一个值的方法。默认方法<code>mean</code>表示的是求损失的平均值。如果我们想用总损失代替这个平均值，我们就应该手动设置reduction = &lsquo;sum&rsquo;。</p>
+<p>然而改成<code>reduction = sum</code>之后似乎结果的误差的数量级没有什么变化。可能题目的意思是怎样调整学习率可以使修改前后数学上等价。由于我们前面在<code>DataLoader</code>中设置了一个batch大小为10，所以此处若取误差总和，得到的误差大小会变为原来的10倍。如果我们希望得到和原本一致的训练效果，我们应该将学习率设置为原来的0.1倍，即0.003。</p>
+<h3 id="q2查看深度学习框架它们提供了哪些损失函数和初始化方法">Q2：查看深度学习框架，它们提供了哪些损失函数和初始化方法？<a href="#q2%e6%9f%a5%e7%9c%8b%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e6%a1%86%e6%9e%b6%e5%ae%83%e4%bb%ac%e6%8f%90%e4%be%9b%e4%ba%86%e5%93%aa%e4%ba%9b%e6%8d%9f%e5%a4%b1%e5%87%bd%e6%95%b0%e5%92%8c%e5%88%9d%e5%a7%8b%e5%8c%96%e6%96%b9%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><a href="https://docs.pytorch.org/docs/stable/index.html">Pytorch doc</a></p>
+<p><a href="https://docs.pytorch.org/docs/stable/search.html?q=loss">LOSS</a></p>
+<p>初始化方法不知道是什么意思，遂不找。</p>
+<h4 id="huber-loss">Huber loss<a href="#huber-loss" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<p>huber loss定义为：
+</p>
+$$l(y,y') = \begin{cases}|y-y'| -\frac{\sigma}{2} & \text{ if } |y-y'| > \sigma \\ \frac{1}{2 \sigma} (y-y')^2 & \text{ 其它情况}\end{cases}$$<p>
+简单来说，就是在误差较大的时候使用线性惩罚，误差较小的时候使用平方惩罚。事实上，误差的大小可以通过多种方式描述，而如何选取只取决于我们希望模型对于误差持什么样的态度。</p>
+<p>在机器学习中，有这样的两种经典的误差定义方式，一种是MSE，计算的是误差的L2范数，另一种则是MAE，计算的是误差的L1范数。其中前者的优点是0点处可导，意味着优化过程相对稳定，但是缺点是对于异常值很敏感，容易被少数极端大小的数字打破平衡；后者的优点是对异常值不那么敏感，但缺点是0点处不可导，很容易在0点左右震荡。</p>
+<p>总之，huber loss是二者的折衷方案。我们可以稍微修改一下我们原有的代码来实验一下huber和mse的训练效果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_loss</span>(loss, num_epochs):
+</span></span><span style="display:flex;"><span>    data_iter <span style="color:#f92672">=</span> load_array((features, labels), batch_size)
+</span></span><span style="display:flex;"><span>    net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>normal_(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>    net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>fill_(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    trainer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>SGD(net<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span><span style="color:#ae81ff">0.03</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter:
+</span></span><span style="display:flex;"><span>            l <span style="color:#f92672">=</span> loss(net(X), y)
+</span></span><span style="display:flex;"><span>            trainer<span style="color:#f92672">.</span>zero_grad()
+</span></span><span style="display:flex;"><span>            l<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>            trainer<span style="color:#f92672">.</span>step()
+</span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(features), labels)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># print(f&#34;epoch: {epoch + 1}, loss: {l:f}&#34;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    w <span style="color:#f92672">=</span> net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data
+</span></span><span style="display:flex;"><span>    b <span style="color:#f92672">=</span> net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;w loss:&#34;</span>, true_w <span style="color:#f92672">-</span> w<span style="color:#f92672">.</span>reshape(true_w<span style="color:#f92672">.</span>shape))
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;b loss:&#34;</span>, true_b <span style="color:#f92672">-</span> b)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> true_w <span style="color:#f92672">-</span> w<span style="color:#f92672">.</span>reshape(true_w<span style="color:#f92672">.</span>shape), true_b <span style="color:#f92672">-</span> b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>num_epochs_list <span style="color:#f92672">=</span> [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">100</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> num_epochs <span style="color:#f92672">in</span> num_epochs_list:
+</span></span><span style="display:flex;"><span>    MSE_loss_w, MSE_loss_b <span style="color:#f92672">=</span> train_loss(nn<span style="color:#f92672">.</span>MSELoss(), num_epochs)
+</span></span><span style="display:flex;"><span>    Huber_loss_w, Huber_loss_b <span style="color:#f92672">=</span> train_loss(nn<span style="color:#f92672">.</span>HuberLoss(), num_epochs)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;    w loss diff: &#34;</span>, MSE_loss_w <span style="color:#f92672">-</span> Huber_loss_w)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;    b loss diff: &#34;</span>, MSE_loss_b <span style="color:#f92672">-</span> Huber_loss_b)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>使用了传统的print大法，对于随便看几组数据足够了。我们测试了各种训练周期次数下两种损失函数的表现，某次结果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>w loss: tensor([ <span style="color:#ae81ff">0.0006</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0005</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0001</span>])
+</span></span><span style="display:flex;"><span>w loss: tensor([ <span style="color:#ae81ff">0.0248</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0281</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0288</span>])
+</span></span><span style="display:flex;"><span>    w loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0242</span>,  <span style="color:#ae81ff">0.0276</span>])
+</span></span><span style="display:flex;"><span>    b loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0287</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#ae81ff">0.0003</span>, <span style="color:#ae81ff">0.0004</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0001</span>,  <span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0004</span>])
+</span></span><span style="display:flex;"><span>    w loss diff:  tensor([<span style="color:#ae81ff">0.0004</span>, <span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>    b loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">3.4857e-04</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.9312e-05</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#ae81ff">3.9601e-04</span>, <span style="color:#ae81ff">3.5524e-05</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0003</span>])
+</span></span><span style="display:flex;"><span>    w loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">7.4458e-04</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">5.4836e-05</span>])
+</span></span><span style="display:flex;"><span>    b loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0006</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">3.4618e-04</span>,  <span style="color:#ae81ff">1.0967e-05</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">8.9645e-05</span>])
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0003</span>,  <span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0001</span>])
+</span></span><span style="display:flex;"><span>    w loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">3.0756e-05</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.4496e-04</span>])
+</span></span><span style="display:flex;"><span>    b loss diff:  tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#ae81ff">1.7715e-04</span>, <span style="color:#ae81ff">3.4809e-05</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0003</span>])
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">9.1076e-05</span>,  <span style="color:#ae81ff">2.3127e-04</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#f92672">-</span><span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>    w loss diff:  tensor([ <span style="color:#ae81ff">0.0003</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0002</span>])
+</span></span><span style="display:flex;"><span>    b loss diff:  tensor([<span style="color:#ae81ff">0.0005</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>w loss: tensor([<span style="color:#ae81ff">0.0001</span>, <span style="color:#ae81ff">0.0004</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0009</span>])
+</span></span><span style="display:flex;"><span>w loss: tensor([ <span style="color:#ae81ff">9.8348e-05</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">5.8103e-04</span>])
+</span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0005</span>])
+</span></span><span style="display:flex;"><span>    w loss diff:  tensor([<span style="color:#ae81ff">7.7486e-06</span>, <span style="color:#ae81ff">1.0133e-03</span>])
+</span></span><span style="display:flex;"><span>    b loss diff:  tensor([<span style="color:#ae81ff">0.0004</span>])
+</span></span></code></pre></div><p>粗略看下来虽然huber训练速度相对慢一些，但是优化过程较mse更加稳定。</p>
+<h2 id="q3如何访问线性回归的梯度">Q3：如何访问线性回归的梯度?<a href="#q3%e5%a6%82%e4%bd%95%e8%ae%bf%e9%97%ae%e7%ba%bf%e6%80%a7%e5%9b%9e%e5%bd%92%e7%9a%84%e6%a2%af%e5%ba%a6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>在旧有的实现方式中，我们可以直接使用<code>param.grad</code>来访问一个参数的梯度，但是在新的实现方式中，trainer直接替我们完成了这一步骤。</p>
+<hr>
+<h1 id="softmax回归">Softmax回归<a href="#softmax%e5%9b%9e%e5%bd%92" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>很多时候，我们需要的不只是一个预测值的大小，而是对于一个事物的归类。比如，某个电子邮件是不是垃圾邮件？某个图像中描绘的是什么动物？或者对于一个大语言模型的后处理采样器(专业对口)，下一个字选哪什么最合适？</p>
+<p>在这种问题中，我们需要得到的往往不是一个模糊的概率，我们只对最终的“硬性分类”感兴趣。然而即便如此，具体的实现过程中，我们仍然要通过计算概率的方式来实现这种分类。</p>
+<p>举个例子，假如我们要判断一个图像中显示的是狗、猫还是鸡，我们从中提取了4个特征，那么我们就可以用这样的式子来表示从特征到分类的映射关系：
+</p>
+$$
+\begin{aligned}
+o_1 &= x_1 w_{11} + x_2 w_{12} + x_3 w_{13} + x_4 w_{14} + b_1,\\
+o_2 &= x_1 w_{21} + x_2 w_{22} + x_3 w_{23} + x_4 w_{24} + b_2,\\
+o_3 &= x_1 w_{31} + x_2 w_{32} + x_3 w_{33} + x_4 w_{34} + b_3.
+\end{aligned}
+$$<p>
+其中$o_{1},o_{2},o_{3}$为所谓的<strong>logit</strong>，即<strong>未规范化的预测</strong>，反映的是目标匹配的程度。比如假如狗、猫、鸡分别对应$o_{1}=0.1,o_{2}=0.8,o_{3}=0.1$，那么我们就可以这样来决定最后的分类：按照logit来投骰子，80%的概率投到猫，10%的概率投到狗或者鸡。</p>
+<p>但是，假如我们要投骰子，我们就必须先知道不同事物对应的概率，但是logits的计算过程并不能确保它的总和总是1。此时我们需要某种方法来由logits得到我们所需要的总和为1的概率。不仅如此，我们还希望最后得到的概率分布有助于激励模型选中最正确的那个选项，比如虽然我们的logits比例为1:8:1，但是我们希望最后得分占8份的那个选项被抽中的概率比80%更大。</p>
+<p>softmax函数做的正是这样的事情。softmax函数能够将未规范化的预测变换为非负数并且总和为1，同时让模型保持可导的性质。 为了完成这一目标，我们首先对每个未规范化的预测求幂，这样可以确保输出非负。 为了确保最终输出的概率值总和为1，我们再让每个求幂后的结果除以它们的总和。如下式：
+</p>
+$$
+\hat{\mathbf{y}} = \mathrm{softmax}(\mathbf{o})\quad \text{其中}\quad \hat{y}_j = \frac{\exp(o_j)}{\sum_k \exp(o_k)}
+$$<p>
+尽管softmax函数本身并不是线性的，但是softmax回归的输出仍然由特征的仿射变换决定，所以softmax回归是一个线性模型。</p>
+<p>说白了，softmax做的事情就是把打分映射成概率。</p>
+<h2 id="对数似然">对数似然<a href="#%e5%af%b9%e6%95%b0%e4%bc%bc%e7%84%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>我们仍然尝试去分类狗、猫和鸡。设想我们造出了这样一个机器，我们喂给它一张图片，它就会吐出这张图片是狗、猫和鸡的概率。现在，我们喂给机器一张猫的图片，调节旋钮，机器吐出猫的概率为0.1；再调节旋钮，机器吐出猫的概率是0.8。那么对于我们已经知道结果的实验者来说，后者对于事实的判断是更加准确的。</p>
+<p>旋钮的比喻实际上指的就是机器学习中的参数。所谓的<strong>最大似然</strong>，说的就是找到这样的一个旋钮位置，使得所有正确答案发生的概率之和（或之积）最大。</p>
+<p>比如，仍然举我们的图片机器比喻，我们喂给机器一张猫的图片，机器认为图片上是猫的概率是80%，但是这不代表每张猫的图片机器都认为它是猫的概率是80%，机器完全可以认为某张图是猫的概率是99.9%，也可以认为是0.01%。此外在这个例子中，我们也完全没有谈到对于狗和鸡的辨别。我们希望的最理想的状态是，我们手头有很多图片，上面是狗、猫还是鸡我们自己清楚，我们希望喂给机器后“机器可以正确判断所有样本”的这个总概率最大。也就是说某张猫图机器正确概率80%，另一张猫图机器正确概率70%，再一张狗图机器正确概率90%，那么机器判断全部正确的概率就是$80\% \cdot70 \% \cdot 90\%$。这个总概率会随着参数变化而变化，所以我们希望通过调整参数来让这个总概率最大。总概率越大，机器的准确度也就越大。</p>
+<p>所谓的<strong>对数似然</strong>，说的就是：我们不直接计算$P(\mathbf{Y} \mid \mathbf{X}) = \prod_{i=1}^n P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)})$这个连乘计算，而是计算$\log P(\mathbf{Y} \mid \mathbf{X}) = \sum_{i=1}^n \log P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)})$。一方面在样本很多的时候，直接对概率求积很可能最后非常趋近于0而导致向下溢出，另一方面对于机器来说虽然将这些概率乘起来很容易，但是求导的时候会很痛苦。</p>
+<p>然而因为概率总是0～1之间的数字，加上对数之后就总是一个负数。所以为了凑出一个正的损失值，我们实际计算的是$-\log P(\mathbf{Y} \mid \mathbf{X}) = -\sum_{i=1}^n \log P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)})$，将最大化似然转化为最小化负似然，将总概率对数的负数视作这个模型的损失，这样我们就可以继续套用我们线性回归模型的训练流程。</p>
+<p>规范的损失函数表述：
+</p>
+$$ l(\mathbf{y}, \hat{\mathbf{y}}) = - \sum_{j=1}^q y_j \log \hat{y}_j. $$<p>
+其中$y_j$是第$j$个分类对应的<strong>独热编码</strong>，即标准答案中的概率：假如一个图片中是猫，猫对应的$y_2$，则$y_2 = 1$，而图中的东西不是狗也不是鸡，所以$y_{1}=0,y_{3}=0$，所以最后得到的损失值就是$-y_{2}\log \hat{y_{2}}$实际的意义也就是找到机器判断正确的概率的负对数。在使用小批量随机下降法时，我们就可以直接对一个小批量的损失求和或平均得到这个batch的总损失。</p>
+<h2 id="softmax及其导数">softmax及其导数<a href="#softmax%e5%8f%8a%e5%85%b6%e5%af%bc%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260128-4.png" alt=""></p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260128-5.png" alt=""></p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260128-6.png" alt=""></p>
+<p>为了最终计算每个参数对于损失的贡献值，我们先计算每个logit对于损失的贡献，因为参数对于logits的损失贡献我们可以直接套用线性回归模型中的损失函数。</p>
+<p>通过如上的推导，我们惊讶地发现每个logit对于损失的贡献竟然也可以用softmax来计算，这样就极大地方便了对数似然的梯度计算。</p>
+<h2 id="信息论基础">信息论基础<a href="#%e4%bf%a1%e6%81%af%e8%ae%ba%e5%9f%ba%e7%a1%80" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>信息论的核心思想是量化数据中的信息内容。D2L讲义里给的东西实在有点太难懂了，这里用相对浅显的语言叙述一遍。</p>
+<p>信息论认为信息量的大小取决于这段信息的“惊异程度”。比如我说“程序员一定要会写代码”，你会说这不是废话吗。这句话的信息量就很低，因为它发生的概率约等于100%。但是假如我说“从明天开始所有程序员的代码水平下降100倍而我不受影响”，这句话的信息量就很大了，因为这句话发生的概率非常低，发生时会带来极大的惊异。</p>
+<p>我们设事件$A$为“程序员一定要会写代码”，事件$B$为“从明天开始所有程序员的代码水平下降100倍而我不受影响”。在信息论中有这样的公式：
+</p>
+$$H[P] = \sum_j - P(j) \log P(j).$$<p>
+其中，$-\log P(j)$描述的是<strong>信息量</strong>，$P(j)$越大信息量越小，反之越大。信息量再乘以发生概率，描述的就是这个信息整体的<strong>混乱程度</strong>，即<strong>信息熵</strong>。</p>
+<p>比如，假如事件$A$的概率为99%，概率非常大，但是相应的$-\log P(A)$的数值会非常小，动用卡西欧之力我们可以算出$A$的信息熵约$9.95 \cdot 10^{-3}$。概率非常大，导致我们预测这个事件的把握非常大，这个事件一点都不混乱。</p>
+<p>但是对于事件$B$，假如$B$的概率为0.01%，概率非常的小，但是相应的$-\log P(B)$的数值会非常大，我们可以算出B的信息熵约为$9.21 \cdot 10^{-4}$。因为概率很小，所以我们也同样很容易预测，所以虽然惊异，但是混乱程度也很低。</p>
+<p>通过这两个例子，你会发现信息熵描述的实际上是一个系统内所以可能发生的事件平均下来能带给你多少惊异。什么样的系统信息熵很大呢？比如投个硬币，正面反面概率都是50%，你几乎无法预测下一次投出来是什么，每次投硬币都会给你一点新的信息，局势很混乱，熵也比较高。</p>
+<h3 id="交叉熵">交叉熵<a href="#%e4%ba%a4%e5%8f%89%e7%86%b5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>回到我们的机器学习话题，假如我们希望用机器判断一个图片是狗、猫还是鸡，有一点是可以确认的：“图片描绘的是狗、猫还是鸡”这个问题是有一个客观的答案的。假如图片就是我们在现实中拍的，那么它一定对应一个动物；假如图片是一个画家画的，画的东西做到了同时像狗像猫还像鸡，那么至少宇宙万法那个源头会知道这个图描绘的是狗猫鸡的概率分别是多少。</p>
+<p>对于随便的某张图，假如真实的情况是这张图片描绘的是猫的概率是99%，但是我的机器认为是猫的概率为1%，所以当结果真的是猫的时候，机器就会非常惊讶；假如回回是猫，机器就会回回惊讶，这样一来平均惊异度就会很高，也就意味着系统的信息熵很高。我们为这种熵取一个专有的名词，叫做<strong>交叉熵</strong>。设真实的概率为$P$，预测的概率为$Q$，那么交叉熵可以表示为：
+</p>
+$$
+H(P,Q) = \sum-P \cdot \log(Q)
+$$<p>
+我们的目标是让模型尽最大可能的准确预测这个事件，翻译过来就是：在模型进行了预测后面对真实答案时尽可能的不意外，也就是我们希望<strong>交叉熵越小越好</strong>。</p>
+<p>这时候你会有这样的疑问：看起来好像假如我们希望模型看到真实结果时不意外，我们只需要让模型预测的结果尽可能大就可以了？这就好像考完试估分的时候考虑最差的情况而不是最可能的情况，这样即使出现意外自己也不会很惊讶。</p>
+<p>但是实际情况是模型做不到把概率预测的尽可能高，原因在于logits经过softamax加工之后总和被锁定为1，模型没办法既给狗判定为90%，同时又给猫和鸡也判90%。我们假设一个图片描绘的是狗、猫和鸡的真实概率为$P_{1},P_{2},P_{3}$，模型预测的概率为$Q_1,Q_2,Q_3$，那么我们有如下方程：
+</p>
+$$
+\begin{cases}
+Q_1 + Q_2 + Q_3 = 1 \\
+P_1 + P_2 + P_3 = 1 \\
+H(P, Q) = \sum_{i = 1}^{3}-P_i \log(Q_i)
+\end{cases}
+$$<p>
+我们希望$H(P,Q)$的数值最低。经过计算，我们得到当$Q_{1},Q_{2},Q_{3}$分别和$P_{1},P_{2},P_{3}$相等的时候，$H(P,Q)$取到最小值。</p>
+<p>绕了这么一大圈，我们其实最终得到的结论就是：我们希望模型预测的结果能尽可能的符合实际，本质上就是希望模型能尽可能准确的找到那个潜在的客观概率，而过程中的交叉熵就可以用来作为衡量误差的误差函数。交叉熵越大，我们便可以认为误差越大，进而优化模型。</p>
+<h2 id="课后练习-1">课后练习<a href="#%e8%af%be%e5%90%8e%e7%bb%83%e4%b9%a0-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>鸽了。</p>
+<h1 id="图像分类数据集">图像分类数据集<a href="#%e5%9b%be%e5%83%8f%e5%88%86%e7%b1%bb%e6%95%b0%e6%8d%ae%e9%9b%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>在经过了漫长的理论分析之后，我们终于要自己动手写一下图像分类了。（泪目）</p>
+<p>总之，我们使用的图像分类数据集为fashion-mnist。Fashion-MNIST数据集由10个类别组成，每个类别由训练数据集的6000个图像和测试数据集的1000个图像组成。每个图像的长度和宽度均为28。（tui狂喜）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torchvision
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils <span style="color:#f92672">import</span> data
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torchvision <span style="color:#f92672">import</span> transforms
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 通过ToTensor实例将图像数据从PIL类型变换成32位浮点数格式，</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 并除以255使得所有像素的数值均在0～1之间</span>
+</span></span><span style="display:flex;"><span>trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>ToTensor()
+</span></span><span style="display:flex;"><span>mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>    root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>mnist_test <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>    root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>运行这段代码会自动下载测试数据集。有的时候因为网络问题可能会下载失败，你可以选择手动去github上下载，但是必须自己组织和FashionMNIST方法一致的文件结构。</p>
+<p>推荐的手动安装链接：<a href="http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz">fashion-mnist官网</a></p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93-20260128-1.png" alt=""></p>
+<p>打印一下训练数据集和测试数据集的大小，分别为60000和10000。符合预期。</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93-20260128-2.png" alt=""></p>
+<p><code>mnist_train</code>和<code>mnist_test</code>的数据类型为<code>torchvision.datasets.mnist.FashionMNIST'</code>，为数据集对象，均继承自PyTorch的Dataset类。它们的行为像一个列表，可以使用下标索引来访问某一个样本，也可以使用<code>len()</code>来获取总长度。比如，你可以通过<code>mnist_train[0]</code>来获取第一个样本的内容，对应的文件类型为一个元组。</p>
+<p>在任意一个<code>mnist_train</code>的样本元组中，第一个元素存储的是图像张量，第二个元素存储的是图像的类别标签。比如对于某个T恤样本元组，第一个元素就是用来描述这个图像的一个形状为$[1,28,28]$的PyTorch张量，第二个元素则是T恤对应的索引值。</p>
+<p>我们来看看这段代码会输出什么：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(type(mnist_train))
+</span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>print(len(mnist_train[<span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>print(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>shape)
+</span></span><span style="display:flex;"><span>print(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
+</span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
+</span></span></code></pre></div><p>结果为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torchvision</span><span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>mnist<span style="color:#f92672">.</span>FashionMNIST<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">tuple</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torch</span><span style="color:#f92672">.</span>Tensor<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">28</span>, <span style="color:#ae81ff">28</span>])
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">9</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torch</span><span style="color:#f92672">.</span>Tensor<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torch</span><span style="color:#f92672">.</span>Tensor<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torch</span><span style="color:#f92672">.</span>Tensor<span style="color:#e6db74">&#39;&gt;</span>
+</span></span></code></pre></div><p>图像的形状之所以形状为$[1,28,28]$是因为FashionMNIST数据集选取的图像并不是彩色图像，而是黑白灰度图，描述图像的元素只需要一个数字即可，所以通道数为1。而对于一般的图片，我们可能需要三个颜色通道才能描述，所以假如FashionMNIST选取的图片是彩色的，可能描述图片的张量形状就是$[3,28,28]$。</p>
+<p>Fashion-MNIST中包含的10个类别，分别为t-shirt（T恤）、trouser（裤子）、pullover（套衫）、dress（连衣裙）、coat（外套）、sandal（凉鞋）、shirt（衬衫）、sneaker（运动鞋）、bag（包）和ankle boot（短靴）。 以下函数用于在数字标签索引及其文本名称之间进行转换。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_fashion_mnist_labels</span>(labels):  <span style="color:#75715e">#@save</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;返回Fashion-MNIST数据集的文本标签&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    text_labels <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;t-shirt&#39;</span>, <span style="color:#e6db74">&#39;trouser&#39;</span>, <span style="color:#e6db74">&#39;pullover&#39;</span>, <span style="color:#e6db74">&#39;dress&#39;</span>, <span style="color:#e6db74">&#39;coat&#39;</span>,
+</span></span><span style="display:flex;"><span>                   <span style="color:#e6db74">&#39;sandal&#39;</span>, <span style="color:#e6db74">&#39;shirt&#39;</span>, <span style="color:#e6db74">&#39;sneaker&#39;</span>, <span style="color:#e6db74">&#39;bag&#39;</span>, <span style="color:#e6db74">&#39;ankle boot&#39;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [text_labels[int(i)] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> labels]
+</span></span></code></pre></div><p>D2L中提供了这样的脚本来可视化样本。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show_images</span>(imgs, num_rows, num_cols, titles<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1.5</span>):  <span style="color:#75715e">#@save</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;绘制图像列表&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    figsize <span style="color:#f92672">=</span> (num_cols <span style="color:#f92672">*</span> scale, num_rows <span style="color:#f92672">*</span> scale)
+</span></span><span style="display:flex;"><span>    _, axes <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>plt<span style="color:#f92672">.</span>subplots(num_rows, num_cols, figsize<span style="color:#f92672">=</span>figsize)
+</span></span><span style="display:flex;"><span>    axes <span style="color:#f92672">=</span> axes<span style="color:#f92672">.</span>flatten()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (ax, img) <span style="color:#f92672">in</span> enumerate(zip(axes, imgs)):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> torch<span style="color:#f92672">.</span>is_tensor(img):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 图片张量</span>
+</span></span><span style="display:flex;"><span>            ax<span style="color:#f92672">.</span>imshow(img<span style="color:#f92672">.</span>numpy())
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># PIL图片</span>
+</span></span><span style="display:flex;"><span>            ax<span style="color:#f92672">.</span>imshow(img)
+</span></span><span style="display:flex;"><span>        ax<span style="color:#f92672">.</span>axes<span style="color:#f92672">.</span>get_xaxis()<span style="color:#f92672">.</span>set_visible(<span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>        ax<span style="color:#f92672">.</span>axes<span style="color:#f92672">.</span>get_yaxis()<span style="color:#f92672">.</span>set_visible(<span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> titles:
+</span></span><span style="display:flex;"><span>            ax<span style="color:#f92672">.</span>set_title(titles[i])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> axes
+</span></span></code></pre></div><p>这段脚本的工作原理搞不明白的话也无所谓，总之之后想在jupyter notebook中显示tensor格式的图像用它就可以了。</p>
+<p>在jupyter lab中呈现的效果：</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93-20260202-1.png" alt=""></p>
+<p>尝试了一段时间想在plotext上复刻这种效果，感觉有点吃力不讨好。看来还是不得不用jupyter notebook做机器学习。</p>
+<h2 id="读取小批量">读取小批量<a href="#%e8%af%bb%e5%8f%96%e5%b0%8f%e6%89%b9%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_dataloader_workers</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_iter <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>    mnist_train, batch_size<span style="color:#f92672">=</span>BATCH_SIZE, shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, num_workers<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>timer <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>Timer()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> train_iter:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>timer<span style="color:#f92672">.</span>stop()<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> sec&#34;</span>)
+</span></span></code></pre></div><p>GPU处理数据的一个基本单元是batch，由于打包batch需要涉及GPU并不擅长的相对复杂的逻辑运算以及磁盘读写，这部分工作基本由CPU来完成，而CPU的计算速度乏善可陈。很多时候当GPU已经处理完了一个batch，CPU还在忙着打包，这样GPU就会处在空闲状态，导致计算速度下降。此处我们手动设置了<code>num_workers</code>参数，即设定了启动的CPU进程数，让四个进程一块打包batch，提高总体效率。</p>
+<p>通常，对于一个8核CPU，<code>num_workers</code>设置为4或者8是相对合理的。</p>
+<p>输出结果：</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93-20260202-3.png" alt=""></p>
+<p>整合以上的代码得到一个集成了数据集下载、图形预处理以及随机采样的数据集加载器：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> [transforms<span style="color:#f92672">.</span>ToTensor()]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> resize:
+</span></span><span style="display:flex;"><span>        trans<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, transforms<span style="color:#f92672">.</span>Resize(resize))
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose(trans)
+</span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans)
+</span></span><span style="display:flex;"><span>    mnist_test <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>mnist_train, batch_size<span style="color:#f92672">=</span>batch_size, shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, num_workers<span style="color:#f92672">=</span>get_dataloader_workers()),
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>mnist_test, batch_size<span style="color:#f92672">=</span>batch_size, shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, num_workers<span style="color:#f92672">=</span>get_dataloader_workers())
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><p>其中返回值为一个元组，第二个元素为对测试集的批量采样。看起来有点复杂，但是实际自己动手写一遍感觉思路就通了。这里之所以需要塞一个resize的变换，是因为有一些深度学习模型是为特定尺寸的图片设计的，经过池化层或者一些步长大于1的卷积层会导致图像尺寸缩小，可能传着传着图就没了，所以传入模型之前对图像尺寸做手动适配可以提高加载器的灵活性。</p>
+<p>使用例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> train_iter:
+</span></span><span style="display:flex;"><span>    print(X<span style="color:#f92672">.</span>shape, X<span style="color:#f92672">.</span>dtype, y<span style="color:#f92672">.</span>shape, y<span style="color:#f92672">.</span>dtype)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>
+</span></span></code></pre></div><p>加载数据集并从中按32个样本为一个批次采样，并把图像长宽拉伸为64。输出结果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">64</span>]) torch<span style="color:#f92672">.</span>float32 torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">32</span>]) torch<span style="color:#f92672">.</span>int64
+</span></span></code></pre></div><h2 id="课后习题">课后习题：<a href="#%e8%af%be%e5%90%8e%e4%b9%a0%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<h3 id="q1减少batch_size是否会影响读取性能">Q1：减少batch_size是否会影响读取性能?<a href="#q1%e5%87%8f%e5%b0%91batch_size%e6%98%af%e5%90%a6%e4%bc%9a%e5%bd%b1%e5%93%8d%e8%af%bb%e5%8f%96%e6%80%a7%e8%83%bd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>测试代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test</span>(batch_size):
+</span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>    train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span>batch_size, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (X, y) <span style="color:#f92672">in</span> enumerate(train_iter):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>timer<span style="color:#f92672">.</span>stop()<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> sec&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> batch_size <span style="color:#f92672">in</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">64</span>]:
+</span></span><span style="display:flex;"><span>    batch_size_test(batch_size)
+</span></span></code></pre></div><p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">45.01</span> sec
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">11.19</span> sec
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">5.76</span> sec
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3.07</span> sec
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1.75</span> sec
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1.25</span> sec
+</span></span></code></pre></div><p>可以看到随着batch_size增大，读取数据的用时显著减少。原因在于batch_size越大，打包batch的次数越少，CPU访存次数越少。读取数据的主要用时就在于此。</p>
+<p>我们还可以基于此添加num_workers对性能的影响，脚本如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> [transforms<span style="color:#f92672">.</span>ToTensor()]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> resize:
+</span></span><span style="display:flex;"><span>        trans<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, transforms<span style="color:#f92672">.</span>Resize(resize))
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose(trans)
+</span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    mnist_test <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> num_workers:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>            data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>                dataset<span style="color:#f92672">=</span>mnist_train,
+</span></span><span style="display:flex;"><span>                batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>                shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                num_workers<span style="color:#f92672">=</span>num_workers,
+</span></span><span style="display:flex;"><span>            ),
+</span></span><span style="display:flex;"><span>            data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>                dataset<span style="color:#f92672">=</span>mnist_test,
+</span></span><span style="display:flex;"><span>                batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>                shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>                num_workers<span style="color:#f92672">=</span>num_workers,
+</span></span><span style="display:flex;"><span>            ),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>            dataset<span style="color:#f92672">=</span>mnist_train,
+</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>            shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>            dataset<span style="color:#f92672">=</span>mnist_test,
+</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>            shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>            num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test</span>(batch_size, num_workers):
+</span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>    train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span>batch_size, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>, num_workers<span style="color:#f92672">=</span>num_workers
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (X, y) <span style="color:#f92672">in</span> enumerate(train_iter):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    print(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;batch size: </span><span style="color:#e6db74">{</span>batch_size<span style="color:#e6db74">}</span><span style="color:#e6db74">, num of workers: </span><span style="color:#e6db74">{</span>num_workers<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>timer<span style="color:#f92672">.</span>stop()<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> sec&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> batch_size <span style="color:#f92672">in</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">64</span>]:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> num_workers <span style="color:#f92672">in</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>]:
+</span></span><span style="display:flex;"><span>        batch_size_test(batch_size, num_workers)
+</span></span></code></pre></div><p>（略微修改了数据加载器的代码来适配对num_workers的调整。）</p>
+<p>输出结果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">66.35</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">45.15</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">50.05</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">50.57</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">22.39</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">12.79</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">12.86</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">13.59</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">13.08</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">8.41</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6.79</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">6.93</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">8.33</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">5.09</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3.85</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">3.92</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5.91</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3.65</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2.40</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">2.40</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4.62</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2.73</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1.75</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">1.44</span> sec
+</span></span></code></pre></div><p>随着num_workers增加，数据读取效率通常也会增加，但是这会取决于batch_size的大小。比如，当num_workers从1增加到2的时候，数据读取用时显著减少，从2到4也有进步，但是4到8则性能提升较少，甚至一些bs下8workers用时反而会变长。</p>
+<p>原因在于CPU的核心数是有限的。随着线程数量增大，CPU调度本身也在增加性能成本。当性能成本的增长高过多线程带来的速度收益，数据读取用时就会负增长。</p>
+<p>总之，实际训练的时候应该尽量的使用更大的batch_size，除非过大导致爆显存（此事在triton sampler中亦有记载）；此外，num_workers的数值往往存在一个甜品点，比如在我的机器上num_workers设置为4就是多数情况下最稳健且速度较优的配置。</p>
+<h3 id="q2数据迭代器的性能非常重要当前的实现足够快吗探索各种选择来改进它">Q2：数据迭代器的性能非常重要。当前的实现足够快吗？探索各种选择来改进它。<a href="#q2%e6%95%b0%e6%8d%ae%e8%bf%ad%e4%bb%a3%e5%99%a8%e7%9a%84%e6%80%a7%e8%83%bd%e9%9d%9e%e5%b8%b8%e9%87%8d%e8%a6%81%e5%bd%93%e5%89%8d%e7%9a%84%e5%ae%9e%e7%8e%b0%e8%b6%b3%e5%a4%9f%e5%bf%ab%e5%90%97%e6%8e%a2%e7%b4%a2%e5%90%84%e7%a7%8d%e9%80%89%e6%8b%a9%e6%9d%a5%e6%94%b9%e8%bf%9b%e5%ae%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<ul>
+<li><code>pin_memory = True</code>开启显存锁定内存。如果想要GPU直接读取内存数据，内存中数据对应的地址必须固定。假如不开启pin_memory，每次GPU想要读取数据的时候，系统都必须把普通内存中的数据先移动到GPU能读取的锁页内存，然后GPU才能读取。开启之后，CPU打包好的数据会直接放在锁页内存中，这样GPU读取的时候就可以省略一步复制操作。</li>
+<li><code>persistent_workers = True</code>，在每个epoch结束之后保留workers进程，避免反复创建内存的开销。</li>
+<li>预处理训练集，如果需要resize则提前写一个脚本生成一个已经resize过的数据集，这样训练过程中就不用CPU反复resize，减少CPU负载。</li>
+<li>直接读取整个数据集，将所有样本都用张量的形式直接放在内存中，消除磁盘读写时间。</li>
+</ul>
+<p>总之我们先来尝试一下添加显存锁定内存以及保留线程。修改后的数据加载器：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> [transforms<span style="color:#f92672">.</span>ToTensor()]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> resize:
+</span></span><span style="display:flex;"><span>        trans<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, transforms<span style="color:#f92672">.</span>Resize(resize))
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose(trans)
+</span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    mnist_test <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data&#34;</span>, train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> num_workers:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>            data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>                dataset<span style="color:#f92672">=</span>mnist_train,
+</span></span><span style="display:flex;"><span>                batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>                shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                pin_memory <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                persistent_workers <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                num_workers<span style="color:#f92672">=</span>num_workers,
+</span></span><span style="display:flex;"><span>            ),
+</span></span><span style="display:flex;"><span>            data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>                dataset<span style="color:#f92672">=</span>mnist_test,
+</span></span><span style="display:flex;"><span>                batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>                shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>                pin_memory <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                persistent_workers <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>                num_workers<span style="color:#f92672">=</span>num_workers,
+</span></span><span style="display:flex;"><span>            ),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>            dataset<span style="color:#f92672">=</span>mnist_train,
+</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>            shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            pin_memory <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            persistent_workers <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>            dataset<span style="color:#f92672">=</span>mnist_test,
+</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>            shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>            pin_memory <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            persistent_workers <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><p>（做到这里的时候发现torch版本太旧，加了<code>pin_memory</code>出现了不支持当前硬件的情况，索性重新配了一个新的环境，jupyter lab感觉配置有点反人类，回头写篇博客专门研究一下。）</p>
+<p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">67.36</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">45.86</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">48.19</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">50.56</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">21.34</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">13.26</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">13.15</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">4</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">13.04</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">13.00</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">8.06</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6.77</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">8</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">7.26</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">8.42</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4.96</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3.88</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">16</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">3.93</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">5.87</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3.58</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">2.42</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">32</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">2.37</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4.79</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2.61</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">1.77</span> sec
+</span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">1.51</span> sec
+</span></span></code></pre></div><p>（好像没什么优化，我怀疑可能是自己硬件太超前了导致torch支持还没跟上&hellip;）</p>
+<p>尝试使用离线处理，原理是<code>transforms.Resize(64)</code>非常吃CPU，每个epoch都要计算一次的话会很浪费性能。幸运的是PyTorch支持你把一个张量存储为一个<code>.pt</code>文件存在硬盘上，我们可以写一个脚本预处理图像，把尺寸伸缩后的图像全部塞在这个张量文件中，这样数据加载的时候就可以省略这一步骤。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess_and_save</span>(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>):
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose([transforms<span style="color:#f92672">.</span>ToTensor(), transforms<span style="color:#f92672">.</span>Resize(size<span style="color:#f92672">=</span>resize)])
+</span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span>root, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    mnist_test <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span>root, train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    train_loader <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>mnist_train, batch_size<span style="color:#f92672">=</span>len(mnist_train))
+</span></span><span style="display:flex;"><span>    test_loader <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>mnist_test, batch_size<span style="color:#f92672">=</span>len(mnist_test))
+</span></span><span style="display:flex;"><span>    train_data, train_target <span style="color:#f92672">=</span> next(iter(train_loader))
+</span></span><span style="display:flex;"><span>    test_data, test_target <span style="color:#f92672">=</span> next(iter(test_loader))
+</span></span><span style="display:flex;"><span>    torch<span style="color:#f92672">.</span>save((train_data, train_target), <span style="color:#e6db74">&#34;mnist_train_resize.pt&#34;</span>)
+</span></span><span style="display:flex;"><span>    torch<span style="color:#f92672">.</span>save((test_data, test_target), <span style="color:#e6db74">&#34;mnist_test_resize.pt&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Saved successfully.&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>preprocess_and_save()
+</span></span></code></pre></div><p>工作原理是一次读取一个和数据集一样大的batch，然后把读取的data和target张量打包成一个元组塞进<code>.pt</code>文件中。</p>
+<p>对于读取操作，我们可以通过自己写一个dataset类来实现，完整代码实现如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess_and_save</span>(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>):
+</span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose([transforms<span style="color:#f92672">.</span>ToTensor(), transforms<span style="color:#f92672">.</span>Resize(size<span style="color:#f92672">=</span>resize)])
+</span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span>root, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    mnist_test <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
+</span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span>root, train<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    train_loader <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>mnist_train, batch_size<span style="color:#f92672">=</span>len(mnist_train))
+</span></span><span style="display:flex;"><span>    test_loader <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(dataset<span style="color:#f92672">=</span>mnist_test, batch_size<span style="color:#f92672">=</span>len(mnist_test))
+</span></span><span style="display:flex;"><span>    train_data, train_target <span style="color:#f92672">=</span> next(iter(train_loader))
+</span></span><span style="display:flex;"><span>    test_data, test_target <span style="color:#f92672">=</span> next(iter(test_loader))
+</span></span><span style="display:flex;"><span>    torch<span style="color:#f92672">.</span>save((train_data, train_target), <span style="color:#e6db74">&#34;mnist_train_resize.pt&#34;</span>)
+</span></span><span style="display:flex;"><span>    torch<span style="color:#f92672">.</span>save((test_data, test_target), <span style="color:#e6db74">&#34;mnist_test_resize.pt&#34;</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Saved successfully.&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OfflineDataset</span>(data<span style="color:#f92672">.</span>Dataset):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, pt_file) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data, self<span style="color:#f92672">.</span>targets <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>load(pt_file)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__len__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> len(self<span style="color:#f92672">.</span>targets)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__getitem__</span>(self, index):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>data[index], self<span style="color:#f92672">.</span>targets[index]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>preprocess_and_save()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_iter <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>    OfflineDataset(<span style="color:#e6db74">&#34;mnist_train_resize.pt&#34;</span>),
+</span></span><span style="display:flex;"><span>    batch_size<span style="color:#f92672">=</span>BATCH_SIZE,
+</span></span><span style="display:flex;"><span>    shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>    num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>test_iter <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>    OfflineDataset(<span style="color:#e6db74">&#34;mnist_test_resize.pt&#34;</span>),
+</span></span><span style="display:flex;"><span>    batch_size<span style="color:#f92672">=</span>BATCH_SIZE,
+</span></span><span style="display:flex;"><span>    shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>    num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>我们还可以把它打包成和原本的<code>load_data_fashion_mnist</code>行为一致的加载器：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_offline</span>(batch_size, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> num_workers:
+</span></span><span style="display:flex;"><span>        num_workers <span style="color:#f92672">=</span> get_dataloader_workers()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>            OfflineDataset(<span style="color:#e6db74">&#34;mnist_train_resize.pt&#34;</span>),
+</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>            shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            num_workers<span style="color:#f92672">=</span>num_workers,
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>        data<span style="color:#f92672">.</span>DataLoader(
+</span></span><span style="display:flex;"><span>            OfflineDataset(<span style="color:#e6db74">&#34;mnist_test_resize.pt&#34;</span>),
+</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>            shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>            num_workers<span style="color:#f92672">=</span>num_workers,
+</span></span><span style="display:flex;"><span>        ),
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><p>测试脚本：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test_offline</span>(batch_size, num_workers):
+</span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>    train_iter, test_iter <span style="color:#f92672">=</span> load_data_offline(batch_size, num_workers)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (X, y) <span style="color:#f92672">in</span> enumerate(train_iter):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    t <span style="color:#f92672">=</span> timer<span style="color:#f92672">.</span>stop()
+</span></span><span style="display:flex;"><span>    print(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;offline: batch size: </span><span style="color:#e6db74">{</span>batch_size<span style="color:#e6db74">}</span><span style="color:#e6db74">, num of workers: </span><span style="color:#e6db74">{</span>num_workers<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>t<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> sec&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> t
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test</span>(batch_size, num_workers):
+</span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>    train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(
+</span></span><span style="display:flex;"><span>        batch_size<span style="color:#f92672">=</span>batch_size, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>, num_workers<span style="color:#f92672">=</span>num_workers
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (X, y) <span style="color:#f92672">in</span> enumerate(train_iter):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    t <span style="color:#f92672">=</span> timer<span style="color:#f92672">.</span>stop()
+</span></span><span style="display:flex;"><span>    print(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;online: batch size: </span><span style="color:#e6db74">{</span>batch_size<span style="color:#e6db74">}</span><span style="color:#e6db74">, num of workers: </span><span style="color:#e6db74">{</span>num_workers<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>t<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> sec&#34;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> t
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>batch_size_list <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">64</span>]
+</span></span><span style="display:flex;"><span>num_workers_list <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> batch_size <span style="color:#f92672">in</span> batch_size_list:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> num_workers <span style="color:#f92672">in</span> num_workers_list:
+</span></span><span style="display:flex;"><span>        t_offline <span style="color:#f92672">=</span> batch_size_test_offline(batch_size, num_workers)
+</span></span><span style="display:flex;"><span>        t_online <span style="color:#f92672">=</span> batch_size_test(batch_size, num_workers)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;    Speedup ratio:</span><span style="color:#e6db74">{</span>(t_online <span style="color:#f92672">/</span> t_offline)<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>输出结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Saved successfully.
+</span></span><span style="display:flex;"><span>offline: batch size: 1, num of workers: 1, 50.77 sec
+</span></span><span style="display:flex;"><span>online: batch size: 1, num of workers: 1, 61.14 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.20
+</span></span><span style="display:flex;"><span>offline: batch size: 1, num of workers: 2, 38.74 sec
+</span></span><span style="display:flex;"><span>online: batch size: 1, num of workers: 2, 43.12 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.11
+</span></span><span style="display:flex;"><span>offline: batch size: 1, num of workers: 4, 41.70 sec
+</span></span><span style="display:flex;"><span>online: batch size: 1, num of workers: 4, 42.30 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.01
+</span></span><span style="display:flex;"><span>offline: batch size: 1, num of workers: 8, 42.96 sec
+</span></span><span style="display:flex;"><span>online: batch size: 1, num of workers: 8, 43.82 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.02
+</span></span><span style="display:flex;"><span>offline: batch size: 2, num of workers: 1, 26.88 sec
+</span></span><span style="display:flex;"><span>online: batch size: 2, num of workers: 1, 35.11 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.31
+</span></span><span style="display:flex;"><span>offline: batch size: 2, num of workers: 2, 20.78 sec
+</span></span><span style="display:flex;"><span>online: batch size: 2, num of workers: 2, 21.45 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.03
+</span></span><span style="display:flex;"><span>offline: batch size: 2, num of workers: 4, 22.06 sec
+</span></span><span style="display:flex;"><span>online: batch size: 2, num of workers: 4, 21.86 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:0.99
+</span></span><span style="display:flex;"><span>offline: batch size: 2, num of workers: 8, 21.27 sec
+</span></span><span style="display:flex;"><span>online: batch size: 2, num of workers: 8, 22.73 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.07
+</span></span><span style="display:flex;"><span>offline: batch size: 4, num of workers: 1, 14.37 sec
+</span></span><span style="display:flex;"><span>online: batch size: 4, num of workers: 1, 20.35 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.42
+</span></span><span style="display:flex;"><span>offline: batch size: 4, num of workers: 2, 11.23 sec
+</span></span><span style="display:flex;"><span>online: batch size: 4, num of workers: 2, 10.90 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:0.97
+</span></span><span style="display:flex;"><span>offline: batch size: 4, num of workers: 4, 11.27 sec
+</span></span><span style="display:flex;"><span>online: batch size: 4, num of workers: 4, 11.97 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.06
+</span></span><span style="display:flex;"><span>offline: batch size: 4, num of workers: 8, 10.54 sec
+</span></span><span style="display:flex;"><span>online: batch size: 4, num of workers: 8, 11.94 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.13
+</span></span><span style="display:flex;"><span>offline: batch size: 8, num of workers: 1, 7.77 sec
+</span></span><span style="display:flex;"><span>online: batch size: 8, num of workers: 1, 12.62 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.62
+</span></span><span style="display:flex;"><span>offline: batch size: 8, num of workers: 2, 5.91 sec
+</span></span><span style="display:flex;"><span>online: batch size: 8, num of workers: 2, 8.09 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.37
+</span></span><span style="display:flex;"><span>offline: batch size: 8, num of workers: 4, 6.13 sec
+</span></span><span style="display:flex;"><span>online: batch size: 8, num of workers: 4, 5.19 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:0.85
+</span></span><span style="display:flex;"><span>offline: batch size: 8, num of workers: 8, 6.25 sec
+</span></span><span style="display:flex;"><span>online: batch size: 8, num of workers: 8, 6.36 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.02
+</span></span><span style="display:flex;"><span>offline: batch size: 16, num of workers: 1, 4.12 sec
+</span></span><span style="display:flex;"><span>online: batch size: 16, num of workers: 1, 7.64 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.85
+</span></span><span style="display:flex;"><span>offline: batch size: 16, num of workers: 2, 3.50 sec
+</span></span><span style="display:flex;"><span>online: batch size: 16, num of workers: 2, 4.89 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.40
+</span></span><span style="display:flex;"><span>offline: batch size: 16, num of workers: 4, 3.28 sec
+</span></span><span style="display:flex;"><span>online: batch size: 16, num of workers: 4, 3.38 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.03
+</span></span><span style="display:flex;"><span>offline: batch size: 16, num of workers: 8, 3.39 sec
+</span></span><span style="display:flex;"><span>online: batch size: 16, num of workers: 8, 3.44 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.02
+</span></span><span style="display:flex;"><span>offline: batch size: 32, num of workers: 1, 2.37 sec
+</span></span><span style="display:flex;"><span>online: batch size: 32, num of workers: 1, 5.19 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:2.19
+</span></span><span style="display:flex;"><span>offline: batch size: 32, num of workers: 2, 1.91 sec
+</span></span><span style="display:flex;"><span>online: batch size: 32, num of workers: 2, 3.67 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.92
+</span></span><span style="display:flex;"><span>offline: batch size: 32, num of workers: 4, 1.93 sec
+</span></span><span style="display:flex;"><span>online: batch size: 32, num of workers: 4, 2.48 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.29
+</span></span><span style="display:flex;"><span>offline: batch size: 32, num of workers: 8, 1.98 sec
+</span></span><span style="display:flex;"><span>online: batch size: 32, num of workers: 8, 2.05 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.03
+</span></span><span style="display:flex;"><span>offline: batch size: 64, num of workers: 1, 1.59 sec
+</span></span><span style="display:flex;"><span>online: batch size: 64, num of workers: 1, 4.84 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:3.04
+</span></span><span style="display:flex;"><span>offline: batch size: 64, num of workers: 2, 1.32 sec
+</span></span><span style="display:flex;"><span>online: batch size: 64, num of workers: 2, 2.91 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:2.21
+</span></span><span style="display:flex;"><span>offline: batch size: 64, num of workers: 4, 1.28 sec
+</span></span><span style="display:flex;"><span>online: batch size: 64, num of workers: 4, 1.78 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:1.39
+</span></span><span style="display:flex;"><span>offline: batch size: 64, num of workers: 8, 0.36 sec
+</span></span><span style="display:flex;"><span>online: batch size: 64, num of workers: 8, 1.27 sec
+</span></span><span style="display:flex;"><span>    Speedup ratio:3.54
+</span></span></code></pre></div><p>在batch_size较小的时候，使用离线加载的策略优化效果并不明显，但是当batch_size达到64时，1线程下离线加载可以达到3.04的加速比，可知计算量越大，离线加载的收益越大。此外，当batch_size为32时随着workers数变大，离线加载用时基本不变甚至有所增长，意味着num_workers的边界收益在离线加载下会更早体现。最神迹的是，当batch_size为64，num_workers为8时，离线加载整个数据集只需要用0.36秒。相较于开始时的接近1分钟，速度提升了两个数量级。</p>
+<h3 id="q3查阅框架的在线api文档还有哪些其他数据集可用">Q3：查阅框架的在线API文档。还有哪些其他数据集可用？<a href="#q3%e6%9f%a5%e9%98%85%e6%a1%86%e6%9e%b6%e7%9a%84%e5%9c%a8%e7%ba%bfapi%e6%96%87%e6%a1%a3%e8%bf%98%e6%9c%89%e5%93%aa%e4%ba%9b%e5%85%b6%e4%bb%96%e6%95%b0%e6%8d%ae%e9%9b%86%e5%8f%af%e7%94%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><a href="https://docs.pytorch.org/vision/stable/datasets.html#built-in-datasets">torchvision</a></p>
+<h1 id="softmax回归的从零开始实现">softmax回归的从零开始实现<a href="#softmax%e5%9b%9e%e5%bd%92%e7%9a%84%e4%bb%8e%e9%9b%b6%e5%bc%80%e5%a7%8b%e5%ae%9e%e7%8e%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> IPython <span style="color:#f92672">import</span> display
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>load_data_fashion_mnist(BATCH_SIZE)
+</span></span></code></pre></div><p>d2l库直接帮我们省略了加载fashion_mnist的具体实现步骤。</p>
+<p>在我们本节的softmax回归模型中，我们并没有去讨论像素点空间位置对于结果判断的影响，这意味着对我们而言，所有的像素点都是等价的。一个$28 \cdot 28$的张量对我们而言和一个长784的向量没有什么区别。所以，我们直接展平每个图像，并把每个像素点看成一个特征。
+</p>
+$$
+\hat{y} = X \cdot W + b
+$$<p>
+因为我们最后会将这个图像进行分类，有10个目标类别，所以回顾我们前面的线性模型知识，我们可以知道在本模型中权重将会构成一个$784 \cdot 10$的矩阵，而偏置则会构成一个$1 \cdot 10$的行向量。（注意如上公式中的$X$为一个batch，每一行为一个图片向量。b会进行广播计算，$\hat{y}$的形状会是$batch size \cdot 10$。）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num_input <span style="color:#f92672">=</span> <span style="color:#ae81ff">784</span>
+</span></span><span style="display:flex;"><span>num_output <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>W <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(num_input, num_output), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(num_output, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><p>经过上面的计算，$\hat{y}$的每一行代表一个样本对于每种分类的原始打分，即logits。现在我们需要对$\hat{y}$的每一行进行softmax计算。即：先对$\hat{y}$的所有元素求exp，随后对于每一行求和得到规范化常数，随后对每一行的所有元素除以该行的规范化常数，得到概率。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X):
+</span></span><span style="display:flex;"><span>    X_exp <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(X)
+</span></span><span style="display:flex;"><span>    partiton <span style="color:#f92672">=</span> X_exp<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_exp<span style="color:#f92672">/</span>partiton
+</span></span></code></pre></div><p>虽然这样做也可以运行，但是当矩阵中出现了非常大或者非常小的数字很可能会导致数据溢出。此时我们可以使用一种叫做<strong>Log-Sum-Exp</strong>的技巧（此事在triton自学笔记中亦有记载），先寻找每个样本中最大的logit，然后让所有样本的所有元素减去该样本中最大元素的值，再进行softmax计算，得到的结果是一致的，同时防止了数据过大导致的潜在溢出。</p>
+<p>改进版：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X: torch<span style="color:#f92672">.</span>Tensor):
+</span></span><span style="display:flex;"><span>    X <span style="color:#f92672">=</span> X <span style="color:#f92672">-</span> X<span style="color:#f92672">.</span>max(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span>    X_exp <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(X)
+</span></span><span style="display:flex;"><span>    partition <span style="color:#f92672">=</span> X_exp<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_exp <span style="color:#f92672">/</span> partition
+</span></span></code></pre></div><p>随便一个测试代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">5</span>))
+</span></span><span style="display:flex;"><span>X_prob <span style="color:#f92672">=</span> softmax(X)
+</span></span><span style="display:flex;"><span>print(X, <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>,X_prob)
+</span></span></code></pre></div><p>输出结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tensor([[ <span style="color:#ae81ff">1.2374</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.4810</span>,  <span style="color:#ae81ff">0.2318</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.8470</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.6407</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.1617</span>,  <span style="color:#ae81ff">0.6448</span>,  <span style="color:#ae81ff">1.3492</span>,  <span style="color:#ae81ff">0.0251</span>,  <span style="color:#ae81ff">0.7857</span>]]) 
+</span></span><span style="display:flex;"><span> tensor([[<span style="color:#ae81ff">0.5851</span>, <span style="color:#ae81ff">0.0386</span>, <span style="color:#ae81ff">0.2140</span>, <span style="color:#ae81ff">0.0728</span>, <span style="color:#ae81ff">0.0895</span>],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">0.0865</span>, <span style="color:#ae81ff">0.1939</span>, <span style="color:#ae81ff">0.3921</span>, <span style="color:#ae81ff">0.1043</span>, <span style="color:#ae81ff">0.2232</span>]])
+</span></span></code></pre></div><p>符合预期。</p>
+<p>定义模型。我们使用数据集加载器加载的图像并没有进行展开，此处我们需要手动reshape一下。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">net</span>(X:torch<span style="color:#f92672">.</span>Tensor):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> softmax(torch<span style="color:#f92672">.</span>matmul(X<span style="color:#f92672">.</span>reshape((<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, W<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])), W) <span style="color:#f92672">+</span> b)
+</span></span></code></pre></div><p>定义损失函数。正如我们前面花大篇幅铺垫的，我们会尝试实现交叉熵损失函数。交叉熵越大，表示模型预测的混乱程度越大，而只有当模型对分类计算得到的概率与真实概率一致时，交叉熵才会达到最低值。具体实现即所谓的负对数似然。</p>
+<p>在我们的训练集中，真实概率就是独热标签，记作$y$，而预测概率记作$\hat{y}$。而独热标签有一个特点：只有答案是1，其他都是0。在真实的数据集中，$y$的存在形式为一个一维张量，每个元素表示该样本中真实分类对应的索引。以防你忘记，交叉熵表示为$H=-y\log \hat{y}$，其中$y$对应的概率永远为1，所以我们只需要对对应的$\hat{y}$值进行负对数计算即可。</p>
+<p>具体实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cross_entropy</span>(y_hat:torch<span style="color:#f92672">.</span>Tensor, y:torch<span style="color:#f92672">.</span>Tensor):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>torch<span style="color:#f92672">.</span>log(y_hat[range(len(y_hat)), y])
+</span></span></code></pre></div><p>如上的代码用到了一些高级索引技巧，总之最终的效果就是从每一行都选取了那个真实分类处的预测概率。因为分类问题远多于回归问题，交叉熵损失可以说是机器学习中最常用的损失函数表示法。</p>
+<p>除此之外，我们还需要衡量模型的分类精度。我们直接将每个样本中概率最大的分类视作预测值（虽然实际应用中我们可能会投骰子，但是topk截断也是一个经典策略。此处可以视作top1截断。）。假如预测值和真实值一致，我们就认为预测正确。这样，我们就可以得到总的预测正确率。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">accuracy</span>(y_hat:torch<span style="color:#f92672">.</span>Tensor, y:torch<span style="color:#f92672">.</span>Tensor):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(y_hat<span style="color:#f92672">.</span>shape) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> y_hat<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        y_hat <span style="color:#f92672">=</span> y_hat<span style="color:#f92672">.</span>argmax(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    cmp <span style="color:#f92672">=</span> y_hat<span style="color:#f92672">.</span>type(y<span style="color:#f92672">.</span>dtype) <span style="color:#f92672">==</span> y
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> float(cmp<span style="color:#f92672">.</span>type(y<span style="color:#f92672">.</span>dtype)<span style="color:#f92672">.</span>sum())
+</span></span></code></pre></div><p><code>torch.argmax</code>的功能是得到一个由最大值的索引构成的张量。通过对$\hat{y}$做argmax计算，我们实际得到了我们的top1预测结果。因为双等号类型敏感，所以我们先将<code>y_hat</code>强制转换为和y一样的数据类型再进行比较，随后求和即得到预测正确的个数。</p>
+<p>同样，对于任意数据迭代器<code>data_iter</code>可访问的数据集， 我们可以评估在任意模型<code>net</code>的精度。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Accumulator</span>:  <span style="color:#75715e">#@save</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;在n个变量上累加&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, n):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.0</span>] <span style="color:#f92672">*</span> n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(self, <span style="color:#f92672">*</span>args):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> [a <span style="color:#f92672">+</span> float(b) <span style="color:#66d9ef">for</span> a, b <span style="color:#f92672">in</span> zip(self<span style="color:#f92672">.</span>data, args)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">reset</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.0</span>] <span style="color:#f92672">*</span> len(self<span style="color:#f92672">.</span>data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__getitem__</span>(self, idx):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>data[idx]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">evaluate_accuracy</span>(net, data_iter):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(net, torch<span style="color:#f92672">.</span>nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>        net<span style="color:#f92672">.</span>eval()
+</span></span><span style="display:flex;"><span>    metric <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>Accumulator(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter:
+</span></span><span style="display:flex;"><span>            metric<span style="color:#f92672">.</span>add(accuracy(net(X), y), y<span style="color:#f92672">.</span>numel())
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> metric[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">/</span>metric[<span style="color:#ae81ff">1</span>]
+</span></span></code></pre></div><p>此处定义了一个辅助类累加器，专门用来处理多变量的累加问题。</p>
+<p>由于我们使用随机权重初始化<code>net</code>模型，尚未进行任何训练，此时模型的准确度应该近似于随机猜测。因为我们有10个类别，所以此时的准确率应该大概在0.1左右。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
+</span></span><span style="display:flex;"><span>        W <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(num_input, num_output), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(num_output, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    print(evaluate_accuracy(net, test_iter))
+</span></span></code></pre></div><p>某次输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">0.0996</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.1085</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.0554</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.0962</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.0662</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.0427</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.1133</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.111</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.1262</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.1091</span>
+</span></span></code></pre></div><p>符合预期。</p>
+<h2 id="训练-1">训练<a href="#%e8%ae%ad%e7%bb%83-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>训练部分代码很大程度上和线性回归模型类似，训练函数会接受四个参数：<code>net</code>，表示神经网络，期待的数据类型为<code>torch.nn.Module</code>或者一个普通的函数，如果是<code>torch.nn.Module</code>则将其设置为训练模式；<code>train_iter</code>，表示数据加载器调用得到的迭代器，每次调用返回一个batch的训练数据；<code>loss</code>，表示损失函数，接受一个$\hat{y}$张量和$y$张量，计算总的标量损失值；<code>updater</code>，表示优化器，用来优化参数。</p>
+<p>具体的实现如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_epoch_ch3</span>(net, train_iter, loss, updater):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(net, torch<span style="color:#f92672">.</span>nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>        net<span style="color:#f92672">.</span>train()
+</span></span><span style="display:flex;"><span>    metric <span style="color:#f92672">=</span> Accumulator(<span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> train_iter:
+</span></span><span style="display:flex;"><span>        y_hat <span style="color:#f92672">=</span> net(X)
+</span></span><span style="display:flex;"><span>        l: torch<span style="color:#f92672">.</span>Tensor <span style="color:#f92672">=</span> loss(y_hat, y)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> isinstance(updater, torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>Optimizer):
+</span></span><span style="display:flex;"><span>            updater<span style="color:#f92672">.</span>zero_grad()
+</span></span><span style="display:flex;"><span>            l<span style="color:#f92672">.</span>mean()<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>            updater<span style="color:#f92672">.</span>step()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            l<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>            updater(X<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>        metric<span style="color:#f92672">.</span>add(float(l<span style="color:#f92672">.</span>sum()), accuracy(y_hat, y), y<span style="color:#f92672">.</span>numel())
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> metric[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">/</span> metric[<span style="color:#ae81ff">2</span>], metric[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">/</span> metric[<span style="color:#ae81ff">2</span>]
+</span></span></code></pre></div><p>这里使用了一个<code>Accumulator</code>来存储训练过程中的总损失、总命中个数，以及总的样本数（<code>torch.numel()</code>得到的是一个张量的总元素数）。最终<code>metric[0]/metric[2]</code>得到的是每个样本的平均损失，<code>metric[1]/metric[2]</code>得到的则是命中率。</p>
+<p>d2l中给出了一个<code>Animator</code>类，这个类的作用是绘制图像，但是过程是动态的，向其中添加新数据并不会生成新的静态图片而是会实现动画的效果，同时支持多曲线、自动配置范围和缩放比例。但是这个类的设计完全面向jupyter notebook环境，普通的py文件运行不会有任何效果。</p>
+<p>以下是使用plotext重写过的<code>Animator</code>类，并且行为和原型一致。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animator</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;在终端中使用 plotext 动态绘制数据&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(
+</span></span><span style="display:flex;"><span>        self,
+</span></span><span style="display:flex;"><span>        xlabel<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        ylabel<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        legend<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        xlim<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        ylim<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        xscale<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;linear&#34;</span>,
+</span></span><span style="display:flex;"><span>        yscale<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;linear&#34;</span>,
+</span></span><span style="display:flex;"><span>        fmts<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        nrows<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        ncols<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        figsize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        theme<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pro&#34;</span>,
+</span></span><span style="display:flex;"><span>    ):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 初始化存储</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>xlabel <span style="color:#f92672">=</span> xlabel
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ylabel <span style="color:#f92672">=</span> ylabel
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>legend <span style="color:#f92672">=</span> legend <span style="color:#66d9ef">if</span> legend <span style="color:#66d9ef">else</span> []
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>xlim <span style="color:#f92672">=</span> xlim
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ylim <span style="color:#f92672">=</span> ylim
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>xscale <span style="color:#f92672">=</span> xscale
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>yscale <span style="color:#f92672">=</span> yscale
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>theme <span style="color:#f92672">=</span> theme
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 存储所有历史点，以便重绘</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>X, self<span style="color:#f92672">.</span>Y <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 终端不需要 figsize，但可以设置 plotsize (宽, 高)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> figsize:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># 将 matplotlib 的 figsize(英寸) 粗略转换为终端字符行列数</span>
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>plotsize(int(figsize[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">20</span>), int(figsize[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(self, x, y):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 1. 数据格式标准化 (与原代码逻辑一致)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> hasattr(y, <span style="color:#e6db74">&#34;__len__&#34;</span>):
+</span></span><span style="display:flex;"><span>            y <span style="color:#f92672">=</span> [y]
+</span></span><span style="display:flex;"><span>        n <span style="color:#f92672">=</span> len(y)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> hasattr(x, <span style="color:#e6db74">&#34;__len__&#34;</span>):
+</span></span><span style="display:flex;"><span>            x <span style="color:#f92672">=</span> [x] <span style="color:#f92672">*</span> n
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>X:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>X <span style="color:#f92672">=</span> [[] <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n)]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>Y:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>Y <span style="color:#f92672">=</span> [[] <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(n)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 2. 存入新数据</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i, (a, b) <span style="color:#f92672">in</span> enumerate(zip(x, y)):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> a <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> b <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>X[i]<span style="color:#f92672">.</span>append(a)
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>Y[i]<span style="color:#f92672">.</span>append(b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 3. 核心绘制逻辑</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>clf()  <span style="color:#75715e"># 清除当前的数据</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>clear_terminal()  <span style="color:#75715e"># 清除终端屏幕，实现“原地更新”动画效果</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 4. 绘制所有曲线</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(self<span style="color:#f92672">.</span>X)):
+</span></span><span style="display:flex;"><span>            lbl <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>legend[i] <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&lt;</span> len(self<span style="color:#f92672">.</span>legend) <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>plot(self<span style="color:#f92672">.</span>X[i], self<span style="color:#f92672">.</span>Y[i], label<span style="color:#f92672">=</span>lbl)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 5. 配置坐标轴 (复刻 config_axes)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>xlabel:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>xlabel(self<span style="color:#f92672">.</span>xlabel)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>ylabel:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>ylabel(self<span style="color:#f92672">.</span>ylabel)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>xlim:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>xlim(self<span style="color:#f92672">.</span>xlim[<span style="color:#ae81ff">0</span>], self<span style="color:#f92672">.</span>xlim[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>ylim:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>ylim(self<span style="color:#f92672">.</span>ylim[<span style="color:#ae81ff">0</span>], self<span style="color:#f92672">.</span>ylim[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>xscale:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>xscale(self<span style="color:#f92672">.</span>xscale)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>yscale:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>yscale(self<span style="color:#f92672">.</span>yscale)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>theme:
+</span></span><span style="display:flex;"><span>            plt<span style="color:#f92672">.</span>theme(self<span style="color:#f92672">.</span>theme)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 6. 显示</span>
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p>接下来我们还需要实现一个整体的训练函数，用来自动完成多个迭代周期并评估模型和进行animator可视化。（懒得解释了，总是就是这么写然后就能工作了）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_ch3</span>(net, train_iter, test_iter, loss, num_epoches, updater):
+</span></span><span style="display:flex;"><span>    animator <span style="color:#f92672">=</span> Animator(
+</span></span><span style="display:flex;"><span>        xlabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoch&#34;</span>,
+</span></span><span style="display:flex;"><span>        xlim<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>, num_epoches],
+</span></span><span style="display:flex;"><span>        ylim<span style="color:#f92672">=</span>[<span style="color:#ae81ff">0.3</span>, <span style="color:#ae81ff">0.9</span>],
+</span></span><span style="display:flex;"><span>        legend<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;train_loss&#34;</span>, <span style="color:#e6db74">&#34;train_acc&#34;</span>, <span style="color:#e6db74">&#34;test_acc&#34;</span>],
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epoches):
+</span></span><span style="display:flex;"><span>        train_metrics <span style="color:#f92672">=</span> train_epoch_ch3(net, train_iter, loss, updater)
+</span></span><span style="display:flex;"><span>        test_acc <span style="color:#f92672">=</span> evaluate_accuracy(net, test_iter)
+</span></span><span style="display:flex;"><span>        animator<span style="color:#f92672">.</span>add(epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, train_metrics <span style="color:#f92672">+</span> (test_acc,))
+</span></span><span style="display:flex;"><span>    train_loss, train_acc <span style="color:#f92672">=</span> train_metrics
+</span></span></code></pre></div><p>进行训练：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">updater</span>(batch_size):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> d2l<span style="color:#f92672">.</span>sgd([W, b], lr, batch_size)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>NUM_EPOCHES <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_ch3(net, train_iter, test_iter, cross_entropy, NUM_EPOCHES, updater)
+</span></span></code></pre></div><p>效果：</p>
+<p>![[index-20260204-1.png]]</p>
+<p>经过10次迭代，模型对训练数据预测的命中率达到了约85%，并且对于测试集的命中率也基本保持在相同水平。</p>
+<h1 id="softmax回归的简洁实现">Softmax回归的简洁实现<a href="#softmax%e5%9b%9e%e5%bd%92%e7%9a%84%e7%ae%80%e6%b4%81%e5%ae%9e%e7%8e%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>使用torch高级api的实现。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span>BATCH_SIZE)
+</span></span></code></pre></div><p>我们的模型实际由两层组成：展平层，负责把图像降维打击；全连接层，实现softmax回归。因此，通过如下方式初始化模型参数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Flatten(), nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">784</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_weight</span>(m:nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> type(m) <span style="color:#f92672">is</span> nn<span style="color:#f92672">.</span>Linear:
+</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>init<span style="color:#f92672">.</span>normal_(m<span style="color:#f92672">.</span>weight, mean<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, std<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>net<span style="color:#f92672">.</span>apply(init_weight)
+</span></span></code></pre></div><p>此处使用了<code>Sequential</code>的<code>apply</code>方法，可以递归地让所有子模型执行这个函数来初始化参数。</p>
+<p>![[index-20260204-2.png]]</p>
+<p>d2l这里终于提到safe softmax的思想了，但是话说的疑似有点过于详细了。此处偷一下d2l里的数学表达式。</p>
+$$
+\begin{aligned}
+\hat y_j & =  \frac{\exp(o_j - \max(o_k))\exp(\max(o_k))}{\sum_k \exp(o_k - \max(o_k))\exp(\max(o_k))} \\
+& = \frac{\exp(o_j - \max(o_k))}{\sum_k \exp(o_k - \max(o_k))}.
+\end{aligned}
+$$<p>
+简单来说，$softmax(x)=softmax(x-c)$，我们可以对所有数据添加一个共同的位移，得到的softmax结果并不会发生改变。当计算exp数值时，一些极端大的数据可能会超出数据类型允许的范围（虽然python原生的数字几乎没有位数限制，但是torch出于性能考量，其数据大多都有位数限制）。所以，在计算exp之前减去所有数据中最大的那一项，我们就可以避免exp数值上溢的问题。这就是所谓的safe softmax。</p>
+<p>然而，尽管说是safe，当所有数据减去最大值之后又会出现另一问题：有的数据疑似负的有点多了，导致exp算出来的结果和0太接近，数据类型精度不够，导致向下溢出。</p>
+<p>对此我们的解决方法是，虽然我们期望模型的概率输出要按照softmax计算的结果来，得到的数字是$e$指数的分式，但是训练的过程中损失计算并不直接使用这个值，而是使用其对数。对数+exp不就消掉了吗。所以我们实际上可以完全逃掉exp计算可能导致的上下溢出问题。
+</p>
+$$
+\begin{aligned}
+\log{(\hat y_j)} & = \log\left( \frac{\exp(o_j - \max(o_k))}{\sum_k \exp(o_k - \max(o_k))}\right) \\
+& = \log{(\exp(o_j - \max(o_k)))}-\log{\left( \sum_k \exp(o_k - \max(o_k)) \right)} \\
+& = o_j - \max(o_k) -\log{\left( \sum_k \exp(o_k - \max(o_k)) \right)}.
+\end{aligned}
+$$<p>此处放送一段<code>nn.CrossEntropyLoss</code>的文档描述。</p>
+<blockquote>
+<p>This criterion computes the cross entropy loss between input logits
+and target.</p>
+<p>It is useful when training a classification problem with <code>C</code> classes.
+If provided, the optional argument <code>weight</code> should be a 1D <code>Tensor</code>
+assigning weight to each of the classes.
+This is particularly useful when you have an unbalanced training set.</p>
+<p>The <code>input</code> is expected to contain the unnormalized logits for each class (which do <code>not</code> need
+to be positive or sum to 1, in general).
+<code>input</code> has to be a Tensor of size $(C)$ for unbatched input,
+$(minibatch, C)$ or $(minibatch, C, d_1, d_2, ..., d_K)$ with $K \geq 1$ for the
+<code>K</code>-dimensional case. The last being useful for higher dimension inputs, such
+as computing cross entropy loss per-pixel for 2D images.</p>
+<p>The <code>target</code> that this criterion expects should contain either:</p>
+<ul>
+<li>
+<p>Class indices in the range $[0, C)$ where $C$ is the number of classes; if
+<code>ignore_index</code> is specified, this loss also accepts this class index (this index
+may not necessarily be in the class range). The unreduced (i.e. with <code>reduction</code>
+set to <code>'none'</code>) loss for this case can be described as:</p>
+$$
+   \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
+   l_n = - w_{y_n} \log \frac{\exp(x_{n,y_n})}{\sum_{c=1}^C \exp(x_{n,c})}
+   \cdot \mathbb{1}\{y_n \not= \text{ignore\_index}\}
+   $$<p>where $x$ is the input, $y$ is the target, $w$ is the weight,
+$C$ is the number of classes, and $N$ spans the minibatch dimension as well as
+$d_1, ..., d_k$ for the <code>K</code>-dimensional case. If
+<code>reduction</code> is not <code>'none'</code> (default <code>'mean'</code>), then</p>
+$$
+   \ell(x, y) = \begin{cases}
+       \sum_{n=1}^N \frac{1}{\sum_{n=1}^N w_{y_n} \cdot \mathbb{1}\{y_n \not= \text{ignore\_index}\}} l_n, &
+        \text{if reduction} = \text{`mean';}\\
+         \sum_{n=1}^N l_n,  &
+         \text{if reduction} = \text{`sum'.}
+     \end{cases}
+   $$<p>Note that this case is equivalent to applying <code>LogSoftmax</code>
+on an input, followed by <code>NLLLoss</code>.</p>
+</li>
+<li>
+<p>Probabilities for each class; useful when labels beyond a single class per minibatch item
+are required, such as for blended labels, label smoothing, etc. The unreduced (i.e. with
+<code>reduction</code> set to <code>'none'</code>) loss for this case can be described as:</p>
+$$
+   \ell(x, y) = L = \{l_1,\dots,l_N\}^\top, \quad
+   l_n = - \sum_{c=1}^C w_c \log \frac{\exp(x_{n,c})}{\sum_{i=1}^C \exp(x_{n,i})} y_{n,c}
+   $$<p>where $x$ is the input, $y$ is the target, $w$ is the weight,
+$C$ is the number of classes, and $N$ spans the minibatch dimension as well as
+$d_1, ..., d_k$ for the <code>K</code>-dimensional case. If
+<code>reduction</code> is not <code>'none'</code> (default <code>'mean'</code>), then</p>
+$$
+   \ell(x, y) = \begin{cases}
+       \frac{\sum_{n=1}^N l_n}{N}, &
+        \text{if reduction} = \text{`mean';}\\
+         \sum_{n=1}^N l_n,  &
+         \text{if reduction} = \text{`sum'.}
+     \end{cases}
+   $$</li>
+</ul>
+<p>Note:
+The performance of this criterion is generally better when <code>target</code> contains class
+indices, as this allows for optimized computation. Consider providing <code>target</code> as
+class probabilities only when a single class label per minibatch item is too restrictive.</p>
+</blockquote>
+<p>简单来说，这是一个专门用来进行交叉熵计算的模型（<code>nn.Module</code>的曾孙子类），轮到它计算的时候，它会接受一个<code>input</code>张量和一个<code>target</code>张量，其中<code>input</code>张量包含的内容是未标准化的原始打分。其内部的具体实现就应用了我们刚提到的数学原理。</p>
+<p>总之，精简实现的代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> softmax_scratch <span style="color:#f92672">import</span> train_ch3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+</span></span><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span>BATCH_SIZE)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Flatten(), nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">784</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_weight</span>(m:nn<span style="color:#f92672">.</span>Module):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> type(m) <span style="color:#f92672">is</span> nn<span style="color:#f92672">.</span>Linear:
+</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>init<span style="color:#f92672">.</span>normal_(m<span style="color:#f92672">.</span>weight, mean<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, std<span style="color:#f92672">=</span><span style="color:#ae81ff">0.01</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>net<span style="color:#f92672">.</span>apply(init_weight)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>CrossEntropyLoss(reduction<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>SGD(net<span style="color:#f92672">.</span>parameters(), lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)
+</span></span></code></pre></div><p>（看起来很精简，实际上调用了前面写好的训练流程。）</p>
+<p>结果和前面基本一致，不再演示。</p>
+<h2 id="课后练习-2">课后练习<a href="#%e8%af%be%e5%90%8e%e7%bb%83%e4%b9%a0-2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<h3 id="q2q1跳了增加迭代周期的数量为什么测试精度会在一段时间后降低我们怎么解决这个问题">Q2（Q1跳了）：增加迭代周期的数量。为什么测试精度会在一段时间后降低？我们怎么解决这个问题？<a href="#q2q1%e8%b7%b3%e4%ba%86%e5%a2%9e%e5%8a%a0%e8%bf%ad%e4%bb%a3%e5%91%a8%e6%9c%9f%e7%9a%84%e6%95%b0%e9%87%8f%e4%b8%ba%e4%bb%80%e4%b9%88%e6%b5%8b%e8%af%95%e7%b2%be%e5%ba%a6%e4%bc%9a%e5%9c%a8%e4%b8%80%e6%ae%b5%e6%97%b6%e9%97%b4%e5%90%8e%e9%99%8d%e4%bd%8e%e6%88%91%e4%bb%ac%e6%80%8e%e4%b9%88%e8%a7%a3%e5%86%b3%e8%bf%99%e4%b8%aa%e9%97%ae%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>我们训练个1000次看看。</p>
+<p>![[index-20260204-3.png]]</p>
+<p>可以看到虽然一开始的一段时间（其实看不太到）<code>test_acc</code>和<code>train_acc</code>基本重合，但是之后两者趋于稳定后<code>test_acc</code>就稳定的低于<code>train_acc</code>了。直观的理解是，当迭代次数过多后，模型会出现<strong>过拟合</strong>现象，模型记住了过多的训练集中的偶然细节，导致虽然对训练集命中概率高，但是泛化能力下降。这就好像把数学书上的例题都背下来，虽然例题会做了，到了考试的时候还是什么都不会。</p>
+<p>过拟合最简单的解决方法就是提前终止训练，不训练就不会过拟合。此外常见的方法有正则化，在损失函数里加上权重的L1或L2范数，这样权重的数值就会被约束在一定范围内，限制了模型的复杂度；训练过程中随机丢弃神经元，防止神经元之间相互依赖；在训练模型中加随机噪声；降低模型复杂度。</p>
+<hr>
+<h1 id="后记">后记：<a href="#%e5%90%8e%e8%ae%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>这一篇超级长文在便秘了一周左右终于写完了。感觉这样边写博客边学习的策略虽然印象是挺深刻，但是效率未免太低了。为了这个月能学完d2l（现在看来不太可能），后面的日志只好水一点了（悲）。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>工具不图鉴04：环境变量&amp;shell脚本</title>
