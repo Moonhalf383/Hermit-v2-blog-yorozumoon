@@ -1233,7 +1233,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>train_ch3(net, train_iter, test_iter, cross_entropy, NUM_EPOCHES, updater)
 </span></span></code></pre></div><p>效果：</p>
-<p>![[index-20260204-1.png]]</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/index-20260204-1.png" alt=""></p>
 <p>经过10次迭代，模型对训练数据预测的命中率达到了约85%，并且对于测试集的命中率也基本保持在相同水平。</p>
 <h1 id="softmax回归的简洁实现">Softmax回归的简洁实现<a href="#softmax%e5%9b%9e%e5%bd%92%e7%9a%84%e7%ae%80%e6%b4%81%e5%ae%9e%e7%8e%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -1256,7 +1256,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>net<span style="color:#f92672">.</span>apply(init_weight)
 </span></span></code></pre></div><p>此处使用了<code>Sequential</code>的<code>apply</code>方法，可以递归地让所有子模型执行这个函数来初始化参数。</p>
-<p>![[index-20260204-2.png]]</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/index-20260204-2.png" alt=""></p>
 <p>d2l这里终于提到safe softmax的思想了，但是话说的疑似有点过于详细了。此处偷一下d2l里的数学表达式。</p>
 $$
 \begin{aligned}
@@ -1376,7 +1376,7 @@ class probabilities only when a single class label per minibatch item is too res
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>我们训练个1000次看看。</p>
-<p>![[index-20260204-3.png]]</p>
+<p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/index-20260204-3.png" alt=""></p>
 <p>可以看到虽然一开始的一段时间（其实看不太到）<code>test_acc</code>和<code>train_acc</code>基本重合，但是之后两者趋于稳定后<code>test_acc</code>就稳定的低于<code>train_acc</code>了。直观的理解是，当迭代次数过多后，模型会出现<strong>过拟合</strong>现象，模型记住了过多的训练集中的偶然细节，导致虽然对训练集命中概率高，但是泛化能力下降。这就好像把数学书上的例题都背下来，虽然例题会做了，到了考试的时候还是什么都不会。</p>
 <p>过拟合最简单的解决方法就是提前终止训练，不训练就不会过拟合。此外常见的方法有正则化，在损失函数里加上权重的L1或L2范数，这样权重的数值就会被约束在一定范围内，限制了模型的复杂度；训练过程中随机丢弃神经元，防止神经元之间相互依赖；在训练模型中加随机噪声；降低模型复杂度。</p>
 <hr>

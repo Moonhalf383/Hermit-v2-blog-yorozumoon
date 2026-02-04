@@ -1426,7 +1426,7 @@ train_ch3(net, train_iter, test_iter, cross_entropy, NUM_EPOCHES, updater)
 
 效果：
 
-![[index-20260204-1.png]]
+![](index-20260204-1.png)
 
 经过10次迭代，模型对训练数据预测的命中率达到了约85%，并且对于测试集的命中率也基本保持在相同水平。
 
@@ -1457,7 +1457,7 @@ net.apply(init_weight)
 
 此处使用了`Sequential`的`apply`方法，可以递归地让所有子模型执行这个函数来初始化参数。
 
-![[index-20260204-2.png]]
+![](index-20260204-2.png)
 
 d2l这里终于提到safe softmax的思想了，但是话说的疑似有点过于详细了。此处偷一下d2l里的数学表达式。
 
@@ -1595,7 +1595,7 @@ train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)
 
 我们训练个1000次看看。
 
-![[index-20260204-3.png]]
+![](index-20260204-3.png)
 
 可以看到虽然一开始的一段时间（其实看不太到）`test_acc`和`train_acc`基本重合，但是之后两者趋于稳定后`test_acc`就稳定的低于`train_acc`了。直观的理解是，当迭代次数过多后，模型会出现**过拟合**现象，模型记住了过多的训练集中的偶然细节，导致虽然对训练集命中概率高，但是泛化能力下降。这就好像把数学书上的例题都背下来，虽然例题会做了，到了考试的时候还是什么都不会。
 
