@@ -182,7 +182,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
 <p>这是python自带的虚拟环境创建方法。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.10 -m venv .venv
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.10 -m venv .venv
 </span></span></code></pre></div><p>这句指令的意义是在当前目录下创建一个.venv文件夹，里面装的就是这个虚拟环境的信息。</p>
 <p>针对每个参数，逐一分析一下这句指令：</p>
 <hr>
@@ -211,7 +211,7 @@
    </svg></a></h5>
 <p>在当前目录下生成的虚拟环境文件夹名称。这只是一个名称而已，你可以随意把它换成你喜欢的名字。</p>
 <p>比如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.12 -m venv .asdf1234
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python3.12 -m venv .asdf1234
 </span></span></code></pre></div><p>之所以加<code>.</code>是为了让这个文件夹成为一个隐藏文件夹，这是一个工程惯例。实际上不加<code>.</code>也无所谓。</p>
 <hr>
 <h3 id="如何使用一个虚拟环境">如何使用一个虚拟环境？<a href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e4%b8%80%e4%b8%aa%e8%99%9a%e6%8b%9f%e7%8e%af%e5%a2%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -222,20 +222,20 @@
 <p>在你创建的虚拟环境文件夹下，你可以看到大致这样的目录结构：</p>
 <p><img src="/zh-cn/posts/venvminiconda/venv.jpg" alt=""></p>
 <p>你可以很清晰的看到这个文件夹里包含了什么：有虚拟环境自己的python、pip，以及专门存放lib的文件目录。此外，在bin目录下，你还可以找到<code>activate</code>文件，这就是虚拟环境的启动脚本。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>source .venv/bin/activate
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>source .venv/bin/activate
 </span></span></code></pre></div><p>运行这个指令，虚拟环境就成功激活了。想要关闭虚拟环境，输入以下指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>deactivate
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>deactivate
 </span></span></code></pre></div><hr>
 <p>在虚拟环境中，你拥有一套和外界环境隔离的第三方库目录。你可以随意增删当前虚拟环境中的第三方库，这些操作都不会对外界环境造成影响。作为补充，这里罗列一些pip常用的指令。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install numpy <span style="color:#75715e"># 下载numpy库</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install numpy <span style="color:#75715e"># 下载numpy库</span>
 </span></span></code></pre></div><p>注意，这里之所以先写<code>python -m</code>再写pip，是为了确保使用当前虚拟环境下的pip。pip是一个模块，而模块永远属于某个python。使用<code>-m</code>参数可以确保永远不会装错环境。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install numpy<span style="color:#f92672">==</span>1.26.4 <span style="color:#75715e"># 指定安装版本</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip list <span style="color:#75715e"># 列出当前环境下安装了哪些包</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip uninstall numpy <span style="color:#75715e"># 卸载numpy</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip show numpy <span style="color:#75715e"># 显示某个包的详细信息，包括版本、安装路径、依赖关系。</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install --upgrade numpy <span style="color:#75715e"># 在已经安装了numpy的基础上对它进行更新</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip freeze &gt; requirements.txt <span style="color:#75715e"># 导出当前环境依赖到requirements.txt文件</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install -r requirements.txt <span style="color:#75715e"># 从requirements.txt安装</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install numpy<span style="color:#f92672">==</span>1.26.4 <span style="color:#75715e"># 指定安装版本</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip list <span style="color:#75715e"># 列出当前环境下安装了哪些包</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip uninstall numpy <span style="color:#75715e"># 卸载numpy</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip show numpy <span style="color:#75715e"># 显示某个包的详细信息，包括版本、安装路径、依赖关系。</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install --upgrade numpy <span style="color:#75715e"># 在已经安装了numpy的基础上对它进行更新</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip freeze &gt; requirements.txt <span style="color:#75715e"># 导出当前环境依赖到requirements.txt文件</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m pip install -r requirements.txt <span style="color:#75715e"># 从requirements.txt安装</span>
 </span></span></code></pre></div><p>如果你想要删除一个虚拟环境，不需要使用什么特殊的指令，直接rm掉你建立的虚拟环境文件夹即可。</p>
 <hr>
 <h2 id="conda是什么">Conda是什么?<a href="#conda%e6%98%af%e4%bb%80%e4%b9%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -284,9 +284,9 @@
    </svg></a></h4>
 <hr>
 <p>wget方法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 </span></span></code></pre></div><p>或者curl方法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 </span></span></code></pre></div><p>下载得到.sh脚本之后，仍然运行该脚本。注意这里给出的指令是x86_64架构且为linux，aarch64需要做出相应修改。</p>
 <p><img src="/zh-cn/posts/venvminiconda/conda.jpg" alt=""></p>
 <p>大致流程参考上图。</p>
@@ -297,7 +297,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>此处仍然以miniconda为例。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda create -n asdf1234 python<span style="color:#f92672">=</span>3.10
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda create -n asdf1234 python<span style="color:#f92672">=</span>3.10
 </span></span></code></pre></div><p>这段指令的意义是：</p>
 <blockquote>
 <p>创建一个名为“asdf1234”的虚拟环境，其中python版本为3.10。</p>
@@ -307,15 +307,15 @@
 <p>这样的设计哲学意义在于当不同的环境中请求同样的包时，conda不用将额外的空间资源浪费在重复下载上，而是可以通过内部构建软链接的方式来实现资源复用。</p>
 <p>conda允许你通过<code>--prefix ./env</code>参数来实现类似venv的存储行为。这里不过多展开。</p>
 <hr>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda activate asdf1234 <span style="color:#75715e"># 激活名为asdf1234的虚拟环境</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda deactivate <span style="color:#75715e"># 退出当前环境</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda install numpy <span style="color:#75715e"># 安装包</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env list <span style="color:#75715e"># 列出所有创建的环境，以及现在所处的环境</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda remove -n asdf1234 --all <span style="color:#75715e"># 删除一个环境</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env export &gt; environment.yml <span style="color:#75715e"># 导出环境</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env create -f environment.yml <span style="color:#75715e"># 从配置文件复现环境</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda activate asdf1234 <span style="color:#75715e"># 激活名为asdf1234的虚拟环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda deactivate <span style="color:#75715e"># 退出当前环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda install numpy <span style="color:#75715e"># 安装包</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env list <span style="color:#75715e"># 列出所有创建的环境，以及现在所处的环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda remove -n asdf1234 --all <span style="color:#75715e"># 删除一个环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env export &gt; environment.yml <span style="color:#75715e"># 导出环境</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env create -f environment.yml <span style="color:#75715e"># 从配置文件复现环境</span>
 </span></span></code></pre></div><p>注意：使用conda下载包的时候，conda有一个专属名词：<strong>channel</strong>。某些时候，使用conda下载某些包的时候会提示你要下载的包不在当前channel中。这时候你需要自行寻找对应的channel，然后通过<code>-c</code>参数指定下载渠道。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda install pytorch<span style="color:#f92672">==</span>1.12.0 -c pytorch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda install pytorch<span style="color:#f92672">==</span>1.12.0 -c pytorch
 </span></span></code></pre></div><blockquote>
 <p>在一个conda虚拟环境中，你可以混用pip安装方式和conda安装方式。但是建议只在conda中找不到你想要的包，或者你要的包是纯python写的时再用pip。</p>
 </blockquote>

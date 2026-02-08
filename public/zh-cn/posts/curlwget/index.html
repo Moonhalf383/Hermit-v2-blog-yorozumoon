@@ -181,7 +181,7 @@ curl和wget是在配置服务器时相当常用的终端工具。
 <li>请求体</li>
 </ol>
 <p>curl的最基本形式：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl URL
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl URL
 </span></span></code></pre></div><p>相当于说：让我看看这个url里有什么东西。</p>
 <p>关于curl语法的细则这里不再过多赘述。</p>
 <hr>
@@ -198,21 +198,21 @@ curl和wget是在配置服务器时相当常用的终端工具。
 <li>用就完了。</li>
 </ul>
 <p>比如，如果你想下载ohmyzsh，你只需要把官网上的下载指令复制下来运行即可。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sh -c <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
 </span></span></code></pre></div><p>这本身是一个原理相对复杂的指令，但是你根本不用关系这些事情。开发者已经替你考虑好了一切。</p>
 <p>而稍微复杂一点点的情况是，你想要下载一个文件，但是README.md中没有给出下载指令。</p>
 <p>我们举一个最简单的例子：</p>
 <hr>
 <p>比如，你想把一个github上的文件下载到本地。但是呢，没有任何网页告诉你应该输入什么指令来下载这个文件。你可能会想到另外用一个智能设备通过浏览器下载，然后上传到终端对应的机器。这是一个方法，但是不够直接。事实上，我们只需要一个curl指令就可以把文件下载到本地。</p>
 <p>比如，你看上了ohmyzsh的README.md。你很想把它下载到本地。你不需要动用浏览器，也不需要git clone整个仓库，你只需要在终端中输入：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </span></span></code></pre></div><p>curl就开始帮你下载文件了。当然前提是你的网络环境支持你访问到这个网站，如果网络条件不佳，你可能必须要配置网络代理才能正常使用。</p>
 <p>但是，只要你实际尝试过，你就会发现，你下载得到的根本不是你想要的东西。你下载得到的是一大堆html代码，根本不是一个md文件。为什么呢？根本上原因在于你下载的实际是用来显示这个网页的代码，而非你想要的内容。</p>
 <p>不过，对于github而言，即使你不能直接curl来获取文件，github为你提供了一个另外的快捷途径，方便你直接使用curl来下载文件。你只需要将url中的<code>github.com</code>替换为<code>raw.githubusercontent.com</code>即可。</p>
 <p>然而，在这个网站中并不存有作者名以及plain之类的参数。所以，你还需要删除<code>/blob</code>以及<code>?plain=1</code>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -O https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
 </span></span></code></pre></div><p>如果你觉得这个方法太麻烦，对于github来说还有另外一种方法可以使用：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -L -O <span style="color:#e6db74">&#34;https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?raw=1&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -L -O <span style="color:#e6db74">&#34;https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?raw=1&#34;</span>
 </span></span></code></pre></div><p>因为我选取的这个README.md网页实际比较特殊，后面自带参数。在这个方法中，你只需要在前面添加<code>-L</code>参数，并为url后方添加<code>raw=1</code>参数即可下载。在本例子中，直接将<code>plain=1</code>替换为<code>raw=1</code>即可。</p>
 <hr>
 <h3 id="如何下载curl">如何下载curl？<a href="#%e5%a6%82%e4%bd%95%e4%b8%8b%e8%bd%bdcurl" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -222,7 +222,7 @@ curl和wget是在配置服务器时相当常用的终端工具。
    </svg></a></h3>
 <p>在绝大多数情况下，你的机器实际上已经配备了curl工具，因为这是一个非常基础的工具。</p>
 <p>假如你的机器上没有这个工具，通常来说你也不需要经过官网来下载最新版。直接使用系统级包管理器下载即可。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install curl <span style="color:#75715e"># 以ubuntu为例</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install curl <span style="color:#75715e"># 以ubuntu为例</span>
 </span></span></code></pre></div><hr>
 <h2 id="什么是wget">什么是wget?<a href="#%e4%bb%80%e4%b9%88%e6%98%afwget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -241,16 +241,16 @@ curl和wget是在配置服务器时相当常用的终端工具。
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>wget的使用方法比curl要简单的多。其中一个最简形式如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget url
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget url
 </span></span></code></pre></div><p>不需要任何参数。比如，我们仍然尝试下载ohmyzsh的README.md：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/ohmyzsh/ohmyzsh/blob/master/README.md?plain<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </span></span></code></pre></div><p>当然，这仍然是个错误的指令，通过它你只能下载到网页代码。我写这句指令，意在说明wget的简便易用。真正有用的指令如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
 </span></span></code></pre></div><p>你仍然需要得到文件真正存放的url。同时，wget也允许你想下载得到的文件直接用新文件名存入本地，你只需要加一个<code>-O</code>参数。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -O myreadme.md https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -O myreadme.md https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/README.md
 </span></span></code></pre></div><hr>
 <p>此外，对于一些体积较大的下载，下载过程可能相对漫长。假如下载过程中因为网络问题而意外终断，一般的wget下载进度就会归零。在此情况下，你可以使用<code>-c</code>参数来保存下载进度，这样即使中间下载中断，继续输入指令，文件就会在原有进度基础上继续下载，不会丢失进度。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -c https://example.com/bigfile.iso <span style="color:#75715e"># 这不是一个真实存在的网站，只是方便演示。</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget -c https://example.com/bigfile.iso <span style="color:#75715e"># 这不是一个真实存在的网站，只是方便演示。</span>
 </span></span></code></pre></div><hr>
 <h3 id="如何下载wget">如何下载wget？<a href="#%e5%a6%82%e4%bd%95%e4%b8%8b%e8%bd%bdwget" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -258,7 +258,7 @@ curl和wget是在配置服务器时相当常用的终端工具。
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>与curl情况基本类似，多数时候你的机器上已经自带wget了。在少数极简开发环境下可能出现不自带wget的情况。此时，只需要使用包管理器下载即可。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install wget <span style="color:#75715e"># 以Ubuntu为例</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install wget <span style="color:#75715e"># 以Ubuntu为例</span>
 </span></span></code></pre></div>
 			</div>
 			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">

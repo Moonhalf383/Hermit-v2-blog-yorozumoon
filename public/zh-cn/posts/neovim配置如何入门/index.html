@@ -153,7 +153,7 @@
 <p>neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。</p>
 <p>但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。</p>
 <p>通常，一个neovim的配置文件目录如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>~/.config/nvim/
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>~/.config/nvim/
 </span></span><span style="display:flex;"><span>├── init.lua
 </span></span><span style="display:flex;"><span>└── lua/
 </span></span><span style="display:flex;"><span>    ├── config/
@@ -184,9 +184,9 @@
    </svg></a></h4>
 <p>显然，如果我们想要使用neovim，我们需要先安装它。你可以安装任意你想要的版本，不过这里我们选择Nvim 0.11.5。kickstart要求nvim版本为最新的稳定版，或者每日夜晚自动编译得到的不经过稳定性测试的Nightly版，我们此处使用的是最新的稳定版。</p>
 <p>对于大部分普通电脑，cpu采用x86_64架构，你需要下载nvim-linux-x86_64.tar.gz。这是软件文件的压缩包，你需要把它移动到你想要它存在的文件目录下，然后在该目录下执行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar xzvf nvim-linux-x86_64.tar.gz <span style="color:#75715e">#或者你实际下载的压缩包</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar xzvf nvim-linux-x86_64.tar.gz <span style="color:#75715e">#或者你实际下载的压缩包</span>
 </span></span></code></pre></div><p>我这边使用的是termux，平板、手机一般cpu架构是arm64，所以我下载的是nvim-linux-arm64.tar.gz。执行相同命令解压之后得到一个同名文件夹。此时，输入：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>./nvim-linux-x86_64/bin/nvim <span style="color:#75715e">#注意第一个应当是你实际下载的版本</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>./nvim-linux-x86_64/bin/nvim <span style="color:#75715e">#注意第一个应当是你实际下载的版本</span>
 </span></span></code></pre></div><p>通常来说，这个时候你就会进入一个nvim的默认的黑白界面。这就意味着你neovim安装成功了。</p>
 <p>此外，为了使用方便，你最好还要安装一些剪切板工具，如xclip，以及Nerd Font，用来显示更美观的图标。此部分自行参考相应的文档自己选择进行。</p>
 <h4 id="kickstart安装">kickstart安装<a href="#kickstart%e5%ae%89%e8%a3%85" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -196,7 +196,7 @@
    </svg></a></h4>
 <p>现在我们来安装kickstart。在kickstart的文档中，开发者提示说可以将这个kickstart仓库复刻一份到你自己的仓库下，这样你可以通过git来管理你的配置。</p>
 <p>如果你懒得复刻一份，直接输入这个指令，kickstart就会开始自动安装（后记：这里你最好记住这个文件位置~/.config/nvim，因为你之后折腾配置的时候要经常打开它）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/nvim-lua/kickstart.nvim.git <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME<span style="color:#66d9ef">:-</span>$HOME/.config<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>/nvim
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/nvim-lua/kickstart.nvim.git <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME<span style="color:#66d9ef">:-</span>$HOME/.config<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>/nvim
 </span></span></code></pre></div><p>如果复刻了一份到自己的仓库，直接从自己的仓库克隆即可。</p>
 <p>在下载好后，再次输入<code>nvim</code>，如果一切正常，你就会看见一堆进度条，一堆看不懂的东西安装完后，界面显示出Tokyo night的配色方案，这就意味着你安装成功了。</p>
 <h4 id="可能遇到的问题">可能遇到的问题<a href="#%e5%8f%af%e8%83%bd%e9%81%87%e5%88%b0%e7%9a%84%e9%97%ae%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -206,14 +206,14 @@
    </svg></a></h4>
 <p>在某些平台上，stylua或者一些其他插件并没有提供预编译版，这意味着Mason（你可以理解为nvim的包管理器，自动安装、管理各种开发工具）无法自动安装这些工具。你需要自行编译安装。其中比较推荐的是使用<strong>世界上最好的包管理器</strong>cargo来进行编译安装。</p>
 <p>要使用cargo，你需要先安装rust。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pkg install rust <span style="color:#75715e">#这里开头需要用你自己实际的包管理器</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pkg install rust <span style="color:#75715e">#这里开头需要用你自己实际的包管理器</span>
 </span></span></code></pre></div><p>安装完后，输入：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cargo install stylua
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cargo install stylua
 </span></span></code></pre></div><p>如果没有意外的话，下载成功后二进制文件会位于<code>~/.cargo/bin/stylua</code>（cargo理论上会给出提示）。在<code>~/.bashrc</code>或者<code>~/.zshrc</code>中加入一行<code>export PATH=&quot;$HOME/.cargo/bin:$PATH&quot;</code> 退出后输入<code>source ~/.bashrc</code>或者<code>source ~/.zshrc</code>，之后按理来说stylua就已经可以工作了。</p>
 <p>但是这个时候，Mason可能会因为只识别Mason安装的stylua而导致进入nvim后依然报错。你可以:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim ~/.config/nvim/init.lua
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim ~/.config/nvim/init.lua
 </span></span></code></pre></div><p>这就是我们一会会讲到的文件，里面罗列了所有你可能会用到的配置文本。在其中大概718行的位置，你可以找到：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require(<span style="color:#e6db74">&#34;mason-tool-installer&#34;</span>).setup {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require(<span style="color:#e6db74">&#34;mason-tool-installer&#34;</span>).setup {
 </span></span><span style="display:flex;"><span>  ensure_installed <span style="color:#f92672">=</span> {
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 删掉 stylua 或者不要写</span>
 </span></span><span style="display:flex;"><span>  }
@@ -228,7 +228,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>现在，我们终于可以进入根目录的init.lua了。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim ~/.config/nvim/init.lua
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim ~/.config/nvim/init.lua
 </span></span></code></pre></div><p>如果一切顺利，你会进入一个1000多行的文件，这就是kickstart的配置模版。接下来我们会逐段分析这个配置模版。</p>
 <h3 id="开头部分">开头部分<a href="#%e5%bc%80%e5%a4%b4%e9%83%a8%e5%88%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -297,7 +297,7 @@ What is Kickstart?
 <p>python的模块导出机制可以看做是“默认导出”。一个python模块文件（即一个.py文件）所有的顶级变量、函数、类全都是公开的。比如你在<code>utils.py</code>中写了一个名为<code>myfunction()</code>的函数，你想在另一个.py文件中使用这个函数，你只需要先<code>import utils</code>，再写<code>utils.myfunction()</code>即可。可以说，python的每个单独的.py文件都是一个“命名空间”，就像namespace std一样。</p>
 <p>但是lua采用了一个与此区别较大的管理方式。简单来说，lua的所有内容都是“私有的”，如果你想让别的.lua文件使用这个.lua文件中的函数等内容，你需要把这些东西“打包发出去”。理解这点对于配置neovim非常关键。</p>
 <p>我们下面来看一个简单的例子：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- shopping.lua</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- shopping.lua</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- (上面的 local 函数和变量定义)</span>
 </span></span><span style="display:flex;"><span>
@@ -312,7 +312,7 @@ What is Kickstart?
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- 3. 把这个填充好的储物柜作为模块的出口</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> M
 </span></span></code></pre></div><p>当我们想从另一个.lua中调用shopping.lua中的函数或者变量时，我们需要这么写：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">local</span> shopping <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;shopping&#39;</span>) <span style="color:#75715e">--此处就用到了require</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">local</span> shopping <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;shopping&#39;</span>) <span style="color:#75715e">--此处就用到了require</span>
 </span></span></code></pre></div><p>这时候，我们就在这个.lua文件中定义了一个变量，名字叫<code>shopping</code>。它的内容是什么呢？很简单，就是shopping.lua中最后“打包”好的M这个table。</p>
 <p>此时，如果你想买苹果，你就写<code>shopping.buy_apple()</code>，如果你想知道苹果的单价，那你就写<code>shopping.PRICE_PER_APPLE</code>。但是你没办法买香蕉，因为你在shopping.lua中没有把buy_banana()打包发出去。</p>
 <p>读到这里，你基本上已经明白了lua的模块管理机制了，但是还不够（因为接下来的内容同样非常重要）。lua并不能完全自动地搜索根目录下匹配名称的.lua文件，而是遵循着一种“内部搜索顺序”。简单来说，这个内部搜索顺序就是一堆相对路径，lua文件运行时会挨个搜索这些路径去找符合条件的.lua文件（比如我们前文写的shopping.lua)，如果它在按照内部搜索顺序寻找无果，那么，它就会报错。</p>
@@ -350,7 +350,7 @@ What is Kickstart?
 │   └── myutils.lua
 └── main.lua
 </code></pre><p>然后，让我们在<code>myutils.lua</code>中随便写一点测试用的代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- libs/myutils.lua</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- libs/myutils.lua</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- 创建一个 table 用于导出</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> M <span style="color:#f92672">=</span> {}
@@ -362,7 +362,7 @@ What is Kickstart?
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- 导出这个 table</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> M
 </span></span></code></pre></div><p>然后，我们来在<code>main.lua</code>中写一个<strong>错误</strong>的模块调用代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- main.lua</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- main.lua</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Attempting to load the &#39;myutils&#39; module...&#34;</span>)
 </span></span><span style="display:flex;"><span>
@@ -381,7 +381,7 @@ What is Kickstart?
 <li>在这段代码中，我们构建了一个无法通过package path找到所需模版的main.lua，这完全是反面例子。后文我们会给出修改。</li>
 </ul>
 <p>保存退出，输入<code>lua main.lua</code>，你就会喜提报错：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ lua main.lua
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ lua main.lua
 </span></span><span style="display:flex;"><span>Attempting to load the <span style="color:#e6db74">&#39;myutils&#39;</span> module...
 </span></span><span style="display:flex;"><span>lua: main.lua:8: module <span style="color:#e6db74">&#39;myutils&#39;</span> not found:
 </span></span><span style="display:flex;"><span>        no field package.preload<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;myutils&#39;</span><span style="color:#f92672">]</span>
@@ -402,7 +402,7 @@ What is Kickstart?
 <p>从报错信息中，你会看到lua查找了所有的内部搜索路径，但是都找不到你要的<code>myutils.lua</code>这个模块，因为你把它放在了libs下，lua根本不知道还有这个地方。</p>
 <p>那么如何解决呢？很简单，我们只需要让<code>main.lua</code>把<code>libs</code>添加到package path中就行。</p>
 <p>将<code>main.lua</code>修改为以下内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- main.lua</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- main.lua</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;--- Experiment 2: Modifying package.path in script ---&#34;</span>)
 </span></span><span style="display:flex;"><span>
@@ -425,7 +425,7 @@ What is Kickstart?
 </span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Successfully loaded module!&#34;</span>)
 </span></span><span style="display:flex;"><span>print(message)
 </span></span></code></pre></div><p>再次退出，输入<code>lua main.lua</code>你就可以得到想要的内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ lua main.lua
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ lua main.lua
 </span></span><span style="display:flex;"><span>--- Experiment 2: Modifying package.path in script ---
 </span></span><span style="display:flex;"><span>Original package.path:
 </span></span><span style="display:flex;"><span>/data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua
@@ -439,7 +439,7 @@ What is Kickstart?
 </span></span></code></pre></div><p>注：以上是我在termux中运行的信息，其他平台上显示的path可能会有所区别。</p>
 <p>我们打印了修改前后package.path的内容，显然，在<code>Modified package.path</code>中第一个搜索路径就是我们添加的<code>./libs/?.lua</code>，此时我们也确实成功使用了<code>myutils.lua</code>中的函数。</p>
 <p>怎么做到的呢？让我们来仔细看一下我们修改的核心内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- 将我们的 libs 目录添加到搜索路径的最前面 </span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- 将我们的 libs 目录添加到搜索路径的最前面 </span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- &#39;./libs/?.lua&#39; 是一个模板，&#39;?&#39; 会被 require 的模块名替换 </span>
 </span></span><span style="display:flex;"><span>package.path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./libs/?.lua;&#39;</span> <span style="color:#f92672">..</span> package.path
 </span></span></code></pre></div><p><code>..</code>在lua中表示字符串连接。这段代码的含义非常清晰：在<code>package.path</code>这个字符串前面加上我们需要的搜索路径。就这么简单。<code>package.path</code>本质就是一个字符串，你可以随意的根据需要修改本工程的搜索路径。</p>
@@ -452,7 +452,7 @@ What is Kickstart?
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>Kickstart Guide:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>Kickstart Guide:
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  TODO: The very first thing you should <span style="color:#66d9ef">do</span> is to run the command <span style="color:#960050;background-color:#1e0010">`</span>:Tutor<span style="color:#960050;background-color:#1e0010">`</span> <span style="color:#66d9ef">in</span> Neovim.
 </span></span><span style="display:flex;"><span>
@@ -505,7 +505,7 @@ What is Kickstart?
 <li>你可以<code>&lt;space&gt;+s+h</code>来进入一个帮助搜索界面。（然而我不会用）</li>
 <li>文件剩余的内容都随便你配置。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- Set &lt;space&gt; as the leader key</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- Set &lt;space&gt; as the leader key</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- See `:help mapleader`</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)</span>
 </span></span><span style="display:flex;"><span>vim.g.mapleader <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span>
@@ -527,7 +527,7 @@ What is Kickstart?
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h5>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Setting options ]]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Setting options ]]</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- See `:help vim.o`</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- NOTE: You can change these options as you wish!</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">--  For more options, you can see `:help option-list`</span>
@@ -628,7 +628,7 @@ What is Kickstart?
 <li><code>vim.o.scrolloff = 10</code>：光标滚动时会==偏移上下边缘10行==，方便阅读。</li>
 <li><code>vim.o.confirm = true</code>：在一些可能导致数据丢失的情况下==要求你确认==，比如未保存时就退出。除非你是人形计算机永远可以保证正确，那么建议你保持开启。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Basic Keymaps ]]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Basic Keymaps ]]</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">--  See `:help vim.keymap.set()`</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">-- Clear highlights on search when pressing &lt;Esc&gt; in normal mode</span>
@@ -725,7 +725,7 @@ What is Kickstart?
 <li>第四个参数是选项，写入desc可以为快捷键写入描述。其他的可选项不在此罗列。</li>
 </ul>
 <p>现在，我们来写一些简单的快捷键，方便我们编写。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;i&#39;</span>,<span style="color:#e6db74">&#39;jk&#39;</span>,<span style="color:#e6db74">&#39;&lt;Esc&gt;&#39;</span>) <span style="color:#75715e">--用jk来从插入模式快速切换回普通模式，比按esc快的多</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;i&#39;</span>,<span style="color:#e6db74">&#39;jk&#39;</span>,<span style="color:#e6db74">&#39;&lt;Esc&gt;&#39;</span>) <span style="color:#75715e">--用jk来从插入模式快速切换回普通模式，比按esc快的多</span>
 </span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;v&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;vsplit&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[V]ertical split&#39;</span> }) <span style="color:#75715e">--创建垂直分屏的快速方式</span>
 </span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;v&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;vsplit&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[V]ertical split&#39;</span> }) <span style="color:#75715e">--创建水平分屏</span>
 </span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;c&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;close&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[C]lose window&#39;</span> }) <span style="color:#75715e">--关闭分屏</span>
@@ -736,13 +736,13 @@ What is Kickstart?
 <hr>
 <p>限于篇幅，init.lua内容的介绍暂时到这里。但是我们并没有结束：接下来，让我们来尝试将options和keymap部分的代码移植到其他地方去。所有的配置全部都放在一个init.lua文件中并不利于后期的维护与调整。理论上，根据我们前文所学的知识，我们已经足够可以实现配置文件的分模块管理了。</p>
 <p>首先，让我们回到根目录：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cd ~/.config/nvim
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cd ~/.config/nvim
 </span></span></code></pre></div><p>接着，在<code>~/.config/nvim/lua/custom</code>目录下创建两个新的lua文件来存放我们写好的keymap和option部分代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>touch lua/custom/options.lua
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>touch lua/custom/options.lua
 </span></span><span style="display:flex;"><span>touch lua/custom/keymaps.lua
 </span></span></code></pre></div><p>然后，将根目录下init.lua中<code>vim.o</code>与<code>vim.keymaps</code>相关的代码分别剪切到这两个文件中。注意，当你使用vim内置的<code>d</code>与<code>p</code>剪切粘贴工具时，因为你要移动的<code>vim.o</code>涉及到了剪切板工具，<code>vim.keymap</code>涉及到了快捷键设置，你可能在此过程中会遇到一点小问题。以防万一，你可以先把代码复制到外部，再挨个复制进对应文件，这样以防代码丢失。</p>
 <p>此时，你就可以完全删除init.lua开头到keymaps位置的全部代码（除了全局变量），并补上：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require <span style="color:#e6db74">&#39;custom.options&#39;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require <span style="color:#e6db74">&#39;custom.options&#39;</span>
 </span></span><span style="display:flex;"><span>require <span style="color:#e6db74">&#39;custom.keymaps&#39;</span>
 </span></span></code></pre></div><p>不出意外的话，保存退出再重进，你原先写在init.lua中的配置此时再次会发挥作用。你可以通过这种方式让你的配置文件更加易于维护。</p>
 <p>大概先这样，我还会就界面个性化、lsp等比较棘手的配置问题再写几篇博客。</p>

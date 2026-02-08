@@ -166,11 +166,11 @@ mesa3D主页
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <p>基础编译工具链：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt-get update
 </span></span><span style="display:flex;"><span>apt-get install -y git cmake build-essential python3 python3-setuptoolsapt-get update
 </span></span><span style="display:flex;"><span>apt-get install -y git cmake build-essential python3 python3-setuptools
 </span></span></code></pre></div><p>编译指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 克隆官方仓库</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 克隆官方仓库</span>
 </span></span><span style="display:flex;"><span>git clone https://github.com/ptitSeb/box64
 </span></span><span style="display:flex;"><span>cd box64
 </span></span><span style="display:flex;"><span>
@@ -185,7 +185,7 @@ mesa3D主页
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 4. 开始编译 (利用 8s Gen 3 的多核性能，-j8)</span>
 </span></span><span style="display:flex;"><span>make -j8
 </span></span></code></pre></div><p>安装二进制文件到系统目录：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 安装二进制文件到系统路径 </span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 安装二进制文件到系统路径 </span>
 </span></span><span style="display:flex;"><span>make install
 </span></span></code></pre></div><p>在<code>~/box64/system</code>目录下找到了<code>box64.box64rc</code>，显然是box64的配置文件。将其复制到<code>/etc</code>目录下。</p>
 <p>我本来想复制一下这个配置文件的内容，奈何有1000多行，遂放弃。</p>
@@ -193,10 +193,10 @@ mesa3D主页
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-1.png" alt=""></p>
 <p>在推进到第三阶段前，我们先用一个简单的x86_64的Helloworld文件测试一下box64有没有在正常工作。</p>
 <p>让我们随便创建一个<code>hello.c</code>文件：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;#include &lt;stdio.h&gt; int main() { printf(&#34;Hello, Box64! Integration test successful.\\n&#34;); return 0; }&#39;</span> &gt; hello.c
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;#include &lt;stdio.h&gt; int main() { printf(&#34;Hello, Box64! Integration test successful.\\n&#34;); return 0; }&#39;</span> &gt; hello.c
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-2.png" alt=""></p>
 <p>安装交叉编译器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt-get update
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt-get update
 </span></span><span style="display:flex;"><span>apt-get install -y gcc-x86-64-linux-gnu file
 </span></span></code></pre></div><p>使用x86_64编译链来编译c文件，并使用<code>file</code>指令验证它确实是x86_64文件。</p>
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260120-3.png" alt=""></p>
@@ -226,7 +226,7 @@ mesa3D主页
 <p>具体的实施方案上，经过了一番寻找，我终于找到了理论上可用的<code>turnip driver</code>，链接已经放在文章开头了。K11MCH1维护了一个为winlator做驱动支持的turnip driver仓库，理论上这个驱动程序对于proot环境也同样适用。</p>
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-2.png" alt=""></p>
 <p>我们将其中的<code>.so</code>文件随意的下载并放置在某个自己知道的位置。随后，由于作者并没有提供一个直接可用的ICD文件，我们需要自己来写这个文件。 随便在某个你自己知道的目录下创建一个<code>.json</code>文件，我对它的命名为<code>freedreno_icd.aarch64.json</code>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;file_format_version&#34;</span>: <span style="color:#e6db74">&#34;1.0.0&#34;</span>,
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;ICD&#34;</span>: {
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;library_path&#34;</span>: <span style="color:#e6db74">&#34;/root/test/libvulkan_freedreno.so&#34;</span>,
@@ -235,11 +235,11 @@ mesa3D主页
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>以上代码块中<code>&quot;/root/test/libvulkan_freedreno.so&quot;</code>应该被替换为你的实际的<code>.so</code>存放目录。可以看到我真的就是随便开了个test目录就放了，这个还是看个人的文件管理习惯吧。</p>
 <p>此外我们需要设置环境变量来让这个icd可以被识别，顺便的，我们需要设定一下显示端口来对接wsi。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 在proot环境内运行。</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 在proot环境内运行。</span>
 </span></span><span style="display:flex;"><span>export VK_ICD_FILENAMES<span style="color:#f92672">=</span>/root/test/freedreno_icd.aarch64.json
 </span></span><span style="display:flex;"><span>export DISPLAY<span style="color:#f92672">=</span>:1
 </span></span></code></pre></div><p>此外，这是我使用的proot distro ubuntu桌面环境启动脚本，放在termux宿主机中。原理看注释。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># --- 1. 环境清理 ---</span>
 </span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Cleaning up...&#34;</span>
@@ -275,20 +275,20 @@ mesa3D主页
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    startxfce4
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span>
 </span></span></code></pre></div><p>以上是我能回忆的起来的主要配置过程（因为中间实际上经历了很多的错误尝试，以上是我最后能确定的正确尝试，实际配置可能还需要依据情况做额外的调整）。为了检测我们的配置成果，首先我们需要安装<code>vulkan-tools</code>：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt install vulkan-tools
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>apt install vulkan-tools
 </span></span></code></pre></div><p>以下罗列一些可能使用到的检查状态的指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>vulkaninfo | grep <span style="color:#e6db74">&#34;deviceName&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>vulkaninfo | grep <span style="color:#e6db74">&#34;deviceName&#34;</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-3.png" alt=""></p>
 <p>以上是我未启动桌面环境时输出的信息。其中<code>XDG_RUNTIME_DIR</code>是一个proot环境下没有预设的目录。虽然弹出了很多警告，但是都是无害噪音，并不会影响最终运行。</p>
 <p>输出信息中最重要的是<code>deviceName = Turnip Adreno (TM) 735</code>，表示turnip驱动已经处在了待命状态，并且成功穿透容器访问到了显卡。安卓设备的厂商通常会默认将显卡的详细版本信息隐藏起来，此处<code>735</code>版本号出现证明了确实访问到了真正的显卡。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 需安装 mesa-utils</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 需安装 mesa-utils</span>
 </span></span><span style="display:flex;"><span>MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink glxinfo | grep <span style="color:#e6db74">&#34;renderer&#34;</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-4.png" alt=""></p>
 <p>同样出现了大量无害噪音。其中最关键的信息是<code>zink Vulkan 1.4(Turnip Adreno (TM) 735 (MESA_TURNIP))</code>，表示zink成功启动并挂载在turnip上。zink将OpenGL调用翻译为Vulkan调用，此处如果能成功显示意味着你的系统可以高效的渲染OpenGL图像。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>glxinfo | grep <span style="color:#e6db74">&#34;Mesa&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>glxinfo | grep <span style="color:#e6db74">&#34;Mesa&#34;</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/%E9%85%8D%E7%BD%AE%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-20260121-5.png" alt=""></p>
 <p>显示mesa版本。出现mesa版本号意味着mesa驱动包已经部署。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>glxgears
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>glxgears
 </span></span></code></pre></div><p>这是一个mesa/glx体系下常用的用来演示和诊断OpenGL支持的小程序，主要功能有：</p>
 <ul>
 <li>测试X11是否正常工作；</li>
@@ -296,7 +296,7 @@ mesa3D主页
 <li>OpenGL上下文是否创建；</li>
 </ul>
 <p>在此处，由于我们部署了mesa，理论上我们可以用zink来将OpenGL翻译为Vulkan再进一步渲染。具体的实施方法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制使用 Zink 渲染 OpenGL</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制使用 Zink 渲染 OpenGL</span>
 </span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink
 </span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
 </span></span><span style="display:flex;"><span>

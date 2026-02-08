@@ -172,7 +172,7 @@
 <li>定义优化算法</li>
 <li>训练</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
@@ -244,7 +244,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils <span style="color:#f92672">import</span> data
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random 
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
@@ -261,7 +261,7 @@
 <p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260126-2.png" alt=""></p>
 <p><code>DataLoader</code>类，顾名思义是一个“数据加载器”，是数据集和采样器的结合。一个DataLoader和迭代器的行为类似，每次调用都会吐出一批数据。</p>
 <p>我们最终可以得到这样的代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_array</span>(data_array, batch_size, is_train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_array</span>(data_array, batch_size, is_train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
 </span></span><span style="display:flex;"><span>    dataset <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>TensorDataset(<span style="color:#f92672">*</span>data_array)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data<span style="color:#f92672">.</span>DataLoader(dataset, batch_size, is_train)
 </span></span><span style="display:flex;"><span>batch_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
@@ -275,7 +275,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># nn是神经网络的缩写</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># nn是神经网络的缩写</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>))
@@ -290,7 +290,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>normal_(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>normal_(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>)
 </span></span><span style="display:flex;"><span>net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>fill_(<span style="color:#ae81ff">0</span>)
 </span></span></code></pre></div><p><code>net</code>是一个<code>nn.Sequential</code>实例，对<code>net</code>做下标索引得到的是<code>nn.Module</code>，也就是所有的“层”的基类。而weight和bias是<code>nn.Linear</code>的特有的attribute。因为我们现在确定了<code>net[0]</code>就是一个nn.Linear层，所以我们这样写程序是可以正常工作的。然而pyright（你可能在使用的静态语法检测器）看不出来这里实际上没有问题，它会给你的程序标上语法错误。</p>
 <p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703-20260127-1.png" alt=""></p>
@@ -300,21 +300,21 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()
 </span></span></code></pre></div><p>计算均方误差使用<code>MSEloss</code>类，也称平方L2范数，默认情况下返回所有样本损失的均值。后续使用中可以通过<code>loss(net(X), y)</code>来计算误差。</p>
 <h2 id="定义优化算法">定义优化算法<a href="#%e5%ae%9a%e4%b9%89%e4%bc%98%e5%8c%96%e7%ae%97%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>SGD(net<span style="color:#f92672">.</span>parameters(),lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.03</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>trainer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>SGD(net<span style="color:#f92672">.</span>parameters(),lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.03</span>)
 </span></span></code></pre></div><p>训练器是参数和超参数以及训练算法的整合。在计算得到的损失backward之后，我们无需自己手写小批量随机梯度下降，直接调用trainer的<code>step()</code>方法即可实现。</p>
 <h2 id="训练">训练<a href="#%e8%ae%ad%e7%bb%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num_epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter:
 </span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X), y)
@@ -324,7 +324,7 @@
 </span></span><span style="display:flex;"><span>    l <span style="color:#f92672">=</span> loss(net(features), labels)
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;epoch: </span><span style="color:#e6db74">{</span>epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">, loss: </span><span style="color:#e6db74">{</span>l<span style="color:#e6db74">:</span><span style="color:#e6db74">f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
 </span></span></code></pre></div><p>我们原本更加繁琐的实现：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> epoch <span style="color:#f92672">in</span> range(num_epochs):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> data_iter(BATCH_SIZE, features, labels):
 </span></span><span style="display:flex;"><span>        l <span style="color:#f92672">=</span> loss(net(X, w, b), y)
 </span></span><span style="display:flex;"><span>        l<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
@@ -337,7 +337,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils <span style="color:#f92672">import</span> data
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
@@ -419,7 +419,7 @@ $$l(y,y') = \begin{cases}|y-y'| -\frac{\sigma}{2} & \text{ if } |y-y'| > \sigma 
 简单来说，就是在误差较大的时候使用线性惩罚，误差较小的时候使用平方惩罚。事实上，误差的大小可以通过多种方式描述，而如何选取只取决于我们希望模型对于误差持什么样的态度。</p>
 <p>在机器学习中，有这样的两种经典的误差定义方式，一种是MSE，计算的是误差的L2范数，另一种则是MAE，计算的是误差的L1范数。其中前者的优点是0点处可导，意味着优化过程相对稳定，但是缺点是对于异常值很敏感，容易被少数极端大小的数字打破平衡；后者的优点是对异常值不那么敏感，但缺点是0点处不可导，很容易在0点左右震荡。</p>
 <p>总之，huber loss是二者的折衷方案。我们可以稍微修改一下我们原有的代码来实验一下huber和mse的训练效果：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_loss</span>(loss, num_epochs):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_loss</span>(loss, num_epochs):
 </span></span><span style="display:flex;"><span>    data_iter <span style="color:#f92672">=</span> load_array((features, labels), batch_size)
 </span></span><span style="display:flex;"><span>    net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>weight<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>normal_(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>)
 </span></span><span style="display:flex;"><span>    net[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>bias<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>fill_(<span style="color:#ae81ff">0</span>)
@@ -451,7 +451,7 @@ $$l(y,y') = \begin{cases}|y-y'| -\frac{\sigma}{2} & \text{ if } |y-y'| > \sigma 
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;    b loss diff: &#34;</span>, MSE_loss_b <span style="color:#f92672">-</span> Huber_loss_b)
 </span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
 </span></span></code></pre></div><p>使用了传统的print大法，对于随便看几组数据足够了。我们测试了各种训练周期次数下两种损失函数的表现，某次结果如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>w loss: tensor([ <span style="color:#ae81ff">0.0006</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0005</span>])
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>w loss: tensor([ <span style="color:#ae81ff">0.0006</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0005</span>])
 </span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0001</span>])
 </span></span><span style="display:flex;"><span>w loss: tensor([ <span style="color:#ae81ff">0.0248</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.0281</span>])
 </span></span><span style="display:flex;"><span>b loss: tensor([<span style="color:#ae81ff">0.0288</span>])
@@ -605,7 +605,7 @@ $$<p>
    </svg></a></h1>
 <p>在经过了漫长的理论分析之后，我们终于要自己动手写一下图像分类了。（泪目）</p>
 <p>总之，我们使用的图像分类数据集为fashion-mnist。Fashion-MNIST数据集由10个类别组成，每个类别由训练数据集的6000个图像和测试数据集的1000个图像组成。每个图像的长度和宽度均为28。（tui狂喜）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torchvision
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.utils <span style="color:#f92672">import</span> data
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torchvision <span style="color:#f92672">import</span> transforms
@@ -628,7 +628,7 @@ $$<p>
 <p><code>mnist_train</code>和<code>mnist_test</code>的数据类型为<code>torchvision.datasets.mnist.FashionMNIST'</code>，为数据集对象，均继承自PyTorch的Dataset类。它们的行为像一个列表，可以使用下标索引来访问某一个样本，也可以使用<code>len()</code>来获取总长度。比如，你可以通过<code>mnist_train[0]</code>来获取第一个样本的内容，对应的文件类型为一个元组。</p>
 <p>在任意一个<code>mnist_train</code>的样本元组中，第一个元素存储的是图像张量，第二个元素存储的是图像的类别标签。比如对于某个T恤样本元组，第一个元素就是用来描述这个图像的一个形状为$[1,28,28]$的PyTorch张量，第二个元素则是T恤对应的索引值。</p>
 <p>我们来看看这段代码会输出什么：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(type(mnist_train))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(type(mnist_train))
 </span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>]))
 </span></span><span style="display:flex;"><span>print(len(mnist_train[<span style="color:#ae81ff">0</span>]))
 </span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
@@ -638,7 +638,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
 </span></span><span style="display:flex;"><span>print(type(mnist_train[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]))
 </span></span></code></pre></div><p>结果为：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torchvision</span><span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>mnist<span style="color:#f92672">.</span>FashionMNIST<span style="color:#e6db74">&#39;&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torchvision</span><span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>mnist<span style="color:#f92672">.</span>FashionMNIST<span style="color:#e6db74">&#39;&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">tuple</span><span style="color:#e6db74">&#39;&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torch</span><span style="color:#f92672">.</span>Tensor<span style="color:#e6db74">&#39;&gt;</span>
@@ -649,13 +649,13 @@ $$<p>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">torch</span><span style="color:#f92672">.</span>Tensor<span style="color:#e6db74">&#39;&gt;</span>
 </span></span></code></pre></div><p>图像的形状之所以形状为$[1,28,28]$是因为FashionMNIST数据集选取的图像并不是彩色图像，而是黑白灰度图，描述图像的元素只需要一个数字即可，所以通道数为1。而对于一般的图片，我们可能需要三个颜色通道才能描述，所以假如FashionMNIST选取的图片是彩色的，可能描述图片的张量形状就是$[3,28,28]$。</p>
 <p>Fashion-MNIST中包含的10个类别，分别为t-shirt（T恤）、trouser（裤子）、pullover（套衫）、dress（连衣裙）、coat（外套）、sandal（凉鞋）、shirt（衬衫）、sneaker（运动鞋）、bag（包）和ankle boot（短靴）。 以下函数用于在数字标签索引及其文本名称之间进行转换。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_fashion_mnist_labels</span>(labels):  <span style="color:#75715e">#@save</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_fashion_mnist_labels</span>(labels):  <span style="color:#75715e">#@save</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;返回Fashion-MNIST数据集的文本标签&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>    text_labels <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;t-shirt&#39;</span>, <span style="color:#e6db74">&#39;trouser&#39;</span>, <span style="color:#e6db74">&#39;pullover&#39;</span>, <span style="color:#e6db74">&#39;dress&#39;</span>, <span style="color:#e6db74">&#39;coat&#39;</span>,
 </span></span><span style="display:flex;"><span>                   <span style="color:#e6db74">&#39;sandal&#39;</span>, <span style="color:#e6db74">&#39;shirt&#39;</span>, <span style="color:#e6db74">&#39;sneaker&#39;</span>, <span style="color:#e6db74">&#39;bag&#39;</span>, <span style="color:#e6db74">&#39;ankle boot&#39;</span>]
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [text_labels[int(i)] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> labels]
 </span></span></code></pre></div><p>D2L中提供了这样的脚本来可视化样本。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show_images</span>(imgs, num_rows, num_cols, titles<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1.5</span>):  <span style="color:#75715e">#@save</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show_images</span>(imgs, num_rows, num_cols, titles<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">1.5</span>):  <span style="color:#75715e">#@save</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;绘制图像列表&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>    figsize <span style="color:#f92672">=</span> (num_cols <span style="color:#f92672">*</span> scale, num_rows <span style="color:#f92672">*</span> scale)
 </span></span><span style="display:flex;"><span>    _, axes <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>plt<span style="color:#f92672">.</span>subplots(num_rows, num_cols, figsize<span style="color:#f92672">=</span>figsize)
@@ -681,7 +681,7 @@ $$<p>
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_dataloader_workers</span>():
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">4</span>
@@ -699,7 +699,7 @@ $$<p>
 <p>输出结果：</p>
 <p><img src="/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/D2L%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93-20260202-3.png" alt=""></p>
 <p>整合以上的代码得到一个集成了数据集下载、图形预处理以及随机采样的数据集加载器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
 </span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> [transforms<span style="color:#f92672">.</span>ToTensor()]
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> resize:
 </span></span><span style="display:flex;"><span>        trans<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, transforms<span style="color:#f92672">.</span>Resize(resize))
@@ -712,12 +712,12 @@ $$<p>
 </span></span><span style="display:flex;"><span>    )
 </span></span></code></pre></div><p>其中返回值为一个元组，第二个元素为对测试集的批量采样。看起来有点复杂，但是实际自己动手写一遍感觉思路就通了。这里之所以需要塞一个resize的变换，是因为有一些深度学习模型是为特定尺寸的图片设计的，经过池化层或者一些步长大于1的卷积层会导致图像尺寸缩小，可能传着传着图就没了，所以传入模型之前对图像尺寸做手动适配可以提高加载器的灵活性。</p>
 <p>使用例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> train_iter:
 </span></span><span style="display:flex;"><span>    print(X<span style="color:#f92672">.</span>shape, X<span style="color:#f92672">.</span>dtype, y<span style="color:#f92672">.</span>shape, y<span style="color:#f92672">.</span>dtype)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>
 </span></span></code></pre></div><p>加载数据集并从中按32个样本为一个批次采样，并把图像长宽拉伸为64。输出结果如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">64</span>]) torch<span style="color:#f92672">.</span>float32 torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">32</span>]) torch<span style="color:#f92672">.</span>int64
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">64</span>, <span style="color:#ae81ff">64</span>]) torch<span style="color:#f92672">.</span>float32 torch<span style="color:#f92672">.</span>Size([<span style="color:#ae81ff">32</span>]) torch<span style="color:#f92672">.</span>int64
 </span></span></code></pre></div><h2 id="课后习题">课后习题：<a href="#%e8%af%be%e5%90%8e%e4%b9%a0%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
@@ -729,7 +729,7 @@ $$<p>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>测试代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test</span>(batch_size):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test</span>(batch_size):
 </span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span>start()
 </span></span><span style="display:flex;"><span>    train_iter, test_iter <span style="color:#f92672">=</span> load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span>batch_size, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (X, y) <span style="color:#f92672">in</span> enumerate(train_iter):
@@ -740,7 +740,7 @@ $$<p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> batch_size <span style="color:#f92672">in</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">64</span>]:
 </span></span><span style="display:flex;"><span>    batch_size_test(batch_size)
 </span></span></code></pre></div><p>运行结果：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">45.01</span> sec
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">45.01</span> sec
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">11.19</span> sec
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">5.76</span> sec
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">3.07</span> sec
@@ -748,7 +748,7 @@ $$<p>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">1.25</span> sec
 </span></span></code></pre></div><p>可以看到随着batch_size增大，读取数据的用时显著减少。原因在于batch_size越大，打包batch的次数越少，CPU访存次数越少。读取数据的主要用时就在于此。</p>
 <p>我们还可以基于此添加num_workers对性能的影响，脚本如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
 </span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> [transforms<span style="color:#f92672">.</span>ToTensor()]
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> resize:
 </span></span><span style="display:flex;"><span>        trans<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, transforms<span style="color:#f92672">.</span>Resize(resize))
@@ -807,7 +807,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>        batch_size_test(batch_size, num_workers)
 </span></span></code></pre></div><p>（略微修改了数据加载器的代码来适配对num_workers的调整。）</p>
 <p>输出结果如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">66.35</span> sec
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">66.35</span> sec
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">45.15</span> sec
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">50.05</span> sec
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">50.57</span> sec
@@ -846,7 +846,7 @@ $$<p>
 <li>直接读取整个数据集，将所有样本都用张量的形式直接放在内存中，消除磁盘读写时间。</li>
 </ul>
 <p>总之我们先来尝试一下添加显存锁定内存以及保留线程。修改后的数据加载器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_fashion_mnist</span>(batch_size, resize<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
 </span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> [transforms<span style="color:#f92672">.</span>ToTensor()]
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> resize:
 </span></span><span style="display:flex;"><span>        trans<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">0</span>, transforms<span style="color:#f92672">.</span>Resize(resize))
@@ -896,7 +896,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>    )
 </span></span></code></pre></div><p>（做到这里的时候发现torch版本太旧，加了<code>pin_memory</code>出现了不支持当前硬件的情况，索性重新配了一个新的环境，jupyter lab感觉配置有点反人类，回头写篇博客专门研究一下。）</p>
 <p>运行结果：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">67.36</span> sec
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">67.36</span> sec
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">45.86</span> sec
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">48.19</span> sec
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">1</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">50.56</span> sec
@@ -922,7 +922,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>batch size: <span style="color:#ae81ff">64</span>, num of workers: <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">1.51</span> sec
 </span></span></code></pre></div><p>（好像没什么优化，我怀疑可能是自己硬件太超前了导致torch支持还没跟上&hellip;）</p>
 <p>尝试使用离线处理，原理是<code>transforms.Resize(64)</code>非常吃CPU，每个epoch都要计算一次的话会很浪费性能。幸运的是PyTorch支持你把一个张量存储为一个<code>.pt</code>文件存在硬盘上，我们可以写一个脚本预处理图像，把尺寸伸缩后的图像全部塞在这个张量文件中，这样数据加载的时候就可以省略这一步骤。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess_and_save</span>(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess_and_save</span>(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>):
 </span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose([transforms<span style="color:#f92672">.</span>ToTensor(), transforms<span style="color:#f92672">.</span>Resize(size<span style="color:#f92672">=</span>resize)])
 </span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
 </span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span>root, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
@@ -941,7 +941,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>preprocess_and_save()
 </span></span></code></pre></div><p>工作原理是一次读取一个和数据集一样大的batch，然后把读取的data和target张量打包成一个元组塞进<code>.pt</code>文件中。</p>
 <p>对于读取操作，我们可以通过自己写一个dataset类来实现，完整代码实现如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess_and_save</span>(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">preprocess_and_save</span>(root<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;../data/&#34;</span>, resize<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>):
 </span></span><span style="display:flex;"><span>    trans <span style="color:#f92672">=</span> transforms<span style="color:#f92672">.</span>Compose([transforms<span style="color:#f92672">.</span>ToTensor(), transforms<span style="color:#f92672">.</span>Resize(size<span style="color:#f92672">=</span>resize)])
 </span></span><span style="display:flex;"><span>    mnist_train <span style="color:#f92672">=</span> torchvision<span style="color:#f92672">.</span>datasets<span style="color:#f92672">.</span>FashionMNIST(
 </span></span><span style="display:flex;"><span>        root<span style="color:#f92672">=</span>root, train<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, transform<span style="color:#f92672">=</span>trans, download<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
@@ -985,7 +985,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>    num_workers<span style="color:#f92672">=</span>get_dataloader_workers(),
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><p>我们还可以把它打包成和原本的<code>load_data_fashion_mnist</code>行为一致的加载器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_offline</span>(batch_size, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_data_offline</span>(batch_size, num_workers<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> num_workers:
 </span></span><span style="display:flex;"><span>        num_workers <span style="color:#f92672">=</span> get_dataloader_workers()
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
@@ -1003,7 +1003,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>        ),
 </span></span><span style="display:flex;"><span>    )
 </span></span></code></pre></div><p>测试脚本：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test_offline</span>(batch_size, num_workers):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">batch_size_test_offline</span>(batch_size, num_workers):
 </span></span><span style="display:flex;"><span>    timer<span style="color:#f92672">.</span>start()
 </span></span><span style="display:flex;"><span>    train_iter, test_iter <span style="color:#f92672">=</span> load_data_offline(batch_size, num_workers)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, (X, y) <span style="color:#f92672">in</span> enumerate(train_iter):
@@ -1038,7 +1038,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>        t_online <span style="color:#f92672">=</span> batch_size_test(batch_size, num_workers)
 </span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;    Speedup ratio:</span><span style="color:#e6db74">{</span>(t_online <span style="color:#f92672">/</span> t_offline)<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
 </span></span></code></pre></div><p>输出结果：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Saved successfully.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Saved successfully.
 </span></span><span style="display:flex;"><span>offline: batch size: 1, num of workers: 1, 50.77 sec
 </span></span><span style="display:flex;"><span>online: batch size: 1, num of workers: 1, 61.14 sec
 </span></span><span style="display:flex;"><span>    Speedup ratio:1.20
@@ -1135,7 +1135,7 @@ $$<p>
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> IPython <span style="color:#f92672">import</span> display
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
 </span></span><span style="display:flex;"><span>
@@ -1148,51 +1148,51 @@ $$
 \hat{y} = X \cdot W + b
 $$<p>
 因为我们最后会将这个图像进行分类，有10个目标类别，所以回顾我们前面的线性模型知识，我们可以知道在本模型中权重将会构成一个$784 \cdot 10$的矩阵，而偏置则会构成一个$1 \cdot 10$的行向量。（注意如上公式中的$X$为一个batch，每一行为一个图片向量。b会进行广播计算，$\hat{y}$的形状会是$batch size \cdot 10$。）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num_input <span style="color:#f92672">=</span> <span style="color:#ae81ff">784</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>num_input <span style="color:#f92672">=</span> <span style="color:#ae81ff">784</span>
 </span></span><span style="display:flex;"><span>num_output <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>W <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(num_input, num_output), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(num_output, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span></code></pre></div><p>经过上面的计算，$\hat{y}$的每一行代表一个样本对于每种分类的原始打分，即logits。现在我们需要对$\hat{y}$的每一行进行softmax计算。即：先对$\hat{y}$的所有元素求exp，随后对于每一行求和得到规范化常数，随后对每一行的所有元素除以该行的规范化常数，得到概率。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X):
 </span></span><span style="display:flex;"><span>    X_exp <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(X)
 </span></span><span style="display:flex;"><span>    partiton <span style="color:#f92672">=</span> X_exp<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_exp<span style="color:#f92672">/</span>partiton
 </span></span></code></pre></div><p>虽然这样做也可以运行，但是当矩阵中出现了非常大或者非常小的数字很可能会导致数据溢出。此时我们可以使用一种叫做<strong>Log-Sum-Exp</strong>的技巧（此事在triton自学笔记中亦有记载），先寻找每个样本中最大的logit，然后让所有样本的所有元素减去该样本中最大元素的值，再进行softmax计算，得到的结果是一致的，同时防止了数据过大导致的潜在溢出。</p>
 <p>改进版：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X: torch<span style="color:#f92672">.</span>Tensor):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X: torch<span style="color:#f92672">.</span>Tensor):
 </span></span><span style="display:flex;"><span>    X <span style="color:#f92672">=</span> X <span style="color:#f92672">-</span> X<span style="color:#f92672">.</span>max(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)<span style="color:#f92672">.</span>values
 </span></span><span style="display:flex;"><span>    X_exp <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(X)
 </span></span><span style="display:flex;"><span>    partition <span style="color:#f92672">=</span> X_exp<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_exp <span style="color:#f92672">/</span> partition
 </span></span></code></pre></div><p>随便一个测试代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">5</span>))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">5</span>))
 </span></span><span style="display:flex;"><span>X_prob <span style="color:#f92672">=</span> softmax(X)
 </span></span><span style="display:flex;"><span>print(X, <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>,X_prob)
 </span></span></code></pre></div><p>输出结果：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tensor([[ <span style="color:#ae81ff">1.2374</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.4810</span>,  <span style="color:#ae81ff">0.2318</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.8470</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.6407</span>],
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tensor([[ <span style="color:#ae81ff">1.2374</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1.4810</span>,  <span style="color:#ae81ff">0.2318</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.8470</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">0.6407</span>],
 </span></span><span style="display:flex;"><span>        [<span style="color:#f92672">-</span><span style="color:#ae81ff">0.1617</span>,  <span style="color:#ae81ff">0.6448</span>,  <span style="color:#ae81ff">1.3492</span>,  <span style="color:#ae81ff">0.0251</span>,  <span style="color:#ae81ff">0.7857</span>]]) 
 </span></span><span style="display:flex;"><span> tensor([[<span style="color:#ae81ff">0.5851</span>, <span style="color:#ae81ff">0.0386</span>, <span style="color:#ae81ff">0.2140</span>, <span style="color:#ae81ff">0.0728</span>, <span style="color:#ae81ff">0.0895</span>],
 </span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">0.0865</span>, <span style="color:#ae81ff">0.1939</span>, <span style="color:#ae81ff">0.3921</span>, <span style="color:#ae81ff">0.1043</span>, <span style="color:#ae81ff">0.2232</span>]])
 </span></span></code></pre></div><p>符合预期。</p>
 <p>定义模型。我们使用数据集加载器加载的图像并没有进行展开，此处我们需要手动reshape一下。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">net</span>(X:torch<span style="color:#f92672">.</span>Tensor):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">net</span>(X:torch<span style="color:#f92672">.</span>Tensor):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> softmax(torch<span style="color:#f92672">.</span>matmul(X<span style="color:#f92672">.</span>reshape((<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, W<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])), W) <span style="color:#f92672">+</span> b)
 </span></span></code></pre></div><p>定义损失函数。正如我们前面花大篇幅铺垫的，我们会尝试实现交叉熵损失函数。交叉熵越大，表示模型预测的混乱程度越大，而只有当模型对分类计算得到的概率与真实概率一致时，交叉熵才会达到最低值。具体实现即所谓的负对数似然。</p>
 <p>在我们的训练集中，真实概率就是独热标签，记作$y$，而预测概率记作$\hat{y}$。而独热标签有一个特点：只有答案是1，其他都是0。在真实的数据集中，$y$的存在形式为一个一维张量，每个元素表示该样本中真实分类对应的索引。以防你忘记，交叉熵表示为$H=-y\log \hat{y}$，其中$y$对应的概率永远为1，所以我们只需要对对应的$\hat{y}$值进行负对数计算即可。</p>
 <p>具体实现：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cross_entropy</span>(y_hat:torch<span style="color:#f92672">.</span>Tensor, y:torch<span style="color:#f92672">.</span>Tensor):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cross_entropy</span>(y_hat:torch<span style="color:#f92672">.</span>Tensor, y:torch<span style="color:#f92672">.</span>Tensor):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>torch<span style="color:#f92672">.</span>log(y_hat[range(len(y_hat)), y])
 </span></span></code></pre></div><p>如上的代码用到了一些高级索引技巧，总之最终的效果就是从每一行都选取了那个真实分类处的预测概率。因为分类问题远多于回归问题，交叉熵损失可以说是机器学习中最常用的损失函数表示法。</p>
 <p>除此之外，我们还需要衡量模型的分类精度。我们直接将每个样本中概率最大的分类视作预测值（虽然实际应用中我们可能会投骰子，但是topk截断也是一个经典策略。此处可以视作top1截断。）。假如预测值和真实值一致，我们就认为预测正确。这样，我们就可以得到总的预测正确率。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">accuracy</span>(y_hat:torch<span style="color:#f92672">.</span>Tensor, y:torch<span style="color:#f92672">.</span>Tensor):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">accuracy</span>(y_hat:torch<span style="color:#f92672">.</span>Tensor, y:torch<span style="color:#f92672">.</span>Tensor):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(y_hat<span style="color:#f92672">.</span>shape) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> y_hat<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
 </span></span><span style="display:flex;"><span>        y_hat <span style="color:#f92672">=</span> y_hat<span style="color:#f92672">.</span>argmax(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>    cmp <span style="color:#f92672">=</span> y_hat<span style="color:#f92672">.</span>type(y<span style="color:#f92672">.</span>dtype) <span style="color:#f92672">==</span> y
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> float(cmp<span style="color:#f92672">.</span>type(y<span style="color:#f92672">.</span>dtype)<span style="color:#f92672">.</span>sum())
 </span></span></code></pre></div><p><code>torch.argmax</code>的功能是得到一个由最大值的索引构成的张量。通过对$\hat{y}$做argmax计算，我们实际得到了我们的top1预测结果。因为双等号类型敏感，所以我们先将<code>y_hat</code>强制转换为和y一样的数据类型再进行比较，随后求和即得到预测正确的个数。</p>
 <p>同样，对于任意数据迭代器<code>data_iter</code>可访问的数据集， 我们可以评估在任意模型<code>net</code>的精度。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Accumulator</span>:  <span style="color:#75715e">#@save</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Accumulator</span>:  <span style="color:#75715e">#@save</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;在n个变量上累加&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, n):
 </span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.0</span>] <span style="color:#f92672">*</span> n
@@ -1217,13 +1217,13 @@ $$<p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> metric[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">/</span>metric[<span style="color:#ae81ff">1</span>]
 </span></span></code></pre></div><p>此处定义了一个辅助类累加器，专门用来处理多变量的累加问题。</p>
 <p>由于我们使用随机权重初始化<code>net</code>模型，尚未进行任何训练，此时模型的准确度应该近似于随机猜测。因为我们有10个类别，所以此时的准确率应该大概在0.1左右。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> torch<span style="color:#f92672">.</span>no_grad():
 </span></span><span style="display:flex;"><span>        W <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, size<span style="color:#f92672">=</span>(num_input, num_output), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>        b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>zeros(num_output, requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
 </span></span><span style="display:flex;"><span>    print(evaluate_accuracy(net, test_iter))
 </span></span></code></pre></div><p>某次输出：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">0.0996</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">0.0996</span>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.1085</span>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.0554</span>
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">0.0962</span>
@@ -1241,7 +1241,7 @@ $$<p>
    </svg></a></h2>
 <p>训练部分代码很大程度上和线性回归模型类似，训练函数会接受四个参数：<code>net</code>，表示神经网络，期待的数据类型为<code>torch.nn.Module</code>或者一个普通的函数，如果是<code>torch.nn.Module</code>则将其设置为训练模式；<code>train_iter</code>，表示数据加载器调用得到的迭代器，每次调用返回一个batch的训练数据；<code>loss</code>，表示损失函数，接受一个$\hat{y}$张量和$y$张量，计算总的标量损失值；<code>updater</code>，表示优化器，用来优化参数。</p>
 <p>具体的实现如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_epoch_ch3</span>(net, train_iter, loss, updater):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_epoch_ch3</span>(net, train_iter, loss, updater):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> isinstance(net, torch<span style="color:#f92672">.</span>nn<span style="color:#f92672">.</span>Module):
 </span></span><span style="display:flex;"><span>        net<span style="color:#f92672">.</span>train()
 </span></span><span style="display:flex;"><span>    metric <span style="color:#f92672">=</span> Accumulator(<span style="color:#ae81ff">3</span>)
@@ -1260,7 +1260,7 @@ $$<p>
 </span></span></code></pre></div><p>这里使用了一个<code>Accumulator</code>来存储训练过程中的总损失、总命中个数，以及总的样本数（<code>torch.numel()</code>得到的是一个张量的总元素数）。最终<code>metric[0]/metric[2]</code>得到的是每个样本的平均损失，<code>metric[1]/metric[2]</code>得到的则是命中率。</p>
 <p>d2l中给出了一个<code>Animator</code>类，这个类的作用是绘制图像，但是过程是动态的，向其中添加新数据并不会生成新的静态图片而是会实现动画的效果，同时支持多曲线、自动配置范围和缩放比例。但是这个类的设计完全面向jupyter notebook环境，普通的py文件运行不会有任何效果。</p>
 <p>以下是使用plotext重写过的<code>Animator</code>类，并且行为和原型一致。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animator</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Animator</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;在终端中使用 plotext 动态绘制数据&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(
@@ -1341,7 +1341,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 6. 显示</span>
 </span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>show()
 </span></span></code></pre></div><p>接下来我们还需要实现一个整体的训练函数，用来自动完成多个迭代周期并评估模型和进行animator可视化。（懒得解释了，总是就是这么写然后就能工作了）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_ch3</span>(net, train_iter, test_iter, loss, num_epoches, updater):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train_ch3</span>(net, train_iter, test_iter, loss, num_epoches, updater):
 </span></span><span style="display:flex;"><span>    animator <span style="color:#f92672">=</span> Animator(
 </span></span><span style="display:flex;"><span>        xlabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;epoch&#34;</span>,
 </span></span><span style="display:flex;"><span>        xlim<span style="color:#f92672">=</span>[<span style="color:#ae81ff">1</span>, num_epoches],
@@ -1354,7 +1354,7 @@ $$<p>
 </span></span><span style="display:flex;"><span>        animator<span style="color:#f92672">.</span>add(epoch <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, train_metrics <span style="color:#f92672">+</span> (test_acc,))
 </span></span><span style="display:flex;"><span>    train_loss, train_acc <span style="color:#f92672">=</span> train_metrics
 </span></span></code></pre></div><p>进行训练：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">updater</span>(batch_size):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> d2l<span style="color:#f92672">.</span>sgd([W, b], lr, batch_size)
@@ -1371,14 +1371,14 @@ $$<p>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <p>使用torch高级api的实现。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">256</span>
 </span></span><span style="display:flex;"><span>train_iter, test_iter <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>load_data_fashion_mnist(batch_size<span style="color:#f92672">=</span>BATCH_SIZE)
 </span></span></code></pre></div><p>我们的模型实际由两层组成：展平层，负责把图像降维打击；全连接层，实现softmax回归。因此，通过如下方式初始化模型参数：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Flatten(), nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">784</span>, <span style="color:#ae81ff">10</span>))
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(nn<span style="color:#f92672">.</span>Flatten(), nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">784</span>, <span style="color:#ae81ff">10</span>))
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_weight</span>(m:nn<span style="color:#f92672">.</span>Module):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> type(m) <span style="color:#f92672">is</span> nn<span style="color:#f92672">.</span>Linear:
@@ -1470,7 +1470,7 @@ class probabilities only when a single class label per minibatch item is too res
 </blockquote>
 <p>简单来说，这是一个专门用来进行交叉熵计算的模型（<code>nn.Module</code>的曾孙子类），轮到它计算的时候，它会接受一个<code>input</code>张量和一个<code>target</code>张量，其中<code>input</code>张量包含的内容是未标准化的原始打分。其内部的具体实现就应用了我们刚提到的数学原理。</p>
 <p>总之，精简实现的代码如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch <span style="color:#f92672">import</span> nn
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
 </span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> softmax_scratch <span style="color:#f92672">import</span> train_ch3
@@ -1600,6 +1600,13 @@ class probabilities only when a single class label per minibatch item is too res
 </nav>
 		</aside>
 		<div class="post-nav thin">
+			<a class="next-post" href="http://localhost:1313/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+   </svg>&nbsp;Newer</span><br><span>19岁生日随想</span>
+			</a>
 			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">

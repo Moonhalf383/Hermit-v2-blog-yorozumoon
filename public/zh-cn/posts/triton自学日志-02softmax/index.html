@@ -162,7 +162,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch_npu
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton
@@ -217,7 +217,7 @@
    </svg></a></h2>
 <p>softmax 内核工作原理如下：每个计算单元（program）以程序数量为跨度加载输入矩阵X的一组行数据，执行归一化处理后，将结果写入输出矩阵Y。
 注意：Triton 的一个重要限制是每个块必须具有 2 的幂次数的元素，因此，如果我们要处理任意可能的输入形状，需要在内部「填充」每一行，并适当保护内存操作。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#a6e22e">@triton.jit</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#a6e22e">@triton.jit</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax_kernel</span>(output_ptr, input_ptr, input_row_stride, output_row_stride, n_rows, n_cols, BLOCK_SIZE: tl<span style="color:#f92672">.</span>constexpr):
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 程序起始行</span>
 </span></span><span style="display:flex;"><span>    row_start <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(<span style="color:#ae81ff">0</span>)
@@ -255,7 +255,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>row_start <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(<span style="color:#ae81ff">0</span>)      <span style="color:#75715e"># 我是第几号工人（PID）</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>row_start <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(<span style="color:#ae81ff">0</span>)      <span style="color:#75715e"># 我是第几号工人（PID）</span>
 </span></span><span style="display:flex;"><span>row_step <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>num_programs(<span style="color:#ae81ff">0</span>)     <span style="color:#75715e"># 总共有多少个工人（Grid Size）</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> row_idx <span style="color:#f92672">in</span> tl<span style="color:#f92672">.</span>range(row_start, n_rows, row_step):
 </span></span></code></pre></div><p><code>tl.program_id(0)</code>表示的就是当前核心被分配到的目标程序id，<code>tl.num_programs(0)</code>则是总共的程序数。让行步长设置为程序数，目的就是让遍历所有行的时候不同程序进程不会相互冲突。随后使用for循环遍历所有的从<code>row_start</code>到<code>n_rows</code>之间步长为<code>row_step</code>的行。</p>
@@ -266,7 +266,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 算出这一行在内存里的起始地址</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 算出这一行在内存里的起始地址</span>
 </span></span><span style="display:flex;"><span>row_start_ptr <span style="color:#f92672">=</span> input_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> input_row_stride
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 制造一个 [0, 1, ..., BLOCK_SIZE-1] 的索引条</span>
@@ -290,7 +290,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 找最大值 (只读 SRAM)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. 找最大值 (只读 SRAM)</span>
 </span></span><span style="display:flex;"><span>row_minus_max <span style="color:#f92672">=</span> row <span style="color:#f92672">-</span> tl<span style="color:#f92672">.</span>max(row, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 算指数 (只读 SRAM)</span>
@@ -308,7 +308,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 算出输出的内存地址</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 算出输出的内存地址</span>
 </span></span><span style="display:flex;"><span>output_row_start_ptr <span style="color:#f92672">=</span> output_ptr <span style="color:#f92672">+</span> row_idx <span style="color:#f92672">*</span> output_row_stride
 </span></span><span style="display:flex;"><span>output_ptrs <span style="color:#f92672">=</span> output_row_start_ptr <span style="color:#f92672">+</span> col_offsets
 </span></span><span style="display:flex;"><span>
@@ -322,7 +322,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <p>我们可以创建一个辅助函数，该函数能够将核函数及其元参数加入执行队列，以处理任意给定的输入张量。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>target <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>runtime<span style="color:#f92672">.</span>driver<span style="color:#f92672">.</span>active<span style="color:#f92672">.</span>get_current_target()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>target <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>runtime<span style="color:#f92672">.</span>driver<span style="color:#f92672">.</span>active<span style="color:#f92672">.</span>get_current_target()
 </span></span><span style="display:flex;"><span>kernels <span style="color:#f92672">=</span> {}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(x, stream):
@@ -394,7 +394,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
 <p>需要在一个具有不规则行和列数的矩阵上测试处理好的内核，此举可以验证Padding机制是否起作用</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>device <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_device()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>device <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_device()
 </span></span><span style="display:flex;"><span>stream <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>npu<span style="color:#f92672">.</span>current_stream(device)<span style="color:#f92672">.</span>npu_stream
 </span></span><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">0</span>)
 </span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(<span style="color:#ae81ff">1823</span>, <span style="color:#ae81ff">781</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu&#39;</span>)
@@ -408,7 +408,7 @@
 </span></span></code></pre></div><p>我们上文中编写的帮助函数实际作用是对目标的二维张量的每一行进行softmax计算。在这个例子中，我们生成了一个由随机数构成的张量x，随后分别使用torch原生方法和triton融合算子来对它进行softmax计算，最后测量两结果之间的最大差异。</p>
 <p>理论上来说，我们的triton算子和torch原生算子的数学过程是等价的。之所以会出现微小误差实际上是过程中的计算步骤的底层实现方法导致了一些浮点数精度误差。</p>
 <p>Out:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tensor<span style="color:#f92672">([[</span>0.0002, 0.0017, 0.0009,  ..., 0.0009, 0.0013, 0.0073<span style="color:#f92672">]</span>,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tensor<span style="color:#f92672">([[</span>0.0002, 0.0017, 0.0009,  ..., 0.0009, 0.0013, 0.0073<span style="color:#f92672">]</span>,
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0001, 0.0004, 0.0006,  ..., 0.0006, 0.0004, 0.0003<span style="color:#f92672">]</span>,
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>0.0007, 0.0002, 0.0006,  ..., 0.0011, 0.0004, 0.0039<span style="color:#f92672">]</span>,
 </span></span><span style="display:flex;"><span>        ...,
@@ -433,7 +433,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <p>为了对比triton融合算子和torch原生方法的性能，我们再次采用benchmark方法来测量不同数据量下两种算法的带宽吞吐量。顺便的，我们还可以看看torch原生的softmax方法的性能如何。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Fused Softmax
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">=============
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>

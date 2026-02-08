@@ -202,7 +202,7 @@ GPU-Z
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-5.png" alt=""></p>
 <p>以上是wine的文件结构。</p>
 <p>为了让系统识别到wine并让box64能正常翻译，我们需要添加如下环境变量：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Wine 的路径 (假设你解压到了 ~/wine-wow64)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Wine 的路径 (假设你解压到了 ~/wine-wow64)</span>
 </span></span><span style="display:flex;"><span>export WINEPREFIX<span style="color:#f92672">=</span>$HOME/.wine
 </span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin:$PATH
 </span></span><span style="display:flex;"><span>
@@ -213,7 +213,7 @@ GPU-Z
 </span></span><span style="display:flex;"><span>export BOX64_LOG<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>             <span style="color:#75715e"># 初始化阶段看日志很有帮助</span>
 </span></span><span style="display:flex;"><span>export BOX64_DYNAREC_SAFEFLAGS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># 提高稳定性</span>
 </span></span></code></pre></div><p>以防万一，以下列出完整的<code>~/.zshrc</code>开头部分环境变量配置（我用的是zsh）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 </span></span><span style="display:flex;"><span>export WINE_ROOT<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64
 </span></span><span style="display:flex;"><span>export WINEPREFIX<span style="color:#f92672">=</span>$HOME/.wine
 </span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$WINE_ROOT/bin:$PATH
@@ -231,24 +231,24 @@ GPU-Z
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-6.png" alt=""></p>
 <p>一开始尝试直接输入<code>wine winecfg</code>提示command not found，后来发现运行的是一个x86_64的二进制文件wine。没关系，我们有box64来引导wine运行。在终端输入<code>box64 wine winecfg</code>后得到了如图的结果。</p>
 <p>为了一步到位，这里我们选择手动下载<code>.msi</code>文件。（使用自动下载大概率会失败，通常会因为下载时间过长而被挂起）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>https://dl.winehq.org/wine/wine-mono/9.4.0/wine-mono-9.4.0-x86.msi
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>https://dl.winehq.org/wine/wine-mono/9.4.0/wine-mono-9.4.0-x86.msi
 </span></span></code></pre></div><p>这个网址不要直接用wget下载。使用自己的系统浏览器下载速度会快的多。下载完将这个文件传进proot。使用以下指令进行安装：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>box64 wine msiexec /i wine-mono-9.4.0-x86.msi
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>box64 wine msiexec /i wine-mono-9.4.0-x86.msi
 </span></span></code></pre></div><p>安装完之后进入以下界面，确保图示的两个选项开启。标志测试点A顺利通过。</p>
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-7.png" alt=""></p>
 <p>在进行下一步之前，我们先做一些优化调整。</p>
 <p>先为<code>~/.zshrc</code>添加以下内容，省得每次都要写box64。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>alias wine<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>alias wine<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
 </span></span><span style="display:flex;"><span>alias wine64<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;box64 wine&#39;</span>
 </span></span></code></pre></div><p>添加以下内容来精细化box64的寻找目录：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 确保 Box64 知道去哪里找 wine 的 x86_64 库</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 确保 Box64 知道去哪里找 wine 的 x86_64 库</span>
 </span></span><span style="display:flex;"><span>export BOX64_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/bin/
 </span></span><span style="display:flex;"><span>export BOX64_LD_LIBRARY_PATH<span style="color:#f92672">=</span>$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/wine/x86_64-unix/:$HOME/wine-wow64/wine-11.0-staging-amd64-wow64/lib/
 </span></span></code></pre></div><p>理论上，我们现在已经完成了wine部分的配置。如果一切顺利，我们此时的环境应当可以在这个只支持64位的机器上运行32位程序。接下来，让我们完成测试点B和C来检验我们的环境配置成果，也只有完成了这两个测试点，我们才能进一步解决最终挑战：部署steam。</p>
 <p>对于测试点B，我们来尝试在这个环境下运行<strong>7-zip</strong>，一个既32位又有图形界面的软件，甚至还是一个纯x86程序，简直和我的机器原生环境八字不合。但是，我们可以让它在我们的环境下正常运行。</p>
 <p>运行以下指令安装7-zip。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://www.7-zip.org/a/7z2301.exe
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine 7z2301.exe <span style="color:#75715e"># 这里假定你已经写入了alias wine=&#34;box64 wine&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://www.7-zip.org/a/7z2301.exe
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine 7z2301.exe <span style="color:#75715e"># 这里假定你已经写入了alias wine=&#34;box64 wine&#34;</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260121-8.png" alt=""></p>
 <p>就这样，我们成功在一个既不x86也不32的环境下成功运行了一个和它水火不容的程序。一切都在box64和wine的掌控之下。</p>
 <p>由于7-zip本身使用时似乎确实没有图形界面，我们运行<code>wine 7-zip.exe</code>后可以得到这样的输出结果，代表它确实可以工作。（7-zip的正常使用需要输入参数，对于一个实质linux的环境我们有更好的工具）。为了演示，我们可以用它来打个包试试。</p>
@@ -260,14 +260,14 @@ GPU-Z
 <p>可以看到在7-zip的目录下我们得到了打包好的<code>test.7z</code>。证明7z.exe已经可以正常工作了。7-zip之所以可以直接访问像<code>~/Desktop/thisIsAFile.txt ~/Desktop/thisIsAlsoAFile.txt ~/Desktop/thisIsADir/</code>这样的路径，原因在于wine的实现方法并不是像虚拟机那样建立完全隔离的硬盘镜像，而是逻辑映射：将linux的根目录/映射为windows的<code>Z:</code>盘。在运行指令时，wine会自动将linux风格地址重定向为windows风格的对应地址并让7z运行。由于C盘与Z盘只是一个文件系统的不同挂载点，他们当然可以相互访问。</p>
 <p>对于测试点C，我们使用GPU-Z来测试wine内的OpenGL请求是否被正确路由到zink。GPU-Z不能通过wget下载，所以访问GPU-Z下载网站进行下载。（链接在开头）</p>
 <p>同样将下载得到的<code>.exe</code>文件传入proot环境，运行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 以防万一手动配置一下环境变量，确保zink被强制调用。</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 以防万一手动配置一下环境变量，确保zink被强制调用。</span>
 </span></span><span style="display:flex;"><span>export MESA_LOADER_DRIVER_OVERRIDE<span style="color:#f92672">=</span>zink 
 </span></span><span style="display:flex;"><span>export GALLIUM_DRIVER<span style="color:#f92672">=</span>zink
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine GPU-Z.2.68.0.exe
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wine GPU-Z.2.68.0.exe
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-1.png" alt=""></p>
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-2.png" alt=""></p>
 <p>然而，最终程序运行失败了。报错信息大致如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>BOX64<span style="color:#f92672">]</span> Using emulated /usr/x86_64-linux-gnu/lib/libgcc_s.so.1
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>BOX64<span style="color:#f92672">]</span> Using emulated /usr/x86_64-linux-gnu/lib/libgcc_s.so.1
 </span></span><span style="display:flex;"><span>0154:err:seh:install_bpf Native libs are being loaded in low addresses, sc_seccomp 0x3f0023fe00, syscall 0x60030320, not installing seccomp.
 </span></span><span style="display:flex;"><span>0154:err:seh:install_bpf The known reasons are /proc/sys/vm/legacy_va_layout set to <span style="color:#ae81ff">1</span> or <span style="color:#e6db74">&#39;ulimit -s&#39;</span> being <span style="color:#e6db74">&#39;unlimited&#39;</span>.
 </span></span><span style="display:flex;"><span>0160:fixme:ntoskrnl:IoCreateDeviceSecure <span style="color:#f92672">(</span>0000000000C54030, 16, L<span style="color:#e6db74">&#34;\\Device\\GPU-Z-v3&#34;</span>, 34, 100, 0, L<span style="color:#e6db74">&#34;D:P(A;;GA;;;SY)(A;;GA;;;BA)&#34;</span>, <span style="color:#f92672">(</span>null<span style="color:#f92672">)</span>, 0000000000A4FC60<span style="color:#f92672">)</span>: semi-stub
@@ -290,7 +290,7 @@ GPU-Z
 <p>此外，3Dmark6将我的系统识别为了<code>Microsoft Windows 10</code>，已经符合了steam及大部分游戏的基础需求。</p>
 <p>但是此时又一个新的问题出现：运行3Dmark后黑屏，但是可以esc退出。此时vkcube和glxgears都仍然可以正常工作。</p>
 <p>给出的box64日志如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#f92672">[</span>BOX64<span style="color:#f92672">]</span> Using native<span style="color:#f92672">(</span>wrapped<span style="color:#f92672">)</span> libcups.so.2
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#f92672">[</span>BOX64<span style="color:#f92672">]</span> Using native<span style="color:#f92672">(</span>wrapped<span style="color:#f92672">)</span> libcups.so.2
 </span></span><span style="display:flex;"><span>0480:fixme:wbemprox:client_security_SetBlanket 799C3954, 001160B0, 10, 0, <span style="color:#f92672">(</span>null<span style="color:#f92672">)</span>, 3, 3, 00000000, <span style="color:#ae81ff">0</span>
 </span></span><span style="display:flex;"><span>0480:fixme:wbemprox:client_security_Release 799C3954
 </span></span><span style="display:flex;"><span>0480:fixme:wbemprox:enum_class_object_Next timeout not supported
@@ -301,15 +301,15 @@ GPU-Z
 </span></span><span style="display:flex;"><span>0060:fixme:file:errno_to_status Converting errno <span style="color:#ae81ff">17</span> to STATUS_UNSUCCESSFUL
 </span></span><span style="display:flex;"><span>0060:err:mountmgr:registry_flush_thread Failed flushing registry.
 </span></span></code></pre></div><p>原因在于目前的工作链路是使用wine自带的wineD3D来将directX指令转换为OpenGL指令，而WineD3D的工作效果并不尽如人意。我们现在需要按照最开始的规划，为虚拟环境部署<strong>DXVK</strong>，直接将directX转换为vulkan。这样效率更高，兼容性理论上也更好。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar -xzf dxvk-2.7.1.tar.gz
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar -xzf dxvk-2.7.1.tar.gz
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-4.png" alt=""></p>
 <p>里面大致是这样的结构。我们需要将<code>x32</code>中的<code>d3d9.dll, dxgi.dll</code>复制到<code>$WINEPREFIX/drive_c/windows/syswow64/</code>，将<code>x64</code>中的<code>d3d9.dll, dxgi.dll</code>复制到<code>$WINEPREFIX/drive_c/windows/system32/</code>。</p>
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-5.png" alt=""></p>
 <p>之后我们需要配置函数库覆盖。输入<code>wine winecfg</code>打开配置界面，在libraries标签页中添加d3d9和dxgi，确保均为原生优先。</p>
 <p><img src="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%92-20260122-6.png" alt=""></p>
 <p>微调环境变量：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制开启高性能性能，防止 Proot 功耗缩减</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 强制开启高性能性能，防止 Proot 功耗缩减</span>
 </span></span><span style="display:flex;"><span>export TU_DEBUG<span style="color:#f92672">=</span>sysmem
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果仍然黑屏，可以尝试跳过一些冗余转换</span>
 </span></span><span style="display:flex;"><span>export MESA_VK_WSI_DEBUG<span style="color:#f92672">=</span>sw

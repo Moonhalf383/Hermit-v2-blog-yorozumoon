@@ -186,13 +186,13 @@
 <p>虽然普通变量看起来已经可以做很多事情了，但是它有一个显著的局限：它<strong>只能作用于当前的shell进程</strong>，甚至没办法作用到任何子进程。假如你运行了一个程序，那么这个程序是读取不到你的普通变量的，或者假如你新开了一个窗口，那么新的shell进程中也是不会有原窗口的普通变量。</p>
 <p>环境变量虽然也不能直接存活在所有窗口，但是相较于普通变量，环境变量的一个重要特点是允许子进程读取。很多的应用会读取一些通用的环境变量来获取目录结构信息以及用户信息，用户也可以通过修改环境变量来配置一些应用的行为。</p>
 <p>在进一步了解环境变量之前，我们最好先来了解一些常用的和变量相关的指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo $VAR
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo $VAR
 </span></span></code></pre></div><p><code>echo</code>指令的作用是在你的终端上打印指定的东西。你可以让它打印一个变量的内容，也可以打印字符串。如果你想让你的脚本比较人性化的话你可以考虑多打印一点提示内容。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export VAR<span style="color:#f92672">=</span>var
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export VAR<span style="color:#f92672">=</span>var
 </span></span></code></pre></div><p>声明一个变量为环境变量。如果没有export关键字的话默认为普通变量。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>env
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>env
 </span></span></code></pre></div><p>查看所有的环境变量。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>unset VAR
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>unset VAR
 </span></span></code></pre></div><p>删除一个变量。</p>
 <p>大致就这样。</p>
 <h3 id="一些常见的环境变量">一些常见的环境变量：<a href="#%e4%b8%80%e4%ba%9b%e5%b8%b8%e8%a7%81%e7%9a%84%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -211,7 +211,7 @@
 <li>PATH：这是一个“工具箱搜索清单”，存储的是若干个路径，对应目录下里面装的是可执行文件。当你在命令行里输入一个指令时，系统就会去PATH存储的路径中挨个找你要的名字匹配的可执行文件，找到了就执行，找不到就报错，除非设置了别名。</li>
 </ul>
 <p>PATH变量中，不同的目录之间通过冒号隔开。一般的添加PATH路径的方式如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.local/bin:</span>$PATH<span style="color:#e6db74">&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.local/bin:</span>$PATH<span style="color:#e6db74">&#34;</span>
 </span></span></code></pre></div><p>PATH本质是一个字符串，所以用双引号包裹。在想要添加的路径之后补上<code>:$PATH</code>来保留原有的PATH路径，如果不加这个的话原有的路径就都没了。</p>
 <h3 id="如何让一个环境变量可以在所有shell进程中存在">如何让一个环境变量可以在所有shell进程中存在？<a href="#%e5%a6%82%e4%bd%95%e8%ae%a9%e4%b8%80%e4%b8%aa%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e5%8f%af%e4%bb%a5%e5%9c%a8%e6%89%80%e6%9c%89shell%e8%bf%9b%e7%a8%8b%e4%b8%ad%e5%ad%98%e5%9c%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -220,7 +220,7 @@
    </svg></a></h3>
 <p>修改你的shell的<strong>运行时配置文件</strong>，也就是<code>.xxrc</code>文件。比如如果你用的shell是bash，那么通常在你的家目录下会有一个<code>.bashrc</code>文件。你只需要把你原本在终端中直接输入的<code>export VAR=var</code>原封不动地搬到配置文件中就可以了。如果你用的是zsh，那就应该搬到<code>~/.zshrc</code>中。</p>
 <p>在我前两天配置proot游戏运行环境过程中配置了大量的环境变量，其中一些基本不用修改的环境变量便存放在了<code>~/.zshrc</code>中，内容大致如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># ==========================================</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># ==========================================</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 基础路径与环境</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># ==========================================</span>
 </span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -292,7 +292,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <p>一个helloworld地位的脚本：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Hello world!&#34;</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-6.png" alt=""></p>
@@ -319,7 +319,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Enter a numble:&#34;</span>
 </span></span><span style="display:flex;"><span>read NUMBLE
@@ -338,7 +338,7 @@
 <p>运行效果：</p>
 <p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-2.png" alt=""></p>
 <p>for循环写法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Generating three test files...&#34;</span>
 </span></span><span style="display:flex;"><span>
@@ -362,7 +362,7 @@
 <li><code>$$</code>当前脚本的进程数。</li>
 </ul>
 <p>一个求和脚本示例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>DATE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date <span style="color:#e6db74">&#34;+%Y-%m-%d&#34;</span><span style="color:#66d9ef">)</span>
 </span></span><span style="display:flex;"><span>
@@ -383,15 +383,15 @@
 </span></span></code></pre></div><p>结果：</p>
 <p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-1.png" alt=""></p>
 <p>shell的for循环语法和python看起来似乎很相似。比如，你可以这么写：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> name in Alice Bob Charlie; <span style="color:#66d9ef">do</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> name in Alice Bob Charlie; <span style="color:#66d9ef">do</span>
 </span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Hello </span>$name<span style="color:#e6db74">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
 </span></span></code></pre></div><p>结果输出：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Hello Alice
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>Hello Alice
 </span></span><span style="display:flex;"><span>Hello Bob
 </span></span><span style="display:flex;"><span>Hello Charlie
 </span></span></code></pre></div><p>shell script中一个更强大的功能是通配符遍历。比如，如果你想罗列一个目录下的所有pdf文件，你可以这么写：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> file in *.pdf; <span style="color:#66d9ef">do</span>
@@ -401,11 +401,11 @@
 </span></span></code></pre></div><p>效果：</p>
 <p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-2.png" alt=""></p>
 <p>如果你想使用C风格的数值循环，此处记录一下写法，不再实验。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#f92672">((</span>i<span style="color:#f92672">=</span>1; i&lt;<span style="color:#f92672">=</span>5; i++<span style="color:#f92672">))</span>; <span style="color:#66d9ef">do</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#f92672">((</span>i<span style="color:#f92672">=</span>1; i&lt;<span style="color:#f92672">=</span>5; i++<span style="color:#f92672">))</span>; <span style="color:#66d9ef">do</span>
 </span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;次数: </span>$i<span style="color:#e6db74">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
 </span></span></code></pre></div><p>while循环的一般写法也就是if和for的杂交，也只是记录一下，不再实验。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#f92672">[</span> $count -le <span style="color:#ae81ff">5</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">do</span>
 </span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Count: </span>$count<span style="color:#e6db74">&#34;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">((</span>count++<span style="color:#f92672">))</span> <span style="color:#75715e"># Bash 中的自增写法</span>
@@ -418,22 +418,22 @@
 <p>在linux命令中，<code>|</code>、<code>&gt;</code>、<code>&lt;</code>可以影响数据的流向，为我们编写脚本和日常使用指令提供了极大的方便。理解这些工具的秘诀在于想象数据像水一样流动。</p>
 <p><code>&gt;</code>和<code>&gt;&gt;</code>表示<strong>输出重定向</strong>。它们可以把<strong>原本应该打印在屏幕上的内容</strong>存到指定的文件中。其中<code>&gt;</code>表示覆写，会清空原有内容；<code>&gt;&gt;</code>表示追加写，会在文件末尾接着写。</p>
 <p>你应该这样理解：每一个指令都像一个有着通用的输入、输出管道的机器。默认情况下，输出的管道会直接连到你的终端上。现在，我们不希望它把数据直接流到屏幕上，而是流到文件里，所以我们接一个管道把指令输出的东西转移到文件中。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Hello&#34;</span> &gt; hello.txt
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Hello&#34;</span> &gt; hello.txt
 </span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Helloworld&#34;</span> &gt;&gt; hello.txt
 </span></span></code></pre></div><p>结果：</p>
 <p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-3.png" alt=""></p>
 <p>内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>Hello
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>Hello
 </span></span><span style="display:flex;"><span>Helloworld
 </span></span></code></pre></div><p><code>echo</code>指令就像是一个只会接受东西输出东西的发射器，但是它也使用了通用的管道。</p>
 <p>一个常见的应用是conda导出环境配置。此处就用到了输出重定向。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env export &gt; environment.yml <span style="color:#75715e"># 导出环境</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>conda env export &gt; environment.yml <span style="color:#75715e"># 导出环境</span>
 </span></span></code></pre></div><p>此外，正常的输出<code>&gt;</code>实际是<code>1&gt;</code>的缩写。错误输出<code>2&gt;</code>和正常输出并不走同一个管道。这意味着有时即使你进行了<code>&gt;</code>的重定向，当出现错误时，报错信息还是会流到屏幕上。你需要对报错做额外的处理。</p>
 <p>与之相对的，<code>&lt;</code>表示输入重定向。比如某些指令默认从屏幕读取输入，你就可以用<code>&lt;</code>来将默认的输入方式改为从指定的文件中输入。每次会自动读取一行。</p>
 <p>举个例子，我们随便写一个若干行的随机人名文件。</p>
 <p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-4.png" alt=""></p>
 <p>然后编写这样的测试脚本：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PWD<span style="color:#e6db74">/names.txt&#34;</span>
 </span></span><span style="display:flex;"><span>
@@ -446,7 +446,7 @@
 <p>符合预期。</p>
 <p>然而，仅有输入输出重定向是不够的。它们只能代表数据加工开始和结束时数据的去向。但是假如数据加工的过程中也有多个步骤，仅仅使用输入输出重定向虽然也可以完成任务，但是免不了要用额外的存储空间缓存数据，并徒增写入和读取的用时。所以，我们为什么不能直接把一个指令的输出喂给另一个指令作为输入呢？</p>
 <p>于是便有了管道符号<code>|</code>。它的作用就是把左边指令的输出喂给右边的指令作为输入。一些经典的用法如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 列出当前目录所有文件</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 1. 列出当前目录所有文件</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 把结果传给 grep，搜索包含 &#34;txt&#34; 的行</span>
 </span></span><span style="display:flex;"><span>ls | grep <span style="color:#e6db74">&#34;txt&#34;</span>
 </span></span><span style="display:flex;"><span>
@@ -464,7 +464,7 @@
    </svg></a></h2>
 <p>虽然shell脚本看起来像是一堆指令堆在一起，但是实际上完全支持函数和递归调用。</p>
 <p>一个简单的函数示例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>add<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>  echo <span style="color:#66d9ef">$((</span>$1 <span style="color:#f92672">+</span> $2<span style="color:#66d9ef">))</span>
@@ -477,7 +477,7 @@
 <p><code>$(...)</code>符号在shell script中的行为和输出重定向很相似。它的功能就是把一个原本会输出到屏幕的输出重定向给变量。<code>$VAR</code>的写法则表示从变量的对应内存中提取数据。两者的功能是不同的。</p>
 <p>shell script中定义的变量默认是全局变量，这和一般的程序语言的动态作用域有很大区别。如果我们希望一个变量只作用于函数体内部，我们必须要变量前添加<code>local</code>关键字。</p>
 <p>shell script完全支持递归，以下是基于shell script的阶乘写法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>fact<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $1 -le <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
@@ -492,7 +492,7 @@
 </span></span></code></pre></div><p>输出结果：</p>
 <p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-7.png" alt=""></p>
 <p>一个基于shell script递归的文件树打印脚本：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>echo_indent<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>  local indent<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>
@@ -527,7 +527,7 @@
    </svg></a></h1>
 <p>虽然shell script的功能很多，但是写起来和正经的程序语言比还是有点折磨了。这边推荐把shell script当做python程序的包装器。</p>
 <p>以下是我的博客发射器的包装器脚本：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>set -e
 </span></span><span style="display:flex;"><span>

@@ -164,7 +164,7 @@
 <li>用于定义 Triton 内核的<code>triton.jit</code>装饰器（decorator）。</li>
 </ul>
 <p>计算内核:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch_npu
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton
@@ -329,7 +329,7 @@
 <li>生成 z 张量；</li>
 <li>用适当的 grid/block sizes 将上述内核加入队列。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(x: torch<span style="color:#f92672">.</span>Tensor, y: torch<span style="color:#f92672">.</span>Tensor):
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(x: torch<span style="color:#f92672">.</span>Tensor, y: torch<span style="color:#f92672">.</span>Tensor):
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 需要预分配输出。</span>
 </span></span><span style="display:flex;"><span>    output <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>empty_like(x)
 </span></span><span style="display:flex;"><span>    n_elements <span style="color:#f92672">=</span> output<span style="color:#f92672">.</span>numel()
@@ -392,7 +392,7 @@
    </svg></a></h4>
 <p>triton的开发者预料到了你需要有办法去根据特殊情景决定启动的程序数量，所以他们提供了一种方式让你可以获取客户在使用你封装好的函数时的传参情况。</p>
 <p>什么方式呢？在你使用<code>@triton.jit</code>装饰好的函数时，triton会捕捉到你传入的参数，构成一个<strong>字典</strong>。比如，在我们上文写出的add_kernel函数中，这个字典大概长成这样：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>meta <span style="color:#f92672">=</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>meta <span style="color:#f92672">=</span> {
 </span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;x_ptr&#34;</span> : <span style="color:#f92672">&lt;</span>address<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;y_ptr&#34;</span> : <span style="color:#f92672">&lt;</span>address<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;output_ptr&#34;</span> : <span style="color:#f92672">&lt;</span>address<span style="color:#f92672">&gt;</span>
@@ -411,7 +411,7 @@
 <p>返回<code>output</code>这个生成的tensor。</p>
 <hr>
 <p>使用上述函数计算两个 <code>torch.tensor</code> 对象的 element-wise sum，并测试其正确性：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">0</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">0</span>)
 </span></span><span style="display:flex;"><span>size <span style="color:#f92672">=</span> <span style="color:#ae81ff">98432</span>
 </span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(size, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu&#39;</span>)
 </span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(size, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu&#39;</span>)
@@ -424,7 +424,7 @@
 </span></span></code></pre></div><p>这是一段测试代码。x、y分别是使用torch生成的随机向量。<code>output_torch</code>为直接使用torch内置方法计算得到的向量和，<code>output_triton</code>为使用我们自定义函数计算得到的向量和，最后打印两者的最大残差。</p>
 <p>理论上来说，如果程序正确，<code>output_torch</code>和<code>output_triton</code>应该输出完全一致。</p>
 <p>Out:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span style="color:#f92672">]</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span style="color:#f92672">]</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span style="color:#f92672">]</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span>The maximum difference between torch and triton is 0.0
 </span></span></code></pre></div><p>&ldquo;The maximum difference between torch and triton is 0.0&rdquo; 表示Triton和PyTorch的输出结果一致。</p>
@@ -438,7 +438,7 @@
    </svg></a></h1>
 <p>因为异步运算的缘故，torch和time模块这样基于CPU的计时方法无法测量NPU中的真正用时。我们需要使用triton提供的专业基本测试工具<code>triton.testing.do_bench</code>来测试计算效率。</p>
 <p>在下列实例代码中，我们采用带宽吞吐量为依据衡量torch和triton的运行速度差异。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 强制使用 &#39;Agg&#39; 后端，这个后端专门用于不弹窗直接生成图片文件</span>
 </span></span><span style="display:flex;"><span>matplotlib<span style="color:#f92672">.</span>use(<span style="color:#e6db74">&#34;Agg&#34;</span>)
