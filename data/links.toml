@@ -35,3 +35,9 @@ name = "GlowLED"
 url = "https://blog.glowled.top/"
 avatar = "/images/avatar_yamada.jpg"
 desc = "一个混吃等死的普通人"
+
+[[list]]
+name = "bxd-user"
+url = "https://bxd-user.github.io/?clicktime=1770800535529&_wv=1"
+avatar = "/images/friend_default.png"
+desc = "使用了默认头像"
