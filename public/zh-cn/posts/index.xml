@@ -4,12 +4,796 @@
 		<title>Posts on Yorozumoon</title>
 		<link>http://localhost:1313/zh-cn/posts/</link>
 		<description>Recent content in Posts on Yorozumoon</description>
-		<generator>Hugo -- 0.155.2</generator>
+		<generator>Hugo -- 0.155.3</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Sun, 08 Feb 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 11 Feb 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>Python文件结构&amp;一些库</title>
+			<link>http://localhost:1313/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/</link>
+			<pubDate>Wed, 11 Feb 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<p>虽然学了很久python，但是我从来没有系统学习过python的项目结构是怎么组织的。主要一般也很少有机会写多文件乃至多目录的python项目。最近突然对ai agent应用有点感兴趣，碰巧自己对这方面的工具确实有需求，顾不上老坑了，速速把新坑端上来罢（喜）</p>
+<p>写本文的另一个原因是我觉得自己真的得好好学学cli工具该怎么写。虽然自己很难做到随手搓出一个很精致的图形化应用，但是手搓个cli应用还是应该能做到的。</p>
+<h1 id="参考链接本篇要素">参考链接（本篇要素）：<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://github.com/Arindam200/awesome-ai-apps">awesome-ai-apps</a>，最近找到的一个ai工具开发的开源学习库。本篇可能暂时用不到，但是之后<em>如果填坑</em>的话应该会参考。</p>
+<p><a href="https://realpython.com/python-modules-packages/">Python Modules and Packages – An Introduction</a>虽然说是一个&quot;Introduction&quot;，但是内容还挺详细的，所以很多例子干脆照搬了。</p>
+<p><a href="https://docs.python.org/3/library/os.html">os lib</a>Python os库用来读写文件和执行系统指令。</p>
+<p><a href="https://www.w3schools.com/PYTHON/python_json.asp">json</a>W3school的Python json库教程。w3school的网上教程其实做的相当不错。</p>
+<p><a href="https://typer.tiangolo.com/">typer</a>一个用来开发python cli应用的库。平板上写应用基本只能在cli和web之间选一个。</p>
+<blockquote>
+<p>写这篇文章的时候我发现typer的tutorial事无巨细地讲了一大堆计算机常识，作为一个python库文档从环境变量和PATH变量开始讲起，写文档的哥们未免有点太敬业了。</p>
+</blockquote>
+<p><a href="https://rich.readthedocs.io/en/latest/introduction.html">rich</a>炫酷的终端文本ui库。</p>
+<p><a href="https://tenacity.readthedocs.io/en/latest/">tenacity</a>添加了一个装饰器，可以方便的定义函数重复执行规则。比如调用api出现网络波动时可以让函数自动重复执行3次。</p>
+<p><a href="https://requests.readthedocs.io/en/latest/">requests</a>发送HTTP请求。</p>
+<h1 id="python的文件结构">Python的文件结构<a href="#python%e7%9a%84%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>python中有两个专门服务于模块化编程的术语，模块（python modules）和包（python packages）。简单来说，模块化编程就是把一个大项目分解成若干子任务和模块。把所有东西都塞在一个文件中会导致代码难以维护。</p>
+<blockquote>
+<p><strong>Functions</strong>, <strong>modules</strong> and <strong>packages</strong> are all constructs in Python that promote code modularization.</p>
+</blockquote>
+<h2 id="python-modules">Python modules<a href="#python-modules" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>python模块实际上有以下三种定义：</p>
+<ol>
+<li>用python写的模块；</li>
+<li>用C语言写的模块（头一回知道）；</li>
+<li>解释器中的内置模块。</li>
+</ol>
+<p>这三个模块的共同点是，他们的内容都可以通过<code>import</code>语句访问。</p>
+<p>大多数时候我们主要关注python写的模块，它们<em>are exceedingly straightforward to build</em>。你不需要有任何特殊的语法标记，只要是没有语法错误的.py文件都是合法的python模块。</p>
+<p>举个例子，假如你随便在某个文件目录下创建了一个<code>mod.py</code>，内容如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;If Comrade Napoleon says it, it must be right.&#34;</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> [<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">300</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>(arg):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;arg = </span><span style="color:#e6db74">{</span>arg<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foo</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span></code></pre></div><p>这个py文件中定义了这些东西（object也指对象，但是类显然不是对象，所以干脆译为东西）：</p>
+<ul>
+<li><code>s</code> (字符串)</li>
+<li><code>a</code> (列表)</li>
+<li><code>foo()</code> (函数)</li>
+<li><code>Foo</code> (类)</li>
+</ul>
+<p>假如这个py文件<em>处在正确的位置</em>（后面会谈到），那么你就可以通过import来访问这些东西。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> mod
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> print(mod<span style="color:#f92672">.</span>s)
+</span></span><span style="display:flex;"><span>If Comrade Napoleon says it, it must be right<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> mod<span style="color:#f92672">.</span>a
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">300</span>]
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> mod<span style="color:#f92672">.</span>foo([<span style="color:#e6db74">&#39;quux&#39;</span>, <span style="color:#e6db74">&#39;corge&#39;</span>, <span style="color:#e6db74">&#39;grault&#39;</span>])
+</span></span><span style="display:flex;"><span>arg <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;quux&#39;</span>, <span style="color:#e6db74">&#39;corge&#39;</span>, <span style="color:#e6db74">&#39;grault&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> mod<span style="color:#f92672">.</span>Foo()
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>mod<span style="color:#f92672">.</span>Foo object at <span style="color:#ae81ff">0x03C181F0</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><h3 id="模块搜索路径">模块搜索路径<a href="#%e6%a8%a1%e5%9d%97%e6%90%9c%e7%b4%a2%e8%b7%af%e5%be%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>书接上回，我们来看看python执行语句时发生了什么。</p>
+<p>当解释器执行了<code>import mod</code>语句时，它会在一系列目录中寻找这个<code>mod.py</code>这个文件，这一系列目录来源如下：</p>
+<ul>
+<li>该脚本运行时所处的位置；</li>
+<li>输入语句时的当前目录，如果以交互模式运行python解释器；</li>
+<li>环境变量<code>PYTHONPATH</code>中的目录；</li>
+<li>python安装时就配置好的安装依赖目录列表。</li>
+</ul>
+<p>所有合法的路径都会存储在python的sys内置模块的path变量中。你可以通过如下方式查看搜索路径：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>&gt;&gt;&gt; import sys
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; sys.path
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span><span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#e6db74">&#39;C:\\Users\\john\\Documents\\Python\\doc&#39;</span>, <span style="color:#e6db74">&#39;C:\\Python36\\Lib\\idlelib&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;C:\\Python36\\python36.zip&#39;</span>, <span style="color:#e6db74">&#39;C:\\Python36\\DLLs&#39;</span>, <span style="color:#e6db74">&#39;C:\\Python36\\lib&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;C:\\Python36&#39;</span>, <span style="color:#e6db74">&#39;C:\\Python36\\lib\\site-packages&#39;</span><span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>所以，如果你想要你的模块被找到，你可以做以下事情：</p>
+<ul>
+<li>把模块文件放在你所运动的脚本所在的目录，或者如果你以交互模式运行python解释器，那么就放在你当前的目录。</li>
+<li>或者确保你的模块处在<code>PYTHONPATH</code>中的某个目录。</li>
+<li>或者把文件放在安装依赖目录中，但是你很可能做不到。</li>
+</ul>
+<p>一些奇奇怪怪的方法这里就不展开了。值得一提的是你可以通过访问一个模块的<code>__file__</code>属性来获取这个模块的绝对位置，得到的是一个文件夹。</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260206-1.png" alt=""></p>
+<h3 id="import语句使用方法">import语句使用方法<a href="#import%e8%af%ad%e5%8f%a5%e4%bd%bf%e7%94%a8%e6%96%b9%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> mod
+</span></span></code></pre></div><p>最常用的方法，只是把整个模块塞进了当前符号表，但是mod内的东西还都在mod自己的符号表中，你只能通过<code>mod.xx</code>来访问某个mod中的元素。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> mod <span style="color:#f92672">import</span> xx
+</span></span></code></pre></div><p>从mod中直接把一个元素引用到当前符号表，之后不用下标访问也可以直接使用<code>xx</code>。你可以将<code>xx</code>换成<code>*</code>来直接调用mod里的所有东西，但是一般不推荐这么做，容易导致命名冲突。（类似<code>using namespace std;</code>)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> mod <span style="color:#f92672">import</span> xx <span style="color:#66d9ef">as</span> yy
+</span></span></code></pre></div><p>引用xx的同时起个别名yy。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#75715e"># Non-existent module</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#f92672">import</span> baz
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span> <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ImportError</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     print(<span style="color:#e6db74">&#39;Module not found&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Module <span style="color:#f92672">not</span> found
+</span></span></code></pre></div><p>你可以使用try来尝试调用某个模块，即使不成功程序也可以继续运行。</p>
+<h3 id="dir函数">dir函数<a href="#dir%e5%87%bd%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p><code>dir()</code>会返回一个由当前命名空间中名称所组成的列表，默认按照字典序排列。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> dir()
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#39;__annotations__&#39;</span>, <span style="color:#e6db74">&#39;__builtins__&#39;</span>, <span style="color:#e6db74">&#39;__doc__&#39;</span>, <span style="color:#e6db74">&#39;__loader__&#39;</span>, <span style="color:#e6db74">&#39;__name__&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;__package__&#39;</span>, <span style="color:#e6db74">&#39;__spec__&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> qux <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>]
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> dir()
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#39;__annotations__&#39;</span>, <span style="color:#e6db74">&#39;__builtins__&#39;</span>, <span style="color:#e6db74">&#39;__doc__&#39;</span>, <span style="color:#e6db74">&#39;__loader__&#39;</span>, <span style="color:#e6db74">&#39;__name__&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;__package__&#39;</span>, <span style="color:#e6db74">&#39;__spec__&#39;</span>, <span style="color:#e6db74">&#39;qux&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bar</span>():
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> x <span style="color:#f92672">=</span> Bar()
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> dir()
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#39;Bar&#39;</span>, <span style="color:#e6db74">&#39;__annotations__&#39;</span>, <span style="color:#e6db74">&#39;__builtins__&#39;</span>, <span style="color:#e6db74">&#39;__doc__&#39;</span>, <span style="color:#e6db74">&#39;__loader__&#39;</span>, <span style="color:#e6db74">&#39;__name__&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;__package__&#39;</span>, <span style="color:#e6db74">&#39;__spec__&#39;</span>, <span style="color:#e6db74">&#39;qux&#39;</span>, <span style="color:#e6db74">&#39;x&#39;</span>]
+</span></span></code></pre></div><p>你也可以传入一个Module参数，这样dir会返回该module自身的命名空间下的名字。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> mod
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> dir(mod)
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#39;Foo&#39;</span>, <span style="color:#e6db74">&#39;__builtins__&#39;</span>, <span style="color:#e6db74">&#39;__cached__&#39;</span>, <span style="color:#e6db74">&#39;__doc__&#39;</span>, <span style="color:#e6db74">&#39;__file__&#39;</span>, <span style="color:#e6db74">&#39;__loader__&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;__name__&#39;</span>, <span style="color:#e6db74">&#39;__package__&#39;</span>, <span style="color:#e6db74">&#39;__spec__&#39;</span>, <span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;foo&#39;</span>, <span style="color:#e6db74">&#39;s&#39;</span>]
+</span></span></code></pre></div><h3 id="将模块当脚本执行">将模块当脚本执行<a href="#%e5%b0%86%e6%a8%a1%e5%9d%97%e5%bd%93%e8%84%9a%e6%9c%ac%e6%89%a7%e8%a1%8c" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>一个module本质上还是.py文件，所以你完全可以使用python解释器直接执行该文件。</p>
+<p>依然mod.py：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;If Comrade Napoleon says it, it must be right.&#34;</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> [<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">300</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>(arg):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;arg = </span><span style="color:#e6db74">{</span>arg<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foo</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(s)
+</span></span><span style="display:flex;"><span>print(a)
+</span></span><span style="display:flex;"><span>foo(<span style="color:#e6db74">&#39;quux&#39;</span>)
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> Foo()
+</span></span><span style="display:flex;"><span>print(x)
+</span></span></code></pre></div><p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>C:\Users\john\Documents<span style="color:#f92672">&gt;</span>python mod<span style="color:#f92672">.</span>py
+</span></span><span style="display:flex;"><span>If Comrade Napoleon says it, it must be right<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">300</span>]
+</span></span><span style="display:flex;"><span>arg <span style="color:#f92672">=</span> quux
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>__main__<span style="color:#f92672">.</span>Foo object at <span style="color:#ae81ff">0x02F101D0</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>然而，这样做又会导致另一个问题：当你import导入这个模块时，这些输出也会被生成：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> mod
+</span></span><span style="display:flex;"><span>If Comrade Napoleon says it, it must be right<span style="color:#f92672">.</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">300</span>]
+</span></span><span style="display:flex;"><span>arg <span style="color:#f92672">=</span> quux
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>mod<span style="color:#f92672">.</span>Foo object at <span style="color:#ae81ff">0x0169AD50</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>这些输出之所以会产生，原因在于<code>import</code>语句执行时解释器会先完整执行一遍指定的模块，假如你在模块里塞了定义，解释器就会帮你完成定义，但是假如你塞了print，解释器也会同样帮你print出来对应的内容。然而，我们有时会认为这些输出在该模块import导入时并不应该产生。</p>
+<p>解决方法如下：在python中有这样一个特殊的双下划线变量<code>__name__</code>专门用来存储一个module的名称。当一个module被导入时，它的<code>__name__</code>就会被设置为这个module的名称，但是当module被python直接执行时，<code>__name__</code>就会被设置为<code>'__main__'</code>，据此你可以判断一些函数应该在什么时候运行。</p>
+<p>修改后的mod.py：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;If Comrade Napoleon says it, it must be right.&#34;</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> [<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">200</span>, <span style="color:#ae81ff">300</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>(arg):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;arg = </span><span style="color:#e6db74">{</span>arg<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foo</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (__name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Executing as standalone script&#39;</span>)
+</span></span><span style="display:flex;"><span>    print(s)
+</span></span><span style="display:flex;"><span>    print(a)
+</span></span><span style="display:flex;"><span>    foo(<span style="color:#e6db74">&#39;quux&#39;</span>)
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> Foo()
+</span></span><span style="display:flex;"><span>    print(x)
+</span></span></code></pre></div><p>此时直接用python解释器运行该模块仍然可以得到输出，但是import语句不再会输出了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> mod
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> mod<span style="color:#f92672">.</span>foo(<span style="color:#e6db74">&#39;grault&#39;</span>)
+</span></span><span style="display:flex;"><span>arg <span style="color:#f92672">=</span> grault
+</span></span></code></pre></div><p>一般来说，就算你的模块独立运行没有什么实际意义，程序员也会设计其独立运行时会执行的脚本来检测它的功能是否符合预期，这种思想被称作单元测试。</p>
+<p>比如，假如你有这样的一个用来计算阶乘的模块<code>fact.py</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fact</span>(n):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> n <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">else</span> n <span style="color:#f92672">*</span> fact(n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (__name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>        print(fact(int(sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>])))
+</span></span></code></pre></div><p>你当然可以通过直接<code>import fact</code>来访问<code>fact.fact()</code>函数，但是你同样可以使用python解释器直接运行<code>fact.py</code>，你可以传入一个参数，此时它会返回该数字对应的阶乘。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>C:\Users\john\Documents<span style="color:#f92672">&gt;</span>python fact<span style="color:#f92672">.</span>py <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">720</span>
+</span></span></code></pre></div><h3 id="多次导入一个模块">多次导入一个模块<a href="#%e5%a4%9a%e6%ac%a1%e5%af%bc%e5%85%a5%e4%b8%80%e4%b8%aa%e6%a8%a1%e5%9d%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>你可以在一个脚本中写多次<code>import mod</code>，但是只有第一个会被执行。假如你在这个模块中塞了<code>print()</code>语句，那么你也只会看到一条输出。</p>
+<h2 id="python-packages">Python Packages<a href="#python-packages" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>如我们前文所言，module仅支持从同一目录中相互导入，这就导致你没办法只使用module来构建复杂的工程。你可能会希望有办法分组组织这些模块。</p>
+<p>Packages的作用就是为module命名空间提供一个分层结构。你可以使用点标来访问对应的模块进而访问对应的内容。简单来说，Packages的作用就是把一堆命名空间统一在同一个命名空间之下。</p>
+<p>创建package的方法非常直接，你只需要在一个解释器能找到的地方创建一个文件夹然后在里面塞点module或者package就行。</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260207-2.png" alt=""></p>
+<p>此时<code>pkg</code>就成了这两个模块的统一命名空间。对于一个和pkg同级的模块，你可以通过<code>import pkg.test01</code>来导入test01模块，或者<code>from pkg.test01 import foo</code>来导入其中的类，或者<code>from .. import .. as ..</code>，总之module此时的身份就像是pkg的一个成员。</p>
+<p>不过，虽然理论上你可以直接<code>import pkg</code>，但是这样做并没有把任何pkg下的模块导入本地命名空间。所以会出现以下问题：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pkg<span style="color:#f92672">.</span>mod1
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;&lt;pyshell#34&gt;&#34;</span>, line <span style="color:#ae81ff">1</span>, <span style="color:#f92672">in</span> <span style="color:#f92672">&lt;</span>module<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    pkg<span style="color:#f92672">.</span>mod1
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">AttributeError</span>: module <span style="color:#e6db74">&#39;pkg&#39;</span> has no attribute <span style="color:#e6db74">&#39;mod1&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pkg<span style="color:#f92672">.</span>mod1<span style="color:#f92672">.</span>foo()
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;&lt;pyshell#35&gt;&#34;</span>, line <span style="color:#ae81ff">1</span>, <span style="color:#f92672">in</span> <span style="color:#f92672">&lt;</span>module<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    pkg<span style="color:#f92672">.</span>mod1<span style="color:#f92672">.</span>foo()
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">AttributeError</span>: module <span style="color:#e6db74">&#39;pkg&#39;</span> has no attribute <span style="color:#e6db74">&#39;mod1&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pkg<span style="color:#f92672">.</span>mod2<span style="color:#f92672">.</span>Bar()
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;&lt;pyshell#36&gt;&#34;</span>, line <span style="color:#ae81ff">1</span>, <span style="color:#f92672">in</span> <span style="color:#f92672">&lt;</span>module<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    pkg<span style="color:#f92672">.</span>mod2<span style="color:#f92672">.</span>Bar()
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">AttributeError</span>: module <span style="color:#e6db74">&#39;pkg&#39;</span> has no attribute <span style="color:#e6db74">&#39;mod2&#39;</span>
+</span></span></code></pre></div><h3 id="package初始化">Package初始化<a href="#package%e5%88%9d%e5%a7%8b%e5%8c%96" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>包目录下放一个<code>__init__.py</code>，其中的代码会在包或者包内模块被导入时先被执行。也就是说它可以用作包的初始化代码。</p>
+<p>比如说，我们在pkg文件夹下再放入这样的<code>__init__.py</code>文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Invoking __init__.py for </span><span style="color:#e6db74">{</span>__name__<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>A <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;quux&#39;</span>, <span style="color:#e6db74">&#39;corge&#39;</span>, <span style="color:#e6db74">&#39;grault&#39;</span>]
+</span></span></code></pre></div><p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260207-3.png" alt=""></p>
+<p>此时我们就可以直接<code>import pkg</code>并调用<code>pkg.A</code>：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260207-5.png" alt=""></p>
+<p><code>pkg.A</code>对于包内的模块来说此时就相当于一个全局变量。每一个包内的module都可以通过<code>from pkg import A</code>来访问这个变量。</p>
+<p>除此之外，<code>__init__.py</code>还可以用来自动从包内导入模块。比如，我们前文中未设置<code>__init__.py</code>时直接<code>import pkg</code>仅仅代表将pkg这个名字纳入了当前字符表，其下的模块都没有成功导入。但是现在我们就可以在<code>__init__.py</code>中手动配置导包。</p>
+<p>在<code>__init__.py</code>中写入以下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Invoking __init__.py for </span><span style="color:#e6db74">{</span>__name__<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pkg.mod1<span style="color:#f92672">,</span> pkg.mod2
+</span></span></code></pre></div><p>之后再<code>import pkg</code>，<code>pkg.mod1</code>和<code>pkg.mod2</code>就自动被导入了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> pkg
+</span></span><span style="display:flex;"><span>Invoking <span style="color:#a6e22e">__init__</span><span style="color:#f92672">.</span>py <span style="color:#66d9ef">for</span> pkg
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pkg<span style="color:#f92672">.</span>mod1<span style="color:#f92672">.</span>foo()
+</span></span><span style="display:flex;"><span>[mod1] foo()
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> pkg<span style="color:#f92672">.</span>mod2<span style="color:#f92672">.</span>bar()
+</span></span><span style="display:flex;"><span>[mod2] bar()
+</span></span></code></pre></div><h3 id="import--from-a-package">import * from a package<a href="#import--from-a-package" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>你可以使用通配符一次性导入一个包中的“所有”模块，但是在默认情况下直接输入<code>from pkg import *</code>并不会发生任何事情。Python遵循以下规则：如果一个package中的<code>__init__.py</code>文件中定义了一个<code>__all__</code>列表，它就会被用作指定通配符导入模块时需要导入的模块名。</p>
+<p>比如如果你在<code>__init__.py</code>中写入这些内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>__all__ <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;mod1&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;mod2&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;mod3&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;mod4&#39;</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span></code></pre></div><p>此时<code>from pkg import *</code>就会自动导入这四个module，假如事实上你的package中还有一个mod5.py，通配符导入时就会忽略这个模块。</p>
+<p>事实上你同样可以在一个module中定义<code>__all__</code>，你可以在里面塞入本模块中的元素，当<code>from mod import *</code>时，实际导入的就只有<code>__all__</code>列表内的元素。</p>
+<p>这样设计的考虑不难理解，程序构建时并不是所有函数都是直接可用的，很多函数的作用都是工具函数，使用<code>__all__</code>和<code>__init__.py</code>来控制导入内容可以让程序更易于维护且便于使用。</p>
+<p>除此之外，包还可以嵌套，你可以在一个包里塞多个子包。在子包内，你可以使用“相对导入”，子包内<code>..</code>表示子包的父包，比如pkg中塞了一个<code>sub_pkg1</code>和<code>sub_pkg2</code>，<code>sub_pkg1</code>中的某个模块中<code>from .. import xx</code>就等效于<code>from pkg import xx</code>，<code>from ..sub_pkg2 import xx</code>就等效于从父包中导入另一个子包。</p>
+<h1 id="os">OS<a href="#os" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>Python os库实际上是一个相当复杂的库，它提供了大量的方法用来管理文件、目录、输入输出、环境变量。</p>
+<p>以下尝试罗列一些主要用法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cwd <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+</span></span><span style="display:flex;"><span>print(cwd)
+</span></span></code></pre></div><p><code>os.getcwd()</code>方法可以得到你运行脚本时你（而非这个python文件）所处的路径。精确到目录。</p>
+<p>某次输出：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-1.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cwd <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+</span></span><span style="display:flex;"><span>print(cwd)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HOME <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;HOME&#34;</span>]
+</span></span><span style="display:flex;"><span>print(HOME)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;THIS_IS_A_VAR_SET_BY_PYTHON&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;114514&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#34;echo $THIS_IS_A_VAR_SET_BY_PYTHON&#34;</span>)
+</span></span></code></pre></div><p><code>os.environ</code>在官方说法中是一个“mapping”，即一个映射。但是它的行为似乎完全符合一个普通的python dict。你可以通过中括号查表获取对应的环境变量值，也可以用同样的方式添加新的环境变量，只不过这个环境变量只能作用于当前进程。</p>
+<p>输出结果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-2.png" alt=""></p>
+<p>之后再尝试echo就不会有输出结果了。</p>
+<p>出人意料的是，python os库中并没有将路径封装为类，而是直接使用原生的字符串。这意味着你实际上可以直接使用字符串拼接来表示路径，但是因为不同系统路径拼接符并不相同，一般来说出于可移植性的考虑，我们使用<code>python.path.join()</code>来自动获取适配当前环境的路径字符串。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cwd <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+</span></span><span style="display:flex;"><span>print(cwd)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HOME <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;HOME&#34;</span>]
+</span></span><span style="display:flex;"><span>print(HOME)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(HOME, <span style="color:#e6db74">&#34;python_projects&#34;</span>, <span style="color:#e6db74">&#34;AI-apps-dev&#34;</span>, <span style="color:#e6db74">&#34;lib_test&#34;</span>)
+</span></span><span style="display:flex;"><span>print(type(path))
+</span></span><span style="display:flex;"><span>print(path)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(path <span style="color:#f92672">==</span> cwd)
+</span></span></code></pre></div><p>输出结果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-3.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cwd <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>getcwd()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>basename(cwd))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>dirname(cwd))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>location <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(cwd, __file__)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>name <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>basename(location)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>dirname(location)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;I am &#34;</span> <span style="color:#f92672">+</span> name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;I am in &#34;</span><span style="color:#f92672">+</span>dir)
+</span></span></code></pre></div><p><code>os.path.basename()</code>方法可以获取一个路径按分隔符划分得到的最后一个组成，<code>os.path.dirname()</code>方法则返回除了最后一个组成的所处路径。假如最后一个成分是目录，则返回其父目录。</p>
+<p>结果如下：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-4.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>name, ext <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>splitext(<span style="color:#e6db74">&#34;a.b.c.d.e&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(ext)
+</span></span></code></pre></div><p><code>os.path.splitext</code>可以用来获取文件名与拓展名。拓展名的定义方式是由<code>.</code>分隔得到的最后一部分。</p>
+<p>输出结果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-5.png" alt=""></p>
+<p>由于os库的内容实在太多，接下来只简单罗列一些写法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isfile(path)
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>isdir(path)
+</span></span></code></pre></div><p>判断路径表示的是一个文件还是一个目录。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>mkdir(<span style="color:#e6db74">&#34;data&#34;</span>)
+</span></span></code></pre></div><p>在<code>os.getcwd()</code>得到的路径下创建一个data目录。</p>
+<p>os库中直接写文件或目录名，默认表示在当前工作目录操作，实际上仍然表示的是路径。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>makedirs(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#39;a&#39;</span>,<span style="color:#e6db74">&#39;b&#39;</span>,<span style="color:#e6db74">&#39;c&#39;</span>), exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span></code></pre></div><p>创建一系列目录，行为类似<code>mkdir -p</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(path)
+</span></span></code></pre></div><p>判断一个路径是否存在。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>remove(<span style="color:#e6db74">&#34;file.txt&#34;</span>)   
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>rmdir(<span style="color:#e6db74">&#34;folder&#34;</span>)      
+</span></span></code></pre></div><p>删除文件和空目录。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> shutil
+</span></span><span style="display:flex;"><span>shutil<span style="color:#f92672">.</span>rmtree(<span style="color:#e6db74">&#34;folder&#34;</span>)
+</span></span></code></pre></div><p>删除非空目录。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>rename(<span style="color:#e6db74">&#34;old.txt&#34;</span>, <span style="color:#e6db74">&#34;new.txt&#34;</span>)
+</span></span></code></pre></div><p>重命名，实际上行为和<code>mv</code>一致，你也可以用它来移动文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>files <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>listdir(<span style="color:#e6db74">&#34;data&#34;</span>)
+</span></span></code></pre></div><p>罗列目录下的文件，得到一个python列表。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>system(<span style="color:#e6db74">&#34;ls&#34;</span>)
+</span></span></code></pre></div><p>执行系统指令。（自用程序狂喜）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>base_dir <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>dirname(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>abspath(__file__))
+</span></span></code></pre></div><p>获取脚本所在目录，用来定位资源位置。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">0</span>)
+</span></span></code></pre></div><p>结束程序。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>os<span style="color:#f92672">.</span>stat(<span style="color:#e6db74">&#34;file.txt&#34;</span>)
+</span></span></code></pre></div><p>获取一个文件的信息，得到一个<code>os.stat_result</code>实例。你可以直接通过访问该实例的属性获取对应的信息。</p>
+<p>值得注意的是，os库并没有提供一个方便的复制方法。此处罗列两个shutil库中的文件复制方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> shutil
+</span></span><span style="display:flex;"><span>shutil<span style="color:#f92672">.</span>copy2(src, dst)
+</span></span></code></pre></div><p>行为类似<code>cp</code>，可以复制时间戳。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>shutil<span style="color:#f92672">.</span>copytree(<span style="color:#e6db74">&#34;src_dir&#34;</span>, <span style="color:#e6db74">&#34;dst_dir&#34;</span>)
+</span></span></code></pre></div><p>复制整个目录。</p>
+<h1 id="json">Json<a href="#json" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>json库实际只负责在脚本内部将json string和python dict之间相互转换，并不负责读取的写入数据。所以此处我们补充一些文件读写的基本知识。</p>
+<p>在python中读写文件使用的是python内置函数<code>open</code>。一般我们为将读写文件的代码写在<code>with</code>内，一旦程序异常崩溃，<code>with</code>会帮我们自动关闭文件。一般我们写open函数会传入三个参数：文件目录，读写模式，编码方式。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;os_test.py&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>, encoding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;utf-8&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>    print(type(f))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> f:
+</span></span><span style="display:flex;"><span>        print(type(line))
+</span></span><span style="display:flex;"><span>        print(line<span style="color:#f92672">.</span>strip())
+</span></span></code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">_io</span><span style="color:#f92672">.</span>TextIOWrapper<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;os_test.py&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>, encoding <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;utf-8&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>print(type(f))
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> f:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>print(type(line))
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>print(line<span style="color:#f92672">.</span>strip())
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span>
+</span></span></code></pre></div><p>open函数返回的是一个文件对象，这个文件对象的行为和迭代器非常类似，实际上你可以使用next来获取下一行元素，但是一般我们调用它的<code>readline()</code>方法来获取下一行的内容，<code>read()</code>方法来读取全部内容，以及<code>readlines</code>方法来获取所有行的内容并打包进一个list。</p>
+<p>写入文件有两种选择，一种是使用<code>'w'</code>模式打开文件，但是会导致文件原有内容被清空。另一种是使用<code>'a'</code>模式追加写入。两种模式下都使用<code>write</code>函数写入内容，但是需要注意的是实际上所有文本文件的换行都是通过转义字符<code>'\n'</code>实现的，write函数并不负责另起一行，所以如果想写入多行内容，你需要手动添加<code>'\n'</code>。你也可以使用<code>writelines</code>方法从一个列表中自动读取并写入内容，但是同样需要补充<code>'\n'</code>。</p>
+<p>回到json库，前文中我们提到json库并不负责读取数据。json库有四个最常用的方法：<code>json.loads()</code>，负责将json string转换为dict；<code>json.dumps()</code>，负责将python对象转换为json。除此之外<code>load()</code>和<code>dump()</code>分别负责处理读写文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span>  <span style="color:#e6db74">&#39;{ &#34;name&#34;:&#34;John&#34;, &#34;age&#34;:30, &#34;city&#34;:&#34;New York&#34;}&#39;</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>loads(x)
+</span></span><span style="display:flex;"><span>print(type(y))
+</span></span><span style="display:flex;"><span>print(y[<span style="color:#e6db74">&#34;age&#34;</span>])
+</span></span></code></pre></div><p>输出结果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-6.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;John&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">30</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;city&#34;</span>: <span style="color:#e6db74">&#34;New York&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(type(y))
+</span></span><span style="display:flex;"><span>print(y)
+</span></span></code></pre></div><p>输出结果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-7.png" alt=""></p>
+<p>但是实际上你不止可以把dict转化为json string，python中除了class外的对象基本都可以转换为json string。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps({<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;John&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">30</span>}))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps([<span style="color:#e6db74">&#34;apple&#34;</span>, <span style="color:#e6db74">&#34;bananas&#34;</span>]))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps((<span style="color:#e6db74">&#34;apple&#34;</span>, <span style="color:#e6db74">&#34;bananas&#34;</span>)))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps(<span style="color:#e6db74">&#34;hello&#34;</span>))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps(<span style="color:#ae81ff">42</span>))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps(<span style="color:#ae81ff">31.76</span>))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps(<span style="color:#66d9ef">True</span>))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps(<span style="color:#66d9ef">False</span>))  
+</span></span><span style="display:flex;"><span>print(json<span style="color:#f92672">.</span>dumps(<span style="color:#66d9ef">None</span>))
+</span></span></code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{<span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;John&#34;</span>, <span style="color:#f92672">&#34;age&#34;</span>: <span style="color:#ae81ff">30</span>}
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#34;apple&#34;</span>, <span style="color:#e6db74">&#34;bananas&#34;</span>]
+</span></span><span style="display:flex;"><span>[<span style="color:#e6db74">&#34;apple&#34;</span>, <span style="color:#e6db74">&#34;bananas&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;hello&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">42</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">31.76</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">null</span>
+</span></span></code></pre></div><p>一些读写json文件的示例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Tom&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">20</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;data.json&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>    json<span style="color:#f92672">.</span>dump(data, f, indent<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>)
+</span></span></code></pre></div><p>写入json文件同时添加4格缩进。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;data.json&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>, encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>load(f)
+</span></span></code></pre></div><p>读取json。</p>
+<h1 id="typer">Typer<a href="#typer" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>终于可以讲python的实用库了。然而不得不说很多库的注释写的一言难尽，要是所有python库的注释都写的和torch一样详细就好了。</p>
+<p>typer可以看做是click库的现代版封装，后者是一个经典的python cli工具开发库，但是其语法相对繁琐，使用了大量的装饰器语法。相较而言，typer的语法更贴近python原生体验一些，上手难度更低。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> typer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>(name: str):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Hello </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>typer<span style="color:#f92672">.</span>run(main)
+</span></span></code></pre></div><p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260207-6.png" alt=""></p>
+<p>你可以用<code>typer.run()</code>来运行一个函数，函数的参数会自动从命令行中接收。</p>
+<p><code>typer.run()</code>的工作原理实质是临时创建了一个只包含一个指令的Typer实例，后续会讲到。</p>
+<p>一个相对复杂的例子：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> typer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> typer<span style="color:#f92672">.</span>Typer()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.command</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hello</span>(name: str):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Hello </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.command</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">goodbye</span>(name: str, formal: bool <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> formal:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Goodbye Ms. </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">. Have a good day.&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Bye </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">!&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    app()
+</span></span></code></pre></div><p>此处使用了装饰器语法。<code>command()</code>是<code>Typer</code>类的一个方法，作用是将一个函数注册进本Typer。当一个Typer实例被调用时，它会先执行一个<code>get_command</code>方法，该方法会根据Typer实例子命令的情况返回一个<code>click.Command</code>示例，之后Typer示例调用的参数会被传入<code>click.Command</code>的<code>__call__</code>方法，指令得到执行。</p>
+<p>运行效果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260207-8.png" alt=""></p>
+<p>写到这里快速上手部分就结束了，这里我真的不得不再次表扬一下<a href="https://typer.tiangolo.com/tutorial/">Typer tutorial</a>，这辈子没见过这么面向新手的文档。感觉自己在这里写typer的博客都多余（如果你不知道什么是装饰器，你甚至可以在这个文档里找到装饰器含义的解释）。此外，typer的语法基本就是顺着python原生语法设计的，比如&ndash;help显示的内容可以直接读取函数的docstring。可以说typer的实现方式非常的优雅。</p>
+<h1 id="rich">Rich<a href="#rich" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>这是我最想掌握的库，没有人能拒绝亲自设计一套自己的终端ui。Rich库可以定制输出的风格、颜色，并用于显示一些高级内容如表格、markdown，以及语法高亮。</p>
+<p>你可以输入以下指令来确认你的rich环境是否工作正常：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m rich
+</span></span></code></pre></div><p>效果：</p>
+<p><img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-8.png" alt="">
+<img src="/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/Python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84&amp;%E4%B8%80%E4%BA%9B%E5%BA%93-20260211-10.png" alt=""></p>
+<p>事实上，rich的很多模块支持你直接使用-m方式启动来运行它的demo。</p>
+<p>rich能做的事情非常多，同时文档非常详细，复述一遍没有什么意义，此处我来罗列一下rich各个模块的大致用途。</p>
+<ul>
+<li><code>rich.console</code>
+<ul>
+<li>提供了一个<code>Console</code>类，本质上是在多变的终端环境上套了一个通用的终端渲染系统。</li>
+<li>rich的终端渲染控制中心。</li>
+<li>你可能会需要在程序中用一个专门的模块负责实例化一个<code>Console</code>。</li>
+</ul>
+</li>
+<li>sytle
+<ul>
+<li>rich的很多输出方式允许你传入style参数来表示颜色以及一些加粗或者斜体这样的特殊属性。</li>
+<li><a href="https://rich.readthedocs.io/en/latest/appendix/colors.html#appendix-colors">你可以在这里找到支持的颜色</a></li>
+<li><code>rich.style</code>提供了一个<code>Style</code>类，你可以传参时直接传入一个定制好的<code>Style</code>实例来表示风格。</li>
+<li><code>rich.theme</code>提供了一个<code>Theme</code>类，一个Theme实例包含了各种情况下style的别名映射。比如你可以给某个style起个别名&quot;info&quot;，这样在这个theme下你就可以直接传入info来表示该风格。</li>
+</ul>
+</li>
+<li><code>rich.markup</code>
+<ul>
+<li><code>python -m rich.markup</code>来测试markup功能。</li>
+<li>你可以在输出中简单的添加一些标记来为文本添加颜色和风格，而不需要传入style参数或者Style实例。</li>
+</ul>
+</li>
+<li><code>rich.text</code>
+<ul>
+<li><code>python -m rich.text</code>来测试其功能。</li>
+<li>提供了一个<code>Text</code>类，可以用来直接取代任何原本接收字符串的参数，同时提供了一些属性用来设定文本显示的行为，比如居中还是靠左靠右。</li>
+</ul>
+</li>
+<li>Highlighting
+<ul>
+<li>rich会自动高亮一些特殊部分。</li>
+<li><code>rich.highlighter</code>提供了一些类来自定义高亮规则和颜色。（你可以用这种方式打印彩虹文本）</li>
+</ul>
+</li>
+<li><code>rich.pretty</code>
+<ul>
+<li>提供了一些工具来更美观的打印一些python对象。</li>
+</ul>
+</li>
+<li><code>rich.logging</code>
+<ul>
+<li>提供了高度可定制的日志系统。</li>
+</ul>
+</li>
+<li><code>rich.traceback</code>
+<ul>
+<li><code>python -m rich.traceback</code>测试功能。</li>
+<li>对代码报错提供了语法高亮和格式支持。（太全面了）</li>
+</ul>
+</li>
+<li><code>rich.prompt</code>
+<ul>
+<li><code>python -m rich.prompt</code>测试功能。</li>
+<li>可以用更优雅的方式实现和用户的交互。</li>
+</ul>
+</li>
+<li><code>rich.columns</code>
+<ul>
+<li><code>python -m rich.columns</code>测试功能</li>
+<li>按照整齐的列来显示文本或者其他可渲染对象。</li>
+</ul>
+</li>
+<li>Render Groups
+<ul>
+<li><code>rich.console</code>中提供了Group类，可以把多个可渲染对象打包起来塞进只接受一个可渲染对象的参数中。</li>
+</ul>
+</li>
+<li><code>rich.markdown</code>
+<ul>
+<li>提供了一个<code>Markdown</code>类，可以将markdown格式的字符串转换为可渲染对象。</li>
+</ul>
+</li>
+<li><code>rich.padding</code>
+<ul>
+<li>提供了一个<code>Padding</code>类，可以用来给其他的可渲染对象添加空白的周围填充。</li>
+</ul>
+</li>
+<li><code>rich.panel</code>
+<ul>
+<li>提供了一个<code>Panel</code>类用来绘制仪表盘。</li>
+</ul>
+</li>
+<li><code>rich.progress</code>
+<ul>
+<li>提供了一些方法绘制进度条。</li>
+</ul>
+</li>
+<li><code>rich.syntax</code>
+<ul>
+<li>提供了代码高亮。</li>
+</ul>
+</li>
+<li><code>rich.table</code>
+<ul>
+<li>提供了一些方法绘制表格。</li>
+</ul>
+</li>
+<li><code>rich.tree</code>
+<ul>
+<li><code>python -m rich.tree</code>测试功能。</li>
+<li>用来绘制树形图。</li>
+</ul>
+</li>
+<li><code>rich.live</code>
+<ul>
+<li><code>python -m rich.live</code>测试功能。</li>
+<li>用来实时绘制一些动画。（比如进度条）</li>
+</ul>
+</li>
+<li><code>rich.layout</code>
+<ul>
+<li><code>python -m rich.layout</code>测试功能。</li>
+<li>用来对屏幕进行分区，定制界面布局。</li>
+</ul>
+</li>
+<li>Console Protocol
+<ul>
+<li>用来定制自定义类的print()输出样式。</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://rich.readthedocs.io/en/latest/index.html">rich doc</a></p>
+<h1 id="tenacity">Tenacity<a href="#tenacity" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>提供了各种各样的方法应对原本会raise error的地方，比如多次尝试，或者等待响应。只需要添加一些装饰器就可以工作。</p>
+<p>懒得写了，具体的食用方法看官方文档。</p>
+<h1 id="requests">Requests<a href="#requests" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>这才是本篇的重头戏。前面的第三方库大多处理cli的前端，而requests则是用来处理网络请求。几乎所有的线上api服务都必须要通过网络请求实现。就我们的主要目的来说，调用ai api除了发送网络请求外别无他法。</p>
+<p>需要声明的是，本人没有系统学习过计算机网络，很可能出现专业术语的使用或者解读错误，请注意甄别。</p>
+<h2 id="前置知识">前置知识<a href="#%e5%89%8d%e7%bd%ae%e7%9f%a5%e8%af%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>在开始使用requests之前，我们有必要了解HTTP的概念。HTTP，<strong>HyperText Transfer Protocol</strong>，即所谓超文本传输协议，它的功能其实很简单：在服务器与客户端之间建立了一个沟通的规范。协议就像一种语言，只有当服务器和客户端都说同一种语言时两者才能相互理解。</p>
+<p>HTTP的交互本质上很简单，本质上一次完整的HTTP沟通只分为两步：客户端发送请求，服务器给出响应。客户端发出的请求称为<em>http request</em>，服务器发出的响应称为<em>http response</em>。而request和response分别遵守一定的格式。</p>
+<p>首先，对于request来说，一个完整的http request由四部分组成：</p>
+<ul>
+<li>URL，即<strong>统一资源定位符</strong>，是每个网络资源自身特有的人类可理解的网络地址。具体表现其实就是网址。</li>
+<li>Method，请求方式。常见的请求方式如下：
+<ul>
+<li>GET：给我看看。（直接获取信息）</li>
+<li>POST：给你看看。（提交一些信息）</li>
+<li>还有很多其他的请求，但是不那么常用。（主要怕说错）</li>
+</ul>
+</li>
+<li>Header，请求头，声明自己的身份和索要的文件类型。</li>
+<li>Body，请求体，用来上传一些具体的内容。</li>
+</ul>
+<p>对于一个http response来说，通常会有以下组成：</p>
+<ul>
+<li>状态码。比如404 not found。200则表示成功了。</li>
+<li>Headers，响应头，一些备注信息。</li>
+<li>Body，响应体，你真正想要的服务器返回信息。</li>
+</ul>
+<p>通常当我们使用浏览器的时候，浏览器就在不断地发送http（或者https）请求。当我们浏览网页的时候，对应的服务器会返回HTML，浏览器进一步将HTML渲染成人类可以观看的网页。而对于api调用，服务器返回的则是纯文本文件json。我们可以轻易地在python中读取json文件的信息。</p>
+<h2 id="一些尝试">一些尝试<a href="#%e4%b8%80%e4%ba%9b%e5%b0%9d%e8%af%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>requests库的用法实际上相当符合直觉。比如，请求方法看起来很像一个动词，所以requests库中请求方法的存在形式为函数，而url、header、body均作为参数传入函数。</p>
+<p>简单的get方法尝试：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.pretty <span style="color:#f92672">import</span> pprint
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://api.github.com/users/python&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(type(response))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;status: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>:
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>    pprint(data)
+</span></span></code></pre></div><p>(rich现学现卖..)</p>
+<p>输出结果：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">requests</span><span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>Response<span style="color:#e6db74">&#39;&gt;</span>
+</span></span><span style="display:flex;"><span>status: <span style="color:#ae81ff">200</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;login&#39;</span>: <span style="color:#e6db74">&#39;python&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;id&#39;</span>: <span style="color:#ae81ff">1525981</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;node_id&#39;</span>: <span style="color:#e6db74">&#39;MDEyOk9yZ2FuaXphdGlvbjE1MjU5ODE=&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;avatar_url&#39;</span>: <span style="color:#e6db74">&#39;https://avatars.githubusercontent.com/u/1525981?v=4&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;gravatar_id&#39;</span>: <span style="color:#e6db74">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;html_url&#39;</span>: <span style="color:#e6db74">&#39;https://github.com/python&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;followers_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/followers&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;following_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/following{/other_user}&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;gists_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/gists{/gist_id}&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;starred_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/starred{/owner}{/repo}&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;subscriptions_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/subscriptions&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;organizations_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/orgs&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;repos_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/repos&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;events_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/events{/privacy}&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;received_events_url&#39;</span>: <span style="color:#e6db74">&#39;https://api.github.com/users/python/received_events&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;type&#39;</span>: <span style="color:#e6db74">&#39;Organization&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;user_view_type&#39;</span>: <span style="color:#e6db74">&#39;public&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;site_admin&#39;</span>: <span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;name&#39;</span>: <span style="color:#e6db74">&#39;Python&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;company&#39;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;blog&#39;</span>: <span style="color:#e6db74">&#39;https://www.python.org/&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;location&#39;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;email&#39;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;hireable&#39;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;bio&#39;</span>: <span style="color:#e6db74">&#39;Repositories related to the Python Programming language&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;twitter_username&#39;</span>: <span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;public_repos&#39;</span>: <span style="color:#ae81ff">90</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;public_gists&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;followers&#39;</span>: <span style="color:#ae81ff">29714</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;following&#39;</span>: <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;created_at&#39;</span>: <span style="color:#e6db74">&#39;2012-03-11T15:56:37Z&#39;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#e6db74">&#39;updated_at&#39;</span>: <span style="color:#e6db74">&#39;2026-02-09T14:43:33Z&#39;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>requests库内置了json解码方法，<code>.json()</code>会将一个<code>requests.models.Response</code>实例的响应体部分由json转换为python dict并返回。所以我们在上述data中看不到状态码和响应头。</p>
+<p>Github api可以用来查看仓库信息、用户信息，获取热门仓库，和方便进行自动化开发。</p>
+<p>使用post方法的尝试：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.pretty <span style="color:#f92672">import</span> pprint
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://httpbin.org/post&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>my_data <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;Moonhalf&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;age&#34;</span>:<span style="color:#ae81ff">114514</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;message&#34;</span>:<span style="color:#e6db74">&#34;Hello world!&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>post(url, data<span style="color:#f92672">=</span>my_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(type(response))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;status: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>:
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>    pprint(data)
+</span></span></code></pre></div><p><code>httpbin.org</code>是一个专门用来测试http请求的网站。</p>
+<p>对于llm api的调用本质上也就是发送http请求，文档中一般会给出调用api所需要的header、url以及body的具体格式。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>19岁生日随想</title>
