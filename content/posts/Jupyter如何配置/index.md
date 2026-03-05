@@ -12,7 +12,7 @@ title: Jupyter如何配置
 toc: true
 ---
 
-最近相当长一段时间在自学数据科学和机器学习，但是一直都在凑合着用白板jupyterlab，但是使用体验上非常的一言难尽，jupyterlab的自动补全和语法诊断设计的非常没有眼力见，要么不按按键就不提示，要么全时段疯狂提示。总之，今天终于决定好好研究一下这个东西到底怎么配置。
+最近相当长一段时间在自学数据科学和机器学习，但是一直都在凑合着用白板jupyterlab，使用体验上非常的一言难尽。jupyterlab的自动补全和语法诊断设计的非常没有眼力见，要么不按按键就不提示，要么全时段疯狂提示。总之，今天终于决定好好研究一下这个东西到底怎么配置。
 # 参考链接：
 
 [jupyter doc](https://docs.jupyter.org/en/latest/)
@@ -20,7 +20,7 @@ toc: true
 [jupytext github](https://github.com/mwouts/jupytext)
 # Jupyter lab由什么组成？
 
-用过jupyterlab的人都知道jupyterlab就像一个运行在网页里的ide，但是在处理`.ipynb`文件时会将`.ipybn`文件中的若干个json文件解包为一个个独立的cell，可以单独运行每个cell中的代码。当运行代码cell时，jupyter会将代码发送到后端的*kernel*中。kernel是一个独立的进程，专门负责解释运行代码并维护运行时的状态。
+用过jupyterlab的人都知道，jupyterlab就像一个运行在网页里的ide，但是在处理`.ipynb`文件时会将`.ipybn`文件中的若干个json文件解包为一个个独立的cell，每个cell中的代码可以单独运行。当运行代码cell时，jupyter会将代码发送到后端的*kernel*中。kernel是一个独立的进程，专门负责解释运行代码并维护运行时的状态。
 
 之所以需要kernel存在，原因在于jupyterlab实际上并不只面向python设计。C++、Java和Python传统语言御三家都有对应的jupyter kernel，这样一套前端就可以适配多种后端。
 
@@ -38,9 +38,9 @@ pip install jupyterlab
 
 ![](Jupyter如何配置-20260221-1.png)
 
-其中我们惊讶地发现原来左边这个拼图符号是插件市场。提这个的原因是如果不提的话很多人可能一辈子都不知道jupyterlab竟然还有插件市场。只要点击install就可以安装插件，非常的方便。
+如果不提的话很多人可能一辈子都不知道jupyterlab竟然还有插件市场。只要点击install就可以安装插件，非常的方便。
 
-既然是用来写python的，那么首先我们就应该先来安装vim插件。直接在插件市场中搜索vim就能找到`axlair-jupyterlab-vim`插件，但是接下来我们需要配置它的按键映射。在Settings、Settings Editor中左侧罗列了所有插件的信息，右侧则罗列了配置项。
+既然是用来写python的，那么首先我们就应该先来安装vim插件（雾）。直接在插件市场中搜索vim就能找到`axlair-jupyterlab-vim`插件，但是接下来我们需要配置它的按键映射。在Settings、Settings Editor中左侧罗列了所有插件的信息，右侧则罗列了配置项。
 
 依旧是jk映射esc。
 
@@ -172,3 +172,5 @@ jupytext --pipe black notebook.ipynb
 ```
 
 对`notebook.ipynb`文件中的代码块进行black格式化。可以将black替换为isort来整理import。
+
+一些和ide搭配使用的其他插件工具因为和本人工作流契合度不够所以暂未涉及。

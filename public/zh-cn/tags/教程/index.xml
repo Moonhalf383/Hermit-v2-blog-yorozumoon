@@ -14,7 +14,7 @@
       <link>http://localhost:1313/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Sat, 21 Feb 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/</guid>
-      <description>&lt;p&gt;最近相当长一段时间在自学数据科学和机器学习，但是一直都在凑合着用白板jupyterlab，但是使用体验上非常的一言难尽，jupyterlab的自动补全和语法诊断设计的非常没有眼力见，要么不按按键就不提示，要么全时段疯狂提示。总之，今天终于决定好好研究一下这个东西到底怎么配置。&lt;/p&gt;</description>
+      <description>&lt;p&gt;最近相当长一段时间在自学数据科学和机器学习，但是一直都在凑合着用白板jupyterlab，使用体验上非常的一言难尽。jupyterlab的自动补全和语法诊断设计的非常没有眼力见，要么不按按键就不提示，要么全时段疯狂提示。总之，今天终于决定好好研究一下这个东西到底怎么配置。&lt;/p&gt;</description>
     </item>
     <item>
       <title>工具不图鉴04：环境变量&amp;shell脚本</title>
