@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Sun, 01 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CodeCompanion.nvim配置</title>
+      <link>http://localhost:1313/zh-cn/posts/codecompanion/</link>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/codecompanion/</guid>
+      <description>&lt;h1 id=&#34;参考链接&#34;&gt;参考链接&lt;a href=&#34;#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://codecompanion.olimorris.dev/&#34;&gt;codecompanion doc&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/olimorris/codecompanion.nvim&#34;&gt;github&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://blog.383494.xyz/code-companion-nvim/&#34;&gt;blog.383494&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;codecompanion.nvim是一个coding agent插件。不同于avante.nvim这样的cursor-like插件，codecompanion.nvim的交互模式更加贴合vim的原生体验。工具调用以及上下文引入都通过在对话中写入特殊变量来实现。此外，codecompanion.nvim对于非claude系的模型的支持度更高，可拓展性也远远强于avante.nvim。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Kaggle房价预测</title>
       <link>http://localhost:1313/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/</link>

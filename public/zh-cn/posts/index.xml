@@ -4,12 +4,286 @@
 		<title>Posts on Yorozumoon</title>
 		<link>http://localhost:1313/zh-cn/posts/</link>
 		<description>Recent content in Posts on Yorozumoon</description>
-		<generator>Hugo -- 0.157.0</generator>
+		<generator>Hugo -- 0.158.0</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Sun, 01 Mar 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>CodeCompanion.nvim配置</title>
+			<link>http://localhost:1313/zh-cn/posts/codecompanion/</link>
+			<pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/codecompanion/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="参考链接">参考链接<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://codecompanion.olimorris.dev/">codecompanion doc</a></p>
+<p><a href="https://github.com/olimorris/codecompanion.nvim">github</a></p>
+<p><a href="https://blog.383494.xyz/code-companion-nvim/">blog.383494</a></p>
+<p>codecompanion.nvim是一个coding agent插件。不同于avante.nvim这样的cursor-like插件，codecompanion.nvim的交互模式更加贴合vim的原生体验。工具调用以及上下文引入都通过在对话中写入特殊变量来实现。此外，codecompanion.nvim对于非claude系的模型的支持度更高，可拓展性也远远强于avante.nvim。</p>
+<h1 id="配置参考">配置参考<a href="#%e9%85%8d%e7%bd%ae%e5%8f%82%e8%80%83" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;olimorris/codecompanion.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>  version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;^19.0.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  cmd <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanion&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanionChat&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanionActions&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanionCmd&#34;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  opts <span style="color:#f92672">=</span> {},
+</span></span><span style="display:flex;"><span>  dependencies <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;nvim-lua/plenary.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;nvim-treesitter/nvim-treesitter&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;ravitemer/mcphub.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;akinsho/toggleterm.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;ravitemer/codecompanion-history.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>    require(<span style="color:#e6db74">&#34;codecompanion&#34;</span>).setup({
+</span></span><span style="display:flex;"><span>      opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        language <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Chinese&#34;</span>,
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      strategies <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        chat <span style="color:#f92672">=</span> { adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span> },
+</span></span><span style="display:flex;"><span>        inline <span style="color:#f92672">=</span> { adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span> },
+</span></span><span style="display:flex;"><span>        agent <span style="color:#f92672">=</span> { adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span> },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      interactions <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        chat <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        inline <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        cmd <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;deepseek&#34;</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      mcp <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        servers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          [<span style="color:#e6db74">&#34;tavily-mcp&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;tavily-mcp@latest&#34;</span> },
+</span></span><span style="display:flex;"><span>            env <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>              TAVILY_API_KEY <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;TAVILY_API_KEY&#34;</span>),
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>          [<span style="color:#e6db74">&#34;filesystem&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-filesystem&#34;</span> },
+</span></span><span style="display:flex;"><span>            roots <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">local</span> cwd <span style="color:#f92672">=</span> vim.fn.getcwd()
+</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                  name <span style="color:#f92672">=</span> vim.fn.fnamemodify(cwd, <span style="color:#e6db74">&#34;:t&#34;</span>),
+</span></span><span style="display:flex;"><span>                  uri <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://&#34;</span> <span style="color:#f92672">..</span> cwd,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>              }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>          [<span style="color:#e6db74">&#34;sequential-thinking&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-sequential-thinking&#34;</span> },
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          default_servers <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;sequential-thinking&#34;</span> },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      adapters <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        http <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          zhipu <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> require(<span style="color:#e6db74">&#34;codecompanion.adapters&#34;</span>).extend(<span style="color:#e6db74">&#34;openai_compatible&#34;</span>, {
+</span></span><span style="display:flex;"><span>              schema <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                model <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;glm-4-air-250414&#34;</span>,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                top_p <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                temperature <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span> },
+</span></span><span style="display:flex;"><span>                max_tokens <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">4096</span> },
+</span></span><span style="display:flex;"><span>              },
+</span></span><span style="display:flex;"><span>              env <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>,
+</span></span><span style="display:flex;"><span>                api_key <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;ZHIPU_API_KEY&#34;</span>),
+</span></span><span style="display:flex;"><span>                chat_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/chat/completions&#34;</span>,
+</span></span><span style="display:flex;"><span>              },
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>          deepseek <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> require(<span style="color:#e6db74">&#34;codecompanion.adapters&#34;</span>).extend(<span style="color:#e6db74">&#34;openai_compatible&#34;</span>, {
+</span></span><span style="display:flex;"><span>              schema <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                model <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;deepseek-chat&#34;</span>,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                top_p <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                temperature <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span> },
+</span></span><span style="display:flex;"><span>                max_tokens <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">4096</span> },
+</span></span><span style="display:flex;"><span>              },
+</span></span><span style="display:flex;"><span>              env <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>                url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://api.deepseek.com&#34;</span>,
+</span></span><span style="display:flex;"><span>                api_key <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;DEEPSEEK_API_KEY&#34;</span>),
+</span></span><span style="display:flex;"><span>              },
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      extensions <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        mcphub <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          callback <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mcphub.extensions.codecompanion&#34;</span>,
+</span></span><span style="display:flex;"><span>          opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            make_vars <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            make_slash_commands <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            show_result_in_chat <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        history <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          enabled <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>          opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            dir_to_save <span style="color:#f92672">=</span> vim.fn.stdpath(<span style="color:#e6db74">&#34;data&#34;</span>) <span style="color:#f92672">..</span> <span style="color:#e6db74">&#34;/codecompanion_chats.json&#34;</span>,
+</span></span><span style="display:flex;"><span>            auto_save <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            auto_generate_title <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>            picker <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;telescope&#34;</span>,
+</span></span><span style="display:flex;"><span>            keymap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gh&#34;</span>,
+</span></span><span style="display:flex;"><span>            save_chat_keymap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;sc&#34;</span>,
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      rules <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        default <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Collection of common files for all projects&#34;</span>,
+</span></span><span style="display:flex;"><span>          files <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CLAUDE.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;claude&#34;</span> },
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CLAUDE.local.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;claude&#34;</span> },
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.cursorrules&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.rules&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AGENT.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AGENTS.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        project_specific <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Project-specific rules&#34;</span>,
+</span></span><span style="display:flex;"><span>          files <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.github/copilot-instructions.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
+</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;README.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
+</span></span><span style="display:flex;"><span>          },
+</span></span><span style="display:flex;"><span>          condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">-- Only load for git repositories</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> vim.fn.isdirectory(<span style="color:#e6db74">&#34;.git&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>  keys <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;a&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AI&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
+</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;ac&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;CodeCompanionChat Toggle&lt;cr&gt;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Open CodeCompanion Chat&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
+</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;ai&#34;</span>, <span style="color:#e6db74">&#34;:CodeCompanion&lt;cr&gt;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Inline CodeCompanion&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
+</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;aa&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;CodeCompanionActions&lt;cr&gt;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CodeCompanion Actions&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>此类最新插件的配置写法直接让ai写触发幻觉的概率非常高。花了一个上午研读文档得到了一个能跑的配置。部分代码参考了<a href="https://blog.383494.xyz/code-companion-nvim/">这篇博客</a>。</p>
+<p>使用的插件管理器是lazy.nvim。</p>
+<hr>
+<h1 id="一些术语">一些术语<a href="#%e4%b8%80%e4%ba%9b%e6%9c%af%e8%af%ad" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="mcp">MCP<a href="#mcp" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><strong>M</strong>odel <strong>C</strong>ontext <strong>P</strong>rotocol，大模型上下文协议。简单来说它是一套用来把工具插到LLM上的通用接口。不同的AI厂商给自家模型设置的工具调用底层接口可能不同，这样就导致如果开发者想为模型添加功能就必须为不同ai写专门的代码。现在通过MCP协议，“工具”和“模型”的开发实现了解耦。在MCP语境下，工具被称为MCP Server。它们未必是一个云服务，只是它们是服务的实际执行者。而ai工具的客户端被称为MCP Client。比如我们的CodeCompanion插件。</p>
+<p>Javascript的生态对我来说一直是一个非常神秘的事物，他们的社区中经常产出一些让人费解的神秘工具，我不能保证我能完全正确地说明白Mcp Server的工作原理。Mcp Server的具体存在形式有很多种，其中相当一部分是通过npx运行的“云端脚本”。</p>
+<p>npx的模式非常神奇，它是一个“包执行器”。只需要传入一个工具名称，它就会自动从网上下载这个工具并执行，但是执行完之后工具并不会软链接到全局路径，而是被直接清理掉。这样做虽然听起来非常麻烦，实际效果上实现了工具永远保持最新状态与低门槛跨平台。在codecompanion中，启动的mcp server会一直运行在后台等待调用。</p>
+<p>MCP Server很多时候并不是一个很重量的服务，而是一些轻量的胶水代码。这也使得他们可以直接通过npx来运行。除了npx脚本外，本地js项目或者一些其他的二进制文件也同样可以作为MCP Server。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>mcp <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>	servers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>	  [<span style="color:#e6db74">&#34;tavily-mcp&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>		cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;tavily-mcp@latest&#34;</span> },
+</span></span><span style="display:flex;"><span>		env <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>		  TAVILY_API_KEY <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;TAVILY_API_KEY&#34;</span>),
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>	  },
+</span></span><span style="display:flex;"><span>	  [<span style="color:#e6db74">&#34;filesystem&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>		cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-filesystem&#34;</span> },
+</span></span><span style="display:flex;"><span>		roots <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
+</span></span><span style="display:flex;"><span>		  <span style="color:#66d9ef">local</span> cwd <span style="color:#f92672">=</span> vim.fn.getcwd()
+</span></span><span style="display:flex;"><span>		  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>			{
+</span></span><span style="display:flex;"><span>			  name <span style="color:#f92672">=</span> vim.fn.fnamemodify(cwd, <span style="color:#e6db74">&#34;:t&#34;</span>),
+</span></span><span style="display:flex;"><span>			  uri <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://&#34;</span> <span style="color:#f92672">..</span> cwd,
+</span></span><span style="display:flex;"><span>			},
+</span></span><span style="display:flex;"><span>		  }
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">end</span>,
+</span></span><span style="display:flex;"><span>	  },
+</span></span><span style="display:flex;"><span>	  [<span style="color:#e6db74">&#34;sequential-thinking&#34;</span>] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>		cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-sequential-thinking&#34;</span> },
+</span></span><span style="display:flex;"><span>	  },
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>	opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>	  default_servers <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;sequential-thinking&#34;</span> },
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>},
+</span></span></code></pre></div><p>我的配置文件中暂时只引入了以上三个mcp server。分别用于联网搜索、读写本地文件系统，以及多步推理。</p>
+<p>mcp服务可以提供第三方工具，但是mcp服务并不总是默认开启。我的配置文件中只默认开启了sequential-thinking。开启其他mcp server需要在聊天栏中通过<code>/mcp</code>手动开启。启动之后，使用@语法就可以将mcp工具引入上下文中供llm调用。</p>
+<p><img src="/zh-cn/posts/codecompanion/CodeCompanion.nvim%E9%85%8D%E7%BD%AE-20260322-3.png" alt=""></p>
+<hr>
+<h2 id="agents--tool-groups">Agents / Tool Groups<a href="#agents--tool-groups" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>在codecompanion中工具并不会被全自动的调用给llm，你需要手动通过@符号来将工具引入上下文（如我们上文中的mcp工具）。在工具组的基础之上添加特定提示词我们就得到了一个agent。codecompanion内置了<code>@{agent}</code>和<code>@{files}</code>两个组，前者为codecompanion提供的一个agent模式，后者则仅仅是一个用来处理文件的工具组。</p>
+<p>除此之外codecompanion.nvim还提供了一系列内置的单独工具，详见<a href="https://codecompanion.olimorris.dev/usage/chat-buffer/agents-tools">文档</a>。</p>
+<p>（可能是使用方法的问题，感觉agent模式不太聪明）</p>
+<hr>
+<h2 id="editor-context">Editor Context<a href="#editor-context" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>使用#可以在聊天栏中动态插入上下文。比如你可以通过<code>#{buffer}</code>来将最后打开的缓冲区文件加入到上下文中。你也可以通过加入参数的方式指定特定文件或内容，比如<code>#{buffer: main.py}</code>或者<code>#{buffer}{diff}</code>。</p>
+<p>以下搬运一些文档中提及的上下文变量：</p>
+<ul>
+<li><code>#{diff}</code>，将当前项目的git diff发送给agent。可以用来生成git commit消息。</li>
+<li><code>#{messages}</code>，将neovim抛出的messages发给agent。</li>
+<li><code>#{diagnositcs}</code>，将lsp语法诊断的报错发给发给agent。</li>
+<li><code>#{viewport}</code>，只发送屏幕上视口可见部分的代码，节省token。</li>
+<li><code>#{terminal}</code>，用来读取neovim自带终端中的文本。</li>
+</ul>
+<p>一些其他的变量详见文档。</p>
+<p>（本来想通过自定义上下文变量的方式添加对toggleterm的支持，但是文档中没有找到配置方式，折腾一番后放弃）</p>
+<hr>
+<h2 id="rules">Rules<a href="#rules" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>提示词，每次对话前项目根目录的rules配置文件中的内容会被自动引入上下文。或者可以通过/rules指令手动引入规则。</p>
+<p>比如你可以在项目根目录下放一个<code>.rules</code>文件并写入一些系统提示词，大致效果如下：</p>
+<p><img src="/zh-cn/posts/codecompanion/CodeCompanion.nvim%E9%85%8D%E7%BD%AE-20260324-1.png" alt=""></p>
+<p>（最近写rag后端发现“你是一个猫娘”是一个非常好用的prompt注入测试文本。）</p>
+<hr>
+<h2 id="history">history<a href="#history" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>配置中添加了codecompanion-history.nvim插件作为前置，可以自动保存聊天记录并随时回顾。在聊天栏中<code>gh</code>可查看历史记录，<code>sc</code>手动保存会话。</p>
+<p><img src="/zh-cn/posts/codecompanion/CodeCompanion.nvim%E9%85%8D%E7%BD%AE-20260324-2.png" alt=""></p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Kaggle房价预测</title>
