@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Sun, 22 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 30 Mar 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Thinkpad Archlinux折腾笔记</title>
+      <link>http://localhost:1313/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;a href=&#34;#%e5%89%8d%e8%a8%80&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;一年以来我一直在我的平板上用termux写代码。这样做的原因是平板便携性和续航能力远强于又大又重的游戏本。另一方面，没有哪个laptop比平板更加配得上laptop这个头衔，平板真的能做到平稳而舒适地放在lap的top上。多亏有termux，我可以在几乎任何时间任何地方写代码，而且强行习惯了linux cli风格的工作环境。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CodeCompanion.nvim配置</title>
       <link>http://localhost:1313/zh-cn/posts/codecompanion/</link>
