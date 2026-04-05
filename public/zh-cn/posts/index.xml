@@ -71,7 +71,7 @@
    </svg></a></h1>
 <p><a href="https://www.bilibili.com/video/BV1L2gxzVEgs/?spm_id_from=333.337.search-card.all.click&amp;vd_source=31ba3d75fa2995f7e1b776de7a637bd4">bilibili</a>，b站随便找的教程，因为我对刷入linux完全没有概念，我觉得最好还是能看看整个流程到底是怎么一回事之后再尝试自己做。</p>
 <p><a href="https://wiki.archlinux.org/">archlinux wiki</a>，可能会参考，但是大概率是遇到问题去问ai。</p>
-<p><a href="https://distrochooser.de/zh-hans">distrochooser</a>，虽然测出来最适合的是debain，但是还是决定装archlinux。</p>
+<p><a href="https://distrochooser.de/zh-hans">distrochooser</a>，虽然测出来最适合的是debian，但是还是决定装archlinux。</p>
 <p><a href="https://www.sakimidare.top/posts/niri-manual/">niri配置</a>，此博客的背后是一个超级计算机大手子。</p>
 <p><a href="https://harkerhand.cn/Shell/">tty&amp;shell</a>，后来刷到的一篇博客。背后是另一个巨佬。</p>
 <h1 id="一些概念">一些概念<a href="#%e4%b8%80%e4%ba%9b%e6%a6%82%e5%bf%b5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
