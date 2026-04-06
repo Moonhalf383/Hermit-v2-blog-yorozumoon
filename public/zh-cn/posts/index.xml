@@ -7,9 +7,336 @@
 		<generator>Hugo -- 0.158.0</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Mon, 30 Mar 2026 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Mon, 06 Apr 2026 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>OpenJWC后端开发随想</title>
+			<link>http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</link>
+			<pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="前言329">前言（3.29）<a href="#%e5%89%8d%e8%a8%80329" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>三周前看到计算机设计比赛的消息遂组队参加。因为寒假的时候买了个年抛机，加上自己只对python比较熟悉，所以在团队中担任后端开发。</p>
+<p>半个月的时间感觉写完了一辈子要写的python。</p>
+<h1 id="参考链接">参考链接：<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://github.com/OpenJWC">OpenJWC Github Organization</a>，我组的github organization。</p>
+<p><a href="https://github.com/OpenJWC/OpenJWC-webapi">后端仓库</a>，我写的主要部分。</p>
+<p><a href="https://github.com/OpenJWC/OpenJWC-Server">容器源代码仓库</a>，我写的另一个组件。</p>
+<p><a href="https://www.sakimidare.top/">我组android开发与rust爬虫大手子</a>，下文中的客户端开发与rust爬虫脚本均是此佬的杰作。</p>
+<p><a href="https://github.com/wbxnll">我组控制面板前端开发</a>，大三的学长，负责控制面板前端。</p>
+<h1 id="项目简介">项目简介<a href="#%e9%a1%b9%e7%9b%ae%e7%ae%80%e4%bb%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>OpenJWC是一个去中心化的智能教务系统。简单来说它由两个主要组件组成：移动客户端与服务后端。对于一般的用户所有的交互都通过移动客户端实现，而对于服务的部署者来说则通过服务的控制面板来管理服务。</p>
+<p>移动客户端的主要功能有两个：资讯获取与ai聊天。移动客户端本身仅仅是一个前端，并不内置资讯数据库与ai接口调用的逻辑，因此非常轻量（只有几mb）。移动客户端会向服务器发送请求获取资讯列表与正文供用户阅览，同时可以通过与ai聊天来了解最近发生的资讯，或者某个资讯的详细内容。移动客户端的主要任务是做一个丝滑、美观、人性化的用户交互界面，不过我不懂kotlin，本文也不再展开了。</p>
+<h2 id="后端主要业务">后端主要业务<a href="#%e5%90%8e%e7%ab%af%e4%b8%bb%e8%a6%81%e4%b8%9a%e5%8a%a1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>资讯集中管理与ai接口调用的逻辑都被封装在了后端中（也就是我写的部分）。后端数据库包括一个SQLite数据库用来存储资讯信息、用户信息以及系统设置等传统数据，以及一个ChromaDB，用于存储语义向量实现检索增强生成，即RAG。</p>
+<p>后端会24小时运行在服务部署者的服务器上处理客户和控制面板的请求。使用脚本获取的教务资讯与管理员审核通过的用户投稿均会入库SQLite数据库，同时通过嵌入模型向量化存入ChromaDB。当用户发出chat请求时，后端会同样调用嵌入模型将用户的自然语言请求转化为语义向量，在ChromaDB中寻找与之“距离”最小的资讯向量。之后将所搜集到的最匹配的资讯作为语料注入prompt，以此实现语义搜索注入背景知识，无需用户手动指定资讯。</p>
+<p>在RAG的实现上，一方面通过多次测试并结合最佳实践调整了相关的超参数，另一方面引入了<strong>块重叠</strong>和<strong>元信息</strong>技巧。标准的RAG流程分为三个部分：索引，即将私有数据分为小块，向量化后存入向量数据库；检索，在用户发出请求时计算问题的向量并找出最匹配的文段块；生成，将用户的问题与检索到的文段块一同作为prompt供llm生成回复。RAG技术的最大的意义是让模型快速获知最新信息，无需过分依赖它训练时的接受的数据。</p>
+<p>然而，简单的将文档直接分块会导致以下问题：资讯被硬分块，导致语义不连续，检索时更容易丢失理解资讯必须的上下文信息。比如，假如一篇资讯的中部最匹配用户的问题，但是最后只有中部的文段被检索到，那么即使模型获取到了这一部分的原文信息，模型也无从获知这一篇资讯的核心要义，因为这些内容往往放在开头或结尾。</p>
+<p>本质上，硬分块的问题可以归纳为：将一个原本有机的资讯整体拆解为了若干语义差异很大的文段块。但是分块又是必须进行的操作，因为语义向量的维度是有限的，这意味着用语义向量能描述的文本信息量也是有限的，而在我们的认知中，通常越长的文本信息量越大。另一方面，不对资讯进行分块意味着我们需要将整篇资讯喂给LLM作为语料，而LLM的上下文窗口也是有限的，上下文越长，LLM越容易出现幻觉。我们必须控制喂给LLM的上下文长度的同时，确保LLM获取到了它所需要的背景信息。</p>
+<p>解决问题的方法是：让同一篇的文段块之间语义向量距离尽可能小。这就意味着需要缩小同一篇资讯不同位置的文段间的语义差距。块重叠技术意为：在分块时额外增加部分上游资讯块与下游资讯块的文本。比如假如每500字分为一块，那么引入快重叠技术后每一块额外加入前一块的最后50字与后一块的前50字，这样使得不同分块语义更加接近；元数据技术意为：为每个资讯块添加一些该资讯共有的信息，比如标题和日期，这样同一篇资讯的语义差距进一步缩小，同时更易在检索时因日期或者标题这种关键信息而得到更精确的筛选。</p>
+<p>因为向量化过程存在调用嵌入模型的成本，OpenJWC体系做了很多努力控制这一成本。比如限制用户投稿的文本量，设置向量化的日期区间（过时资讯不进行向量化）等。</p>
+<h2 id="鉴权相关">鉴权相关<a href="#%e9%89%b4%e6%9d%83%e7%9b%b8%e5%85%b3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>OpenJWC提供了容器镜像以供私有化部署。OpenJWC在安全方面的设计原则是信任部署者会积极的维护自己的服务生态。作为开源项目开发者，我们没有义务插手私有部署者的分发行为来确保部署者永远只授权好人使用他或她的服务。但是我们提供了方法供部署者控制可能的服务滥用，比如用户私自大范围分发服务的使用权限。</p>
+<p>部署者通过分发apikey的方式进行用户鉴权。每一个移动客户端会生成一个设备指纹。当app发送请求时，请求头中会同时携带设备指纹与app中存储的apikey。后端接受到请求后会比对该apikey是否注册有该设备，若不存在该apikey，或者该apikey已经注册满了设备而其中没有用户请求中的设备，请求将无法通过。对于一个有效apikey，若设备上限未满，则会自动为请求头中的设备进行注册。</p>
+<p>资讯列表和正文请求的鉴权是部署者可配置的。有的时候我们会希望未授权人员也可以查看本频道的资讯。但是ai chat的鉴权是强制的，因为chat过程有llm接口调用的成本。</p>
+<p>控制面板鉴权采用了JWT鉴权。管理员登录控制面板会被要求输入账号密码，后端比对通过后会返回一个jwt token。该token中携带了时间戳信息，前端存储该token，之后的每次前端请求都会携带该token，若与后端数据匹配且时间戳差距在预设区间内，则视为有效，可直接收到响应；若时间戳差异过大，即视为token过期，管理员需要重新登录控制面板。此做法是网页鉴权的最佳实践。</p>
+<h2 id="技术栈">技术栈<a href="#%e6%8a%80%e6%9c%af%e6%a0%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<h3 id="uv">uv<a href="#uv" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>一个用rust编写的python项目管理器，特点是速度快，功能丰富（集成了包管理器与虚拟环境等项目构建常用功能），独立且规范。</p>
+<h3 id="fastapi">Fastapi<a href="#fastapi" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>一个现代、高性能Python Web框架。性能与Nodejs或GoLang后端相当，原生支持异步编程，同时会自动生成接口文档（虽然我们没有用该功能）</p>
+<h3 id="sqlite3">SQLite3<a href="#sqlite3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>轻量嵌入式关系型数据库，特点是占用资源小，数据库在磁盘中存在形式为单文件，便于移植，Python标准库自带支持，无需安装驱动。</p>
+<h3 id="chromadb">ChromaDB<a href="#chromadb" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>开源向量数据库，社区支持庞大，轻量易用，并提供了元数据过滤功能。</p>
+<h3 id="uvicorn">Uvicorn<a href="#uvicorn" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>基于uvloop与httptools构建的极速ASGI服务器，专为异步web架构设计，除http外原生支持双向通讯协议。它的工作是监听端口，遵循ASGI标准将TCP数据流翻译为http请求，最后将请求包装为python字段传递给Fastapi。</p>
+<h3 id="deepseek--embedding-3">Deepseek / Embedding 3<a href="#deepseek--embedding-3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>调用的国产模型接口，分别用于给出自然语言回复与进行文本向量化。</p>
+<h1 id="开发历程">开发历程<a href="#%e5%bc%80%e5%8f%91%e5%8e%86%e7%a8%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="3月9日想法确定">3月9日：想法确定<a href="#3%e6%9c%889%e6%97%a5%e6%83%b3%e6%b3%95%e7%a1%ae%e5%ae%9a" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>最初决定参加比赛的时候并没有意识到其实其他组的作品很有可能已经相当完善了，还天真的以为所有人都是从零开始做项目。不过好在我们的进度也很快，3.9当天就确定下来做教务通知系统。</p>
+<p>同日，我组大手子从他自己之前的作品中把爬虫脚本用rust重写了一遍，并针对正文爬取进行了优化。</p>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-1.png" alt=""></p>
+<p>我们最初的设想中并没有规划管理员控制面板。在最初的架构设计中，只有管理员可以提交资讯正文作为爬虫部分情况无法正常工作的补充。此外，最初我们希望通过直接使用本地部署的llm来完成与用户的对话。（当时企图拉一位有高性能机器的同学入伙未遂）</p>
+<h2 id="3月10日基本工作流跑通">3月10日：基本工作流跑通<a href="#3%e6%9c%8810%e6%97%a5%e5%9f%ba%e6%9c%ac%e5%b7%a5%e4%bd%9c%e6%b5%81%e8%b7%91%e9%80%9a" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-1.jpg" alt=""></p>
+<p>花了一个下午+晚自习完成了处理用户chat请求部分的逻辑。调用了deepseek api。好在寒假的时候有折腾ai agent，所以对调api比较熟悉。原本计划给组内成员开放服务器权限，后来发现没必要，大家都有自己的事情要忙，我最好的做法就是全职负责后端开发。</p>
+<p>客户端开发完成了chat界面以及md渲染，并进一步优化了爬虫。</p>
+<p>以及3.11凌晨添加了符合md3 expressive的加载动画。</p>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-2.png" alt=""></p>
+<h2 id="3月11日一些零碎更新">3月11日：一些零碎更新<a href="#3%e6%9c%8811%e6%97%a5%e4%b8%80%e4%ba%9b%e9%9b%b6%e7%a2%8e%e6%9b%b4%e6%96%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-2.jpg" alt=""></p>
+<ul>
+<li>计划添加语义搜索功能</li>
+<li>添加客户端资讯列表接口</li>
+<li>基本确定我们会以私有化部署为卖点。</li>
+<li>移动客户端添加主题色切换功能</li>
+<li>移动客户端添加设置架构</li>
+</ul>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-3.png" alt=""></p>
+<p>之所以这么做是因为我寒假买的是个境内服务器。境内服务器绑定域名需要经过复杂的备案，时间大约两周才能绑域名，之后还要经过网安部的备案。我有进行过尝试，但是我现有的域名已经绑了我的博客，随便换会导致友链失效，而博客这种传媒形式事实上算是某种灰产，可能导致备案无法通过。</p>
+<p>总之，没办法很快给我的服务器绑上域名。绑不上域名就意味着没办法获取ssl证书，我的服务器也就只能通过http访问，这就使得我的服务在很多情况下会被视为不安全的连接。所以我们最后决定做私有化部署，把服务分发出来，这样我的服务器没有ssl证书就不是问题了，因为它并不代表所有服务器的情况。</p>
+<h2 id="3月12日前端摇人">3月12日：前端摇人<a href="#3%e6%9c%8812%e6%97%a5%e5%89%8d%e7%ab%af%e6%91%87%e4%ba%ba" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>客户端添加了过渡动画</li>
+<li>引入了embedding 3进行资讯向量化</li>
+<li>计划添加用户投稿功能</li>
+</ul>
+<p>提议用户可以投稿资讯之后感觉必须要开发一个服务控制面板，无论是审核还是资讯管理都需要一个界面来做这件事情。鉴于本人只会python，而且后端开发工作量也不小，遂去ipp群里摇人。</p>
+<p>当日晚21:21摇来了我组前端开发。</p>
+<h2 id="3月13日语义搜索跑通">3月13日：语义搜索跑通<a href="#3%e6%9c%8813%e6%97%a5%e8%af%ad%e4%b9%89%e6%90%9c%e7%b4%a2%e8%b7%91%e9%80%9a" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-4.png" alt=""></p>
+<p>（上图为早八工数课前讯息）</p>
+<p>虽然看起来成了，但是实则为幻觉。调了一天之后基本能用了。</p>
+<p>规划了控制面板。和现在的功能分区基本一致。（指定provider后来没时间做了）</p>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-5.png" alt=""></p>
+<p>引入了apifox辅助前后端交接。</p>
+<h2 id="3月14日鉴权完工">3月14日：鉴权完工<a href="#3%e6%9c%8814%e6%97%a5%e9%89%b4%e6%9d%83%e5%ae%8c%e5%b7%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-6.png" alt=""></p>
+<p>移动客户端鉴权系统完工。</p>
+<p>移动客户端鉴权需要在请求头里塞apikey和deviceid。其中前者为管理员手动创建，后者是设备指纹。携带apikey请求会自动在服务器登记对应的设备指纹，如果一个apikey绑定的设备数达到了上限，该key就无法继续绑定新设备了。这样做的好处是给予管理员授权用户的能力，同时限制用户分发apikey以免让过多管理员未授权的用户加入到该服务。（以及用户可以删除本apikey绑定的其他设备，所以随意分发apikey可能导致自己被其他用户踢下线）</p>
+<p>移动客户端添加历史会话功能。</p>
+<p>当日晚画了项目icon。（鉴于本人没有学过画画，只能用野路子理解画点简笔画了）</p>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-7.png" alt=""></p>
+<h2 id="3月15日一堆接口">3月15日：一堆接口<a href="#3%e6%9c%8815%e6%97%a5%e4%b8%80%e5%a0%86%e6%8e%a5%e5%8f%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260329-8.png" alt=""></p>
+<p>管理员jwt鉴权完工。简单来说管理员控制面板需要管理员输入账号密码，服务后端会返回一个带有时间戳的jwt token。凭此token管理员可以任意访问控制面板的其他界面。每次访问界面都会经过鉴权并比较时间戳差异是否在指定范围内，一旦超出范围视作token失效，管理员需要重新登录。</p>
+<ul>
+<li>控制面板服务基本信息接口完工</li>
+<li>控制面板业务信息接口完工</li>
+</ul>
+<h2 id="3月16日依然接口">3月16日：依然接口<a href="#3%e6%9c%8816%e6%97%a5%e4%be%9d%e7%84%b6%e6%8e%a5%e5%8f%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>完成移动客户端设备解绑接口</li>
+<li>完成聊天请求指定资讯功能</li>
+<li>完成控制面板apikey信息请求接口</li>
+<li>完成控制面板apikey创建接口</li>
+<li>完成控制面板apikey启停接口</li>
+<li>完成控制面板apikey删除接口</li>
+<li>完成控制面板系统设置获取接口</li>
+</ul>
+<p>当日才注意到计设是A类比赛。</p>
+<h2 id="3月17日接口">3月17日：接口<a href="#3%e6%9c%8817%e6%97%a5%e6%8e%a5%e5%8f%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>完成客户端资讯请求接口</li>
+<li>系统设置搬到数据库（用不太优雅的方式）</li>
+<li>移动端添加了炫酷的加载动画</li>
+</ul>
+<h2 id="3月18日接口">3月18日：接口<a href="#3%e6%9c%8818%e6%97%a5%e6%8e%a5%e5%8f%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>完成控制面板设置接口</li>
+<li>完成重置设置接口</li>
+<li>完成管理员密码修改接口</li>
+<li>规划了用户投稿功能部分的接口</li>
+</ul>
+<h2 id="3月19日接口">3月19日：接口<a href="#3%e6%9c%8819%e6%97%a5%e6%8e%a5%e5%8f%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>完成控制面板资讯获取接口</li>
+<li>完成日志来源模块接口</li>
+<li>发现可以平板上本地开发。（之前都是通过mosh连接到宿舍电脑上写的代码）</li>
+</ul>
+<h2 id="3月20日接口">3月20日：接口<a href="#3%e6%9c%8820%e6%97%a5%e6%8e%a5%e5%8f%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>规划了控制面板入库资讯管理接口</li>
+<li>爬虫脚本再优化（自动获取md正文）</li>
+</ul>
+<h2 id="3月21日投稿功能">3月21日：投稿功能<a href="#3%e6%9c%8821%e6%97%a5%e6%8a%95%e7%a8%bf%e5%8a%9f%e8%83%bd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>移动客户端完成投稿界面ui</li>
+<li>投稿审核入库等功能完成</li>
+<li>资讯标签按最近更新日期排序</li>
+<li>爬虫脚本优化</li>
+</ul>
+<p>爬虫脚本对于有些网页需要在校园网环境中才能爬取。</p>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260330-1.png" alt=""></p>
+<p>所以现在有一些网页云服务器上爬不到。</p>
+<h2 id="3月22日rag优化">3月22日：rag优化<a href="#3%e6%9c%8822%e6%97%a5rag%e4%bc%98%e5%8c%96" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>优化了资讯向量化逻辑，添加了块重叠和元信息以提高同一资讯的语义连续性。</li>
+<li>优化了prompt注入逻辑</li>
+<li>修改了系统设置接口</li>
+<li>控制面板前端基本完工</li>
+<li>移动客户端添加手动指定资讯的功能</li>
+</ul>
+<h2 id="3月23日测试大王">3月23日：测试大王<a href="#3%e6%9c%8823%e6%97%a5%e6%b5%8b%e8%af%95%e5%a4%a7%e7%8e%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260330-1.jpg" alt=""></p>
+<p>给<a href="https://blog.383494.xyz/">此人</a>开了个apikey。开始大闹测试服。排出了很多前后端的问题，比如投稿字数限制。我手滑给过了之后才反应过来向量化要花我的钱。幸好打断了，不然完整向量化能给我额度吃完。</p>
+<p>现在几乎所有输入框都有字数限制了。</p>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260330-2.jpg" alt=""></p>
+<h2 id="3月24日宣发准备">3月24日：宣发准备<a href="#3%e6%9c%8824%e6%97%a5%e5%ae%a3%e5%8f%91%e5%87%86%e5%a4%87" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>当日看到DaziSEU宣发，还以为是其他计设组的作品。紧急决定加速宣发。</p>
+<ul>
+<li>添加隐私政策和用户协议</li>
+</ul>
+<h2 id="3月25日宣发">3月25日：宣发<a href="#3%e6%9c%8825%e6%97%a5%e5%ae%a3%e5%8f%91" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>每日一言接口上线</li>
+<li>摇来会剪辑的学姐</li>
+<li>花了一个下午完成说说宣传海报。</li>
+</ul>
+<p><img src="/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/OpenJWC%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3-20260330-2.png" alt=""></p>
+<p>纯手搓0ai。组里动用人脉一天引来60+人。</p>
+<h2 id="3月26日一些调整">3月26日：一些调整<a href="#3%e6%9c%8826%e6%97%a5%e4%b8%80%e4%ba%9b%e8%b0%83%e6%95%b4" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>移动客户端添加聊天背景图自定义功能</li>
+<li>解除资讯接口鉴权（调整为系统设置项，目前测试服资讯开放给所有使用app的人，无论是否有我分发的apikey。）</li>
+</ul>
+<h2 id="3月28日服务打包">3月28日：服务打包<a href="#3%e6%9c%8828%e6%97%a5%e6%9c%8d%e5%8a%a1%e6%89%93%e5%8c%85" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<ul>
+<li>把控制面板、服务后端以及爬虫打包进了一个docker image里。</li>
+<li>移动客户端修复了一些bug，优化了动画。</li>
+</ul>
+<h1 id="一些感想">一些感想<a href="#%e4%b8%80%e4%ba%9b%e6%84%9f%e6%83%b3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>感觉服务后端比我想的简单，重复劳动确实比较多。也可能是python库封装了很多原本需要考虑的东西。缝入rag实际是正确的，因为大部分人不会自己去构建知识库（甚至不知道rag是什么），然而实现方法上还是有很多妥协。</p>
+<p>很多问题在现有框架下无法解决，比如总有人会尝试去套system prompt。这种事情单靠我尝试用system prompt来堵住llm的嘴是无解的，因为在llm眼里我的prompt和用户的prompt地位是等价的，用户总是有办法在llm眼里伪造权限身份。</p>
+<p>虽然没有研究过，但是我觉得解决这个问题的方法可以有两种：第一种是把llm输出结果也向量化，之后比对llm输出结果和system prompt之间的距离，假如距离太大就认为ooc，不予响应或者重新生成。听起来似乎可行，但是我不知道怎么设置这个距离的阈值。</p>
+<p>第二种方法是加一次llm调用，专门用来审核第一次调用的输出结果是否符合系统提示词，假如不符合则将其驳回重新生成。这样做是逻辑上最通顺的，然而让llm驳回其他llm的响应已经触及到了agent的领域，我目前还不太能理解现在的agent是如何确保工具调用格式正确的。总之省流结果是如果想修后端架构还得大改。</p>
+<p>之后如果继续更新，可能的方向如下：</p>
+<ul>
+<li>引入agent架构，前提是我点了相关科技点；</li>
+<li>添加更多llm provider支持;</li>
+<li>脚本爬取教务网站-&gt;ai识别事件并整合-&gt;用户手动筛查自己感兴趣的并添加到日程-&gt;在相应日程进行提醒
+<ul>
+<li>群里大佬给出的建议，我个人觉得非常有前途。</li>
+</ul>
+</li>
+<li>给我的服务器搞个ssl证书（放在最后的原因是因为大概率没指望了）</li>
+</ul>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Thinkpad Archlinux折腾笔记</title>

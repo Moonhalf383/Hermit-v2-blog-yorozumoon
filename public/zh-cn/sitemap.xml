@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/zh-cn/tags/%23blog/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/python/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/</loc>
+    <lastmod>2026-04-06T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/zh-cn/tags/archlinux/</loc>
     <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
@@ -11,16 +29,7 @@
     <loc>http://localhost:1313/zh-cn/tags/linux/</loc>
     <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/</loc>
-    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/</loc>
-    <lastmod>2026-03-30T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/</loc>
     <lastmod>2026-03-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/codecompanion/</loc>
@@ -30,9 +39,6 @@
     <lastmod>2026-03-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/</loc>
-    <lastmod>2026-03-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/python/</loc>
     <lastmod>2026-03-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
