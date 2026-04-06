@@ -22,7 +22,7 @@ toc: true
 
 [后端仓库](https://github.com/OpenJWC/OpenJWC-webapi)，我写的主要部分。
 
-[容器源代码仓库](https://github.com/OpenJWC/OpenJWC-Server)，我写的另一个组件。
+[容器源代码仓库](https://github.com/OpenJWC/OpenJWC-Server)，最后拼成的容器。
 
 [我组android开发与rust爬虫大手子](https://www.sakimidare.top/)，下文中的客户端开发与rust爬虫脚本均是此佬的杰作。
 
