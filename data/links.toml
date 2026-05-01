@@ -41,3 +41,9 @@ name = "bxd-user"
 url = "https://bxd-user.github.io/?clicktime=1770800535529&_wv=1"
 avatar = "/images/friend_default.png"
 desc = "使用了默认头像"
+
+[[list]]
+name = "Lineance"
+url = "https://lineance.github.io/"
+avatar = "/images/Lineance.png"
+desc = "Learn. Journey. Bloom."
