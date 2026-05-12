@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+  <meta itemprop="name" content="CS61Cfall20学习笔记01">
+  <meta itemprop="description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+csdiy介绍
+前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。">
+  <meta itemprop="datePublished" content="2026-05-12T16:20:17+08:00">
+  <meta itemprop="dateModified" content="2026-05-12T16:20:17+08:00">
+  <meta itemprop="wordCount" content="4248">
+  <meta itemprop="keywords" content="体系架构,C语言,自学"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/">
+  <meta property="og:site_name" content="Yorozumoon">
+  <meta property="og:title" content="CS61Cfall20学习笔记01">
+  <meta property="og:description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+csdiy介绍
+前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。">
+  <meta property="og:locale" content="zh_cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-05-12T16:20:17+08:00">
+    <meta property="article:modified_time" content="2026-05-12T16:20:17+08:00">
+    <meta property="article:tag" content="体系架构">
+    <meta property="article:tag" content="C语言">
+    <meta property="article:tag" content="自学">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CS61Cfall20学习笔记01">
+  <meta name="twitter:description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+csdiy介绍
+前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "CS61Cfall20学习笔记01",
+    "name": "CS61Cfall20学习笔记01",
+    "description": "参考链接 fall20备份网站\n课程视频bilibili(字幕翻译比较难绷)\n课程视频youtube\n课程作业仓库\ncsdiy介绍\n前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。\n",
+    "keywords": ["体系架构", "C语言", "自学"],
+    "articleBody": "参考链接 fall20备份网站\n课程视频bilibili(字幕翻译比较难绷)\n课程视频youtube\n课程作业仓库\ncsdiy介绍\n前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。\n选fall20自学原因是fall20的时间点属于卡上疫情红利了，ucb线上授课导致网络资料前无古人后无来者的丰富（做梦都想去ucb上学😢）。CS61C主要关注的内容是计算机的硬件细节，以下直接搬运csdiy的内容简介：\n伯克利 CS61 系列的最后一门课程，深入计算机的硬件细节，带领学生逐步理解 C 语言是如何一步步转化为 RISC-V 汇编并在 CPU 上执行的。和 Nand2Tetris 不同，这门课 在难度和深度上都会提高很多，具体会涉及到流水线、Cache、虚存以及并发相关的内容。\n这门课的 Project 也非常新颖有趣。Project1 会让你用 C 语言写一个小程序，20 年秋季学期是著名的游戏 Game of Life。Project2 会让你用 RISC-V 汇编编写一个神经网络，用来 识别 MNIST 手写数字，非常锻炼你对汇编代码的理解和运用。Project3 中你会用 Logisim 这个数字电路模拟软件搭建出一个二级流水线的 CPU，并在上面运行 RISC-V 汇编代码。Project4 会让你使用 OpenMP, SIMD 等方法并行优化矩阵运算，实现一个简易的 Numpy。\n需要注意的是，homwork似乎目前没有人有相关资源。目前能做的只有lab和project。\n找理由环节到此结束，我们快速步入正题。\nLecture 01 bilibili上的课程视频中文字幕配的还不如直接看英文原文，建议看youtube版。（Dan教授未免太有激情了）\nCS61C - 计算机架构中的伟大思想：\n伟大思想一： Abstraction (Levels of Representation / Interpretation)，建立一堆相互隔离的抽象层，这样写高级语言的时候不用关心底层的门电路。\n伟大思想二： Moore’s law， 半导体晶体管(transistor)数量每两年左右翻一倍。\nA’s law（？）你的后代在上ucb的时候都会得A（并非）。\n伟大思想三： Principle of locality / memory hierarchy 局部性原理和内存层次结构。\n伟大思想四： Parallelism 并行思想\n伟大思想五： Performance Measurement \u0026 Inprovement\n伟大思想六： Dependability via Redundancy 通过冗余（？）获取可靠性\nLecture 02 模拟信号转数字信号，bit可以表示所有事物，数制转换。\n常见的颜色代码为6位，每两位代表rgb中一个颜色的十六进制数值。比如#FF0000表示红色，FF即红色数值为255，其余两个00表示绿色和蓝色为0。（头一次知道，成丈育了）\nLab 00 setup 经典的配置环境环节。学习本课程需要你会一些基本技能：\ngit \u0026 github 会用类unix的command line工具 ssh和scp（如果你是ucb的学生） vim基础（喜） 本课程对于ide没有任何要求，甚至鼓励使用tui text editor。\n对于非ucb的学生，fork一份这个仓库克隆到本地就可以开始写代码了。\nWhich command walks a file hierarchy in search of a keyword?\ngrep -r \"keyword\" /path/to/directory Which command displays information about processes running on your machine?\n显示进程：\nps 显示所有进程：\nps aux Which command terminates a process?\n根据进程id停止进程：\nkill 12345 根据进程名称杀死进程。pkill使用部分匹配，killall使用完全匹配。\nkillall qq Which command can help you find the difference between two files?\ndiff file1 file2 Lecture 03 C语言的编译过程分为两步： 先将xx.c的C语言文件编译为xx.o的机器码，之后将.o文件链接成一个可执行文件。\n先编译为汇编代码之后链接为可执行文件的模式提高了编译效率，因为每次修改代码只需要重新编译修改的.c文件之后重新链接，而不需要从头编译整个项目。此外，编译代码极大提高了runtime performance。对机器来说读低级语言比读高级语言省力的多。\n缺点如下：\n不同处理器或操作系统可能采用不同的架构，不同架构必须采用对应的编译方式，所以可执行文件必须在所有操作系统上重建一遍。 每次迭代都必须把经历修改、编译、运行的全过程，开发速度比较慢。 C Pre-Processor，简称CPP（并非C++)，会处理所有预处理指令。比如：\n#include \"files.h\" 在经过CPP的时候，CPP会用files.h的内容直接替换掉#include这一行，得到一个xx.i文件。同理，#include 做的是一样的事情，只不过是从标准库里获取文件; #define PI 3 可以在预处理期将所有PI替换为3，#if、#endif负责控制部分条件下include文件。\n#define xx定义的是一个所谓的宏（即macro）。如前文所说，macro的作用是CPP中直接进行文本替换。你可以用它来做很多事情，但是它并不是真正的函数，在一些时候会导致意外情况。\n比如：\n#include #define min(X, Y) X \u003c Y ? X : Y int x = 0; int y = 3; int main(int argc, char *argv[]) { for (int i = 0; i \u003c 5; i++) printf(\"%d\\n\", min(x++, y)); return 0; } 我们会期待：重复进行5次比较，每次都打印x和y中最小的那个数字，之后x自增1。所以我们会期待结果为：\n0 1 2 3 3 但是实际的输出为：\n原因在于CPP将min(x++, y)直接替换为了x++ \u003c y?x++:y。这就导致第一次输出前x已经进行了一次自增，所以第一个数字为1而非0，输出之后x又自增了1。导致之后输出结果只有3。\n一些gcc的指令如下：\ngcc -E hello.c -o hello.i # 预处理得到.i文件 gcc -S hello.i -o hello.s # 翻译得到汇编语言 gcc -c hello.s -o hello.o # 翻译为机器指令 gcc hello.o -o hello # 生成可执行文件 所以我们不妨来看一下test.i的内容：\n只节选最后一部分的原因是如我们前文所说的，#include 会把这个头文件的所有内容直接插入进来，所以前面出现了大量看不懂的神秘代码。只看尾部可以看到，min(x++, y)确实被替换为了x++ \u003c y ? x++ : y。这就导致出现了不符合预期的结果。\nLecture 3 \u0026 4 \u0026 5 讲的是C语言的基本语法，直接跳过。\nlab 01 sudo apt install build-essential cgdb valgrind 本地安装C语言的编译和调试工具。gdb意为GUN debugger。使用gdb要求编译时加上-g参数，如下：\ngcc -g hello.c -o hello CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。\n一些基本使用方法如下：\nEsc切换到源码窗口 i切换回gdb命令行模式 空格键增减断点 F5运行程序 F6继续执行 F7单步步进 F8单步跳过 F10退出 While you’re in a gdb session, how do you set the arguments that will be passed to the program when it’s run? How do you create a breakpoint? How do you execute the next line of C code in the program after stopping at a breakpoint? If the next line of code is a function call, you’ll execute the whole function call at once if you use your answer to #3. (If not, consider a different command for #3!) How do you tell GDB that you want to debug the code inside the function (i.e. step into the function) instead? (If you changed your answer to #3, then that answer is most likely now applicable here.) How do you continue the program after stopping at a breakpoint? How can you print the value of a variable (or even an expression like 1+2) in gdb? How do you configure gdb so it displays the value of a variable after every step? How do you show a list of all variables and their values in the current function? How do you quit out of gdb? 在gdb会话中set args [arg0] [arg1] ... 空格键，或者break n F8，或者next F7，或者step F6，或者continue print var_name display var_name info locals q 通过set args \u003c name.txt将参数设置为重定向符与文本文件，并在同一目录下放一个写入名字的文本文件，我们就允许在cgdb调试时输入内容。\nint main() { int a[20]; for (int i = 0; ; i++) { a[i] = i; } } valgrind可以用来模拟cpu并追踪内存访问。以上代码显然存在非法访存问题，valgrind ./segfault输出结果如下：\n以上信息中，valgrind抛出Invalid write of size 4，表面有一个大小为4的非法写入，试图访问的内存地址为0x1fff001000，而valgrind检查后发现该地址即不在栈上，也不在堆上，也不是最近free的内存。\n#include \"ll_cycle.h\" #include int ll_has_cycle(node *head) { /* your code here */ if (!head) return 0; node *tortoise = head; node *hare = head; if (!hare-\u003enext) return 0; while (1) { hare = hare-\u003enext; if (!hare) return 0; hare = hare-\u003enext; if (!hare) return 0; tortoise = tortoise-\u003enext; if (tortoise == hare) return 1; } return 0; } exercise 5，用C语言检查一个单向链表是否成环。注意head可以为空，head-\u003enext可以为空。\nProject 1 Part A // Opens a .ppm P3 image file, and constructs an Image object. // You may find the function fscanf useful. // Make sure that you close the file with fclose before returning. Image *readData(char *filename) { Image *imageData = (Image *)malloc(sizeof(Image)); FILE *fp = fopen(filename, \"r\"); char format[2]; int color_range = 255; fscanf(fp, \"%s\", format); fscanf(fp, \"%d %d\", \u0026imageData-\u003ecols, \u0026imageData-\u003erows); fscanf(fp, \"%d\", \u0026color_range); imageData-\u003eimage = (Color **)malloc(imageData-\u003erows * sizeof(Color *)); for (int i = 0; i \u003c imageData-\u003erows; i++) { imageData-\u003eimage[i] = (Color *)malloc(imageData-\u003ecols * sizeof(Color)); } for (int i = 0; i \u003c imageData-\u003ecols * imageData-\u003erows; i++) { Color *target_image = \u0026imageData-\u003eimage[i / imageData-\u003ecols][i % imageData-\u003ecols]; fscanf(fp, \"%hhu\", \u0026target_image-\u003eR); fscanf(fp, \"%hhu\", \u0026target_image-\u003eG); fscanf(fp, \"%hhu\", \u0026target_image-\u003eB); } fclose(fp); return imageData; } 读取ppm文件得到Image object。注意通过malloc动态分配内存，二维数组要分配两次。（好久没写C语言导致这些概念完全不记得了）\n// Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the // image's data. void writeData(Image *image) { // YOUR CODE HERE printf(\"P3\\n\"); printf(\"%d %d\\n\", image-\u003ecols, image-\u003erows); printf(\"%d\\n\", 255); for (int row = 0; row \u003c image-\u003erows; row++) { for (int col = 0; col \u003c image-\u003ecols; col++) { Color *target_color = \u0026image-\u003eimage[row][col]; printf(\"%hhu %hhu %hhu\", target_color-\u003eR, target_color-\u003eG, target_color-\u003eB); if (col == image-\u003ecols - 1) printf(\"\\n\"); else printf(\" \"); } } } // Frees an image void freeImage(Image *image) { // YOUR CODE HERE for (int i = 0; i \u003c image-\u003erows; i++) { free(image-\u003eimage[i]); } free(image-\u003eimage); free(image); } 输出和释放内存。释放内存同样需要依次释放所有指针，避免内存泄漏。\nsteganography // Given an image, creates a new image extracting the LSB of the B channel. Image *steganography(Image *image) { Image *newImage = (Image *)malloc(sizeof(Image)); newImage-\u003erows = image-\u003erows; newImage-\u003ecols = image-\u003ecols; newImage-\u003eimage = (Color **)malloc(sizeof(Color *) * image-\u003erows); for (int i = 0; i \u003c image-\u003erows; i++) { newImage-\u003eimage[i] = (Color *)malloc(sizeof(Color) * image-\u003ecols); } for (int i = 0; i \u003c image-\u003erows; i++) { for (int j = 0; j \u003c image-\u003ecols; j++) { Color *newColor = evaluateOnePixel(image, i, j); newImage-\u003eimage[i][j] = *newColor; free(newColor); } } return newImage; // YOUR CODE HERE } 读取一个ppm图像的B数值的最后一个bit，若为1则该像素替换为白色，若为0则替换为黑色，最后可以解析得到一个新的图像。\n（迫真scret message）\nPart B 彩色生命游戏的规则是：每个颜色通道有8个bit，RGB三个颜色即有24个bit，对于每个像素的每个bit，单独运行一个康威生命游戏。\nColor *evaluateOneCell(Image *image, int row, int col, uint32_t rule) { Color *newColor = (Color *)malloc(sizeof(Color)); Color curColor = image-\u003eimage[row][col]; int width = image-\u003ecols; int height = image-\u003erows; // 对三个通道、每个通道8个bit统计邻居数量。 int neighbourCount[3][8] = {0}; // 对目标格子周围8个格子统计其三个通道的数值。 uint8_t grid[8][3] = {0}; int index = 0; for (int i = -1; i \u003c 2; i++) { for (int j = -1; j \u003c 2; j++) { int targetRow = (row + i + height) % height; int targetCol = (col + j + width) % width; if (targetRow == row \u0026\u0026 targetCol == col) continue; grid[index][0] = image-\u003eimage[targetRow][targetCol].R; grid[index][1] = image-\u003eimage[targetRow][targetCol].G; grid[index][2] = image-\u003eimage[targetRow][targetCol].B; index++; } } for (int chan = 0; chan \u003c 3; chan++) { for (int bit = 0; bit \u003c 8; bit++) { uint8_t target = 1 \u003c\u003c bit; for (int i = 0; i \u003c 8; i++) { if (grid[i][chan] \u0026 target) neighbourCount[chan][bit]++; } // printf(\"chan: %d bit: %d neighbour: %d\", chan, bit, // neighbourCount[chan][bit]); } } uint8_t curChan[3] = {curColor.R, curColor.G, curColor.B}; for (int chan = 0; chan \u003c 3; chan++) { for (int bit = 0; bit \u003c 8; bit++) { int ptr = neighbourCount[chan][bit]; if (curChan[chan] \u0026 (1 \u003c\u003c bit)) ptr += 9; if (rule \u0026 (1 \u003c\u003c ptr)) curChan[chan] |= (1 \u003c\u003c bit); else curChan[chan] \u0026= ~(1 \u003c\u003c bit); } } newColor-\u003eR = curChan[0]; newColor-\u003eG = curChan[1]; newColor-\u003eB = curChan[2]; return newColor; // YOUR CODE HERE } （本人非算法竞赛圈内人，实现不够优雅还请见谅）\n用来根据rule推断一个像素下一回合会是什么颜色。写的过程中遇到了一万个错误。其中targetRow和targetCol的计算上需要先加width或height再求余数，原因在于C语言中求余结果符号与第一个值保持一致，而我们不希望负数。\n此外，rule虽然读取的是一个0x1808这样的四位16进制数，按理只有16个位，但是我们用uint32_t类型存储，使得实际上有32个位，而我们实际需要至少18个位。（因为对于活着和死了的情况，周围邻居都有0～8个不等）。ptr在该bit活着的情况下需要自加9。\n其余部分和steganography差异不大，遍历所有像素得到新的图像即可。\n最后得到的一个效果图：\n",
+    "wordCount" : "4248",
+    "inLanguage": "zh-cn",
+    "datePublished": "2026-05-12T16:20:17.270127+08:00",
+    "dateModified": "2026-05-12T16:20:17.270127+08:00",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title>CS61Cfall20学习笔记01</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3" y2="6"></line>
+      <line x1="3" y1="12" x2="3" y2="12"></line>
+      <line x1="3" y1="18" x2="3" y2="18"></line>
+   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>May 12, 2026</span></div>
+				<h1>CS61Cfall20学习笔记01</h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84">体系架构</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/c%E8%AF%AD%E8%A8%80">C语言</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6">自学</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>4248&nbspWords 阅读时长19 Minutes, 18 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2026-05-12 16:20 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h1 id="参考链接">参考链接<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://www.learncs.site/docs/curriculum-resource/cs61c/syllabus">fall20备份网站</a></p>
+<p><a href="https://www.bilibili.com/video/BV1fC4y147iZ/?share_source=copy_web&amp;vd_source=7c3823b46a52fbbef42b79e01d55c300">课程视频bilibili(字幕翻译比较难绷)</a></p>
+<p><a href="https://www.youtube.com/playlist?list=PL0j-r-omG7i0-mnsxN5T4UcVS1Di0isqf">课程视频youtube</a></p>
+<p><a href="https://github.com/InsideEmpire/CS61C-Assignment">课程作业仓库</a></p>
+<p><a href="https://web.archive.org/web/20220120134001/https://inst.eecs.berkeley.edu/~cs61c/fa20/">csdiy介绍</a></p>
+<h1 id="前言">前言<a href="#%e5%89%8d%e8%a8%80" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。</p>
+<p>选fall20自学原因是fall20的时间点属于卡上疫情红利了，ucb线上授课导致网络资料前无古人后无来者的丰富（做梦都想去ucb上学😢）。CS61C主要关注的内容是计算机的硬件细节，以下直接搬运csdiy的内容简介：</p>
+<blockquote>
+<p>伯克利 CS61 系列的最后一门课程，深入计算机的硬件细节，带领学生逐步理解 C 语言是如何一步步转化为 RISC-V 汇编并在 CPU 上执行的。和 Nand2Tetris 不同，这门课 在难度和深度上都会提高很多，具体会涉及到流水线、Cache、虚存以及并发相关的内容。</p>
+<p>这门课的 Project 也非常新颖有趣。Project1 会让你用 C 语言写一个小程序，20 年秋季学期是著名的游戏 Game of Life。Project2 会让你用 RISC-V 汇编编写一个神经网络，用来 识别 MNIST 手写数字，非常锻炼你对汇编代码的理解和运用。Project3 中你会用 Logisim 这个数字电路模拟软件搭建出一个二级流水线的 CPU，并在上面运行 RISC-V 汇编代码。Project4 会让你使用 OpenMP, SIMD 等方法并行优化矩阵运算，实现一个简易的 Numpy。</p>
+</blockquote>
+<p>需要注意的是，homwork似乎目前没有人有相关资源。目前能做的只有lab和project。</p>
+<p>找理由环节到此结束，我们快速步入正题。</p>
+<h1 id="lecture-01">Lecture 01<a href="#lecture-01" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>bilibili上的课程视频中文字幕配的还不如直接看英文原文，建议看youtube版。（Dan教授未免太有激情了）</p>
+<p>CS61C - 计算机架构中的伟大思想：</p>
+<p>伟大思想一： Abstraction (Levels of Representation / Interpretation)，建立一堆相互隔离的抽象层，这样写高级语言的时候不用关心底层的门电路。</p>
+<p>伟大思想二： Moore&rsquo;s law， 半导体晶体管(transistor)数量每两年左右翻一倍。</p>
+<p>A&rsquo;s law（？）你的后代在上ucb的时候都会得A（并非）。</p>
+<p><img src="test01.png" alt="test01"></p>
+<p>伟大思想三： Principle of locality / memory hierarchy 局部性原理和内存层次结构。</p>
+<p>伟大思想四： Parallelism 并行思想</p>
+<p>伟大思想五： Performance Measurement &amp; Inprovement</p>
+<p>伟大思想六： Dependability via Redundancy 通过冗余（？）获取可靠性</p>
+<h1 id="lecture-02">Lecture 02<a href="#lecture-02" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>模拟信号转数字信号，bit可以表示所有事物，数制转换。</p>
+<p>常见的颜色代码为6位，每两位代表rgb中一个颜色的十六进制数值。比如#FF0000表示红色，FF即红色数值为255，其余两个00表示绿色和蓝色为0。（头一次知道，成丈育了）</p>
+<h1 id="lab-00">Lab 00<a href="#lab-00" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="setup">setup<a href="#setup" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>经典的配置环境环节。学习本课程需要你会一些基本技能：</p>
+<ul>
+<li>git &amp; github</li>
+<li>会用类unix的command line工具</li>
+<li>ssh和scp（如果你是ucb的学生）</li>
+<li>vim基础（喜）</li>
+</ul>
+<p>本课程对于ide没有任何要求，甚至鼓励使用tui text editor。</p>
+<p><img src="test02.png" alt="test02"></p>
+<p>对于非ucb的学生，fork一份<a href="https://github.com/InsideEmpire/CS61C-Assignment#%E4%B8%AD%E6%96%87%E8%AF%B4%E6%98%8E">这个仓库</a>克隆到本地就可以开始写代码了。</p>
+<p><img src="test05.png" alt="test05"></p>
+<blockquote>
+<p>Which command walks a file hierarchy in search of a keyword?</p>
+</blockquote>
+<pre tabindex="0"><code>grep -r &#34;keyword&#34; /path/to/directory
+</code></pre><blockquote>
+<p>Which command displays information about processes running on your machine?</p>
+</blockquote>
+<p>显示进程：</p>
+<pre tabindex="0"><code>ps
+</code></pre><p>显示所有进程：</p>
+<pre tabindex="0"><code>ps aux
+</code></pre><blockquote>
+<p>Which command terminates a process?</p>
+</blockquote>
+<p>根据进程id停止进程：</p>
+<pre tabindex="0"><code>kill 12345
+</code></pre><p>根据进程名称杀死进程。<code>pkill</code>使用部分匹配，<code>killall</code>使用完全匹配。</p>
+<pre tabindex="0"><code>killall qq
+</code></pre><blockquote>
+<p>Which command can help you find the difference between two files?</p>
+</blockquote>
+<pre tabindex="0"><code>diff file1 file2
+</code></pre><h1 id="lecture-03">Lecture 03<a href="#lecture-03" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>C语言的编译过程分为两步： 先将<code>xx.c</code>的C语言文件编译为<code>xx.o</code>的机器码，之后将<code>.o</code>文件链接成一个可执行文件。</p>
+<p><img src="test03.png" alt="test03"></p>
+<p>先编译为汇编代码之后链接为可执行文件的模式提高了编译效率，因为每次修改代码只需要重新编译修改的<code>.c</code>文件之后重新链接，而不需要从头编译整个项目。此外，编译代码极大提高了runtime performance。对机器来说读低级语言比读高级语言省力的多。</p>
+<p>缺点如下：</p>
+<ul>
+<li>不同处理器或操作系统可能采用不同的架构，不同架构必须采用对应的编译方式，所以可执行文件必须在所有操作系统上重建一遍。</li>
+<li>每次迭代都必须把经历修改、编译、运行的全过程，开发速度比较慢。</li>
+</ul>
+<p>C Pre-Processor，简称CPP（并非C++)，会处理所有预处理指令。比如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;files.h&#34;</span><span style="color:#75715e">
+</span></span></span></code></pre></div><p>在经过CPP的时候，CPP会用<code>files.h</code>的内容直接替换掉<code>#include</code>这一行，得到一个<code>xx.i</code>文件。同理，<code>#include &lt;stdio.h&gt;</code>做的是一样的事情，只不过是从标准库里获取文件; <code>#define PI 3</code> 可以在预处理期将所有PI替换为3，<code>#if</code>、<code>#endif</code>负责控制部分条件下include文件。</p>
+<p><code>#define xx</code>定义的是一个所谓的<strong>宏</strong>（即macro）。如前文所说，macro的作用是CPP中直接进行文本替换。你可以用它来做很多事情，但是它并不是真正的函数，在一些时候会导致意外情况。</p>
+<p>比如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define min(X, Y) X &lt; Y ? X : Y
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>; i<span style="color:#f92672">++</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">min</span>(x<span style="color:#f92672">++</span>, y));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们会期待：重复进行5次比较，每次都打印x和y中最小的那个数字，之后x自增1。所以我们会期待结果为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
+</span></span></code></pre></div><p>但是实际的输出为：</p>
+<p><img src="test04.png" alt="test04"></p>
+<p>原因在于CPP将<code>min(x++, y)</code>直接替换为了<code>x++ &lt; y?x++:y</code>。这就导致第一次输出前x已经进行了一次自增，所以第一个数字为1而非0，输出之后x又自增了1。导致之后输出结果只有3。</p>
+<p>一些gcc的指令如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -E hello.c -o hello.i <span style="color:#75715e"># 预处理得到.i文件</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -S hello.i -o hello.s <span style="color:#75715e"># 翻译得到汇编语言</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -c hello.s -o hello.o <span style="color:#75715e"># 翻译为机器指令</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc hello.o -o hello <span style="color:#75715e"># 生成可执行文件</span>
+</span></span></code></pre></div><p>所以我们不妨来看一下<code>test.i</code>的内容：</p>
+<p><img src="test06.png" alt="test06"></p>
+<p>只节选最后一部分的原因是如我们前文所说的，<code>#include &lt;stdio&gt;</code>会把这个头文件的所有内容直接插入进来，所以前面出现了大量看不懂的神秘代码。只看尾部可以看到，<code>min(x++, y)</code>确实被替换为了<code>x++ &lt; y ? x++ : y</code>。这就导致出现了不符合预期的结果。</p>
+<h1 id="lecture-3--4--5">Lecture 3 &amp; 4 &amp; 5<a href="#lecture-3--4--5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>讲的是C语言的基本语法，直接跳过。</p>
+<h1 id="lab-01">lab 01<a href="#lab-01" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install build-essential cgdb valgrind
+</span></span></code></pre></div><p>本地安装C语言的编译和调试工具。gdb意为GUN debugger。使用gdb要求编译时加上<code>-g</code>参数，如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -g hello.c -o hello
+</span></span></code></pre></div><p>CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。</p>
+<p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001.md" alt="CS61Cfall20学习笔记01"></p>
+<p>一些基本使用方法如下：</p>
+<ul>
+<li>Esc切换到源码窗口</li>
+<li>i切换回gdb命令行模式</li>
+<li>空格键增减断点</li>
+<li>F5运行程序</li>
+<li>F6继续执行</li>
+<li>F7单步步进</li>
+<li>F8单步跳过</li>
+<li>F10退出</li>
+</ul>
+<p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_02.png" alt="CS61Cfall20学习笔记01_02"></p>
+<blockquote>
+<ol>
+<li>While you’re in a gdb session, how do you <strong>set the arguments</strong> that will be passed to the program when it’s run?</li>
+<li>How do you <strong>create a breakpoint</strong>?</li>
+<li>How do you <strong>execute the next line of C code</strong> in the program after stopping at a breakpoint?</li>
+<li>If the next line of code is a function call, you’ll execute the whole function call at once if you use your answer to #3. (If not, consider a different command for #3!) How do you tell GDB that you <strong>want to debug the code inside the function</strong> (i.e. step into the function) instead? (If you changed your answer to #3, then that answer is most likely now applicable here.)</li>
+<li>How do you <strong>continue the program after stopping</strong> at a breakpoint?</li>
+<li>How can you <strong>print the value of a variable</strong> (or even an expression like 1+2) in gdb?</li>
+<li>How do you configure gdb so it <strong>displays the value of a variable after every step</strong>?</li>
+<li>How do you <strong>show a list of all variables and their values</strong> in the current function?</li>
+<li>How do you <strong>quit</strong> out of gdb?</li>
+</ol>
+</blockquote>
+<ol>
+<li>在gdb会话中<code>set args [arg0] [arg1] ...</code></li>
+<li>空格键，或者break n</li>
+<li>F8，或者next</li>
+<li>F7，或者step</li>
+<li>F6，或者continue</li>
+<li>print var_name</li>
+<li>display var_name</li>
+<li>info locals</li>
+<li>q</li>
+</ol>
+<p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_cgdb%E8%B0%83%E8%AF%95.png" alt="CS61Cfall20学习笔记01_cgdb调试"></p>
+<p>通过<code>set args &lt; name.txt</code>将参数设置为重定向符与文本文件，并在同一目录下放一个写入名字的文本文件，我们就允许在cgdb调试时输入内容。</p>
+<p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_stdin.png" alt="CS61Cfall20学习笔记01_stdin"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a[<span style="color:#ae81ff">20</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; ; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        a[i] <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>valgrind可以用来模拟cpu并追踪内存访问。以上代码显然存在非法访存问题，<code>valgrind ./segfault</code>输出结果如下：</p>
+<p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_segfault.png" alt="CS61Cfall20学习笔记01_segfault"></p>
+<p>以上信息中，valgrind抛出Invalid write of size 4，表面有一个大小为4的非法写入，试图访问的内存地址为0x1fff001000，而valgrind检查后发现该地址即不在栈上，也不在堆上，也不是最近free的内存。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;ll_cycle.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stddef.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">ll_has_cycle</span>(node <span style="color:#f92672">*</span>head) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* your code here */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>head)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  node <span style="color:#f92672">*</span>tortoise <span style="color:#f92672">=</span> head;
+</span></span><span style="display:flex;"><span>  node <span style="color:#f92672">*</span>hare <span style="color:#f92672">=</span> head;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>hare<span style="color:#f92672">-&gt;</span>next)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>    hare <span style="color:#f92672">=</span> hare<span style="color:#f92672">-&gt;</span>next;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>hare)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    hare <span style="color:#f92672">=</span> hare<span style="color:#f92672">-&gt;</span>next;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>hare)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    tortoise <span style="color:#f92672">=</span> tortoise<span style="color:#f92672">-&gt;</span>next;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (tortoise <span style="color:#f92672">==</span> hare)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>exercise 5，用C语言检查一个单向链表是否成环。注意head可以为空，head-&gt;next可以为空。</p>
+<h1 id="project-1">Project 1<a href="#project-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="part-a">Part A<a href="#part-a" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Opens a .ppm P3 image file, and constructs an Image object.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// You may find the function fscanf useful.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Make sure that you close the file with fclose before returning.
+</span></span></span><span style="display:flex;"><span>Image <span style="color:#f92672">*</span><span style="color:#a6e22e">readData</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename) {
+</span></span><span style="display:flex;"><span>  Image <span style="color:#f92672">*</span>imageData <span style="color:#f92672">=</span> (Image <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Image));
+</span></span><span style="display:flex;"><span>  FILE <span style="color:#f92672">*</span>fp <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(filename, <span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> format[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> color_range <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%s&#34;</span>, format);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%d %d&#34;</span>, <span style="color:#f92672">&amp;</span>imageData<span style="color:#f92672">-&gt;</span>cols, <span style="color:#f92672">&amp;</span>imageData<span style="color:#f92672">-&gt;</span>rows);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>color_range);
+</span></span><span style="display:flex;"><span>  imageData<span style="color:#f92672">-&gt;</span>image <span style="color:#f92672">=</span> (Color <span style="color:#f92672">**</span>)<span style="color:#a6e22e">malloc</span>(imageData<span style="color:#f92672">-&gt;</span>rows <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(Color <span style="color:#f92672">*</span>));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> imageData<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    imageData<span style="color:#f92672">-&gt;</span>image[i] <span style="color:#f92672">=</span> (Color <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(imageData<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(Color));
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> imageData<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">*</span> imageData<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    Color <span style="color:#f92672">*</span>target_image <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>imageData<span style="color:#f92672">-&gt;</span>image[i <span style="color:#f92672">/</span> imageData<span style="color:#f92672">-&gt;</span>cols][i <span style="color:#f92672">%</span> imageData<span style="color:#f92672">-&gt;</span>cols];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%hhu&#34;</span>, <span style="color:#f92672">&amp;</span>target_image<span style="color:#f92672">-&gt;</span>R);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%hhu&#34;</span>, <span style="color:#f92672">&amp;</span>target_image<span style="color:#f92672">-&gt;</span>G);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%hhu&#34;</span>, <span style="color:#f92672">&amp;</span>target_image<span style="color:#f92672">-&gt;</span>B);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fclose</span>(fp);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> imageData;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>读取ppm文件得到Image object。注意通过malloc动态分配内存，二维数组要分配两次。（好久没写C语言导致这些概念完全不记得了）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// image&#39;s data.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeData</span>(Image <span style="color:#f92672">*</span>image) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;P3</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, image<span style="color:#f92672">-&gt;</span>cols, image<span style="color:#f92672">-&gt;</span>rows);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#ae81ff">255</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> row <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; row <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; row<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> col <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; col <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>cols; col<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      Color <span style="color:#f92672">*</span>target_color <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>image<span style="color:#f92672">-&gt;</span>image[row][col];
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%hhu %hhu %hhu&#34;</span>, target_color<span style="color:#f92672">-&gt;</span>R, target_color<span style="color:#f92672">-&gt;</span>G,
+</span></span><span style="display:flex;"><span>             target_color<span style="color:#f92672">-&gt;</span>B);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (col <span style="color:#f92672">==</span> image<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;   &#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Frees an image
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">freeImage</span>(Image <span style="color:#f92672">*</span>image) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">free</span>(image<span style="color:#f92672">-&gt;</span>image[i]);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">free</span>(image<span style="color:#f92672">-&gt;</span>image);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">free</span>(image);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>输出和释放内存。释放内存同样需要依次释放所有指针，避免内存泄漏。</p>
+<h3 id="steganography">steganography<a href="#steganography" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Given an image, creates a new image extracting the LSB of the B channel.
+</span></span></span><span style="display:flex;"><span>Image <span style="color:#f92672">*</span><span style="color:#a6e22e">steganography</span>(Image <span style="color:#f92672">*</span>image) {
+</span></span><span style="display:flex;"><span>  Image <span style="color:#f92672">*</span>newImage <span style="color:#f92672">=</span> (Image <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Image));
+</span></span><span style="display:flex;"><span>  newImage<span style="color:#f92672">-&gt;</span>rows <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>rows;
+</span></span><span style="display:flex;"><span>  newImage<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>cols;
+</span></span><span style="display:flex;"><span>  newImage<span style="color:#f92672">-&gt;</span>image <span style="color:#f92672">=</span> (Color <span style="color:#f92672">**</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Color <span style="color:#f92672">*</span>) <span style="color:#f92672">*</span> image<span style="color:#f92672">-&gt;</span>rows);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    newImage<span style="color:#f92672">-&gt;</span>image[i] <span style="color:#f92672">=</span> (Color <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Color) <span style="color:#f92672">*</span> image<span style="color:#f92672">-&gt;</span>cols);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>cols; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      Color <span style="color:#f92672">*</span>newColor <span style="color:#f92672">=</span> <span style="color:#a6e22e">evaluateOnePixel</span>(image, i, j);
+</span></span><span style="display:flex;"><span>      newImage<span style="color:#f92672">-&gt;</span>image[i][j] <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>newColor;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">free</span>(newColor);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> newImage;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>读取一个ppm图像的B数值的最后一个bit，若为1则该像素替换为白色，若为0则替换为黑色，最后可以解析得到一个新的图像。</p>
+<p><img src="7ecb6cd99661043d665a97d8a09042bf.png" alt="7ecb6cd99661043d665a97d8a09042bf"></p>
+<p>（迫真scret message）</p>
+<h2 id="part-b">Part B<a href="#part-b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>彩色生命游戏的规则是：每个颜色通道有8个bit，RGB三个颜色即有24个bit，对于每个像素的每个bit，单独运行一个康威生命游戏。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Color <span style="color:#f92672">*</span><span style="color:#a6e22e">evaluateOneCell</span>(Image <span style="color:#f92672">*</span>image, <span style="color:#66d9ef">int</span> row, <span style="color:#66d9ef">int</span> col, <span style="color:#66d9ef">uint32_t</span> rule) {
+</span></span><span style="display:flex;"><span>  Color <span style="color:#f92672">*</span>newColor <span style="color:#f92672">=</span> (Color <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Color));
+</span></span><span style="display:flex;"><span>  Color curColor <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[row][col];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> width <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>cols;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> height <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>rows;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 对三个通道、每个通道8个bit统计邻居数量。
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> neighbourCount[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">8</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 对目标格子周围8个格子统计其三个通道的数值。
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint8_t</span> grid[<span style="color:#ae81ff">8</span>][<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> targetRow <span style="color:#f92672">=</span> (row <span style="color:#f92672">+</span> i <span style="color:#f92672">+</span> height) <span style="color:#f92672">%</span> height;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> targetCol <span style="color:#f92672">=</span> (col <span style="color:#f92672">+</span> j <span style="color:#f92672">+</span> width) <span style="color:#f92672">%</span> width;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (targetRow <span style="color:#f92672">==</span> row <span style="color:#f92672">&amp;&amp;</span> targetCol <span style="color:#f92672">==</span> col)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>      grid[index][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[targetRow][targetCol].R;
+</span></span><span style="display:flex;"><span>      grid[index][<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[targetRow][targetCol].G;
+</span></span><span style="display:flex;"><span>      grid[index][<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[targetRow][targetCol].B;
+</span></span><span style="display:flex;"><span>      index<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> chan <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; chan <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">3</span>; chan<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> bit <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; bit <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; bit<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">uint8_t</span> target <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (grid[i][chan] <span style="color:#f92672">&amp;</span> target)
+</span></span><span style="display:flex;"><span>          neighbourCount[chan][bit]<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// printf(&#34;chan: %d  bit: %d neighbour: %d&#34;, chan, bit,
+</span></span></span><span style="display:flex;"><span>      <span style="color:#75715e">// neighbourCount[chan][bit]);
+</span></span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint8_t</span> curChan[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {curColor.R, curColor.G, curColor.B};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> chan <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; chan <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">3</span>; chan<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> bit <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; bit <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; bit<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> ptr <span style="color:#f92672">=</span> neighbourCount[chan][bit];
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (curChan[chan] <span style="color:#f92672">&amp;</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit))
+</span></span><span style="display:flex;"><span>        ptr <span style="color:#f92672">+=</span> <span style="color:#ae81ff">9</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (rule <span style="color:#f92672">&amp;</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> ptr))
+</span></span><span style="display:flex;"><span>        curChan[chan] <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        curChan[chan] <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  newColor<span style="color:#f92672">-&gt;</span>R <span style="color:#f92672">=</span> curChan[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>  newColor<span style="color:#f92672">-&gt;</span>G <span style="color:#f92672">=</span> curChan[<span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>  newColor<span style="color:#f92672">-&gt;</span>B <span style="color:#f92672">=</span> curChan[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> newColor;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>（本人非算法竞赛圈内人，实现不够优雅还请见谅）</p>
+<p>用来根据rule推断一个像素下一回合会是什么颜色。写的过程中遇到了一万个错误。其中<code>targetRow</code>和<code>targetCol</code>的计算上需要先加width或height再求余数，原因在于C语言中求余结果符号与第一个值保持一致，而我们不希望负数。</p>
+<p>此外，rule虽然读取的是一个0x1808这样的四位16进制数，按理只有16个位，但是我们用<code>uint32_t</code>类型存储，使得实际上有32个位，而我们实际需要至少18个位。（因为对于活着和死了的情况，周围邻居都有0～8个不等）。<code>ptr</code>在该bit活着的情况下需要自加9。</p>
+<p>其余部分和steganography差异不大，遍历所有像素得到新的图像即可。</p>
+<p>最后得到的一个效果图：</p>
+<p><img src="jc.gif" alt="jc"></p>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#setup">setup</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#part-a">Part A</a>
+      <ul>
+        <li><a href="#steganography">steganography</a></li>
+      </ul>
+    </li>
+    <li><a href="#part-b">Part B</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>OpenJWC后端开发随想</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
