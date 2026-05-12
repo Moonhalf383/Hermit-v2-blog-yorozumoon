@@ -216,7 +216,7 @@ gcc hello.o -o hello # 生成可执行文件
 sudo apt install build-essential cgdb valgrind
 ```
 
-本地安装C语言的编译和调试工具。gdb意为GUN debugger。使用gdb要求编译时加上`-g`参数，如下：
+本地安装C语言的编译和调试工具。gdb意为GNU debugger。使用gdb要求编译时加上`-g`参数，如下：
 
 ```bash
 gcc -g hello.c -o hello
