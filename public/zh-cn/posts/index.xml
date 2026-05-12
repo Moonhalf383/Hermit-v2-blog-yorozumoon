@@ -164,7 +164,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install build-essential cgdb valgrind
-</span></span></code></pre></div><p>本地安装C语言的编译和调试工具。gdb意为GUN debugger。使用gdb要求编译时加上<code>-g</code>参数，如下：</p>
+</span></span></code></pre></div><p>本地安装C语言的编译和调试工具。gdb意为GNU debugger。使用gdb要求编译时加上<code>-g</code>参数，如下：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -g hello.c -o hello
 </span></span></code></pre></div><p>CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。</p>
 <p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001.md" alt="CS61Cfall20学习笔记01"></p>
