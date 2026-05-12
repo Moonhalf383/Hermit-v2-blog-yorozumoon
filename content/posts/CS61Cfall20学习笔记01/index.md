@@ -224,7 +224,7 @@ gcc -g hello.c -o hello
 
 CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。
 
-![CS61Cfall20学习笔记01](CS61Cfall20学习笔记01.md)
+![CS61Cfall20学习笔记01](CS61Cfall20学习笔记01.png)
 
 一些基本使用方法如下：
 
