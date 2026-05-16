@@ -103,11 +103,12 @@
 </span></span><span class="line"><span class="cl">conda run -n transformer_env pip install <span class="s1">&#39;httpx[socks]&#39;</span>
 </span></span></code></pre></div><p>环境配置如上，直接使用happy-llm的requirements.txt会遇到一些小问题，如果你有网络代理的话需要安装httpx[socks]才能正常从huggingface上下载模型。</p>
 <p>从 计算机视觉（Computer Vision，CV）为起源发展起来的神经网络，其核心架构有三种（经典首字母缩写）：前馈神经网络FNN（Feedforward Neural Network）（以多层感知机为最常见的形式）、卷积神经网络CNN（Convolutional Neural Network）、循环神经网路RNN（Recurrent Neural Network？）</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<p><img src="https://raw.githubusercontent.com/datawhalechina/happy-llm/main/docs/images/2-figures/1-0.png" alt="全连接神经网络"></p>
+<p><img src="https://raw.githubusercontent.com/datawhalechina/happy-llm/main/docs/images/2-figures/1-1.png" alt="卷积神经网络"></p>
+<p>此处注意：</p>
 <p><img src="/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/Happy-LLM%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001_cnn-issue.png" alt="Happy-LLM自学笔记01_cnn-issue"></p>
 <p>详见<a href="https://github.com/datawhalechina/happy-llm/issues/163">此链接</a>，因为不是本章节重点所以本文暂时略过。</p>
-<!-- raw HTML omitted -->
+<p><img src="https://raw.githubusercontent.com/datawhalechina/happy-llm/main/docs/images/2-figures/1-2.png" alt="循环神经网络"></p>
 <blockquote>
 <p>RNN以及RNN的衍生架构LSTM具有捕捉时序信息、适合序列生成的优点，然而具有限制计算机并行计算能力、难以捕捉长序列相关关系的缺点。</p>
 </blockquote>
