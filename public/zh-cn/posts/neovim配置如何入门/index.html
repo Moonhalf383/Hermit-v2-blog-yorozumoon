@@ -64,7 +64,7 @@
       }
     }
 }
-</script><title>Neovim配置如何入门</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>Neovim配置如何入门</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -153,18 +153,18 @@
 <p>neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。</p>
 <p>但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。</p>
 <p>通常，一个neovim的配置文件目录如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>~/.config/nvim/
-</span></span><span style="display:flex;"><span>├── init.lua
-</span></span><span style="display:flex;"><span>└── lua/
-</span></span><span style="display:flex;"><span>    ├── config/
-</span></span><span style="display:flex;"><span>    │   ├── options.lua
-</span></span><span style="display:flex;"><span>    │   ├── keymaps.lua
-</span></span><span style="display:flex;"><span>    │   └── autocmds.lua
-</span></span><span style="display:flex;"><span>    └── plugins/
-</span></span><span style="display:flex;"><span>        ├── init.lua       （可选）
-</span></span><span style="display:flex;"><span>        ├── lualine.lua
-</span></span><span style="display:flex;"><span>        ├── treesitter.lua
-</span></span><span style="display:flex;"><span>        └── ……
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">~/.config/nvim/
+</span></span><span class="line"><span class="cl">├── init.lua
+</span></span><span class="line"><span class="cl">└── lua/
+</span></span><span class="line"><span class="cl">    ├── config/
+</span></span><span class="line"><span class="cl">    │   ├── options.lua
+</span></span><span class="line"><span class="cl">    │   ├── keymaps.lua
+</span></span><span class="line"><span class="cl">    │   └── autocmds.lua
+</span></span><span class="line"><span class="cl">    └── plugins/
+</span></span><span class="line"><span class="cl">        ├── init.lua       （可选）
+</span></span><span class="line"><span class="cl">        ├── lualine.lua
+</span></span><span class="line"><span class="cl">        ├── treesitter.lua
+</span></span><span class="line"><span class="cl">        └── ……
 </span></span></code></pre></div><p>乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。</p>
 <p>正如你所见，nvim的配置文件全部都使用的是lua语言。但是不用有太高的心理负担，因为这是一个语法甚至比python还要简单的语言。nvim配置过程就相当于构建一个自己的lua语言程序，你需要自己组织其文件结构来让neovim知道如何使用你的配置。</p>
 <p>所以显然，在你开始配置nvim之前，你最好能了解一下lua语言的用法。不过也不用着急，你可以接着看，遇到不懂的点再去深入了解。</p>
@@ -184,9 +184,9 @@
    </svg></a></h4>
 <p>显然，如果我们想要使用neovim，我们需要先安装它。你可以安装任意你想要的版本，不过这里我们选择Nvim 0.11.5。kickstart要求nvim版本为最新的稳定版，或者每日夜晚自动编译得到的不经过稳定性测试的Nightly版，我们此处使用的是最新的稳定版。</p>
 <p>对于大部分普通电脑，cpu采用x86_64架构，你需要下载nvim-linux-x86_64.tar.gz。这是软件文件的压缩包，你需要把它移动到你想要它存在的文件目录下，然后在该目录下执行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tar xzvf nvim-linux-x86_64.tar.gz <span style="color:#75715e">#或者你实际下载的压缩包</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">tar xzvf nvim-linux-x86_64.tar.gz <span class="c1">#或者你实际下载的压缩包</span>
 </span></span></code></pre></div><p>我这边使用的是termux，平板、手机一般cpu架构是arm64，所以我下载的是nvim-linux-arm64.tar.gz。执行相同命令解压之后得到一个同名文件夹。此时，输入：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>./nvim-linux-x86_64/bin/nvim <span style="color:#75715e">#注意第一个应当是你实际下载的版本</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">./nvim-linux-x86_64/bin/nvim <span class="c1">#注意第一个应当是你实际下载的版本</span>
 </span></span></code></pre></div><p>通常来说，这个时候你就会进入一个nvim的默认的黑白界面。这就意味着你neovim安装成功了。</p>
 <p>此外，为了使用方便，你最好还要安装一些剪切板工具，如xclip，以及Nerd Font，用来显示更美观的图标。此部分自行参考相应的文档自己选择进行。</p>
 <h4 id="kickstart安装">kickstart安装<a href="#kickstart%e5%ae%89%e8%a3%85" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -196,7 +196,7 @@
    </svg></a></h4>
 <p>现在我们来安装kickstart。在kickstart的文档中，开发者提示说可以将这个kickstart仓库复刻一份到你自己的仓库下，这样你可以通过git来管理你的配置。</p>
 <p>如果你懒得复刻一份，直接输入这个指令，kickstart就会开始自动安装（后记：这里你最好记住这个文件位置~/.config/nvim，因为你之后折腾配置的时候要经常打开它）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/nvim-lua/kickstart.nvim.git <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>XDG_CONFIG_HOME<span style="color:#66d9ef">:-</span>$HOME/.config<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>/nvim
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git clone https://github.com/nvim-lua/kickstart.nvim.git <span class="s2">&#34;</span><span class="si">${</span><span class="nv">XDG_CONFIG_HOME</span><span class="k">:-</span><span class="nv">$HOME</span><span class="p">/.config</span><span class="si">}</span><span class="s2">&#34;</span>/nvim
 </span></span></code></pre></div><p>如果复刻了一份到自己的仓库，直接从自己的仓库克隆即可。</p>
 <p>在下载好后，再次输入<code>nvim</code>，如果一切正常，你就会看见一堆进度条，一堆看不懂的东西安装完后，界面显示出Tokyo night的配色方案，这就意味着你安装成功了。</p>
 <h4 id="可能遇到的问题">可能遇到的问题<a href="#%e5%8f%af%e8%83%bd%e9%81%87%e5%88%b0%e7%9a%84%e9%97%ae%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -206,18 +206,18 @@
    </svg></a></h4>
 <p>在某些平台上，stylua或者一些其他插件并没有提供预编译版，这意味着Mason（你可以理解为nvim的包管理器，自动安装、管理各种开发工具）无法自动安装这些工具。你需要自行编译安装。其中比较推荐的是使用<strong>世界上最好的包管理器</strong>cargo来进行编译安装。</p>
 <p>要使用cargo，你需要先安装rust。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pkg install rust <span style="color:#75715e">#这里开头需要用你自己实际的包管理器</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">pkg install rust <span class="c1">#这里开头需要用你自己实际的包管理器</span>
 </span></span></code></pre></div><p>安装完后，输入：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cargo install stylua
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cargo install stylua
 </span></span></code></pre></div><p>如果没有意外的话，下载成功后二进制文件会位于<code>~/.cargo/bin/stylua</code>（cargo理论上会给出提示）。在<code>~/.bashrc</code>或者<code>~/.zshrc</code>中加入一行<code>export PATH=&quot;$HOME/.cargo/bin:$PATH&quot;</code> 退出后输入<code>source ~/.bashrc</code>或者<code>source ~/.zshrc</code>，之后按理来说stylua就已经可以工作了。</p>
 <p>但是这个时候，Mason可能会因为只识别Mason安装的stylua而导致进入nvim后依然报错。你可以:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim ~/.config/nvim/init.lua
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nvim ~/.config/nvim/init.lua
 </span></span></code></pre></div><p>这就是我们一会会讲到的文件，里面罗列了所有你可能会用到的配置文本。在其中大概718行的位置，你可以找到：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require(<span style="color:#e6db74">&#34;mason-tool-installer&#34;</span>).setup {
-</span></span><span style="display:flex;"><span>  ensure_installed <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 删掉 stylua 或者不要写</span>
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">require</span><span class="p">(</span><span class="s2">&#34;mason-tool-installer&#34;</span><span class="p">).</span><span class="n">setup</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">ensure_installed</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">-- 删掉 stylua 或者不要写</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>正如上文中的注释，此处本来应该有stylua相关的内容。将它删掉或者注释掉即可。保存退出，再次进入nvim，此时就不会有stylua报错了。你可以通过<code>:!which stylua</code>来验证nvim可以找到stylua应用。</p>
 <p>除stylua外，还有一些包也可能会因为环境缘故无法直接通过mason安装，不再一一列举。</p>
 <p>如果你遇到无法解决的问题，你可以暂时先放一放，继续阅读。之后仍然无法解决，则去求助ai或者其他博客。</p>
@@ -228,7 +228,7 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>现在，我们终于可以进入根目录的init.lua了。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim ~/.config/nvim/init.lua
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nvim ~/.config/nvim/init.lua
 </span></span></code></pre></div><p>如果一切顺利，你会进入一个1000多行的文件，这就是kickstart的配置模版。接下来我们会逐段分析这个配置模版。</p>
 <h3 id="开头部分">开头部分<a href="#%e5%bc%80%e5%a4%b4%e9%83%a8%e5%88%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -297,22 +297,22 @@ What is Kickstart?
 <p>python的模块导出机制可以看做是“默认导出”。一个python模块文件（即一个.py文件）所有的顶级变量、函数、类全都是公开的。比如你在<code>utils.py</code>中写了一个名为<code>myfunction()</code>的函数，你想在另一个.py文件中使用这个函数，你只需要先<code>import utils</code>，再写<code>utils.myfunction()</code>即可。可以说，python的每个单独的.py文件都是一个“命名空间”，就像namespace std一样。</p>
 <p>但是lua采用了一个与此区别较大的管理方式。简单来说，lua的所有内容都是“私有的”，如果你想让别的.lua文件使用这个.lua文件中的函数等内容，你需要把这些东西“打包发出去”。理解这点对于配置neovim非常关键。</p>
 <p>我们下面来看一个简单的例子：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- shopping.lua</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- (上面的 local 函数和变量定义)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 1. 手动创建一个空的“储物柜” (table)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> M <span style="color:#f92672">=</span> {}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 2. 手动把要公开的东西放进去</span>
-</span></span><span style="display:flex;"><span>M.buy_apple <span style="color:#f92672">=</span> buy_apple <span style="color:#75715e">--这是一个shopping.lua中定义的函数</span>
-</span></span><span style="display:flex;"><span>M.PRICE_PER_APPLE <span style="color:#f92672">=</span> PRICE_PER_APPLE <span style="color:#75715e">--这是一个shopping.lua中定义的变量</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 注意：我们故意不把 buy_banana 放进去</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 3. 把这个填充好的储物柜作为模块的出口</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> M
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- shopping.lua</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- (上面的 local 函数和变量定义)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 1. 手动创建一个空的“储物柜” (table)</span>
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 2. 手动把要公开的东西放进去</span>
+</span></span><span class="line"><span class="cl"><span class="n">M.buy_apple</span> <span class="o">=</span> <span class="n">buy_apple</span> <span class="c1">--这是一个shopping.lua中定义的函数</span>
+</span></span><span class="line"><span class="cl"><span class="n">M.PRICE_PER_APPLE</span> <span class="o">=</span> <span class="n">PRICE_PER_APPLE</span> <span class="c1">--这是一个shopping.lua中定义的变量</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- 注意：我们故意不把 buy_banana 放进去</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 3. 把这个填充好的储物柜作为模块的出口</span>
+</span></span><span class="line"><span class="cl"><span class="kr">return</span> <span class="n">M</span>
 </span></span></code></pre></div><p>当我们想从另一个.lua中调用shopping.lua中的函数或者变量时，我们需要这么写：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">local</span> shopping <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;shopping&#39;</span>) <span style="color:#75715e">--此处就用到了require</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">shopping</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;shopping&#39;</span><span class="p">)</span> <span class="c1">--此处就用到了require</span>
 </span></span></code></pre></div><p>这时候，我们就在这个.lua文件中定义了一个变量，名字叫<code>shopping</code>。它的内容是什么呢？很简单，就是shopping.lua中最后“打包”好的M这个table。</p>
 <p>此时，如果你想买苹果，你就写<code>shopping.buy_apple()</code>，如果你想知道苹果的单价，那你就写<code>shopping.PRICE_PER_APPLE</code>。但是你没办法买香蕉，因为你在shopping.lua中没有把buy_banana()打包发出去。</p>
 <p>读到这里，你基本上已经明白了lua的模块管理机制了，但是还不够（因为接下来的内容同样非常重要）。lua并不能完全自动地搜索根目录下匹配名称的.lua文件，而是遵循着一种“内部搜索顺序”。简单来说，这个内部搜索顺序就是一堆相对路径，lua文件运行时会挨个搜索这些路径去找符合条件的.lua文件（比如我们前文写的shopping.lua)，如果它在按照内部搜索顺序寻找无果，那么，它就会报错。</p>
@@ -350,98 +350,98 @@ What is Kickstart?
 │   └── myutils.lua
 └── main.lua
 </code></pre><p>然后，让我们在<code>myutils.lua</code>中随便写一点测试用的代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- libs/myutils.lua</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 创建一个 table 用于导出</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> M <span style="color:#f92672">=</span> {}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">M</span>.<span style="color:#a6e22e">greet</span>(name)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello, &#34;</span> <span style="color:#f92672">..</span> name <span style="color:#f92672">..</span> <span style="color:#e6db74">&#34;! Welcome to our module.&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 导出这个 table</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> M
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- libs/myutils.lua</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 创建一个 table 用于导出</span>
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">return</span> <span class="s2">&#34;Hello, &#34;</span> <span class="o">..</span> <span class="n">name</span> <span class="o">..</span> <span class="s2">&#34;! Welcome to our module.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 导出这个 table</span>
+</span></span><span class="line"><span class="cl"><span class="kr">return</span> <span class="n">M</span>
 </span></span></code></pre></div><p>然后，我们来在<code>main.lua</code>中写一个<strong>错误</strong>的模块调用代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- main.lua</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Attempting to load the &#39;myutils&#39; module...&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 尝试加载位于 libs 文件夹中的 myutils 模块</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 注意：我们直接写 &#39;myutils&#39; 而不是 &#39;libs.myutils&#39;，因为 &#39;libs&#39; 只是一个普通文件夹，</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 并不是 Lua 的包名。我们需要让 Lua 知道要去 &#39;libs&#39; 这个文件夹里找。</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> utils <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;myutils&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 如果加载成功，就使用它的功能</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> message <span style="color:#f92672">=</span> utils.greet(<span style="color:#e6db74">&#34;Alice&#34;</span>)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Successfully loaded module!&#34;</span>)
-</span></span><span style="display:flex;"><span>print(message)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- main.lua</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;Attempting to load the &#39;myutils&#39; module...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 尝试加载位于 libs 文件夹中的 myutils 模块</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- 注意：我们直接写 &#39;myutils&#39; 而不是 &#39;libs.myutils&#39;，因为 &#39;libs&#39; 只是一个普通文件夹，</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- 并不是 Lua 的包名。我们需要让 Lua 知道要去 &#39;libs&#39; 这个文件夹里找。</span>
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">utils</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;myutils&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 如果加载成功，就使用它的功能</span>
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">message</span> <span class="o">=</span> <span class="n">utils.greet</span><span class="p">(</span><span class="s2">&#34;Alice&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;Successfully loaded module!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </span></span></code></pre></div><p>这段代码是ai写的。你可能会对其中的注释感到疑惑，我来尝试解答一下：</p>
 <ul>
 <li>直接写<code>require('libs.myutils')</code>其实是可以正常工作的，但是这并不利于维护。我们希望让lua自己通过package path去寻找所需要的模块，而代码中应该只考虑需要什么模块。如果我们在require中强行写入物理位置，虽然可以工作，但是一旦我们调整了文件位置，就不得不修改整个程序中所有从libs中调用模块的代码，这样做非常的低效。</li>
 <li>在这段代码中，我们构建了一个无法通过package path找到所需模版的main.lua，这完全是反面例子。后文我们会给出修改。</li>
 </ul>
 <p>保存退出，输入<code>lua main.lua</code>，你就会喜提报错：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ lua main.lua
-</span></span><span style="display:flex;"><span>Attempting to load the <span style="color:#e6db74">&#39;myutils&#39;</span> module...
-</span></span><span style="display:flex;"><span>lua: main.lua:8: module <span style="color:#e6db74">&#39;myutils&#39;</span> not found:
-</span></span><span style="display:flex;"><span>        no field package.preload<span style="color:#f92672">[</span><span style="color:#e6db74">&#39;myutils&#39;</span><span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;/data/data/com.termux/files/usr/share/lua/5.3/myutils.lua&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;/data/data/com.termux/files/usr/share/lua/5.3/myutils/init.lua&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/myutils.lua&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/myutils/init.lua&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;./myutils.lua&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;./myutils/init.lua&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/myutils.so&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/loadall.so&#39;</span>
-</span></span><span style="display:flex;"><span>        no file <span style="color:#e6db74">&#39;./myutils.so&#39;</span>
-</span></span><span style="display:flex;"><span>stack traceback:
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>C<span style="color:#f92672">]</span>: in <span style="color:#66d9ef">function</span> <span style="color:#e6db74">&#39;require&#39;</span>
-</span></span><span style="display:flex;"><span>        main.lua:8: in main chunk
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">[</span>C<span style="color:#f92672">]</span>: in ?
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ lua main.lua
+</span></span><span class="line"><span class="cl">Attempting to load the <span class="s1">&#39;myutils&#39;</span> module...
+</span></span><span class="line"><span class="cl">lua: main.lua:8: module <span class="s1">&#39;myutils&#39;</span> not found:
+</span></span><span class="line"><span class="cl">        no field package.preload<span class="o">[</span><span class="s1">&#39;myutils&#39;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;/data/data/com.termux/files/usr/share/lua/5.3/myutils.lua&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;/data/data/com.termux/files/usr/share/lua/5.3/myutils/init.lua&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/myutils.lua&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/myutils/init.lua&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;./myutils.lua&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;./myutils/init.lua&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/myutils.so&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;/data/data/com.termux/files/usr/lib/lua/5.3/loadall.so&#39;</span>
+</span></span><span class="line"><span class="cl">        no file <span class="s1">&#39;./myutils.so&#39;</span>
+</span></span><span class="line"><span class="cl">stack traceback:
+</span></span><span class="line"><span class="cl">        <span class="o">[</span>C<span class="o">]</span>: in <span class="k">function</span> <span class="s1">&#39;require&#39;</span>
+</span></span><span class="line"><span class="cl">        main.lua:8: in main chunk
+</span></span><span class="line"><span class="cl">        <span class="o">[</span>C<span class="o">]</span>: in ?
 </span></span></code></pre></div><p>这样的报错信息会在你配置nvim过程中时常出现（如果你完全不关心背后的原理）。</p>
 <p>从报错信息中，你会看到lua查找了所有的内部搜索路径，但是都找不到你要的<code>myutils.lua</code>这个模块，因为你把它放在了libs下，lua根本不知道还有这个地方。</p>
 <p>那么如何解决呢？很简单，我们只需要让<code>main.lua</code>把<code>libs</code>添加到package path中就行。</p>
 <p>将<code>main.lua</code>修改为以下内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- main.lua</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;--- Experiment 2: Modifying package.path in script ---&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 打印修改前的 path，方便对比</span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Original package.path:&#34;</span>)
-</span></span><span style="display:flex;"><span>print(package.path)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- 将我们的 libs 目录添加到搜索路径的最前面</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- &#39;./libs/?.lua&#39; 是一个模板，&#39;?&#39; 会被 require 的模块名替换</span>
-</span></span><span style="display:flex;"><span>package.path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./libs/?.lua;&#39;</span> <span style="color:#f92672">..</span> package.path
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Modified package.path:&#34;</span>)
-</span></span><span style="display:flex;"><span>print(package.path)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Attempting to load the &#39;myutils&#39; module...&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> utils <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;myutils&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> message <span style="color:#f92672">=</span> utils.greet(<span style="color:#e6db74">&#34;Bob&#34;</span>)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Successfully loaded module!&#34;</span>)
-</span></span><span style="display:flex;"><span>print(message)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- main.lua</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;--- Experiment 2: Modifying package.path in script ---&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 打印修改前的 path，方便对比</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;Original package.path:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="n">package.path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- 将我们的 libs 目录添加到搜索路径的最前面</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- &#39;./libs/?.lua&#39; 是一个模板，&#39;?&#39; 会被 require 的模块名替换</span>
+</span></span><span class="line"><span class="cl"><span class="n">package.path</span> <span class="o">=</span> <span class="s1">&#39;./libs/?.lua;&#39;</span> <span class="o">..</span> <span class="n">package.path</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Modified package.path:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="n">package.path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Attempting to load the &#39;myutils&#39; module...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">utils</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;myutils&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">message</span> <span class="o">=</span> <span class="n">utils.greet</span><span class="p">(</span><span class="s2">&#34;Bob&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="s2">&#34;Successfully loaded module!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </span></span></code></pre></div><p>再次退出，输入<code>lua main.lua</code>你就可以得到想要的内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ lua main.lua
-</span></span><span style="display:flex;"><span>--- Experiment 2: Modifying package.path in script ---
-</span></span><span style="display:flex;"><span>Original package.path:
-</span></span><span style="display:flex;"><span>/data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Modified package.path:
-</span></span><span style="display:flex;"><span>./libs/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Attempting to load the <span style="color:#e6db74">&#39;myutils&#39;</span> module...
-</span></span><span style="display:flex;"><span>Successfully loaded module!
-</span></span><span style="display:flex;"><span>Hello, Bob! Welcome to our module.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ lua main.lua
+</span></span><span class="line"><span class="cl">--- Experiment 2: Modifying package.path in script ---
+</span></span><span class="line"><span class="cl">Original package.path:
+</span></span><span class="line"><span class="cl">/data/data/com.termux/files/usr/share/lua/5.3/?.lua<span class="p">;</span>/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua<span class="p">;</span>/data/data/com.termux/files/usr/lib/lua/5.3/?.lua<span class="p">;</span>/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua<span class="p">;</span>./?.lua<span class="p">;</span>./?/init.lua
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Modified package.path:
+</span></span><span class="line"><span class="cl">./libs/?.lua<span class="p">;</span>/data/data/com.termux/files/usr/share/lua/5.3/?.lua<span class="p">;</span>/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua<span class="p">;</span>/data/data/com.termux/files/usr/lib/lua/5.3/?.lua<span class="p">;</span>/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua<span class="p">;</span>./?.lua<span class="p">;</span>./?/init.lua
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Attempting to load the <span class="s1">&#39;myutils&#39;</span> module...
+</span></span><span class="line"><span class="cl">Successfully loaded module!
+</span></span><span class="line"><span class="cl">Hello, Bob! Welcome to our module.
 </span></span></code></pre></div><p>注：以上是我在termux中运行的信息，其他平台上显示的path可能会有所区别。</p>
 <p>我们打印了修改前后package.path的内容，显然，在<code>Modified package.path</code>中第一个搜索路径就是我们添加的<code>./libs/?.lua</code>，此时我们也确实成功使用了<code>myutils.lua</code>中的函数。</p>
 <p>怎么做到的呢？让我们来仔细看一下我们修改的核心内容：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- 将我们的 libs 目录添加到搜索路径的最前面 </span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- &#39;./libs/?.lua&#39; 是一个模板，&#39;?&#39; 会被 require 的模块名替换 </span>
-</span></span><span style="display:flex;"><span>package.path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./libs/?.lua;&#39;</span> <span style="color:#f92672">..</span> package.path
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- 将我们的 libs 目录添加到搜索路径的最前面 </span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- &#39;./libs/?.lua&#39; 是一个模板，&#39;?&#39; 会被 require 的模块名替换 </span>
+</span></span><span class="line"><span class="cl"><span class="n">package.path</span> <span class="o">=</span> <span class="s1">&#39;./libs/?.lua;&#39;</span> <span class="o">..</span> <span class="n">package.path</span>
 </span></span></code></pre></div><p><code>..</code>在lua中表示字符串连接。这段代码的含义非常清晰：在<code>package.path</code>这个字符串前面加上我们需要的搜索路径。就这么简单。<code>package.path</code>本质就是一个字符串，你可以随意的根据需要修改本工程的搜索路径。</p>
 <p>除此之外，如果你的所有lua工程都采用基本一致的文件结构，你可以把你需要的自定义的搜索路径写入环境变量中。比如你可以在终端中输入<code>export LUA_PATH=&quot;./libs/?.lua;;&quot;</code>，其中<code>;;</code>意味着保留原本的路径。这时候，即使你不在<code>main.lua</code>开头编辑<code>package.path</code>，lua也会自动找到libs下的myutils.lua，因为所需要的搜索路径已经成为一个环境的一部分了。</p>
 <p>但是如果你希望自己的代码可以一次写入、处处运行，那么我建议你还是老老实实的把所需要的搜索路径写在开头，以便在不同环境中都可以使用。</p>
@@ -452,48 +452,48 @@ What is Kickstart?
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>Kickstart Guide:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  TODO: The very first thing you should <span style="color:#66d9ef">do</span> is to run the command <span style="color:#960050;background-color:#1e0010">`</span>:Tutor<span style="color:#960050;background-color:#1e0010">`</span> <span style="color:#66d9ef">in</span> Neovim.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    If you don<span style="color:#e6db74">&#39;t know what this means, type the following:
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &lt;escape key&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - :
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - Tutor
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      - &lt;enter key&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    (If you already know the Neovim basics, you can skip this step.)
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  Once you&#39;</span>ve completed that, you can continue working through <span style="color:#f92672">**</span>AND READING<span style="color:#f92672">**</span> the rest
-</span></span><span style="display:flex;"><span>  of the kickstart init.lua.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  Next, run AND READ <span style="color:#960050;background-color:#1e0010">`</span>:help<span style="color:#960050;background-color:#1e0010">`</span>.
-</span></span><span style="display:flex;"><span>    This will open up a help window with some basic information
-</span></span><span style="display:flex;"><span>    about reading, navigating <span style="color:#f92672">and</span> searching the builtin help documentation.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    This should be the first place you go to look when you<span style="color:#e6db74">&#39;re stuck or confused
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    with something. It&#39;</span>s one of my favorite Neovim features.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    MOST IMPORTANTLY, we provide a keymap <span style="color:#e6db74">&#34;&lt;space&gt;sh&#34;</span> to [s]earch the [h]elp documentation,
-</span></span><span style="display:flex;"><span>    which is very useful when you<span style="color:#e6db74">&#39;re not exactly sure of what you&#39;</span>re looking <span style="color:#66d9ef">for</span>.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  I have left several <span style="color:#960050;background-color:#1e0010">`</span>:help X<span style="color:#960050;background-color:#1e0010">`</span> comments throughout the init.lua
-</span></span><span style="display:flex;"><span>    These are hints about where to find more information about the relevant settings,
-</span></span><span style="display:flex;"><span>    plugins <span style="color:#f92672">or</span> Neovim features used <span style="color:#66d9ef">in</span> Kickstart.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   NOTE: Look <span style="color:#66d9ef">for</span> lines like this
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Throughout the file. These are <span style="color:#66d9ef">for</span> you, the reader, to help you understand what is happening.
-</span></span><span style="display:flex;"><span>    Feel free to delete them once you know what you<span style="color:#e6db74">&#39;re doing, but they should serve as a guide
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    for when you are first encountering a few different constructs in your Neovim config.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">I hope you enjoy your Neovim journey,
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">- TJ
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">P.S. You can delete this when you&#39;</span>re done too. It<span style="color:#e6db74">&#39;s your config now! :)
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">--]]
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">Kickstart</span> <span class="n">Guide</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">TODO</span><span class="p">:</span> <span class="n">The</span> <span class="n">very</span> <span class="n">first</span> <span class="n">thing</span> <span class="n">you</span> <span class="n">should</span> <span class="kr">do</span> <span class="n">is</span> <span class="n">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">command</span> <span class="err">`</span><span class="p">:</span><span class="n">Tutor</span><span class="err">`</span> <span class="kr">in</span> <span class="n">Neovim</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">If</span> <span class="n">you</span> <span class="n">don</span><span class="s1">&#39;t know what this means, type the following:
+</span></span></span><span class="line"><span class="cl"><span class="s1">      - &lt;escape key&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">      - :
+</span></span></span><span class="line"><span class="cl"><span class="s1">      - Tutor
+</span></span></span><span class="line"><span class="cl"><span class="s1">      - &lt;enter key&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">    (If you already know the Neovim basics, you can skip this step.)
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">  Once you&#39;</span><span class="n">ve</span> <span class="n">completed</span> <span class="n">that</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">continue</span> <span class="n">working</span> <span class="n">through</span> <span class="o">**</span><span class="n">AND</span> <span class="n">READING</span><span class="o">**</span> <span class="n">the</span> <span class="n">rest</span>
+</span></span><span class="line"><span class="cl">  <span class="n">of</span> <span class="n">the</span> <span class="n">kickstart</span> <span class="n">init.lua</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Next</span><span class="p">,</span> <span class="n">run</span> <span class="n">AND</span> <span class="n">READ</span> <span class="err">`</span><span class="p">:</span><span class="n">help</span><span class="err">`</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">This</span> <span class="n">will</span> <span class="n">open</span> <span class="n">up</span> <span class="n">a</span> <span class="n">help</span> <span class="n">window</span> <span class="n">with</span> <span class="n">some</span> <span class="n">basic</span> <span class="n">information</span>
+</span></span><span class="line"><span class="cl">    <span class="n">about</span> <span class="n">reading</span><span class="p">,</span> <span class="n">navigating</span> <span class="ow">and</span> <span class="n">searching</span> <span class="n">the</span> <span class="n">builtin</span> <span class="n">help</span> <span class="n">documentation</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">This</span> <span class="n">should</span> <span class="n">be</span> <span class="n">the</span> <span class="n">first</span> <span class="n">place</span> <span class="n">you</span> <span class="n">go</span> <span class="n">to</span> <span class="n">look</span> <span class="n">when</span> <span class="n">you</span><span class="s1">&#39;re stuck or confused
+</span></span></span><span class="line"><span class="cl"><span class="s1">    with something. It&#39;</span><span class="n">s</span> <span class="n">one</span> <span class="n">of</span> <span class="n">my</span> <span class="n">favorite</span> <span class="n">Neovim</span> <span class="n">features</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">MOST</span> <span class="n">IMPORTANTLY</span><span class="p">,</span> <span class="n">we</span> <span class="n">provide</span> <span class="n">a</span> <span class="n">keymap</span> <span class="s2">&#34;&lt;space&gt;sh&#34;</span> <span class="n">to</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="n">earch</span> <span class="n">the</span> <span class="p">[</span><span class="n">h</span><span class="p">]</span><span class="n">elp</span> <span class="n">documentation</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">which</span> <span class="n">is</span> <span class="n">very</span> <span class="n">useful</span> <span class="n">when</span> <span class="n">you</span><span class="s1">&#39;re not exactly sure of what you&#39;</span><span class="n">re</span> <span class="n">looking</span> <span class="kr">for</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">I</span> <span class="n">have</span> <span class="n">left</span> <span class="n">several</span> <span class="err">`</span><span class="p">:</span><span class="n">help</span> <span class="n">X</span><span class="err">`</span> <span class="n">comments</span> <span class="n">throughout</span> <span class="n">the</span> <span class="n">init.lua</span>
+</span></span><span class="line"><span class="cl">    <span class="n">These</span> <span class="n">are</span> <span class="n">hints</span> <span class="n">about</span> <span class="n">where</span> <span class="n">to</span> <span class="n">find</span> <span class="n">more</span> <span class="n">information</span> <span class="n">about</span> <span class="n">the</span> <span class="n">relevant</span> <span class="n">settings</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plugins</span> <span class="ow">or</span> <span class="n">Neovim</span> <span class="n">features</span> <span class="n">used</span> <span class="kr">in</span> <span class="n">Kickstart</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="n">NOTE</span><span class="p">:</span> <span class="n">Look</span> <span class="kr">for</span> <span class="n">lines</span> <span class="n">like</span> <span class="n">this</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Throughout</span> <span class="n">the</span> <span class="n">file</span><span class="p">.</span> <span class="n">These</span> <span class="n">are</span> <span class="kr">for</span> <span class="n">you</span><span class="p">,</span> <span class="n">the</span> <span class="n">reader</span><span class="p">,</span> <span class="n">to</span> <span class="n">help</span> <span class="n">you</span> <span class="n">understand</span> <span class="n">what</span> <span class="n">is</span> <span class="n">happening</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Feel</span> <span class="n">free</span> <span class="n">to</span> <span class="n">delete</span> <span class="n">them</span> <span class="n">once</span> <span class="n">you</span> <span class="n">know</span> <span class="n">what</span> <span class="n">you</span><span class="s1">&#39;re doing, but they should serve as a guide
+</span></span></span><span class="line"><span class="cl"><span class="s1">    for when you are first encountering a few different constructs in your Neovim config.
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">I hope you enjoy your Neovim journey,
+</span></span></span><span class="line"><span class="cl"><span class="s1">- TJ
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">P.S. You can delete this when you&#39;</span><span class="n">re</span> <span class="n">done</span> <span class="n">too</span><span class="p">.</span> <span class="n">It</span><span class="s1">&#39;s your config now! :)
+</span></span></span><span class="line"><span class="cl"><span class="s1">--]]
 </span></span></span></code></pre></div><p>总结一下：</p>
 <ul>
 <li>你可以在普通模式下<code>:Tutor</code>来进入一个neovim的使用教程，告诉你这个软件的基本使用方式。
@@ -505,13 +505,13 @@ What is Kickstart?
 <li>你可以<code>&lt;space&gt;+s+h</code>来进入一个帮助搜索界面。（然而我不会用）</li>
 <li>文件剩余的内容都随便你配置。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- Set &lt;space&gt; as the leader key</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- See `:help mapleader`</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)</span>
-</span></span><span style="display:flex;"><span>vim.g.mapleader <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span>
-</span></span><span style="display:flex;"><span>vim.g.maplocalleader <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Set to true if you have a Nerd Font installed and selected in the terminal</span>
-</span></span><span style="display:flex;"><span>vim.g.have_nerd_font <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- Set &lt;space&gt; as the leader key</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- See `:help mapleader`</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.g</span><span class="p">.</span><span class="n">mapleader</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.g</span><span class="p">.</span><span class="n">maplocalleader</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- Set to true if you have a Nerd Font installed and selected in the terminal</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.g</span><span class="p">.</span><span class="n">have_nerd_font</span> <span class="o">=</span> <span class="kc">false</span>
 </span></span></code></pre></div><ul>
 <li><code>vim.g</code>：代表全局变量。这里设置的变量在全局都有效。</li>
 <li><code>vim.g.mapleader = ' '</code>：将空格键设置为“前导键”，用来作为一个通用的快捷键前缀。</li>
@@ -527,78 +527,78 @@ What is Kickstart?
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h5>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Setting options ]]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- See `:help vim.o`</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- NOTE: You can change these options as you wish!</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  For more options, you can see `:help option-list`</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Make line numbers default</span>
-</span></span><span style="display:flex;"><span>vim.o.number <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- You can also add relative line numbers, to help with jumping.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  Experiment for yourself to see if you like it!</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.o.relativenumber = true</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Enable mouse mode, can be useful for resizing splits for example!</span>
-</span></span><span style="display:flex;"><span>vim.o.mouse <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;a&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Don&#39;t show the mode, since it&#39;s already in the status line</span>
-</span></span><span style="display:flex;"><span>vim.o.showmode <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Sync clipboard between OS and Neovim.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  Schedule the setting after `UiEnter` because it can increase startup-time.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  Remove this option if you want your OS clipboard to remain independent.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  See `:help &#39;clipboard&#39;`</span>
-</span></span><span style="display:flex;"><span>vim.schedule(<span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>  vim.o.clipboard <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;unnamedplus&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Enable break indent</span>
-</span></span><span style="display:flex;"><span>vim.o.breakindent <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Save undo history</span>
-</span></span><span style="display:flex;"><span>vim.o.undofile <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term</span>
-</span></span><span style="display:flex;"><span>vim.o.ignorecase <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>vim.o.smartcase <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Keep signcolumn on by default</span>
-</span></span><span style="display:flex;"><span>vim.o.signcolumn <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;yes&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Decrease update time</span>
-</span></span><span style="display:flex;"><span>vim.o.updatetime <span style="color:#f92672">=</span> <span style="color:#ae81ff">250</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Decrease mapped sequence wait time</span>
-</span></span><span style="display:flex;"><span>vim.o.timeoutlen <span style="color:#f92672">=</span> <span style="color:#ae81ff">300</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Configure how new splits should be opened</span>
-</span></span><span style="display:flex;"><span>vim.o.splitright <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>vim.o.splitbelow <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Sets how neovim will display certain whitespace characters in the editor.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  See `:help &#39;list&#39;`</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  and `:help &#39;listchars&#39;`</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  Notice listchars is set using `vim.opt` instead of `vim.o`.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--   See `:help lua-options`</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--   and `:help lua-options-guide`</span>
-</span></span><span style="display:flex;"><span>vim.o.list <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>vim.opt.listchars <span style="color:#f92672">=</span> { tab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;» &#39;</span>, trail <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;·&#39;</span>, nbsp <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;␣&#39;</span> }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Preview substitutions live, as you type!</span>
-</span></span><span style="display:flex;"><span>vim.o.inccommand <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;split&#39;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Show which line your cursor is on</span>
-</span></span><span style="display:flex;"><span>vim.o.cursorline <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Minimal number of screen lines to keep above and below the cursor.</span>
-</span></span><span style="display:flex;"><span>vim.o.scrolloff <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- instead raise a dialog asking if you wish to save the current file(s)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- See `:help &#39;confirm&#39;`</span>
-</span></span><span style="display:flex;"><span>vim.o.confirm <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- [[ Setting options ]]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- See `:help vim.o`</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- NOTE: You can change these options as you wish!</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  For more options, you can see `:help option-list`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Make line numbers default</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">number</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- You can also add relative line numbers, to help with jumping.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  Experiment for yourself to see if you like it!</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.o.relativenumber = true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Enable mouse mode, can be useful for resizing splits for example!</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">mouse</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Don&#39;t show the mode, since it&#39;s already in the status line</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">showmode</span> <span class="o">=</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Sync clipboard between OS and Neovim.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  Schedule the setting after `UiEnter` because it can increase startup-time.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  Remove this option if you want your OS clipboard to remain independent.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  See `:help &#39;clipboard&#39;`</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.schedule</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="n">vim.o</span><span class="p">.</span><span class="n">clipboard</span> <span class="o">=</span> <span class="s1">&#39;unnamedplus&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Enable break indent</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">breakindent</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Save undo history</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">undofile</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">ignorecase</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">smartcase</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Keep signcolumn on by default</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">signcolumn</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Decrease update time</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">updatetime</span> <span class="o">=</span> <span class="mi">250</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Decrease mapped sequence wait time</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">timeoutlen</span> <span class="o">=</span> <span class="mi">300</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Configure how new splits should be opened</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">splitright</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">splitbelow</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Sets how neovim will display certain whitespace characters in the editor.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  See `:help &#39;list&#39;`</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  and `:help &#39;listchars&#39;`</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  Notice listchars is set using `vim.opt` instead of `vim.o`.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--   See `:help lua-options`</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--   and `:help lua-options-guide`</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">list</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.opt</span><span class="p">.</span><span class="n">listchars</span> <span class="o">=</span> <span class="p">{</span> <span class="n">tab</span> <span class="o">=</span> <span class="s1">&#39;» &#39;</span><span class="p">,</span> <span class="n">trail</span> <span class="o">=</span> <span class="s1">&#39;·&#39;</span><span class="p">,</span> <span class="n">nbsp</span> <span class="o">=</span> <span class="s1">&#39;␣&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Preview substitutions live, as you type!</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">inccommand</span> <span class="o">=</span> <span class="s1">&#39;split&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Show which line your cursor is on</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">cursorline</span> <span class="o">=</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Minimal number of screen lines to keep above and below the cursor.</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">scrolloff</span> <span class="o">=</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- instead raise a dialog asking if you wish to save the current file(s)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- See `:help &#39;confirm&#39;`</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.o</span><span class="p">.</span><span class="n">confirm</span> <span class="o">=</span> <span class="kc">true</span>
 </span></span></code></pre></div><ul>
 <li><code>vim.o</code>：设置nvim的各种行为选项。</li>
 <li><code>vim.o.number = true</code>：显示==行号==。默认显示的是绝对行号</li>
@@ -628,44 +628,44 @@ What is Kickstart?
 <li><code>vim.o.scrolloff = 10</code>：光标滚动时会==偏移上下边缘10行==，方便阅读。</li>
 <li><code>vim.o.confirm = true</code>：在一些可能导致数据丢失的情况下==要求你确认==，比如未保存时就退出。除非你是人形计算机永远可以保证正确，那么建议你保持开启。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Basic Keymaps ]]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  See `:help vim.keymap.set()`</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Clear highlights on search when pressing &lt;Esc&gt; in normal mode</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  See `:help hlsearch`</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;Esc&gt;&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;nohlsearch&lt;CR&gt;&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Diagnostic keymaps</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;q&#39;</span>, vim.diagnostic.setloclist, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Open diagnostic [Q]uickfix list&#39;</span> })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- for people to discover. Otherwise, you normally need to press &lt;C-\&gt;&lt;C-n&gt;, which</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- is not what someone will guess without a bit more experience.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- NOTE: This won&#39;t work in all terminal emulators/tmux/etc. Try your own mapping</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- or just use &lt;C-\&gt;&lt;C-n&gt; to exit terminal mode</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;Esc&gt;&lt;Esc&gt;&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">&gt;&lt;C-n&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Exit terminal mode&#39;</span> })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- TIP: Disable arrow keys in normal mode</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;left&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use h to move!!&#34;&lt;CR&gt;&#39;)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;right&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use l to move!!&#34;&lt;CR&gt;&#39;)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;up&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use k to move!!&#34;&lt;CR&gt;&#39;)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;down&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use j to move!!&#34;&lt;CR&gt;&#39;)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Keybinds to make split navigation easier.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  Use CTRL+&lt;hjkl&gt; to switch between windows</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--  See `:help wincmd` for a list of all window commands</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-h&gt;&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-w&gt;&lt;C-h&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Move focus to the left window&#39;</span> })
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-l&gt;&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-w&gt;&lt;C-l&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Move focus to the right window&#39;</span> })
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-j&gt;&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-w&gt;&lt;C-j&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Move focus to the lower window&#39;</span> })
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-k&gt;&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-w&gt;&lt;C-k&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Move focus to the upper window&#39;</span> })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-h&gt;&#34;, &#34;&lt;C-w&gt;H&#34;, { desc = &#34;Move window to the left&#34; })</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-l&gt;&#34;, &#34;&lt;C-w&gt;L&#34;, { desc = &#34;Move window to the right&#34; })</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-j&gt;&#34;, &#34;&lt;C-w&gt;J&#34;, { desc = &#34;Move window to the lower&#34; })</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-k&gt;&#34;, &#34;&lt;C-w&gt;K&#34;, { desc = &#34;Move window to the upper&#34; })</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- [[ Basic Keymaps ]]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  See `:help vim.keymap.set()`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Clear highlights on search when pressing &lt;Esc&gt; in normal mode</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  See `:help hlsearch`</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Esc&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;nohlsearch&lt;CR&gt;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Diagnostic keymaps</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;q&#39;</span><span class="p">,</span> <span class="n">vim.diagnostic</span><span class="p">.</span><span class="n">setloclist</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Open diagnostic [Q]uickfix list&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- for people to discover. Otherwise, you normally need to press &lt;C-\&gt;&lt;C-n&gt;, which</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- is not what someone will guess without a bit more experience.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- NOTE: This won&#39;t work in all terminal emulators/tmux/etc. Try your own mapping</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- or just use &lt;C-\&gt;&lt;C-n&gt; to exit terminal mode</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Esc&gt;&lt;Esc&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-</span><span class="se">\\</span><span class="s1">&gt;&lt;C-n&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Exit terminal mode&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- TIP: Disable arrow keys in normal mode</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;left&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use h to move!!&#34;&lt;CR&gt;&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;right&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use l to move!!&#34;&lt;CR&gt;&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;up&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use k to move!!&#34;&lt;CR&gt;&#39;)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#39;n&#39;, &#39;&lt;down&gt;&#39;, &#39;&lt;cmd&gt;echo &#34;Use j to move!!&#34;&lt;CR&gt;&#39;)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- Keybinds to make split navigation easier.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  Use CTRL+&lt;hjkl&gt; to switch between windows</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--  See `:help wincmd` for a list of all window commands</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-h&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-w&gt;&lt;C-h&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Move focus to the left window&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-l&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-w&gt;&lt;C-l&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Move focus to the right window&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-j&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-w&gt;&lt;C-j&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Move focus to the lower window&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-k&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-w&gt;&lt;C-k&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Move focus to the upper window&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">-- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-h&gt;&#34;, &#34;&lt;C-w&gt;H&#34;, { desc = &#34;Move window to the left&#34; })</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-l&gt;&#34;, &#34;&lt;C-w&gt;L&#34;, { desc = &#34;Move window to the right&#34; })</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-j&gt;&#34;, &#34;&lt;C-w&gt;J&#34;, { desc = &#34;Move window to the lower&#34; })</span>
+</span></span><span class="line"><span class="cl"><span class="c1">-- vim.keymap.set(&#34;n&#34;, &#34;&lt;C-S-k&gt;&#34;, &#34;&lt;C-w&gt;K&#34;, { desc = &#34;Move window to the upper&#34; })</span>
 </span></span></code></pre></div><ul>
 <li><code>vim.keymap.set()</code>：这是 Neovim 推荐的用来设置快捷键的函数。它比老式的 <code>map</code> 命令更清晰、功能更强大。</li>
 <li><code>vim.keymap.set('n', '&lt;Esc&gt;', '&lt;cmd&gt;nohlsearch&lt;CR&gt;')</code>：在<strong>普通模式</strong> (Normal Mode)下（n就表示普通模式），当你按下 <code>&lt;Esc&gt;</code> 键时，自动执行 <code>:nohlsearch</code> 命令来清除上一次搜索结果的高亮。
@@ -725,25 +725,25 @@ What is Kickstart?
 <li>第四个参数是选项，写入desc可以为快捷键写入描述。其他的可选项不在此罗列。</li>
 </ul>
 <p>现在，我们来写一些简单的快捷键，方便我们编写。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;i&#39;</span>,<span style="color:#e6db74">&#39;jk&#39;</span>,<span style="color:#e6db74">&#39;&lt;Esc&gt;&#39;</span>) <span style="color:#75715e">--用jk来从插入模式快速切换回普通模式，比按esc快的多</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;v&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;vsplit&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[V]ertical split&#39;</span> }) <span style="color:#75715e">--创建垂直分屏的快速方式</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;v&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;vsplit&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[V]ertical split&#39;</span> }) <span style="color:#75715e">--创建水平分屏</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;c&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;close&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[C]lose window&#39;</span> }) <span style="color:#75715e">--关闭分屏</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;bn&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;bnext&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Go to [N]ext [B]uffer&#39;</span> })
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;bp&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;bprevious&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Go to [P]revious [B]uffer&#39;</span> })
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#e6db74">&#39;n&#39;</span>, <span style="color:#e6db74">&#39;&lt;leader&gt;bd&#39;</span>, <span style="color:#e6db74">&#39;&lt;cmd&gt;bdelete&lt;CR&gt;&#39;</span>, { desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[D]elete/close buffer&#39;</span> })
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;jk&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;Esc&gt;&#39;</span><span class="p">)</span> <span class="c1">--用jk来从插入模式快速切换回普通模式，比按esc快的多</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;v&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;vsplit&lt;CR&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;[V]ertical split&#39;</span> <span class="p">})</span> <span class="c1">--创建垂直分屏的快速方式</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;v&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;vsplit&lt;CR&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;[V]ertical split&#39;</span> <span class="p">})</span> <span class="c1">--创建水平分屏</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;c&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;close&lt;CR&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;[C]lose window&#39;</span> <span class="p">})</span> <span class="c1">--关闭分屏</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;bn&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;bnext&lt;CR&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Go to [N]ext [B]uffer&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;bp&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;bprevious&lt;CR&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;Go to [P]revious [B]uffer&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;leader&gt;bd&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;cmd&gt;bdelete&lt;CR&gt;&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;[D]elete/close buffer&#39;</span> <span class="p">})</span>
 </span></span></code></pre></div><p>总之，这部分代码主要就是让你在感觉有的快捷键比较反人类的时候可以随意将它修改为自己喜欢的快捷键。以上部分代码仅供参考。</p>
 <hr>
 <p>限于篇幅，init.lua内容的介绍暂时到这里。但是我们并没有结束：接下来，让我们来尝试将options和keymap部分的代码移植到其他地方去。所有的配置全部都放在一个init.lua文件中并不利于后期的维护与调整。理论上，根据我们前文所学的知识，我们已经足够可以实现配置文件的分模块管理了。</p>
 <p>首先，让我们回到根目录：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cd ~/.config/nvim
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">cd</span> ~/.config/nvim
 </span></span></code></pre></div><p>接着，在<code>~/.config/nvim/lua/custom</code>目录下创建两个新的lua文件来存放我们写好的keymap和option部分代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>touch lua/custom/options.lua
-</span></span><span style="display:flex;"><span>touch lua/custom/keymaps.lua
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">touch lua/custom/options.lua
+</span></span><span class="line"><span class="cl">touch lua/custom/keymaps.lua
 </span></span></code></pre></div><p>然后，将根目录下init.lua中<code>vim.o</code>与<code>vim.keymaps</code>相关的代码分别剪切到这两个文件中。注意，当你使用vim内置的<code>d</code>与<code>p</code>剪切粘贴工具时，因为你要移动的<code>vim.o</code>涉及到了剪切板工具，<code>vim.keymap</code>涉及到了快捷键设置，你可能在此过程中会遇到一点小问题。以防万一，你可以先把代码复制到外部，再挨个复制进对应文件，这样以防代码丢失。</p>
 <p>此时，你就可以完全删除init.lua开头到keymaps位置的全部代码（除了全局变量），并补上：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require <span style="color:#e6db74">&#39;custom.options&#39;</span>
-</span></span><span style="display:flex;"><span>require <span style="color:#e6db74">&#39;custom.keymaps&#39;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">require</span> <span class="s1">&#39;custom.options&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">require</span> <span class="s1">&#39;custom.keymaps&#39;</span>
 </span></span></code></pre></div><p>不出意外的话，保存退出再重进，你原先写在init.lua中的配置此时再次会发挥作用。你可以通过这种方式让你的配置文件更加易于维护。</p>
 <p>大概先这样，我还会就界面个性化、lsp等比较棘手的配置问题再写几篇博客。</p>
 
@@ -769,12 +769,33 @@ What is Kickstart?
 			<div class="toc-title">Table of Contents</div>
 			<nav id="TableOfContents">
   <ul>
-    <li><a href="#nvim配置原理">Nvim配置原理</a>
+    <li>
       <ul>
-        <li><a href="#kickstart">kickstart</a></li>
-        <li><a href="#initlua">init.lua</a></li>
-        <li><a href="#开头部分">开头部分</a></li>
-        <li><a href="#一些必须的lua基础知识">一些必须的lua基础知识</a></li>
+        <li><a href="#nvim配置原理">Nvim配置原理</a>
+          <ul>
+            <li><a href="#kickstart">kickstart</a>
+              <ul>
+                <li><a href="#安装neovim">安装neovim</a></li>
+                <li><a href="#kickstart安装">kickstart安装</a></li>
+                <li><a href="#可能遇到的问题">可能遇到的问题</a></li>
+              </ul>
+            </li>
+            <li><a href="#initlua">init.lua</a></li>
+            <li><a href="#开头部分">开头部分</a></li>
+            <li><a href="#一些必须的lua基础知识">一些必须的lua基础知识</a>
+              <ul>
+                <li><a href="#local关键字">local关键字</a></li>
+                <li><a href="#require关键字">require关键字</a></li>
+                <li><a href="#内置搜索顺序">内置搜索顺序</a></li>
+                <li><a href="#正式开始分析initlua">正式开始分析init.lua</a>
+                  <ul>
+                    <li><a href="#setting-options">setting options</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>

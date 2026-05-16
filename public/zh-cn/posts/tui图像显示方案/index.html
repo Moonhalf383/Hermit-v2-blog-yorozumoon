@@ -67,7 +67,7 @@
       }
     }
 }
-</script><title>TUI图像显示方案</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>TUI图像显示方案</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -159,15 +159,15 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
 <p>安装指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pip install plotext
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">pip install plotext
 </span></span></code></pre></div><p>随便的一个测试代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">100</span>))
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(y)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Sine Wave via Plotext&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotext</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&#34;Sine Wave via Plotext&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></span></code></pre></div><p>运行效果：</p>
 <p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-2.png" alt=""></p>
 <p>以下是纯人工无添加的基于本人能工智人之力的introduction翻译：</p>
@@ -195,84 +195,84 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>)
-</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">=</span> X <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">40</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>clear_figure()
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plot(X, Y, style<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bold&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Y and X.&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#34;pro&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotext</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">-</span> <span class="mi">40</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">clear_figure</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Y and X.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">theme</span><span class="p">(</span><span class="s2">&#34;pro&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-3.png" alt=""></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2000</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1000</span>, <span style="color:#ae81ff">2</span>)
-</span></span><span style="display:flex;"><span>w <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">3.4</span>])
-</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matmul(X, w) <span style="color:#f92672">+</span> <span style="color:#ae81ff">4.2</span>
-</span></span><span style="display:flex;"><span>print(Y)
-</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">+=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">1000</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#34;pro&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>plotsize(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">30</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>scatter(X[:, <span style="color:#ae81ff">1</span>], Y, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dot&#34;</span>, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;synthetic data&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;Linear model synthetic data&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>ylabel(<span style="color:#e6db74">&#34;label&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xlabel(<span style="color:#e6db74">&#34;features&#34;</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotext</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="mf">4.2</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Y</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">theme</span><span class="p">(</span><span class="s2">&#34;pro&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">plotsize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&#34;dot&#34;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;synthetic data&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&#34;Linear model synthetic data&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&#34;label&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&#34;features&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-4.png" alt=""></p>
 <p>动态图像（强行clc()+show()实现动态效果）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 准备初始数据</span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">100</span>)
-</span></span><span style="display:flex;"><span>shift <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Press Ctrl+C to stop the animation.&#34;</span>)
-</span></span><span style="display:flex;"><span>time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 1. 计算移动后的 Y 值 ---</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 让正弦波随 shift 变量移动</span>
-</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>sin(x <span style="color:#f92672">+</span> shift)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 2. 绘图流程 ---</span>
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>clc()  <span style="color:#75715e"># 清屏</span>
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>clear_figure()  <span style="color:#75715e"># 清数据</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#34;dark&#34;</span>)  <span style="color:#75715e"># 适合 Termux</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 绘制填充图，视觉效果更好</span>
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>plot(x, y, label<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Live Signal&#34;</span>, marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fhd&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Real-time Sine Wave | Phase: </span><span style="color:#e6db74">{</span>shift<span style="color:#e6db74">:</span><span style="color:#e6db74">.2f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">1.5</span>, <span style="color:#ae81ff">1.5</span>)  <span style="color:#75715e"># 务必固定坐标轴范围，否则画面会随数据跳变</span>
-</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>show()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># --- 3. 更新状态 ---</span>
-</span></span><span style="display:flex;"><span>        shift <span style="color:#f92672">+=</span> <span style="color:#ae81ff">0.1</span>
-</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.05</span>)  <span style="color:#75715e"># 20fps 左右</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">KeyboardInterrupt</span>:
-</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>clc()
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Animation stopped.&#34;</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotext</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 准备初始数据</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">shift</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Press Ctrl+C to stop the animation.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># --- 1. 计算移动后的 Y 值 ---</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 让正弦波随 shift 变量移动</span>
+</span></span><span class="line"><span class="cl">        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">shift</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># --- 2. 绘图流程 ---</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">clc</span><span class="p">()</span>  <span class="c1"># 清屏</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">clear_figure</span><span class="p">()</span>  <span class="c1"># 清数据</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">theme</span><span class="p">(</span><span class="s2">&#34;dark&#34;</span><span class="p">)</span>  <span class="c1"># 适合 Termux</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># 绘制填充图，视觉效果更好</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&#34;Live Signal&#34;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&#34;fhd&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Real-time Sine Wave | Phase: </span><span class="si">{</span><span class="n">shift</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>  <span class="c1"># 务必固定坐标轴范围，否则画面会随数据跳变</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># --- 3. 更新状态 ---</span>
+</span></span><span class="line"><span class="cl">        <span class="n">shift</span> <span class="o">+=</span> <span class="mf">0.1</span>
+</span></span><span class="line"><span class="cl">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># 20fps 左右</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">clc</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Animation stopped.&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-5.png" alt=""></p>
 <p>显示本地图片（都用终端显示了，效果这块就只能委屈一下了）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> plotext <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>image_path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./5pebbles.png&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>image_plot(image_path)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>frame(<span style="color:#66d9ef">False</span>)  <span style="color:#75715e"># 去掉边框</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xticks(<span style="color:#66d9ef">None</span>)  <span style="color:#75715e"># 去掉刻度</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>yticks(<span style="color:#66d9ef">None</span>)  <span style="color:#75715e"># 去掉刻度</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>canvas_color(<span style="color:#e6db74">&#34;none&#34;</span>)  <span style="color:#75715e"># 背景透明</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">plotext</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">image_path</span> <span class="o">=</span> <span class="s2">&#34;./5pebbles.png&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">image_plot</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># 去掉边框</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># 去掉刻度</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># 去掉刻度</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">canvas_color</span><span class="p">(</span><span class="s2">&#34;none&#34;</span><span class="p">)</span>  <span class="c1"># 背景透明</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></span></code></pre></div><p><img src="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/TUI%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88-20260127-6.png" alt=""></p>
 <p>图取自<a href="https://www.bilibili.com/video/BV1t8411z7Rn/?spm_id_from=333.1387.favlist.content.click&amp;vd_source=31ba3d75fa2995f7e1b776de7a637bd4">bilibili</a>，侵删。</p>
 
@@ -304,7 +304,13 @@
 		</article>
 		<aside id="toc">
 			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents"></nav>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#参考链接">参考链接</a></li>
+    <li><a href="#简单的使用方法">简单的使用方法：</a></li>
+    <li><a href="#一些使用例">一些使用例</a></li>
+  </ul>
+</nav>
 		</aside>
 		<div class="post-nav thin">
 			<a class="next-post" href="http://localhost:1313/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/">

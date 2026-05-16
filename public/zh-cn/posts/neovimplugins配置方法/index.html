@@ -64,7 +64,7 @@
       }
     }
 }
-</script><title>NeovimPlugins配置方法</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>NeovimPlugins配置方法</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -172,20 +172,20 @@
    </svg></a></h3>
 <p>光有插件是远远不够的，我们需要一个组件来专门管理插件，决定插件何时运行。通常而言，我们选择使用lazy.nvim插件管理器，它最大的特点就是“懒加载”，只在需要的时候加载插件功能，这极大地提高了载入速度。</p>
 <p>让我们看到init.lua中关于下载lazy.nvim插件管理器的部分：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- [[ Install `lazy.nvim` plugin manager ]]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">--    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> lazypath <span style="color:#f92672">=</span> vim.fn.stdpath <span style="color:#e6db74">&#39;data&#39;</span> <span style="color:#f92672">..</span> <span style="color:#e6db74">&#39;/lazy/lazy.nvim&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (vim.uv <span style="color:#f92672">or</span> vim.loop).fs_stat(lazypath) <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> lazyrepo <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;https://github.com/folke/lazy.nvim.git&#39;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">local</span> out <span style="color:#f92672">=</span> vim.fn.system { <span style="color:#e6db74">&#39;git&#39;</span>, <span style="color:#e6db74">&#39;clone&#39;</span>, <span style="color:#e6db74">&#39;--filter=blob:none&#39;</span>, <span style="color:#e6db74">&#39;--branch=stable&#39;</span>, lazyrepo, lazypath }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> vim.v.shell_error <span style="color:#f92672">~=</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    error(<span style="color:#e6db74">&#39;Error cloning lazy.nvim:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">..</span> out)
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">---@type vim.Option</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">local</span> rtp <span style="color:#f92672">=</span> vim.opt.rtp
-</span></span><span style="display:flex;"><span>rtp:prepend(lazypath)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- [[ Install `lazy.nvim` plugin manager ]]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">--    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info</span>
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">lazypath</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">stdpath</span> <span class="s1">&#39;data&#39;</span> <span class="o">..</span> <span class="s1">&#39;/lazy/lazy.nvim&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">vim.uv</span> <span class="ow">or</span> <span class="n">vim.loop</span><span class="p">).</span><span class="n">fs_stat</span><span class="p">(</span><span class="n">lazypath</span><span class="p">)</span> <span class="kr">then</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">local</span> <span class="n">lazyrepo</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/folke/lazy.nvim.git&#39;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">local</span> <span class="n">out</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">system</span> <span class="p">{</span> <span class="s1">&#39;git&#39;</span><span class="p">,</span> <span class="s1">&#39;clone&#39;</span><span class="p">,</span> <span class="s1">&#39;--filter=blob:none&#39;</span><span class="p">,</span> <span class="s1">&#39;--branch=stable&#39;</span><span class="p">,</span> <span class="n">lazyrepo</span><span class="p">,</span> <span class="n">lazypath</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">if</span> <span class="n">vim.v</span><span class="p">.</span><span class="n">shell_error</span> <span class="o">~=</span> <span class="mi">0</span> <span class="kr">then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error cloning lazy.nvim:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">..</span> <span class="n">out</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">end</span>
+</span></span><span class="line"><span class="cl"><span class="kr">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">---@type vim.Option</span>
+</span></span><span class="line"><span class="cl"><span class="kd">local</span> <span class="n">rtp</span> <span class="o">=</span> <span class="n">vim.opt</span><span class="p">.</span><span class="n">rtp</span>
+</span></span><span class="line"><span class="cl"><span class="n">rtp</span><span class="p">:</span><span class="n">prepend</span><span class="p">(</span><span class="n">lazypath</span><span class="p">)</span>
 </span></span></code></pre></div><p>这段代码的含义，简单来说就是：</p>
 <ul>
 <li>创建一个lazypath作为这个插件管理器的老家
@@ -202,7 +202,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require(<span style="color:#e6db74">&#39;lazy&#39;</span>).setup({
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">require</span><span class="p">(</span><span class="s1">&#39;lazy&#39;</span><span class="p">).</span><span class="n">setup</span><span class="p">({</span>
 </span></span></code></pre></div><p>从接下来开始就到了重头戏了，nvim的插件管理。</p>
 <p>在我们kickstart nvim这个配置模版中，大几百行的代码都塞在了<code>require('lazy').setup({</code>这个巨大括号里。</p>
 <p><code>require('lazy').setup()</code>接受的是两个参数，其中第一个参数就是一个巨大的lua table，里面放的是插件的“说明书”，第二个参数则是可选的，用来定制lazy.nvim自身的外观和行为。我们主要关注第一部分，即插件的“说明书”到底怎么写。</p>
@@ -229,7 +229,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;NMAC427/guess-indent.nvim&#39;</span>, <span style="color:#75715e">-- Detect tabstop and shiftwidth automatically</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl">  <span class="s1">&#39;NMAC427/guess-indent.nvim&#39;</span><span class="p">,</span> <span class="c1">-- Detect tabstop and shiftwidth automatically</span>
 </span></span></code></pre></div><p>没错，一个字符串就足够作为一个插件了。记得后面要加逗号。</p>
 <p>这段代码的含义就是，到github上找到<code>NMAC427</code>这个用户的<code>guess-indent.nvim</code>这个仓库并下载下来，什么都不配置，直接用默认配置即可。这是最省事的写法。</p>
 <p>但是多数时候，你为了更方便的使用插件，不得不进行一些相应的配置。这个时候，我们就要用到更加复杂的配置方式。</p>
@@ -238,36 +238,36 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#75715e">-- Use `opts = {}` to automatically pass options to a plugin&#39;s `setup()` function, forcing the plugin to be loaded.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Alternatively, use `config = function() ... end` for full control over the configuration.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- If you prefer to call `setup` explicitly, use:</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    {</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        &#39;lewis6991/gitsigns.nvim&#39;,</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        config = function()</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--            require(&#39;gitsigns&#39;).setup({</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--                -- Your gitsigns configuration here</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--            })</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--        end,</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    }</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Here is a more advanced example where we pass configuration</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- options to `gitsigns.nvim`.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- See `:help gitsigns` to understand what the configuration keys do</span>
-</span></span><span style="display:flex;"><span>  { <span style="color:#75715e">-- Adds git related signs to the gutter, as well as utilities for managing changes</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;lewis6991/gitsigns.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>      signs <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        add <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;+&#39;</span> },
-</span></span><span style="display:flex;"><span>        change <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~&#39;</span> },
-</span></span><span style="display:flex;"><span>        delete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;_&#39;</span> },
-</span></span><span style="display:flex;"><span>        topdelete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;‾&#39;</span> },
-</span></span><span style="display:flex;"><span>        changedelete <span style="color:#f92672">=</span> { text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;~&#39;</span> },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>  },
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl">  <span class="c1">-- Use `opts = {}` to automatically pass options to a plugin&#39;s `setup()` function, forcing the plugin to be loaded.</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">-- Alternatively, use `config = function() ... end` for full control over the configuration.</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">-- If you prefer to call `setup` explicitly, use:</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--    {</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--        &#39;lewis6991/gitsigns.nvim&#39;,</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--        config = function()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--            require(&#39;gitsigns&#39;).setup({</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--                -- Your gitsigns configuration here</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--            })</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--        end,</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--    }</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">-- Here is a more advanced example where we pass configuration</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">-- options to `gitsigns.nvim`.</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">-- See `:help gitsigns` to understand what the configuration keys do</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span> <span class="c1">-- Adds git related signs to the gutter, as well as utilities for managing changes</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;lewis6991/gitsigns.nvim&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">signs</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">add</span> <span class="o">=</span> <span class="p">{</span> <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">change</span> <span class="o">=</span> <span class="p">{</span> <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;~&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delete</span> <span class="o">=</span> <span class="p">{</span> <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">topdelete</span> <span class="o">=</span> <span class="p">{</span> <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;‾&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">changedelete</span> <span class="o">=</span> <span class="p">{</span> <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;~&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span></code></pre></div><p>这是一个git图标插件，功能是在侧边栏显示当前文本中的改动增减。但是我们想要自定义显示的图标，那么我们就必须进行配置。</p>
 <p>配置的方式如上，简单来说就是将插件说明书写成一个table。lua中table是唯一的组合数据结构，功能类似于js的对象，既能当哈希表或字典，又能当列表，还能作为类。如果想要写好lua程序，你将不得不直面这种身兼数职的境况。</p>
 <p>在以上这段代码中，配置gitsigns时我们使用了<code>opts</code>这个配置键。这是最简洁的配置键，配置的选项又插件作者提供，插件加载完成后会自动调用你给出的配置。</p>
@@ -277,27 +277,27 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  { <span style="color:#75715e">-- You can easily change to a different colorscheme.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Change the name of the colorscheme plugin below, and then</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- change the command in the config to whatever the name of that colorscheme is.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;folke/tokyonight.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>, <span style="color:#75715e">-- Make sure to load this before all the other start plugins.</span>
-</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">---@diagnostic disable-next-line: missing-fields</span>
-</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;tokyonight&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>        styles <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          comments <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> }, <span style="color:#75715e">-- Disable italics in comments</span>
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Load the colorscheme here.</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Like many other themes, this one has different styles, and you could load</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- any other, such as &#39;tokyonight-storm&#39;, &#39;tokyonight-moon&#39;, or &#39;tokyonight-day&#39;.</span>
-</span></span><span style="display:flex;"><span>      vim.cmd.colorscheme <span style="color:#e6db74">&#39;tokyonight-night&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  },
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl">  <span class="p">{</span> <span class="c1">-- You can easily change to a different colorscheme.</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">-- Change the name of the colorscheme plugin below, and then</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">-- change the command in the config to whatever the name of that colorscheme is.</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">--</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;folke/tokyonight.nvim&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">priority</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="c1">-- Make sure to load this before all the other start plugins.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">config</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">---@diagnostic disable-next-line: missing-fields</span>
+</span></span><span class="line"><span class="cl">      <span class="n">require</span><span class="p">(</span><span class="s1">&#39;tokyonight&#39;</span><span class="p">).</span><span class="n">setup</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">styles</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">comments</span> <span class="o">=</span> <span class="p">{</span> <span class="n">italic</span> <span class="o">=</span> <span class="kc">false</span> <span class="p">},</span> <span class="c1">-- Disable italics in comments</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">-- Load the colorscheme here.</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- Like many other themes, this one has different styles, and you could load</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- any other, such as &#39;tokyonight-storm&#39;, &#39;tokyonight-moon&#39;, or &#39;tokyonight-day&#39;.</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.cmd</span><span class="p">.</span><span class="n">colorscheme</span> <span class="s1">&#39;tokyonight-night&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span></code></pre></div><p>在kickstart配置模版中，默认的配色方案长成这样。它下载的是tokyonight，一个我个人不是很喜欢的配色方案。所以我一定要把它改掉。</p>
 <p>我们先来分析一下这段代码的组成：</p>
 <ul>
@@ -308,51 +308,51 @@
 <li><code>vim.cmd.colorscheme 'tokyonight-night'</code>在完成前面的setup步骤后，让nvim真正开始加载这个颜色主题。</li>
 </ul>
 <p>那么我们现在就来修改这段代码，来改成我更喜欢的onedarkpro主题。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;olimorris/onedarkpro.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;onedarkpro&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>        highlights <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          Comment <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> },
-</span></span><span style="display:flex;"><span>          Directory <span style="color:#f92672">=</span> { bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>          ErrorMsg <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>, bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      vim.cmd <span style="color:#e6db74">&#39;colorscheme onedark&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  },
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;olimorris/onedarkpro.nvim&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">priority</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">config</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="n">require</span><span class="p">(</span><span class="s1">&#39;onedarkpro&#39;</span><span class="p">).</span><span class="n">setup</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">highlights</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">Comment</span> <span class="o">=</span> <span class="p">{</span> <span class="n">italic</span> <span class="o">=</span> <span class="kc">false</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="n">Directory</span> <span class="o">=</span> <span class="p">{</span> <span class="n">bold</span> <span class="o">=</span> <span class="kc">true</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="n">ErrorMsg</span> <span class="o">=</span> <span class="p">{</span> <span class="n">italic</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="n">bold</span> <span class="o">=</span> <span class="kc">true</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.cmd</span> <span class="s1">&#39;colorscheme onedark&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span></code></pre></div><p>ok，当我保存退出再进入后，我就喜提新颜色主题了。</p>
 <p>简单来说，这部分内容难点就在于：如果你不去深入了解配置文件的组成结构，你可能根本不知道github上给出的配置代码到底该放在哪。现在我们知道了，只需要把github上给出的配置代码塞进一个table里，再塞到<code>require('lazy').setup({</code>里即可。</p>
 <p>颜色方案配置比较简单，因为它不涉及任何按键的设置。接下来我们来为我们的nvim添加一个“浮动终端”，就想一般的图形化界面ide那样在界面的中央弹出一个终端窗口，而非使用nvim原生的类似分屏的终端。</p>
 <p>但是在开始之前，我们先进行一些准备工作：我们实际上应该把这些插件说明书分门别类的放在<code>lua/custom/plugins</code>目录下，而不是全部扁平化的放在init.lua中。让我们先把颜色方案的代码移动过去。</p>
 <p>首先，我们看到<code>init.lua</code>中插件说明书的最后部分：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>  <span style="color:#75715e">-- note: the import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--    this is the easiest way to modularize your config.</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">--  uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.</span>
-</span></span><span style="display:flex;"><span>  { import <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;custom.plugins&#39;</span> },
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl">  <span class="c1">-- note: the import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--    this is the easiest way to modularize your config.</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">--  uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span> <span class="n">import</span> <span class="o">=</span> <span class="s1">&#39;custom.plugins&#39;</span> <span class="p">},</span>
 </span></span></code></pre></div><p>这一部分中，<code>\{ import = 'custom.plugins' },</code>原本是注释起来的，将前面的注释符号删除，这样lazy.nvim就会自动去在custom/plugins目录下寻找插件说明书。</p>
 <p>接着，输入以下指令：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim lua/custom/plugins/colorscheme.lua
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nvim lua/custom/plugins/colorscheme.lua
 </span></span></code></pre></div><p>这样我们就创建了一个专门存放配色方案的lua模块。将原本我们写在init.lua中的代码移植过来，并用<code>return{}</code>包裹，得到：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">--colorscheme.lua</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;olimorris/onedarkpro.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>,
-</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>      require(<span style="color:#e6db74">&#39;onedarkpro&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>        highlights <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          Comment <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span> },
-</span></span><span style="display:flex;"><span>          Directory <span style="color:#f92672">=</span> { bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>          ErrorMsg <span style="color:#f92672">=</span> { italic <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>, bold <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span> },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      vim.cmd <span style="color:#e6db74">&#39;colorscheme onedark&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">--colorscheme.lua</span>
+</span></span><span class="line"><span class="cl"><span class="kr">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;olimorris/onedarkpro.nvim&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">priority</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">config</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="n">require</span><span class="p">(</span><span class="s1">&#39;onedarkpro&#39;</span><span class="p">).</span><span class="n">setup</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">highlights</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">Comment</span> <span class="o">=</span> <span class="p">{</span> <span class="n">italic</span> <span class="o">=</span> <span class="kc">false</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="n">Directory</span> <span class="o">=</span> <span class="p">{</span> <span class="n">bold</span> <span class="o">=</span> <span class="kc">true</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="n">ErrorMsg</span> <span class="o">=</span> <span class="p">{</span> <span class="n">italic</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="n">bold</span> <span class="o">=</span> <span class="kc">true</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.cmd</span> <span class="s1">&#39;colorscheme onedark&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>此时，重新打开nvim，配色方案应该依然工作正常。这就意味着你成功构建了一个插件说明书。</p>
 <h4 id="浮动终端">浮动终端<a href="#%e6%b5%ae%e5%8a%a8%e7%bb%88%e7%ab%af" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -361,98 +361,98 @@
    </svg></a></h4>
 <p>浮动终端的常用插件是<code>toggleterm.nvim</code>，简称toggle。</p>
 <p>让我们先在plugins下创建一个专属于toggle的lua模块：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>nvim lua/custom/plugins/toggleterm.lua
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nvim lua/custom/plugins/toggleterm.lua
 </span></span></code></pre></div><p>然后，让我写入插件的配置代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;akinsho/toggleterm.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>  version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;*&#39;</span>,
-</span></span><span style="display:flex;"><span>  config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>    require(<span style="color:#e6db74">&#39;toggleterm&#39;</span>).setup {
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 设置终端窗口大小</span>
-</span></span><span style="display:flex;"><span>      size <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(term)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> term.direction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;horizontal&#39;</span> <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">15</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elseif</span> term.direction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;vertical&#39;</span> <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> vim.o.columns <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.4</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 打开终端的快捷键，这里设置为 Ctrl + \</span>
-</span></span><span style="display:flex;"><span>      open_mapping <span style="color:#f92672">=</span> <span style="color:#e6db74">[[&lt;c-\&gt;]]</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 隐藏 toggleterm buffer 中的行号</span>
-</span></span><span style="display:flex;"><span>      hide_numbers <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 当 Neovim 目录切换时，终端下次打开也会切换到相应目录</span>
-</span></span><span style="display:flex;"><span>      autochdir <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 设置终端窗口的背景色，可以根据你的主题进行调整</span>
-</span></span><span style="display:flex;"><span>      highlights <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        Normal <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          guibg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;none&#39;</span>, <span style="color:#75715e">-- 这里设置为 &#34;none&#34; 表示使用默认背景</span>
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        NormalFloat <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          link <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Normal&#39;</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 阴影效果，如果设置了上面的 highlights 中的 Normal，建议将此项设为 false</span>
-</span></span><span style="display:flex;"><span>      shade_terminals <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 阴影的强度，数值越小越深</span>
-</span></span><span style="display:flex;"><span>      shading_factor <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">30</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 启动时进入插入模式</span>
-</span></span><span style="display:flex;"><span>      start_in_insert <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 在插入模式下也可以使用 open_mapping 打开终端</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- insert_mappings = true,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 在终端窗口中也可以使用 open_mapping (会覆盖一些终端默认行为)</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- terminal_mappings = true,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 保持上次终端的大小</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- persist_size = true,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 终端进程退出时自动关闭窗口</span>
-</span></span><span style="display:flex;"><span>      direction <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;float&#39;</span>, <span style="color:#75715e">-- 设置默认打开方式为浮动窗口</span>
-</span></span><span style="display:flex;"><span>      close_on_exit <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 使用 Neovim 的默认 shell</span>
-</span></span><span style="display:flex;"><span>      shell <span style="color:#f92672">=</span> vim.o.shell,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 自动滚动到底部</span>
-</span></span><span style="display:flex;"><span>      auto_scroll <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- 浮动窗口的设置</span>
-</span></span><span style="display:flex;"><span>      float_opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">-- 边框样式</span>
-</span></span><span style="display:flex;"><span>        border <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;curved&#39;</span>, <span style="color:#75715e">-- 使用圆角边框</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">-- 窗口透明度</span>
-</span></span><span style="display:flex;"><span>        winblend <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>,
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 设置一个函数，用于在 normal 模式下按下 &lt;esc&gt; 时退出终端</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_G</span>.<span style="color:#a6e22e">set_terminal_keymaps</span>()
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">local</span> opts <span style="color:#f92672">=</span> { buffer <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> }
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;esc&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;C-\&gt;&lt;C-n&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;jk&#39;</span>, <span style="color:#e6db74">[[&lt;C-\&gt;&lt;C-n&gt;]]</span>, opts) <span style="color:#75715e">-- jk 也可以退出</span>
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-h&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd h&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-j&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd j&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-k&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd k&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>      vim.keymap.set(<span style="color:#e6db74">&#39;t&#39;</span>, <span style="color:#e6db74">&#39;&lt;C-l&gt;&#39;</span>, <span style="color:#e6db74">[[&lt;Cmd&gt;wincmd l&lt;CR&gt;]]</span>, opts)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 当打开终端时，自动应用上面的快捷键设置</span>
-</span></span><span style="display:flex;"><span>    vim.cmd(<span style="color:#e6db74">&#39;autocmd! TermOpen term://* lua set_terminal_keymaps()&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- 定义一个快捷键，方便地打开一个 LazyGit 终端</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> Terminal <span style="color:#f92672">=</span> require(<span style="color:#e6db74">&#39;toggleterm.terminal&#39;</span>).Terminal
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> lazygit <span style="color:#f92672">=</span> Terminal:new({
-</span></span><span style="display:flex;"><span>      cmd <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;lazygit&#34;</span>,
-</span></span><span style="display:flex;"><span>      hidden <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>      direction <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;float&#34;</span>,
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_LAZYGIT_TOGGLE</span>()
-</span></span><span style="display:flex;"><span>      lazygit:toggle()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    vim.keymap.set(<span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;&lt;leader&gt;gg&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;lua _LAZYGIT_TOGGLE()&lt;CR&gt;&#34;</span>, {
-</span></span><span style="display:flex;"><span>        noremap <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>        silent <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>        desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Lazygit&#34;</span>,
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="kr">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;akinsho/toggleterm.nvim&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">config</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">require</span><span class="p">(</span><span class="s1">&#39;toggleterm&#39;</span><span class="p">).</span><span class="n">setup</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 设置终端窗口大小</span>
+</span></span><span class="line"><span class="cl">      <span class="n">size</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">if</span> <span class="n">term.direction</span> <span class="o">==</span> <span class="s1">&#39;horizontal&#39;</span> <span class="kr">then</span>
+</span></span><span class="line"><span class="cl">          <span class="kr">return</span> <span class="mi">15</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">elseif</span> <span class="n">term.direction</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span> <span class="kr">then</span>
+</span></span><span class="line"><span class="cl">          <span class="kr">return</span> <span class="n">vim.o</span><span class="p">.</span><span class="n">columns</span> <span class="o">*</span> <span class="mf">0.4</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">end</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 打开终端的快捷键，这里设置为 Ctrl + \</span>
+</span></span><span class="line"><span class="cl">      <span class="n">open_mapping</span> <span class="o">=</span> <span class="s">[[&lt;c-\&gt;]]</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 隐藏 toggleterm buffer 中的行号</span>
+</span></span><span class="line"><span class="cl">      <span class="n">hide_numbers</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 当 Neovim 目录切换时，终端下次打开也会切换到相应目录</span>
+</span></span><span class="line"><span class="cl">      <span class="n">autochdir</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 设置终端窗口的背景色，可以根据你的主题进行调整</span>
+</span></span><span class="line"><span class="cl">      <span class="n">highlights</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Normal</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">guibg</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="c1">-- 这里设置为 &#34;none&#34; 表示使用默认背景</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">NormalFloat</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">link</span> <span class="o">=</span> <span class="s1">&#39;Normal&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 阴影效果，如果设置了上面的 highlights 中的 Normal，建议将此项设为 false</span>
+</span></span><span class="line"><span class="cl">      <span class="n">shade_terminals</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 阴影的强度，数值越小越深</span>
+</span></span><span class="line"><span class="cl">      <span class="n">shading_factor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 启动时进入插入模式</span>
+</span></span><span class="line"><span class="cl">      <span class="n">start_in_insert</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 在插入模式下也可以使用 open_mapping 打开终端</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- insert_mappings = true,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 在终端窗口中也可以使用 open_mapping (会覆盖一些终端默认行为)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- terminal_mappings = true,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 保持上次终端的大小</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- persist_size = true,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 终端进程退出时自动关闭窗口</span>
+</span></span><span class="line"><span class="cl">      <span class="n">direction</span> <span class="o">=</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="c1">-- 设置默认打开方式为浮动窗口</span>
+</span></span><span class="line"><span class="cl">      <span class="n">close_on_exit</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 使用 Neovim 的默认 shell</span>
+</span></span><span class="line"><span class="cl">      <span class="n">shell</span> <span class="o">=</span> <span class="n">vim.o</span><span class="p">.</span><span class="n">shell</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 自动滚动到底部</span>
+</span></span><span class="line"><span class="cl">      <span class="n">auto_scroll</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">-- 浮动窗口的设置</span>
+</span></span><span class="line"><span class="cl">      <span class="n">float_opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">-- 边框样式</span>
+</span></span><span class="line"><span class="cl">        <span class="n">border</span> <span class="o">=</span> <span class="s1">&#39;curved&#39;</span><span class="p">,</span> <span class="c1">-- 使用圆角边框</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">-- 窗口透明度</span>
+</span></span><span class="line"><span class="cl">        <span class="n">winblend</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">-- 设置一个函数，用于在 normal 模式下按下 &lt;esc&gt; 时退出终端</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">function</span> <span class="nc">_G</span><span class="p">.</span><span class="nf">set_terminal_keymaps</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">local</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span> <span class="n">buffer</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;esc&gt;&#39;</span><span class="p">,</span> <span class="s">[[&lt;C-\&gt;&lt;C-n&gt;]]</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;jk&#39;</span><span class="p">,</span> <span class="s">[[&lt;C-\&gt;&lt;C-n&gt;]]</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span> <span class="c1">-- jk 也可以退出</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-h&gt;&#39;</span><span class="p">,</span> <span class="s">[[&lt;Cmd&gt;wincmd h&lt;CR&gt;]]</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-j&gt;&#39;</span><span class="p">,</span> <span class="s">[[&lt;Cmd&gt;wincmd j&lt;CR&gt;]]</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-k&gt;&#39;</span><span class="p">,</span> <span class="s">[[&lt;Cmd&gt;wincmd k&lt;CR&gt;]]</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;C-l&gt;&#39;</span><span class="p">,</span> <span class="s">[[&lt;Cmd&gt;wincmd l&lt;CR&gt;]]</span><span class="p">,</span> <span class="n">opts</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">-- 当打开终端时，自动应用上面的快捷键设置</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vim.cmd</span><span class="p">(</span><span class="s1">&#39;autocmd! TermOpen term://* lua set_terminal_keymaps()&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">-- 定义一个快捷键，方便地打开一个 LazyGit 终端</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">local</span> <span class="n">Terminal</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;toggleterm.terminal&#39;</span><span class="p">).</span><span class="n">Terminal</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">local</span> <span class="n">lazygit</span> <span class="o">=</span> <span class="n">Terminal</span><span class="p">:</span><span class="n">new</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;lazygit&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="n">hidden</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="n">direction</span> <span class="o">=</span> <span class="s2">&#34;float&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">function</span> <span class="nf">_LAZYGIT_TOGGLE</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="n">lazygit</span><span class="p">:</span><span class="n">toggle</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">vim.keymap</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&#34;n&#34;</span><span class="p">,</span> <span class="s2">&#34;&lt;leader&gt;gg&#34;</span><span class="p">,</span> <span class="s2">&#34;&lt;cmd&gt;lua _LAZYGIT_TOGGLE()&lt;CR&gt;&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">noremap</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">silent</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">desc</span> <span class="o">=</span> <span class="s2">&#34;Lazygit&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>在了解了原理之后，和ai交流的难度显著下降了。我得到了一套非常棒的配置，甚至帮我添加了lazygit的界面。效果非常帅。</p>
 <p>这时候保存退出，再重进，你就应该可以通过你设置的快捷键来打开toggle终端了。</p>
 <hr>
@@ -484,10 +484,24 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#插件的分类">插件的分类</a></li>
-        <li><a href="#插件管理器">插件管理器</a></li>
-        <li><a href="#插件">插件</a></li>
-        <li><a href="#配色方案配置">配色方案配置</a></li>
+        <li>
+          <ul>
+            <li><a href="#插件的分类">插件的分类</a></li>
+            <li><a href="#插件管理器">插件管理器</a></li>
+            <li><a href="#插件">插件</a>
+              <ul>
+                <li><a href="#插件说明书-plugin-specification">插件说明书 (Plugin Specification)</a></li>
+                <li><a href="#最简形式">最简形式</a></li>
+                <li><a href="#常见形式">常见形式</a></li>
+              </ul>
+            </li>
+            <li><a href="#配色方案配置">配色方案配置</a>
+              <ul>
+                <li><a href="#浮动终端">浮动终端</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>

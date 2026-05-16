@@ -73,7 +73,7 @@ codecompanion.nvim是一个coding agent插件。不同于avante.nvim这样的cur
       }
     }
 }
-</script><title>CodeCompanion.nvim配置</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>CodeCompanion.nvim配置</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -165,167 +165,167 @@ codecompanion.nvim是一个coding agent插件。不同于avante.nvim这样的cur
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;olimorris/codecompanion.nvim&#34;</span>,
-</span></span><span style="display:flex;"><span>  version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;^19.0.0&#34;</span>,
-</span></span><span style="display:flex;"><span>  cmd <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanion&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanionChat&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanionActions&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;CodeCompanionCmd&#34;</span>,
-</span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>  opts <span style="color:#f92672">=</span> {},
-</span></span><span style="display:flex;"><span>  dependencies <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;nvim-lua/plenary.nvim&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;nvim-treesitter/nvim-treesitter&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;ravitemer/mcphub.nvim&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;akinsho/toggleterm.nvim&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;ravitemer/codecompanion-history.nvim&#34;</span>,
-</span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>  config <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>    require(<span style="color:#e6db74">&#34;codecompanion&#34;</span>).setup({
-</span></span><span style="display:flex;"><span>      opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        language <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Chinese&#34;</span>,
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      strategies <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        chat <span style="color:#f92672">=</span> { adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span> },
-</span></span><span style="display:flex;"><span>        inline <span style="color:#f92672">=</span> { adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span> },
-</span></span><span style="display:flex;"><span>        agent <span style="color:#f92672">=</span> { adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span> },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      interactions <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        chat <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        inline <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;zhipu&#34;</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        cmd <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          adapter <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;deepseek&#34;</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      mcp <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        servers <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          [<span style="color:#e6db74">&#34;tavily-mcp&#34;</span>] <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;tavily-mcp@latest&#34;</span> },
-</span></span><span style="display:flex;"><span>            env <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>              TAVILY_API_KEY <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;TAVILY_API_KEY&#34;</span>),
-</span></span><span style="display:flex;"><span>            },
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>          [<span style="color:#e6db74">&#34;filesystem&#34;</span>] <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-filesystem&#34;</span> },
-</span></span><span style="display:flex;"><span>            roots <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">local</span> cwd <span style="color:#f92672">=</span> vim.fn.getcwd()
-</span></span><span style="display:flex;"><span>              <span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>                {
-</span></span><span style="display:flex;"><span>                  name <span style="color:#f92672">=</span> vim.fn.fnamemodify(cwd, <span style="color:#e6db74">&#34;:t&#34;</span>),
-</span></span><span style="display:flex;"><span>                  uri <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://&#34;</span> <span style="color:#f92672">..</span> cwd,
-</span></span><span style="display:flex;"><span>                },
-</span></span><span style="display:flex;"><span>              }
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>          [<span style="color:#e6db74">&#34;sequential-thinking&#34;</span>] <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-sequential-thinking&#34;</span> },
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          default_servers <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;sequential-thinking&#34;</span> },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      adapters <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        http <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          zhipu <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> require(<span style="color:#e6db74">&#34;codecompanion.adapters&#34;</span>).extend(<span style="color:#e6db74">&#34;openai_compatible&#34;</span>, {
-</span></span><span style="display:flex;"><span>              schema <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                model <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;glm-4-air-250414&#34;</span>,
-</span></span><span style="display:flex;"><span>                },
-</span></span><span style="display:flex;"><span>                top_p <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>                },
-</span></span><span style="display:flex;"><span>                temperature <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span> },
-</span></span><span style="display:flex;"><span>                max_tokens <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">4096</span> },
-</span></span><span style="display:flex;"><span>              },
-</span></span><span style="display:flex;"><span>              env <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>,
-</span></span><span style="display:flex;"><span>                api_key <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;ZHIPU_API_KEY&#34;</span>),
-</span></span><span style="display:flex;"><span>                chat_url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/chat/completions&#34;</span>,
-</span></span><span style="display:flex;"><span>              },
-</span></span><span style="display:flex;"><span>            })
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>          deepseek <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> require(<span style="color:#e6db74">&#34;codecompanion.adapters&#34;</span>).extend(<span style="color:#e6db74">&#34;openai_compatible&#34;</span>, {
-</span></span><span style="display:flex;"><span>              schema <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                model <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;deepseek-chat&#34;</span>,
-</span></span><span style="display:flex;"><span>                },
-</span></span><span style="display:flex;"><span>                top_p <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                  default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>                },
-</span></span><span style="display:flex;"><span>                temperature <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.1</span> },
-</span></span><span style="display:flex;"><span>                max_tokens <span style="color:#f92672">=</span> { default <span style="color:#f92672">=</span> <span style="color:#ae81ff">4096</span> },
-</span></span><span style="display:flex;"><span>              },
-</span></span><span style="display:flex;"><span>              env <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>                url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://api.deepseek.com&#34;</span>,
-</span></span><span style="display:flex;"><span>                api_key <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;DEEPSEEK_API_KEY&#34;</span>),
-</span></span><span style="display:flex;"><span>              },
-</span></span><span style="display:flex;"><span>            })
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      extensions <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        mcphub <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          callback <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mcphub.extensions.codecompanion&#34;</span>,
-</span></span><span style="display:flex;"><span>          opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            make_vars <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>            make_slash_commands <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>            show_result_in_chat <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        history <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          enabled <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>          opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            dir_to_save <span style="color:#f92672">=</span> vim.fn.stdpath(<span style="color:#e6db74">&#34;data&#34;</span>) <span style="color:#f92672">..</span> <span style="color:#e6db74">&#34;/codecompanion_chats.json&#34;</span>,
-</span></span><span style="display:flex;"><span>            auto_save <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>            auto_generate_title <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>,
-</span></span><span style="display:flex;"><span>            picker <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;telescope&#34;</span>,
-</span></span><span style="display:flex;"><span>            keymap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;gh&#34;</span>,
-</span></span><span style="display:flex;"><span>            save_chat_keymap <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;sc&#34;</span>,
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      rules <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>        default <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Collection of common files for all projects&#34;</span>,
-</span></span><span style="display:flex;"><span>          files <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CLAUDE.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;claude&#34;</span> },
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CLAUDE.local.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;claude&#34;</span> },
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.cursorrules&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.rules&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AGENT.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AGENTS.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>        project_specific <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>          description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Project-specific rules&#34;</span>,
-</span></span><span style="display:flex;"><span>          files <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.github/copilot-instructions.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
-</span></span><span style="display:flex;"><span>            { path <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;README.md&#34;</span>, parser <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;none&#34;</span> },
-</span></span><span style="display:flex;"><span>          },
-</span></span><span style="display:flex;"><span>          condition <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">-- Only load for git repositories</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> vim.fn.isdirectory(<span style="color:#e6db74">&#34;.git&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>        },
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>  keys <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;a&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AI&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
-</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;ac&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;CodeCompanionChat Toggle&lt;cr&gt;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Open CodeCompanion Chat&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
-</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;ai&#34;</span>, <span style="color:#e6db74">&#34;:CodeCompanion&lt;cr&gt;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Inline CodeCompanion&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
-</span></span><span style="display:flex;"><span>    { <span style="color:#e6db74">&#34;&lt;leader&gt;aa&#34;</span>, <span style="color:#e6db74">&#34;&lt;cmd&gt;CodeCompanionActions&lt;cr&gt;&#34;</span>, desc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CodeCompanion Actions&#34;</span>, mode <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;n&#34;</span>, <span style="color:#e6db74">&#34;v&#34;</span> } },
-</span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="kr">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;olimorris/codecompanion.nvim&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">version</span> <span class="o">=</span> <span class="s2">&#34;^19.0.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;CodeCompanion&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;CodeCompanionChat&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;CodeCompanionActions&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;CodeCompanionCmd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="n">opts</span> <span class="o">=</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">  <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;nvim-lua/plenary.nvim&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;nvim-treesitter/nvim-treesitter&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ravitemer/mcphub.nvim&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;akinsho/toggleterm.nvim&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ravitemer/codecompanion-history.nvim&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="n">config</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">require</span><span class="p">(</span><span class="s2">&#34;codecompanion&#34;</span><span class="p">).</span><span class="n">setup</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">language</span> <span class="o">=</span> <span class="s2">&#34;Chinese&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="n">strategies</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chat</span> <span class="o">=</span> <span class="p">{</span> <span class="n">adapter</span> <span class="o">=</span> <span class="s2">&#34;zhipu&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">inline</span> <span class="o">=</span> <span class="p">{</span> <span class="n">adapter</span> <span class="o">=</span> <span class="s2">&#34;zhipu&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">agent</span> <span class="o">=</span> <span class="p">{</span> <span class="n">adapter</span> <span class="o">=</span> <span class="s2">&#34;zhipu&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="n">interactions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chat</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">adapter</span> <span class="o">=</span> <span class="s2">&#34;zhipu&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">inline</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">adapter</span> <span class="o">=</span> <span class="s2">&#34;zhipu&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">adapter</span> <span class="o">=</span> <span class="s2">&#34;deepseek&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mcp</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">servers</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="s2">&#34;tavily-mcp&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="s2">&#34;-y&#34;</span><span class="p">,</span> <span class="s2">&#34;tavily-mcp@latest&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="n">env</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="n">TAVILY_API_KEY</span> <span class="o">=</span> <span class="n">os.getenv</span><span class="p">(</span><span class="s2">&#34;TAVILY_API_KEY&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="s2">&#34;filesystem&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="s2">&#34;-y&#34;</span><span class="p">,</span> <span class="s2">&#34;@modelcontextprotocol/server-filesystem&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="n">roots</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">              <span class="kd">local</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">getcwd</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">              <span class="kr">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">name</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">fnamemodify</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">&#34;:t&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">uri</span> <span class="o">=</span> <span class="s2">&#34;file://&#34;</span> <span class="o">..</span> <span class="n">cwd</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="s2">&#34;sequential-thinking&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="s2">&#34;-y&#34;</span><span class="p">,</span> <span class="s2">&#34;@modelcontextprotocol/server-sequential-thinking&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">default_servers</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;sequential-thinking&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="n">adapters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">http</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">zhipu</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">return</span> <span class="n">require</span><span class="p">(</span><span class="s2">&#34;codecompanion.adapters&#34;</span><span class="p">).</span><span class="n">extend</span><span class="p">(</span><span class="s2">&#34;openai_compatible&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">model</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">default</span> <span class="o">=</span> <span class="s2">&#34;glm-4-air-250414&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="n">top_p</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="n">temperature</span> <span class="o">=</span> <span class="p">{</span> <span class="n">default</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="n">max_tokens</span> <span class="o">=</span> <span class="p">{</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">4096</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">              <span class="p">},</span>
+</span></span><span class="line"><span class="cl">              <span class="n">env</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">api_key</span> <span class="o">=</span> <span class="n">os.getenv</span><span class="p">(</span><span class="s2">&#34;ZHIPU_API_KEY&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">chat_url</span> <span class="o">=</span> <span class="s2">&#34;/chat/completions&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">              <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">})</span>
+</span></span><span class="line"><span class="cl">          <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">deepseek</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">return</span> <span class="n">require</span><span class="p">(</span><span class="s2">&#34;codecompanion.adapters&#34;</span><span class="p">).</span><span class="n">extend</span><span class="p">(</span><span class="s2">&#34;openai_compatible&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">model</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">default</span> <span class="o">=</span> <span class="s2">&#34;deepseek-chat&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="n">top_p</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                  <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="n">temperature</span> <span class="o">=</span> <span class="p">{</span> <span class="n">default</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">                <span class="n">max_tokens</span> <span class="o">=</span> <span class="p">{</span> <span class="n">default</span> <span class="o">=</span> <span class="mi">4096</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">              <span class="p">},</span>
+</span></span><span class="line"><span class="cl">              <span class="n">env</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;https://api.deepseek.com&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">api_key</span> <span class="o">=</span> <span class="n">os.getenv</span><span class="p">(</span><span class="s2">&#34;DEEPSEEK_API_KEY&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">              <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">})</span>
+</span></span><span class="line"><span class="cl">          <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="n">extensions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mcphub</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">callback</span> <span class="o">=</span> <span class="s2">&#34;mcphub.extensions.codecompanion&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">make_vars</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">make_slash_commands</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">show_result_in_chat</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">history</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">enabled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">dir_to_save</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">stdpath</span><span class="p">(</span><span class="s2">&#34;data&#34;</span><span class="p">)</span> <span class="o">..</span> <span class="s2">&#34;/codecompanion_chats.json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">auto_save</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">auto_generate_title</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">picker</span> <span class="o">=</span> <span class="s2">&#34;telescope&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">keymap</span> <span class="o">=</span> <span class="s2">&#34;gh&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">save_chat_keymap</span> <span class="o">=</span> <span class="s2">&#34;sc&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="n">rules</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">default</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">description</span> <span class="o">=</span> <span class="s2">&#34;Collection of common files for all projects&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;CLAUDE.md&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;claude&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;CLAUDE.local.md&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;claude&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;.cursorrules&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;.rules&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;AGENT.md&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;AGENTS.md&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">project_specific</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="n">description</span> <span class="o">=</span> <span class="s2">&#34;Project-specific rules&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="n">files</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;.github/copilot-instructions.md&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&#34;README.md&#34;</span><span class="p">,</span> <span class="n">parser</span> <span class="o">=</span> <span class="s2">&#34;none&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="n">condition</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">-- Only load for git repositories</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">return</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">isdirectory</span><span class="p">(</span><span class="s2">&#34;.git&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">          <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s2">&#34;&lt;leader&gt;a&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="s2">&#34;AI&#34;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;n&#34;</span><span class="p">,</span> <span class="s2">&#34;v&#34;</span> <span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s2">&#34;&lt;leader&gt;ac&#34;</span><span class="p">,</span> <span class="s2">&#34;&lt;cmd&gt;CodeCompanionChat Toggle&lt;cr&gt;&#34;</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="s2">&#34;Open CodeCompanion Chat&#34;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;n&#34;</span><span class="p">,</span> <span class="s2">&#34;v&#34;</span> <span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s2">&#34;&lt;leader&gt;ai&#34;</span><span class="p">,</span> <span class="s2">&#34;:CodeCompanion&lt;cr&gt;&#34;</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="s2">&#34;Inline CodeCompanion&#34;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;n&#34;</span><span class="p">,</span> <span class="s2">&#34;v&#34;</span> <span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="s2">&#34;&lt;leader&gt;aa&#34;</span><span class="p">,</span> <span class="s2">&#34;&lt;cmd&gt;CodeCompanionActions&lt;cr&gt;&#34;</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="s2">&#34;CodeCompanion Actions&#34;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;n&#34;</span><span class="p">,</span> <span class="s2">&#34;v&#34;</span> <span class="p">}</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>此类最新插件的配置写法直接让ai写触发幻觉的概率非常高。花了一个上午研读文档得到了一个能跑的配置。部分代码参考了<a href="https://blog.383494.xyz/code-companion-nvim/">这篇博客</a>。</p>
 <p>使用的插件管理器是lazy.nvim。</p>
 <hr>
@@ -343,34 +343,34 @@ codecompanion.nvim是一个coding agent插件。不同于avante.nvim这样的cur
 <p>Javascript的生态对我来说一直是一个非常神秘的事物，他们的社区中经常产出一些让人费解的神秘工具，我不能保证我能完全正确地说明白Mcp Server的工作原理。Mcp Server的具体存在形式有很多种，其中相当一部分是通过npx运行的“云端脚本”。</p>
 <p>npx的模式非常神奇，它是一个“包执行器”。只需要传入一个工具名称，它就会自动从网上下载这个工具并执行，但是执行完之后工具并不会软链接到全局路径，而是被直接清理掉。这样做虽然听起来非常麻烦，实际效果上实现了工具永远保持最新状态与低门槛跨平台。在codecompanion中，启动的mcp server会一直运行在后台等待调用。</p>
 <p>MCP Server很多时候并不是一个很重量的服务，而是一些轻量的胶水代码。这也使得他们可以直接通过npx来运行。除了npx脚本外，本地js项目或者一些其他的二进制文件也同样可以作为MCP Server。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>mcp <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>	servers <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>	  [<span style="color:#e6db74">&#34;tavily-mcp&#34;</span>] <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>		cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;tavily-mcp@latest&#34;</span> },
-</span></span><span style="display:flex;"><span>		env <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>		  TAVILY_API_KEY <span style="color:#f92672">=</span> os.getenv(<span style="color:#e6db74">&#34;TAVILY_API_KEY&#34;</span>),
-</span></span><span style="display:flex;"><span>		},
-</span></span><span style="display:flex;"><span>	  },
-</span></span><span style="display:flex;"><span>	  [<span style="color:#e6db74">&#34;filesystem&#34;</span>] <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>		cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-filesystem&#34;</span> },
-</span></span><span style="display:flex;"><span>		roots <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>()
-</span></span><span style="display:flex;"><span>		  <span style="color:#66d9ef">local</span> cwd <span style="color:#f92672">=</span> vim.fn.getcwd()
-</span></span><span style="display:flex;"><span>		  <span style="color:#66d9ef">return</span> {
-</span></span><span style="display:flex;"><span>			{
-</span></span><span style="display:flex;"><span>			  name <span style="color:#f92672">=</span> vim.fn.fnamemodify(cwd, <span style="color:#e6db74">&#34;:t&#34;</span>),
-</span></span><span style="display:flex;"><span>			  uri <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://&#34;</span> <span style="color:#f92672">..</span> cwd,
-</span></span><span style="display:flex;"><span>			},
-</span></span><span style="display:flex;"><span>		  }
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">end</span>,
-</span></span><span style="display:flex;"><span>	  },
-</span></span><span style="display:flex;"><span>	  [<span style="color:#e6db74">&#34;sequential-thinking&#34;</span>] <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>		cmd <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;npx&#34;</span>, <span style="color:#e6db74">&#34;-y&#34;</span>, <span style="color:#e6db74">&#34;@modelcontextprotocol/server-sequential-thinking&#34;</span> },
-</span></span><span style="display:flex;"><span>	  },
-</span></span><span style="display:flex;"><span>	},
-</span></span><span style="display:flex;"><span>	opts <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>	  default_servers <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;sequential-thinking&#34;</span> },
-</span></span><span style="display:flex;"><span>	},
-</span></span><span style="display:flex;"><span>},
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">mcp</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">servers</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">[</span><span class="s2">&#34;tavily-mcp&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="s2">&#34;-y&#34;</span><span class="p">,</span> <span class="s2">&#34;tavily-mcp@latest&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">		<span class="n">env</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="n">TAVILY_API_KEY</span> <span class="o">=</span> <span class="n">os.getenv</span><span class="p">(</span><span class="s2">&#34;TAVILY_API_KEY&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="p">},</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">[</span><span class="s2">&#34;filesystem&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="s2">&#34;-y&#34;</span><span class="p">,</span> <span class="s2">&#34;@modelcontextprotocol/server-filesystem&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">		<span class="n">roots</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		  <span class="kd">local</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">getcwd</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		  <span class="kr">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			  <span class="n">name</span> <span class="o">=</span> <span class="n">vim.fn</span><span class="p">.</span><span class="n">fnamemodify</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">&#34;:t&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">			  <span class="n">uri</span> <span class="o">=</span> <span class="s2">&#34;file://&#34;</span> <span class="o">..</span> <span class="n">cwd</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">			<span class="p">},</span>
+</span></span><span class="line"><span class="cl">		  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="kr">end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">[</span><span class="s2">&#34;sequential-thinking&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cmd</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="s2">&#34;-y&#34;</span><span class="p">,</span> <span class="s2">&#34;@modelcontextprotocol/server-sequential-thinking&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">	<span class="p">},</span>
+</span></span><span class="line"><span class="cl">	<span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">default_servers</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&#34;sequential-thinking&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">	<span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
 </span></span></code></pre></div><p>我的配置文件中暂时只引入了以上三个mcp server。分别用于联网搜索、读写本地文件系统，以及多步推理。</p>
 <p>mcp服务可以提供第三方工具，但是mcp服务并不总是默认开启。我的配置文件中只默认开启了sequential-thinking。开启其他mcp server需要在聊天栏中通过<code>/mcp</code>手动开启。启动之后，使用@语法就可以将mcp工具引入上下文中供llm调用。</p>
 <p><img src="/zh-cn/posts/codecompanion/CodeCompanion.nvim%E9%85%8D%E7%BD%AE-20260322-3.png" alt=""></p>
@@ -449,11 +449,17 @@ codecompanion.nvim是一个coding agent插件。不同于avante.nvim这样的cur
 			<div class="toc-title">Table of Contents</div>
 			<nav id="TableOfContents">
   <ul>
-    <li><a href="#mcp">MCP</a></li>
-    <li><a href="#agents--tool-groups">Agents / Tool Groups</a></li>
-    <li><a href="#editor-context">Editor Context</a></li>
-    <li><a href="#rules">Rules</a></li>
-    <li><a href="#history">history</a></li>
+    <li><a href="#参考链接">参考链接</a></li>
+    <li><a href="#配置参考">配置参考</a></li>
+    <li><a href="#一些术语">一些术语</a>
+      <ul>
+        <li><a href="#mcp">MCP</a></li>
+        <li><a href="#agents--tool-groups">Agents / Tool Groups</a></li>
+        <li><a href="#editor-context">Editor Context</a></li>
+        <li><a href="#rules">Rules</a></li>
+        <li><a href="#history">history</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 		</aside>

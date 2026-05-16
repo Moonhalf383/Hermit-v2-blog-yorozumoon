@@ -1025,9 +1025,15 @@ a.footnote-ref {
     overflow-y: auto;
     height: calc(100vh - 300px);
 
-    // Nested list styling with smaller font
+    // Nested list styling with smaller font per level
     ul ul {
+      font-size: .95em;
+    }
+    ul ul ul {
       font-size: .9em;
+    }
+    ul ul ul ul {
+      font-size: .85em;
     }
   }
 
@@ -1279,7 +1285,7 @@ a.footnote-ref {
 
   // Show desktop-only elements and table of contents
   .desktop-only,
-  #toc.show-toc {
+  #toc {
     display: block;
   }
 

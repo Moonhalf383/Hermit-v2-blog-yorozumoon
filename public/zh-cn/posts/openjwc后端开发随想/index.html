@@ -64,7 +64,7 @@
       }
     }
 }
-</script><title>OpenJWC后端开发随想</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>OpenJWC后端开发随想</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -493,40 +493,48 @@
 			<div class="toc-title">Table of Contents</div>
 			<nav id="TableOfContents">
   <ul>
-    <li><a href="#后端主要业务">后端主要业务</a></li>
-    <li><a href="#鉴权相关">鉴权相关</a></li>
-    <li><a href="#技术栈">技术栈</a>
+    <li><a href="#前言329">前言（3.29）</a></li>
+    <li><a href="#参考链接">参考链接：</a></li>
+    <li><a href="#项目简介">项目简介</a>
       <ul>
-        <li><a href="#uv">uv</a></li>
-        <li><a href="#fastapi">Fastapi</a></li>
-        <li><a href="#sqlite3">SQLite3</a></li>
-        <li><a href="#chromadb">ChromaDB</a></li>
-        <li><a href="#uvicorn">Uvicorn</a></li>
-        <li><a href="#deepseek--embedding-3">Deepseek / Embedding 3</a></li>
+        <li><a href="#后端主要业务">后端主要业务</a></li>
+        <li><a href="#鉴权相关">鉴权相关</a></li>
+        <li><a href="#技术栈">技术栈</a>
+          <ul>
+            <li><a href="#uv">uv</a></li>
+            <li><a href="#fastapi">Fastapi</a></li>
+            <li><a href="#sqlite3">SQLite3</a></li>
+            <li><a href="#chromadb">ChromaDB</a></li>
+            <li><a href="#uvicorn">Uvicorn</a></li>
+            <li><a href="#deepseek--embedding-3">Deepseek / Embedding 3</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
-  </ul>
-
-  <ul>
-    <li><a href="#3月9日想法确定">3月9日：想法确定</a></li>
-    <li><a href="#3月10日基本工作流跑通">3月10日：基本工作流跑通</a></li>
-    <li><a href="#3月11日一些零碎更新">3月11日：一些零碎更新</a></li>
-    <li><a href="#3月12日前端摇人">3月12日：前端摇人</a></li>
-    <li><a href="#3月13日语义搜索跑通">3月13日：语义搜索跑通</a></li>
-    <li><a href="#3月14日鉴权完工">3月14日：鉴权完工</a></li>
-    <li><a href="#3月15日一堆接口">3月15日：一堆接口</a></li>
-    <li><a href="#3月16日依然接口">3月16日：依然接口</a></li>
-    <li><a href="#3月17日接口">3月17日：接口</a></li>
-    <li><a href="#3月18日接口">3月18日：接口</a></li>
-    <li><a href="#3月19日接口">3月19日：接口</a></li>
-    <li><a href="#3月20日接口">3月20日：接口</a></li>
-    <li><a href="#3月21日投稿功能">3月21日：投稿功能</a></li>
-    <li><a href="#3月22日rag优化">3月22日：rag优化</a></li>
-    <li><a href="#3月23日测试大王">3月23日：测试大王</a></li>
-    <li><a href="#3月24日宣发准备">3月24日：宣发准备</a></li>
-    <li><a href="#3月25日宣发">3月25日：宣发</a></li>
-    <li><a href="#3月26日一些调整">3月26日：一些调整</a></li>
-    <li><a href="#3月28日服务打包">3月28日：服务打包</a></li>
+    <li><a href="#开发历程">开发历程</a>
+      <ul>
+        <li><a href="#3月9日想法确定">3月9日：想法确定</a></li>
+        <li><a href="#3月10日基本工作流跑通">3月10日：基本工作流跑通</a></li>
+        <li><a href="#3月11日一些零碎更新">3月11日：一些零碎更新</a></li>
+        <li><a href="#3月12日前端摇人">3月12日：前端摇人</a></li>
+        <li><a href="#3月13日语义搜索跑通">3月13日：语义搜索跑通</a></li>
+        <li><a href="#3月14日鉴权完工">3月14日：鉴权完工</a></li>
+        <li><a href="#3月15日一堆接口">3月15日：一堆接口</a></li>
+        <li><a href="#3月16日依然接口">3月16日：依然接口</a></li>
+        <li><a href="#3月17日接口">3月17日：接口</a></li>
+        <li><a href="#3月18日接口">3月18日：接口</a></li>
+        <li><a href="#3月19日接口">3月19日：接口</a></li>
+        <li><a href="#3月20日接口">3月20日：接口</a></li>
+        <li><a href="#3月21日投稿功能">3月21日：投稿功能</a></li>
+        <li><a href="#3月22日rag优化">3月22日：rag优化</a></li>
+        <li><a href="#3月23日测试大王">3月23日：测试大王</a></li>
+        <li><a href="#3月24日宣发准备">3月24日：宣发准备</a></li>
+        <li><a href="#3月25日宣发">3月25日：宣发</a></li>
+        <li><a href="#3月26日一些调整">3月26日：一些调整</a></li>
+        <li><a href="#3月28日服务打包">3月28日：服务打包</a></li>
+      </ul>
+    </li>
+    <li><a href="#一些感想">一些感想</a></li>
   </ul>
 </nav>
 		</aside>

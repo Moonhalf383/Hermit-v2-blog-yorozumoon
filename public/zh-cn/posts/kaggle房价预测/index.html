@@ -71,7 +71,7 @@ d2l虽然声称是“动手学机器学习”，然而实际上对于学习者�
       }
     }
 }
-</script><title>Kaggle房价预测</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>Kaggle房价预测</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -160,47 +160,47 @@ d2l虽然声称是“动手学机器学习”，然而实际上对于学习者�
 <p>kaggle房价预测比赛的具体形式就是给你一定的训练数据让你训练模型，同时提供你一些测试数据。使用训练好的模型读入测试数据并得到预测结果，提交预测结果后根据预测结果的与真实值的误差得到评分。</p>
 <p>本比赛提供了4组数据：<code>train.csv</code>，用于训练模型；<code>test.csv</code>，用于计算预测结果；<code>data_description.txt</code>，详细解释了所有column的含义；<code>sample_submission.csv</code>，提交示例，里面的内容是对部分数据进行线性回归后能得到的基准结果。</p>
 <p>d2l中直接提供了训练数据的下载脚本，实际上登录比赛界面就可以下载。此外，kaggle还额外提供了cli工具下载所需的材料。在配置了kaggle api key之后可以只用一行指令下载所有材料：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kaggle competitions download -c house-prices-advanced-regression-techniques
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kaggle competitions download -c house-prices-advanced-regression-techniques
 </span></span></code></pre></div><h1 id="数据清洗">数据清洗<a href="#%e6%95%b0%e6%8d%ae%e6%b8%85%e6%b4%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;train.csv&#34;</span>, delimiter<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)
-</span></span><span style="display:flex;"><span>print(train_data<span style="color:#f92672">.</span>shape)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;train.csv&#34;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&#34;,&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span></span></code></pre></div><p>输出结果为<code>(1460, 81)</code>。光是各种类型的特征就有80种，对于训练集有额外的一列存储的是对应的售价。测试数据集虽然没有标签，但是可以用来纠正协变量偏移。（我们可以让模型对于出现在测试集中的数据特征额外关心，这样模型按理对于测试集就有更高的适应能力）</p>
 <p>随便复制一行训练集的数据：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">60</span>,RL,<span style="color:#ae81ff">65</span>,<span style="color:#ae81ff">8450</span>,Pave,NA,Reg,Lvl,AllPub,Inside,Gtl,CollgCr,Norm,Norm,<span style="color:#ae81ff">1</span>Fam,<span style="color:#ae81ff">2</span>Story,<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">2003</span>,<span style="color:#ae81ff">2003</span>,Gable,CompShg,VinylSd,VinylSd,BrkFace,<span style="color:#ae81ff">196</span>,Gd,TA,PConc,Gd,TA,No,GLQ,<span style="color:#ae81ff">706</span>,Unf,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">150</span>,<span style="color:#ae81ff">856</span>,GasA,Ex,Y,SBrkr,<span style="color:#ae81ff">856</span>,<span style="color:#ae81ff">854</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1710</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">1</span>,Gd,<span style="color:#ae81ff">8</span>,Typ,<span style="color:#ae81ff">0</span>,NA,Attchd,<span style="color:#ae81ff">2003</span>,RFn,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">548</span>,TA,TA,Y,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">61</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,NA,NA,NA,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">2008</span>,WD,Normal,<span style="color:#ae81ff">208500</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="mi">1</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="n">RL</span><span class="p">,</span><span class="mi">65</span><span class="p">,</span><span class="mi">8450</span><span class="p">,</span><span class="n">Pave</span><span class="p">,</span><span class="n">NA</span><span class="p">,</span><span class="n">Reg</span><span class="p">,</span><span class="n">Lvl</span><span class="p">,</span><span class="n">AllPub</span><span class="p">,</span><span class="n">Inside</span><span class="p">,</span><span class="n">Gtl</span><span class="p">,</span><span class="n">CollgCr</span><span class="p">,</span><span class="n">Norm</span><span class="p">,</span><span class="n">Norm</span><span class="p">,</span><span class="mi">1</span><span class="n">Fam</span><span class="p">,</span><span class="mi">2</span><span class="n">Story</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2003</span><span class="p">,</span><span class="mi">2003</span><span class="p">,</span><span class="n">Gable</span><span class="p">,</span><span class="n">CompShg</span><span class="p">,</span><span class="n">VinylSd</span><span class="p">,</span><span class="n">VinylSd</span><span class="p">,</span><span class="n">BrkFace</span><span class="p">,</span><span class="mi">196</span><span class="p">,</span><span class="n">Gd</span><span class="p">,</span><span class="n">TA</span><span class="p">,</span><span class="n">PConc</span><span class="p">,</span><span class="n">Gd</span><span class="p">,</span><span class="n">TA</span><span class="p">,</span><span class="n">No</span><span class="p">,</span><span class="n">GLQ</span><span class="p">,</span><span class="mi">706</span><span class="p">,</span><span class="n">Unf</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">150</span><span class="p">,</span><span class="mi">856</span><span class="p">,</span><span class="n">GasA</span><span class="p">,</span><span class="n">Ex</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">SBrkr</span><span class="p">,</span><span class="mi">856</span><span class="p">,</span><span class="mi">854</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1710</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Gd</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="n">Typ</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">NA</span><span class="p">,</span><span class="n">Attchd</span><span class="p">,</span><span class="mi">2003</span><span class="p">,</span><span class="n">RFn</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">548</span><span class="p">,</span><span class="n">TA</span><span class="p">,</span><span class="n">TA</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">61</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">NA</span><span class="p">,</span><span class="n">NA</span><span class="p">,</span><span class="n">NA</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2008</span><span class="p">,</span><span class="n">WD</span><span class="p">,</span><span class="n">Normal</span><span class="p">,</span><span class="mi">208500</span>
 </span></span></code></pre></div><p>可以看到80个特征呈现出一片万物生机勃勃竞发的境界。这里面不只有数字，还有各种类型代称以及缺失值（NA）。然而不幸的是我们的模型只能读取数字信息，所以在训练之前我们需要先清洗数据。</p>
 <p>具体的数据清理实践上，d2l给出的方案是首先对所有数值减去其特征的均值并除以标准差，这样我们最后得到的数据方差不变，而均值为0，之后将缺失值替换为0，更方便我们训练模型；对于离散数据，我们使用独热编码对其进行替换，假如某个特征有3种表现类型，我们就直接把它拆成3个特征，每个特征只有“有”或“没有”两种状态。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>all_features <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat((train_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], test_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:]))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>numeric_features <span style="color:#f92672">=</span> all_features<span style="color:#f92672">.</span>dtypes[all_features<span style="color:#f92672">.</span>dtypes <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;object&#34;</span>]<span style="color:#f92672">.</span>index
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features[numeric_features] <span style="color:#f92672">=</span> all_features[numeric_features]<span style="color:#f92672">.</span>apply(
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lambda</span> x: (x <span style="color:#f92672">-</span> x<span style="color:#f92672">.</span>mean()) <span style="color:#f92672">/</span> x<span style="color:#f92672">.</span>std()
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features[numeric_features] <span style="color:#f92672">=</span> all_features[numeric_features]<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>get_dummies(all_features, dummy_na<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, dtype<span style="color:#f92672">=</span>float)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(all_features<span style="color:#f92672">.</span>head(<span style="color:#ae81ff">10</span>))
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">all_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">train_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">test_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">numeric_features</span> <span class="o">=</span> <span class="n">all_features</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">all_features</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">!=</span> <span class="s2">&#34;object&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">all_features</span><span class="p">,</span> <span class="n">dummy_na</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">all_features</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </span></span></code></pre></div><p><code>all_features</code>将训练集和测试集的所有特征统一存放在了一个dataFrame下，<code>get_dummies</code>行为是将一个dataFrame中“可分类”的数据转换为“dummy”，即“指标变量”。默认行为只对object类型的列起作用。<code>pd.concat</code>默认按照<code>axis=0</code>拼接dataFrame。</p>
 <p>输出结果如下：</p>
 <p><img src="/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/Kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B-20260302-1.png" alt=""></p>
 <p>数据清理完了，但是仅仅有dataFrame是不够的，我们需要将数据加载到tensor中才能用于模型训练。在以上的数据中，有接近一半来自训练集，另一半来自测试集。我们需要将它们重新分配给两个tensor。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n_train <span style="color:#f92672">=</span> train_data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_features <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(all_features[:n_train]<span style="color:#f92672">.</span>values, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>test_features <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(all_features[n_train:]<span style="color:#f92672">.</span>values, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>train_labels <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(train_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(train_labels)
-</span></span><span style="display:flex;"><span>print(train_labels<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
-</span></span><span style="display:flex;"><span>print(train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>])
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">n_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">all_features</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">all_features</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">train_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">train_labels</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">train_labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </span></span></code></pre></div><p><code>torch.tensor</code>是torch针对Tensor类提供的工厂函数。虽然理论上我们可以直接使用<code>torch.Tensor</code>的构造函数来创建张量，但是对于torch来说Tensor的底层实际上可以有很多种实现方式，而使用原生的构造函数我们只能创建该类的实例。因此，构造函数在torch中地位属于遗产接口，规范的构建Tensor方式是使用工厂函数。</p>
 <h1 id="训练模型">训练模型<a href="#%e8%ae%ad%e7%bb%83%e6%a8%a1%e5%9e%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -216,503 +216,503 @@ d2l虽然声称是“动手学机器学习”，然而实际上对于学习者�
 <p>在误差函数选取上，不同地区的房价数量级可能存在差异，导致相同模型处理不同地区房价的误差绝对值大小也会出现差异，所以我们更加关心相对误差大小，即预测值与真实值的比值。在实际操作上，我们计算对数均方根作为误差。</p>
 <p>此外，在选取模型上d2l提到了K折交叉验证，简单来说就是把训练集分块，一部分用来检验模型能力，一部分用来训练，只不过负责检验的数据由整个数据集轮流担任。</p>
 <p>先尝试跟着d2l走了一遍基本的训练流程：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># %%</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pandas._libs.tslibs <span style="color:#f92672">import</span> dtypes
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich <span style="color:#f92672">import</span> console
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.console <span style="color:#f92672">import</span> Console
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.table <span style="color:#f92672">import</span> Column
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.theme <span style="color:#f92672">import</span> Theme
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.progress <span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>    Progress,
-</span></span><span style="display:flex;"><span>    BarColumn,
-</span></span><span style="display:flex;"><span>    TextColumn,
-</span></span><span style="display:flex;"><span>    track,
-</span></span><span style="display:flex;"><span>    TimeElapsedColumn,
-</span></span><span style="display:flex;"><span>    TimeRemainingColumn,
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.optim <span style="color:#f92672">import</span> Optimizer
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>custom_theme <span style="color:#f92672">=</span> Theme(
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;cyan&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;log&#34;</span>: <span style="color:#e6db74">&#34;bright_black&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;warning&#34;</span>: <span style="color:#e6db74">&#34;yellow&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;bold red&#34;</span>,
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>global_console <span style="color:#f92672">=</span> Console(theme<span style="color:#f92672">=</span>custom_theme, record<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>text_column <span style="color:#f92672">=</span> TextColumn(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{task.description}</span><span style="color:#e6db74">&#34;</span>, table_column<span style="color:#f92672">=</span>Column(ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>))
-</span></span><span style="display:flex;"><span>bar_column <span style="color:#f92672">=</span> BarColumn(bar_width<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, table_column<span style="color:#f92672">=</span>Column(ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>progress <span style="color:#f92672">=</span> Progress(
-</span></span><span style="display:flex;"><span>    TextColumn(<span style="color:#e6db74">&#34;[progress.description]</span><span style="color:#e6db74">{task.description}</span><span style="color:#e6db74">&#34;</span>),
-</span></span><span style="display:flex;"><span>    BarColumn(),
-</span></span><span style="display:flex;"><span>    TextColumn(<span style="color:#e6db74">&#34;[progress.percentage]</span><span style="color:#e6db74">{task.percentage:&gt;3.0f}</span><span style="color:#e6db74">%&#34;</span>),
-</span></span><span style="display:flex;"><span>    TimeElapsedColumn(),
-</span></span><span style="display:flex;"><span>    TimeRemainingColumn(),
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 读取数据集</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;train.csv&#34;</span>, delimiter<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)
-</span></span><span style="display:flex;"><span>test_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;test.csv&#34;</span>, delimiter<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 清洗数据</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat((train_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], test_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:]))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>numeric_features <span style="color:#f92672">=</span> all_features<span style="color:#f92672">.</span>dtypes[all_features<span style="color:#f92672">.</span>dtypes <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;object&#34;</span>]<span style="color:#f92672">.</span>index
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features[numeric_features] <span style="color:#f92672">=</span> all_features[numeric_features]<span style="color:#f92672">.</span>apply(
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lambda</span> x: (x <span style="color:#f92672">-</span> x<span style="color:#f92672">.</span>mean()) <span style="color:#f92672">/</span> x<span style="color:#f92672">.</span>std()
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features[numeric_features] <span style="color:#f92672">=</span> all_features[numeric_features]<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>get_dummies(all_features, dummy_na<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, dtype<span style="color:#f92672">=</span>float)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(all_features.head(10))</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 加载数据</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n_train <span style="color:#f92672">=</span> train_data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_features <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(all_features[:n_train]<span style="color:#f92672">.</span>values, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test_features <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(all_features[n_train:]<span style="color:#f92672">.</span>values, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_labels <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(train_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)<span style="color:#f92672">.</span>reshape(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(train_labels)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(train_labels.shape[0])</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(train_features.shape[0])</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 损失函数</span>
-</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 输入特征数</span>
-</span></span><span style="display:flex;"><span>in_features <span style="color:#f92672">=</span> train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 定义模型</span>
-</span></span><span style="display:flex;"><span>net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Linear(in_features<span style="color:#f92672">=</span>in_features, out_features<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span>),
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>ReLU(),
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Dropout(<span style="color:#ae81ff">0.2</span>),
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">256</span>),
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>ReLU(),
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Dropout(<span style="color:#ae81ff">0.2</span>),
-</span></span><span style="display:flex;"><span>    nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">1</span>),
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 对数均方根误差</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lose_rmse</span>(net, features, labels):
-</span></span><span style="display:flex;"><span>    cliped_preds <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>clamp(net(features), min<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, max<span style="color:#f92672">=</span>float(<span style="color:#e6db74">&#34;inf&#34;</span>))
-</span></span><span style="display:flex;"><span>    rmse: torch<span style="color:#f92672">.</span>Tensor <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>sqrt(loss(torch<span style="color:#f92672">.</span>log(cliped_preds), torch<span style="color:#f92672">.</span>log(labels)))
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> rmse<span style="color:#f92672">.</span>item()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 加载数据</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_array</span>(
-</span></span><span style="display:flex;"><span>    train_features: torch<span style="color:#f92672">.</span>Tensor, train_labels: torch<span style="color:#f92672">.</span>Tensor, batch_size: int
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    num_examples <span style="color:#f92672">=</span> train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>    indices <span style="color:#f92672">=</span> list(range(num_examples))
-</span></span><span style="display:flex;"><span>    random<span style="color:#f92672">.</span>shuffle(indices)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, num_examples, batch_size):
-</span></span><span style="display:flex;"><span>        batch_indices <span style="color:#f92672">=</span> indices[i : min(i <span style="color:#f92672">+</span> batch_size, num_examples)]
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> train_features[batch_indices], train_labels[batch_indices]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 定义训练流程</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train</span>(
-</span></span><span style="display:flex;"><span>    net: nn<span style="color:#f92672">.</span>Module,
-</span></span><span style="display:flex;"><span>    loss,
-</span></span><span style="display:flex;"><span>    train_features: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    train_labels: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    tust_features: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    test_labels: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    num_epochs: int,
-</span></span><span style="display:flex;"><span>    weight_decay: float,
-</span></span><span style="display:flex;"><span>    lr: float,
-</span></span><span style="display:flex;"><span>    batch_size: int,
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    train_ls, test_ls <span style="color:#f92672">=</span> [], []
-</span></span><span style="display:flex;"><span>    optimizer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>Adam(net<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span>lr, weight_decay<span style="color:#f92672">=</span>weight_decay)
-</span></span><span style="display:flex;"><span>    n_batches <span style="color:#f92672">=</span> (train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> batch_size <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> batch_size
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> progress:
-</span></span><span style="display:flex;"><span>        epoch_task <span style="color:#f92672">=</span> progress<span style="color:#f92672">.</span>add_task(<span style="color:#e6db74">&#34;[red]Overall Epochs&#34;</span>, total<span style="color:#f92672">=</span>num_epochs)
-</span></span><span style="display:flex;"><span>        batch_task <span style="color:#f92672">=</span> progress<span style="color:#f92672">.</span>add_task(<span style="color:#e6db74">&#34;[green]Training Batch&#34;</span>, total<span style="color:#f92672">=</span>n_batches)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(num_epochs):
-</span></span><span style="display:flex;"><span>            train_iter <span style="color:#f92672">=</span> load_array(train_features, train_labels, batch_size)
-</span></span><span style="display:flex;"><span>            progress<span style="color:#f92672">.</span>reset(batch_task)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> train_iter:
-</span></span><span style="display:flex;"><span>                optimizer<span style="color:#f92672">.</span>zero_grad()
-</span></span><span style="display:flex;"><span>                l: torch<span style="color:#f92672">.</span>Tensor <span style="color:#f92672">=</span> loss(net(X), y)
-</span></span><span style="display:flex;"><span>                l<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>                optimizer<span style="color:#f92672">.</span>step()
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># with torch.no_grad():</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># global_console.print(f&#34;[log]batch loss: {lose_rmse(net, X, y)}[/log]&#34;)</span>
-</span></span><span style="display:flex;"><span>                progress<span style="color:#f92672">.</span>advance(batch_task)
-</span></span><span style="display:flex;"><span>            train_ls<span style="color:#f92672">.</span>append(lose_rmse(net, train_features, train_labels))
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> test_labels <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>                test_ls<span style="color:#f92672">.</span>append(lose_rmse(net, test_features, test_labels))
-</span></span><span style="display:flex;"><span>            progress<span style="color:#f92672">.</span>advance(epoch_task)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> train_ls, test_ls
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_ls, test_ls <span style="color:#f92672">=</span> train(
-</span></span><span style="display:flex;"><span>    net,
-</span></span><span style="display:flex;"><span>    loss,
-</span></span><span style="display:flex;"><span>    train_features,
-</span></span><span style="display:flex;"><span>    train_labels,
-</span></span><span style="display:flex;"><span>    test_features,
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">100</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0.01</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">64</span>,
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(train_ls)
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(test_ls)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># %%</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pandas._libs.tslibs</span> <span class="kn">import</span> <span class="n">dtypes</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich</span> <span class="kn">import</span> <span class="n">console</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Column</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.theme</span> <span class="kn">import</span> <span class="n">Theme</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Progress</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BarColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TextColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">track</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeElapsedColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeRemainingColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">custom_theme</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;info&#34;</span><span class="p">:</span> <span class="s2">&#34;cyan&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;log&#34;</span><span class="p">:</span> <span class="s2">&#34;bright_black&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;warning&#34;</span><span class="p">:</span> <span class="s2">&#34;yellow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;error&#34;</span><span class="p">:</span> <span class="s2">&#34;bold red&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">(</span><span class="n">theme</span><span class="o">=</span><span class="n">custom_theme</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">text_column</span> <span class="o">=</span> <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">{task.description}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">bar_column</span> <span class="o">=</span> <span class="n">BarColumn</span><span class="p">(</span><span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">progress</span> <span class="o">=</span> <span class="n">Progress</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&#34;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BarColumn</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&#34;[progress.percentage]</span><span class="si">{task.percentage:&gt;3.0f}</span><span class="s2">%&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeElapsedColumn</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeRemainingColumn</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 读取数据集</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;train.csv&#34;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&#34;,&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;test.csv&#34;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&#34;,&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 清洗数据</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">train_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">test_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">numeric_features</span> <span class="o">=</span> <span class="n">all_features</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">all_features</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">!=</span> <span class="s2">&#34;object&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">all_features</span><span class="p">,</span> <span class="n">dummy_na</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print(all_features.head(10))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 加载数据</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">all_features</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">test_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">all_features</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print(train_labels)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># print(train_labels.shape[0])</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># print(train_features.shape[0])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 损失函数</span>
+</span></span><span class="line"><span class="cl"><span class="n">loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 输入特征数</span>
+</span></span><span class="line"><span class="cl"><span class="n">in_features</span> <span class="o">=</span> <span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 定义模型</span>
+</span></span><span class="line"><span class="cl"><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 对数均方根误差</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">lose_rmse</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cliped_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&#34;inf&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rmse</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cliped_preds</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">rmse</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 加载数据</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">load_array</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_examples</span> <span class="o">=</span> <span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_examples</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_examples</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">batch_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_examples</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">yield</span> <span class="n">train_features</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">],</span> <span class="n">train_labels</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 定义训练流程</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">net</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tust_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n_batches</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">batch_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">progress</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">epoch_task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="s2">&#34;[red]Overall Epochs&#34;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">batch_task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="s2">&#34;[green]Training Batch&#34;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">n_batches</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">train_iter</span> <span class="o">=</span> <span class="n">load_array</span><span class="p">(</span><span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">progress</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">batch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">train_iter</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># with torch.no_grad():</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># global_console.print(f&#34;[log]batch loss: {lose_rmse(net, X, y)}[/log]&#34;)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">progress</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">batch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">train_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lose_rmse</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">test_labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">test_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lose_rmse</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">test_features</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">progress</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">epoch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">net</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_labels</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_features</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">100</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mf">0.01</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">64</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">train_ls</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">test_ls</span><span class="p">)</span>
 </span></span></code></pre></div><p>在D2L的基础上加了rich，给训练过程添加了进度条。100个epoch之后训练集rmse误差在0.1作用，基本没办法继续降低了。</p>
 <p>假如我们直接应用现有的模型尝试提交一次kaggle，结果如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># %% 计算测试集</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> net(test_features)<span style="color:#f92672">.</span>detach()<span style="color:#f92672">.</span>numpy()<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Series(preds)
-</span></span><span style="display:flex;"><span>submission <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#34;Id&#34;</span>: test_data[<span style="color:#e6db74">&#34;Id&#34;</span>], <span style="color:#e6db74">&#34;SalePrice&#34;</span>: preds})
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(submission)
-</span></span><span style="display:flex;"><span>submission<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#34;submission.csv&#34;</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kaggle competitions submit -c house-prices-advanced-regression-techniques -f submission.csv -m <span style="color:#e6db74">&#34;test submission&#34;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># %% 计算测试集</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">preds</span> <span class="o">=</span> <span class="n">net</span><span class="p">(</span><span class="n">test_features</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">preds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&#34;Id&#34;</span><span class="p">:</span> <span class="n">test_data</span><span class="p">[</span><span class="s2">&#34;Id&#34;</span><span class="p">],</span> <span class="s2">&#34;SalePrice&#34;</span><span class="p">:</span> <span class="n">preds</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">submission</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">submission</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&#34;submission.csv&#34;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kaggle competitions submit -c house-prices-advanced-regression-techniques -f submission.csv -m <span class="s2">&#34;test submission&#34;</span>
 </span></span></code></pre></div><p>提交之后的结果：</p>
 <p>![](Pasted image 20260302195958.png)</p>
 <p>kaggle的打分方式和我们对于误差的描述一致，都考察预测值与真实值的误差对数方均根值。可以看到的是我们最后的得分是0.138，比训练集最后的误差大的多，原因在于我们的模型没有对测试集中的特征额外重视，模型出现了协变量偏移。假如我们想要修正协变量偏移，我们需要额外训练一个模型用来分类测试集与训练集特征，并让原本的模型对于训练集没有而测试集有的特征给予额外注意。</p>
 <p>但是在进一步优化模型之前，我们可能需要先进行K折交叉验证。以下是d2l给出的kfold实现：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_k_fold_data</span>(k, i, X, y):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> k <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    fold_size <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">//</span> k
-</span></span><span style="display:flex;"><span>    X_train, y_train <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(k):
-</span></span><span style="display:flex;"><span>        idx <span style="color:#f92672">=</span> slice(j <span style="color:#f92672">*</span> fold_size, (j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> fold_size)
-</span></span><span style="display:flex;"><span>        X_part, y_part <span style="color:#f92672">=</span> X[idx, :], y[idx]
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> j <span style="color:#f92672">==</span> i:
-</span></span><span style="display:flex;"><span>            X_valid, y_valid <span style="color:#f92672">=</span> X_part, y_part
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> X_train <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            X_train, y_train <span style="color:#f92672">=</span> X_part, y_part
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>            X_train <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>cat([X_train, X_part], <span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>            y_train <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>cat([y_train, y_part], <span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_train, y_train, X_valid, y_valid
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_k_fold_data</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fold_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">idx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">fold_size</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">fold_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span> <span class="o">=</span> <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="n">X_train</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_part</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">y_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_part</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span>
 </span></span></code></pre></div><p>其中k表示k折的折叠数，k为5就表示将训练集平分为5份；i表示以取第i个折叠作为验证集，其他的所有折叠拼成一个新的训练集；X和y分别表示整个训练集的特征和标签。</p>
 <p>以上函数的功能是根据K折的原理分隔数据集，真正应用的时候我们不会只取一个i，而是对所有的分块依次取一遍作为验证集，最后取误差的均值作为模型效果的衡量依据。因此，我们需要重复k次，每次都使用<code>get_k_fold_data</code>来获取本轮的训练集和验证集，同时每一次折叠我们都需要创建一个新的网络单独训练和测试。</p>
 <p>完整实现如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># %% K折交叉验证</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_k_fold_data</span>(k: int, i: int, X: torch<span style="color:#f92672">.</span>Tensor, y: torch<span style="color:#f92672">.</span>Tensor):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> k <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#75715e"># 折叠数需要大于1，否则没有验证集</span>
-</span></span><span style="display:flex;"><span>    fold_size <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">//</span> k
-</span></span><span style="display:flex;"><span>    X_train, y_train <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(k):
-</span></span><span style="display:flex;"><span>        idx <span style="color:#f92672">=</span> slice(j <span style="color:#f92672">*</span> fold_size, (j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> fold_size) <span style="color:#75715e"># 框出一个分块</span>
-</span></span><span style="display:flex;"><span>        X_part, y_part <span style="color:#f92672">=</span> X[idx, :], y[idx]
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> j <span style="color:#f92672">==</span> i:
-</span></span><span style="display:flex;"><span>            X_valid, y_valid <span style="color:#f92672">=</span> X_part, y_part
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> X_train <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            X_train, y_train <span style="color:#f92672">=</span> X_part, y_part
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>            X_train, y_train <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>                torch<span style="color:#f92672">.</span>cat([X_train, X_part], <span style="color:#ae81ff">0</span>),
-</span></span><span style="display:flex;"><span>                torch<span style="color:#f92672">.</span>cat([y_train, y_part], <span style="color:#ae81ff">0</span>),
-</span></span><span style="display:flex;"><span>            ) <span style="color:#75715e"># 把训练集分块拼成一个完整的训练集</span>
-</span></span><span style="display:flex;"><span>    global_console<span style="color:#f92672">.</span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;[warning]k fold get: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">[/warning]&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_train, y_train, X_valid, y_valid
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">k_fold</span>(
-</span></span><span style="display:flex;"><span>    k: int,
-</span></span><span style="display:flex;"><span>    train_features: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    train_labels: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    num_epochs: int,
-</span></span><span style="display:flex;"><span>    learning_rate: float,
-</span></span><span style="display:flex;"><span>    weight_decay: float,
-</span></span><span style="display:flex;"><span>    batch_size: int,
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    train_l_sum, valid_l_sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(k):
-</span></span><span style="display:flex;"><span>        net <span style="color:#f92672">=</span> get_net()
-</span></span><span style="display:flex;"><span>        data <span style="color:#f92672">=</span> get_k_fold_data(k, i, train_features, train_labels)
-</span></span><span style="display:flex;"><span>        train_ls, test_ls <span style="color:#f92672">=</span> train(
-</span></span><span style="display:flex;"><span>            net,
-</span></span><span style="display:flex;"><span>            loss,
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">*</span>data,
-</span></span><span style="display:flex;"><span>            num_epochs<span style="color:#f92672">=</span>num_epochs,
-</span></span><span style="display:flex;"><span>            weight_decay<span style="color:#f92672">=</span>weight_decay,
-</span></span><span style="display:flex;"><span>            lr<span style="color:#f92672">=</span>learning_rate,
-</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>        train_l_sum <span style="color:#f92672">+=</span> train_ls[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>        valid_l_sum <span style="color:#f92672">+=</span> test_ls[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> train_l_sum <span style="color:#f92672">/</span> k, valid_l_sum <span style="color:#f92672">/</span> k
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_l_sum, valid_l_sum <span style="color:#f92672">=</span> k_fold(<span style="color:#ae81ff">5</span>, train_features, train_labels, <span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">64</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(train_l_sum)
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(valid_l_sum)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># %% K折交叉验证</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_k_fold_data</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="c1"># 折叠数需要大于1，否则没有验证集</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fold_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">idx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">fold_size</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">fold_size</span><span class="p">)</span> <span class="c1"># 框出一个分块</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span> <span class="o">=</span> <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="n">X_train</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_part</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_part</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span> <span class="c1"># 把训练集分块拼成一个完整的训练集</span>
+</span></span><span class="line"><span class="cl">    <span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[warning]k fold get: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">[/warning]&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">k_fold</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_l_sum</span><span class="p">,</span> <span class="n">valid_l_sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">net</span> <span class="o">=</span> <span class="n">get_net</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">get_k_fold_data</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">net</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="o">*</span><span class="n">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">train_l_sum</span> <span class="o">+=</span> <span class="n">train_ls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">valid_l_sum</span> <span class="o">+=</span> <span class="n">test_ls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">train_l_sum</span> <span class="o">/</span> <span class="n">k</span><span class="p">,</span> <span class="n">valid_l_sum</span> <span class="o">/</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_l_sum</span><span class="p">,</span> <span class="n">valid_l_sum</span> <span class="o">=</span> <span class="n">k_fold</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">train_l_sum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">valid_l_sum</span><span class="p">)</span>
 </span></span></code></pre></div><p>输出结果：</p>
 <p><img src="/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/Kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B-20260303-1.png" alt=""></p>
 <p>从中我们可以看到模型对于验证集的预测误差比训练集的误差高了约60%。这意味着模型存在明显的过拟合现象。假如我们的模型有足够的泛化能力，训练误差与验证误差的差距应该更小。</p>
 <p>（但是模型优化的问题懒得折腾了（拖的时间太久了），D2L暂时告一段落。）</p>
 <p>最后附上完整代码。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># %%</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch.nn <span style="color:#66d9ef">as</span> nn
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.console <span style="color:#f92672">import</span> Console
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.table <span style="color:#f92672">import</span> Column
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.theme <span style="color:#f92672">import</span> Theme
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rich.progress <span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>    Progress,
-</span></span><span style="display:flex;"><span>    BarColumn,
-</span></span><span style="display:flex;"><span>    TextColumn,
-</span></span><span style="display:flex;"><span>    track,
-</span></span><span style="display:flex;"><span>    TimeElapsedColumn,
-</span></span><span style="display:flex;"><span>    TimeRemainingColumn,
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.nn.modules <span style="color:#f92672">import</span> fold
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.optim <span style="color:#f92672">import</span> Optimizer
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>custom_theme <span style="color:#f92672">=</span> Theme(
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;info&#34;</span>: <span style="color:#e6db74">&#34;cyan&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;log&#34;</span>: <span style="color:#e6db74">&#34;bright_black&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;warning&#34;</span>: <span style="color:#e6db74">&#34;yellow&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;error&#34;</span>: <span style="color:#e6db74">&#34;bold red&#34;</span>,
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>global_console <span style="color:#f92672">=</span> Console(theme<span style="color:#f92672">=</span>custom_theme, record<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>text_column <span style="color:#f92672">=</span> TextColumn(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{task.description}</span><span style="color:#e6db74">&#34;</span>, table_column<span style="color:#f92672">=</span>Column(ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>))
-</span></span><span style="display:flex;"><span>bar_column <span style="color:#f92672">=</span> BarColumn(bar_width<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, table_column<span style="color:#f92672">=</span>Column(ratio<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>progress <span style="color:#f92672">=</span> Progress(
-</span></span><span style="display:flex;"><span>    TextColumn(<span style="color:#e6db74">&#34;[progress.description]</span><span style="color:#e6db74">{task.description}</span><span style="color:#e6db74">&#34;</span>),
-</span></span><span style="display:flex;"><span>    BarColumn(),
-</span></span><span style="display:flex;"><span>    TextColumn(<span style="color:#e6db74">&#34;[progress.percentage]</span><span style="color:#e6db74">{task.percentage:&gt;3.0f}</span><span style="color:#e6db74">%&#34;</span>),
-</span></span><span style="display:flex;"><span>    TimeElapsedColumn(),
-</span></span><span style="display:flex;"><span>    TimeRemainingColumn(),
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 读取数据集</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;train.csv&#34;</span>, delimiter<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)
-</span></span><span style="display:flex;"><span>test_data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(<span style="color:#e6db74">&#34;test.csv&#34;</span>, delimiter<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;,&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 清洗数据</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>concat((train_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], test_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">1</span>:]))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>numeric_features <span style="color:#f92672">=</span> all_features<span style="color:#f92672">.</span>dtypes[all_features<span style="color:#f92672">.</span>dtypes <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;object&#34;</span>]<span style="color:#f92672">.</span>index
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features[numeric_features] <span style="color:#f92672">=</span> all_features[numeric_features]<span style="color:#f92672">.</span>apply(
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">lambda</span> x: (x <span style="color:#f92672">-</span> x<span style="color:#f92672">.</span>mean()) <span style="color:#f92672">/</span> x<span style="color:#f92672">.</span>std()
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features[numeric_features] <span style="color:#f92672">=</span> all_features[numeric_features]<span style="color:#f92672">.</span>fillna(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>all_features <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>get_dummies(all_features, dummy_na<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, dtype<span style="color:#f92672">=</span>float)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(all_features.head(10))</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 加载数据</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>n_train <span style="color:#f92672">=</span> train_data<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_features <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(all_features[:n_train]<span style="color:#f92672">.</span>values, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>test_features <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(all_features[n_train:]<span style="color:#f92672">.</span>values, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_labels <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(train_data<span style="color:#f92672">.</span>iloc[:, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)<span style="color:#f92672">.</span>reshape(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(train_labels)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(train_labels.shape[0])</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(train_features.shape[0])</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 损失函数</span>
-</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>MSELoss()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 输入特征数</span>
-</span></span><span style="display:flex;"><span>in_features <span style="color:#f92672">=</span> train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 定义模型</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_net</span>():
-</span></span><span style="display:flex;"><span>    net <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Sequential(
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>Linear(in_features<span style="color:#f92672">=</span>in_features, out_features<span style="color:#f92672">=</span><span style="color:#ae81ff">256</span>),
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>ReLU(),
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>Dropout(<span style="color:#ae81ff">0.2</span>),
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">256</span>),
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>ReLU(),
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>Dropout(<span style="color:#ae81ff">0.2</span>),
-</span></span><span style="display:flex;"><span>        nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">256</span>, <span style="color:#ae81ff">1</span>),
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> net
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 对数均方根误差</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">lose_rmse</span>(net, features, labels):
-</span></span><span style="display:flex;"><span>    cliped_preds <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>clamp(net(features), min<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, max<span style="color:#f92672">=</span>float(<span style="color:#e6db74">&#34;inf&#34;</span>))
-</span></span><span style="display:flex;"><span>    rmse: torch<span style="color:#f92672">.</span>Tensor <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>sqrt(loss(torch<span style="color:#f92672">.</span>log(cliped_preds), torch<span style="color:#f92672">.</span>log(labels)))
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> rmse<span style="color:#f92672">.</span>item()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 加载数据</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_array</span>(
-</span></span><span style="display:flex;"><span>    train_features: torch<span style="color:#f92672">.</span>Tensor, train_labels: torch<span style="color:#f92672">.</span>Tensor, batch_size: int
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    num_examples <span style="color:#f92672">=</span> train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>    indices <span style="color:#f92672">=</span> list(range(num_examples))
-</span></span><span style="display:flex;"><span>    random<span style="color:#f92672">.</span>shuffle(indices)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, num_examples, batch_size):
-</span></span><span style="display:flex;"><span>        batch_indices <span style="color:#f92672">=</span> indices[i : min(i <span style="color:#f92672">+</span> batch_size, num_examples)]
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> train_features[batch_indices], train_labels[batch_indices]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 定义训练流程</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">train</span>(
-</span></span><span style="display:flex;"><span>    net: nn<span style="color:#f92672">.</span>Module,
-</span></span><span style="display:flex;"><span>    loss,
-</span></span><span style="display:flex;"><span>    train_features: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    train_labels: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    test_features: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    test_labels: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    num_epochs: int,
-</span></span><span style="display:flex;"><span>    weight_decay: float,
-</span></span><span style="display:flex;"><span>    lr: float,
-</span></span><span style="display:flex;"><span>    batch_size: int,
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    train_ls, test_ls <span style="color:#f92672">=</span> [], []
-</span></span><span style="display:flex;"><span>    optimizer <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>optim<span style="color:#f92672">.</span>Adam(net<span style="color:#f92672">.</span>parameters(), lr<span style="color:#f92672">=</span>lr, weight_decay<span style="color:#f92672">=</span>weight_decay)
-</span></span><span style="display:flex;"><span>    n_batches <span style="color:#f92672">=</span> (train_features<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> batch_size <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">//</span> batch_size
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> progress:
-</span></span><span style="display:flex;"><span>        epoch_task <span style="color:#f92672">=</span> progress<span style="color:#f92672">.</span>add_task(<span style="color:#e6db74">&#34;[red]Overall Epochs&#34;</span>, total<span style="color:#f92672">=</span>num_epochs)
-</span></span><span style="display:flex;"><span>        batch_task <span style="color:#f92672">=</span> progress<span style="color:#f92672">.</span>add_task(<span style="color:#e6db74">&#34;[green]Training Batch&#34;</span>, total<span style="color:#f92672">=</span>n_batches)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(num_epochs):
-</span></span><span style="display:flex;"><span>            train_iter <span style="color:#f92672">=</span> load_array(train_features, train_labels, batch_size)
-</span></span><span style="display:flex;"><span>            progress<span style="color:#f92672">.</span>reset(batch_task)
-</span></span><span style="display:flex;"><span>            net<span style="color:#f92672">.</span>train()
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> X, y <span style="color:#f92672">in</span> train_iter:
-</span></span><span style="display:flex;"><span>                optimizer<span style="color:#f92672">.</span>zero_grad()
-</span></span><span style="display:flex;"><span>                l: torch<span style="color:#f92672">.</span>Tensor <span style="color:#f92672">=</span> loss(net(X), y)
-</span></span><span style="display:flex;"><span>                l<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>                optimizer<span style="color:#f92672">.</span>step()
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># with torch.no_grad():</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># global_console.print(f&#34;[log]batch loss: {lose_rmse(net, X, y)}[/log]&#34;)</span>
-</span></span><span style="display:flex;"><span>                progress<span style="color:#f92672">.</span>advance(batch_task)
-</span></span><span style="display:flex;"><span>            net<span style="color:#f92672">.</span>eval()
-</span></span><span style="display:flex;"><span>            train_ls<span style="color:#f92672">.</span>append(lose_rmse(net, train_features, train_labels))
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> test_labels <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>                test_ls<span style="color:#f92672">.</span>append(lose_rmse(net, test_features, test_labels))
-</span></span><span style="display:flex;"><span>            progress<span style="color:#f92672">.</span>advance(epoch_task)
-</span></span><span style="display:flex;"><span>    progress<span style="color:#f92672">.</span>remove_task(epoch_task)
-</span></span><span style="display:flex;"><span>    progress<span style="color:#f92672">.</span>remove_task(batch_task)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> train_ls, test_ls
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>temp_net <span style="color:#f92672">=</span> get_net()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_ls, test_ls <span style="color:#f92672">=</span> train(
-</span></span><span style="display:flex;"><span>    temp_net,
-</span></span><span style="display:flex;"><span>    loss,
-</span></span><span style="display:flex;"><span>    train_features,
-</span></span><span style="display:flex;"><span>    train_labels,
-</span></span><span style="display:flex;"><span>    test_features,
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">40</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0.2</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">0.005</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">64</span>,
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># global_console.print(train_ls)</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># global_console.print(test_ls)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% K折交叉验证</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_k_fold_data</span>(k: int, i: int, X: torch<span style="color:#f92672">.</span>Tensor, y: torch<span style="color:#f92672">.</span>Tensor):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> k <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    fold_size <span style="color:#f92672">=</span> X<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">//</span> k
-</span></span><span style="display:flex;"><span>    X_train, y_train <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, <span style="color:#66d9ef">None</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(k):
-</span></span><span style="display:flex;"><span>        idx <span style="color:#f92672">=</span> slice(j <span style="color:#f92672">*</span> fold_size, (j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> fold_size)
-</span></span><span style="display:flex;"><span>        X_part, y_part <span style="color:#f92672">=</span> X[idx, :], y[idx]
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> j <span style="color:#f92672">==</span> i:
-</span></span><span style="display:flex;"><span>            X_valid, y_valid <span style="color:#f92672">=</span> X_part, y_part
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> X_train <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>            X_train, y_train <span style="color:#f92672">=</span> X_part, y_part
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>            X_train, y_train <span style="color:#f92672">=</span> (
-</span></span><span style="display:flex;"><span>                torch<span style="color:#f92672">.</span>cat([X_train, X_part], <span style="color:#ae81ff">0</span>),
-</span></span><span style="display:flex;"><span>                torch<span style="color:#f92672">.</span>cat([y_train, y_part], <span style="color:#ae81ff">0</span>),
-</span></span><span style="display:flex;"><span>            )
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># global_console.print(f&#34;[warning]k fold get: {i}[/warning]&#34;)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> X_train, y_train, X_valid, y_valid
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">k_fold</span>(
-</span></span><span style="display:flex;"><span>    k: int,
-</span></span><span style="display:flex;"><span>    train_features: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    train_labels: torch<span style="color:#f92672">.</span>Tensor,
-</span></span><span style="display:flex;"><span>    num_epochs: int,
-</span></span><span style="display:flex;"><span>    learning_rate: float,
-</span></span><span style="display:flex;"><span>    weight_decay: float,
-</span></span><span style="display:flex;"><span>    batch_size: int,
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    train_l_sum, valid_l_sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(k):
-</span></span><span style="display:flex;"><span>        net <span style="color:#f92672">=</span> get_net()
-</span></span><span style="display:flex;"><span>        data <span style="color:#f92672">=</span> get_k_fold_data(k, i, train_features, train_labels)
-</span></span><span style="display:flex;"><span>        train_ls, test_ls <span style="color:#f92672">=</span> train(
-</span></span><span style="display:flex;"><span>            net,
-</span></span><span style="display:flex;"><span>            loss,
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">*</span>data,
-</span></span><span style="display:flex;"><span>            num_epochs<span style="color:#f92672">=</span>num_epochs,
-</span></span><span style="display:flex;"><span>            weight_decay<span style="color:#f92672">=</span>weight_decay,
-</span></span><span style="display:flex;"><span>            lr<span style="color:#f92672">=</span>learning_rate,
-</span></span><span style="display:flex;"><span>            batch_size<span style="color:#f92672">=</span>batch_size,
-</span></span><span style="display:flex;"><span>        )
-</span></span><span style="display:flex;"><span>        train_l_sum <span style="color:#f92672">+=</span> train_ls[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>        valid_l_sum <span style="color:#f92672">+=</span> test_ls[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> train_l_sum <span style="color:#f92672">/</span> k, valid_l_sum <span style="color:#f92672">/</span> k
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>train_l_sum, valid_l_sum <span style="color:#f92672">=</span> k_fold(<span style="color:#ae81ff">10</span>, train_features, train_labels, <span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">0.01</span>, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">64</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(train_l_sum)
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(valid_l_sum)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 计算测试集</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>temp_net<span style="color:#f92672">.</span>eval()
-</span></span><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> temp_net(test_features)<span style="color:#f92672">.</span>detach()<span style="color:#f92672">.</span>numpy()<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>preds <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Series(preds)
-</span></span><span style="display:flex;"><span>submission <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#34;Id&#34;</span>: test_data[<span style="color:#e6db74">&#34;Id&#34;</span>], <span style="color:#e6db74">&#34;SalePrice&#34;</span>: preds})
-</span></span><span style="display:flex;"><span>global_console<span style="color:#f92672">.</span>print(submission)
-</span></span><span style="display:flex;"><span>submission<span style="color:#f92672">.</span>to_csv(<span style="color:#e6db74">&#34;submission.csv&#34;</span>, index<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># %%</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.table</span> <span class="kn">import</span> <span class="n">Column</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.theme</span> <span class="kn">import</span> <span class="n">Theme</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">rich.progress</span> <span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Progress</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BarColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TextColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">track</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeElapsedColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeRemainingColumn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch.nn.modules</span> <span class="kn">import</span> <span class="n">fold</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">custom_theme</span> <span class="o">=</span> <span class="n">Theme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;info&#34;</span><span class="p">:</span> <span class="s2">&#34;cyan&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;log&#34;</span><span class="p">:</span> <span class="s2">&#34;bright_black&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;warning&#34;</span><span class="p">:</span> <span class="s2">&#34;yellow&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;error&#34;</span><span class="p">:</span> <span class="s2">&#34;bold red&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">(</span><span class="n">theme</span><span class="o">=</span><span class="n">custom_theme</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">text_column</span> <span class="o">=</span> <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">{task.description}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">bar_column</span> <span class="o">=</span> <span class="n">BarColumn</span><span class="p">(</span><span class="n">bar_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">table_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">progress</span> <span class="o">=</span> <span class="n">Progress</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&#34;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BarColumn</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&#34;[progress.percentage]</span><span class="si">{task.percentage:&gt;3.0f}</span><span class="s2">%&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeElapsedColumn</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TimeRemainingColumn</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 读取数据集</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;train.csv&#34;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&#34;,&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&#34;test.csv&#34;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&#34;,&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 清洗数据</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">train_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">test_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">numeric_features</span> <span class="o">=</span> <span class="n">all_features</span><span class="o">.</span><span class="n">dtypes</span><span class="p">[</span><span class="n">all_features</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">!=</span> <span class="s2">&#34;object&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_features</span><span class="p">[</span><span class="n">numeric_features</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">all_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">all_features</span><span class="p">,</span> <span class="n">dummy_na</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print(all_features.head(10))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 加载数据</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">n_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">all_features</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">test_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">all_features</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print(train_labels)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># print(train_labels.shape[0])</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># print(train_features.shape[0])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 损失函数</span>
+</span></span><span class="line"><span class="cl"><span class="n">loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 输入特征数</span>
+</span></span><span class="line"><span class="cl"><span class="n">in_features</span> <span class="o">=</span> <span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 定义模型</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_net</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">net</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 对数均方根误差</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">lose_rmse</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cliped_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s2">&#34;inf&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">rmse</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cliped_preds</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">rmse</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 加载数据</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">load_array</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_examples</span> <span class="o">=</span> <span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_examples</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_examples</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">batch_indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_examples</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">yield</span> <span class="n">train_features</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">],</span> <span class="n">train_labels</span><span class="p">[</span><span class="n">batch_indices</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 定义训练流程</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">net</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n_batches</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">batch_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">progress</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">epoch_task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="s2">&#34;[red]Overall Epochs&#34;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">batch_task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="s2">&#34;[green]Training Batch&#34;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">n_batches</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">train_iter</span> <span class="o">=</span> <span class="n">load_array</span><span class="p">(</span><span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">progress</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">batch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">net</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">train_iter</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">net</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># with torch.no_grad():</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># global_console.print(f&#34;[log]batch loss: {lose_rmse(net, X, y)}[/log]&#34;)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">progress</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">batch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">net</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">train_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lose_rmse</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">test_labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">test_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lose_rmse</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">test_features</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">progress</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">epoch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">epoch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">progress</span><span class="o">.</span><span class="n">remove_task</span><span class="p">(</span><span class="n">batch_task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">temp_net</span> <span class="o">=</span> <span class="n">get_net</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">temp_net</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_labels</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">test_features</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">40</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mf">0.2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mf">0.005</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">64</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># global_console.print(train_ls)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># global_console.print(test_ls)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% K折交叉验证</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_k_fold_data</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fold_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">idx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">fold_size</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">fold_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span> <span class="o">=</span> <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span>
+</span></span><span class="line"><span class="cl">        <span class="k">elif</span> <span class="n">X_train</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_part</span><span class="p">,</span> <span class="n">y_part</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_part</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_part</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># global_console.print(f&#34;[warning]k fold get: {i}[/warning]&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_valid</span><span class="p">,</span> <span class="n">y_valid</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">k_fold</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_features</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_labels</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">num_epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">weight_decay</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">train_l_sum</span><span class="p">,</span> <span class="n">valid_l_sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">net</span> <span class="o">=</span> <span class="n">get_net</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">get_k_fold_data</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">train_ls</span><span class="p">,</span> <span class="n">test_ls</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">net</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="o">*</span><span class="n">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">train_l_sum</span> <span class="o">+=</span> <span class="n">train_ls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="n">valid_l_sum</span> <span class="o">+=</span> <span class="n">test_ls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">train_l_sum</span> <span class="o">/</span> <span class="n">k</span><span class="p">,</span> <span class="n">valid_l_sum</span> <span class="o">/</span> <span class="n">k</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">train_l_sum</span><span class="p">,</span> <span class="n">valid_l_sum</span> <span class="o">=</span> <span class="n">k_fold</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">train_features</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">train_l_sum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">valid_l_sum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 计算测试集</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">temp_net</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">preds</span> <span class="o">=</span> <span class="n">temp_net</span><span class="p">(</span><span class="n">test_features</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">preds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&#34;Id&#34;</span><span class="p">:</span> <span class="n">test_data</span><span class="p">[</span><span class="s2">&#34;Id&#34;</span><span class="p">],</span> <span class="s2">&#34;SalePrice&#34;</span><span class="p">:</span> <span class="n">preds</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="n">global_console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">submission</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">submission</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&#34;submission.csv&#34;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </span></span></code></pre></div>
 			</div>
 			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
@@ -742,7 +742,13 @@ d2l虽然声称是“动手学机器学习”，然而实际上对于学习者�
 		</article>
 		<aside id="toc">
 			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents"></nav>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#参考链接">参考链接</a></li>
+    <li><a href="#数据清洗">数据清洗</a></li>
+    <li><a href="#训练模型">训练模型</a></li>
+  </ul>
+</nav>
 		</aside>
 		<div class="post-nav thin">
 			<a class="next-post" href="http://localhost:1313/zh-cn/posts/codecompanion/">

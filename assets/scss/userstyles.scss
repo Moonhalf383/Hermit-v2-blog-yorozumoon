@@ -79,3 +79,33 @@
     overflow: hidden;
     text-overflow: ellipsis; /* 文字太长显示省略号 */
 }
+
+/* 右侧跳转栏（TOC）样式覆盖 */
+@media (min-width: 1300px) {
+  #toc {
+    top: 8em;         // 原值 13em，上移
+  }
+}
+
+@media (min-width: 1800px) {
+  #toc {
+    top: 10em;        // 原值 15em，上移
+  }
+}
+
+.toc-title {
+  font-size: 1em;     // 原值 .8em
+}
+
+#TableOfContents {
+  font-size: .95em;   // 原值 .8em
+}
+
+/* 文章标题层级字号 */
+.content {
+  h2 { font-size: 1.6em; }
+  h3 { font-size: 1.35em; }
+  h4 { font-size: 1.15em; }
+  h5 { font-size: 1.05em; }
+  h6 { font-size: 1em; font-weight: 600; }
+}

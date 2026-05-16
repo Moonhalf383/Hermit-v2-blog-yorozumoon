@@ -66,7 +66,7 @@
       }
     }
 }
-</script><title>D2L自学日志01：preliminaries</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>D2L自学日志01：preliminaries</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -163,17 +163,17 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">12</span>) <span style="color:#75715e"># tensor([0,1,2,3,4,5,6,7,8,9,10,11])</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="c1"># tensor([0,1,2,3,4,5,6,7,8,9,10,11])</span>
 </span></span></code></pre></div><p><code>torch.arange(x,y,z)</code>的语法和python原生的<code>range()</code>语法一致，左闭右开，第三个参数为步长。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x<span style="color:#f92672">.</span>shape
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
 </span></span></code></pre></div><p>一个张量的形状，返回值为一个一个<code>torch.Size</code>对象。你可以把它看成一个列表，直接通过方括号访问维度索引值可以得到该张量的某个维度的大小。</p>
 <p>如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">24</span>)<span style="color:#f92672">.</span>reshape([<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>])
-</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>shape) <span style="color:#75715e"># torch.Size([2,3,4])</span>
-</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]) <span style="color:#75715e"># 3</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># torch.Size([2,3,4])</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># 3</span>
 </span></span></code></pre></div><p><code>torch.reshape([x,y,z,...])</code>可以修改一个张量的形状，本质上就是先把这个张量拉成一维，再依次按照对应维度的大小对一维张量进行均分。</p>
 <p>比如：一个<code>x = torch.arange(24)</code>，我们对它进行<code>.reshape([2,3,4])</code>操作，你可以看做：一个<code>arange(24)</code>先进行shape[0]处数字均分，变成前十二个和后十二个，然后对两个12长度的子张量再按照shape[1]处数字进行均分，分别变为三个长度4的子张量，最后对每个长度4的子张量再次均分，得到长度为1的子张量。每一次均分都代表进入下一个维度。</p>
 <p><code>x.numel()</code>返回x张量的总元素个数。</p>
@@ -189,9 +189,9 @@
 <p><code>torch.exp(x)</code>得到一个形状和x一致，但是对应位置元素为exp(x)的张量。</p>
 <p><code>torch.cat((X, Y), dim = 1)</code>将两个张量沿1维度对接起来，前提是两者其他维度形状一致。</p>
 <p>如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">12</span>, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)<span style="color:#f92672">.</span>reshape((<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>))
-</span></span><span style="display:flex;"><span>Y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([[<span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>], [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>]])
-</span></span><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>cat((X, Y), dim<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>), torch<span style="color:#f92672">.</span>cat((X, Y), dim<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">Y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl"><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span></span></code></pre></div><p>结果：</p>
 <pre tabindex="0"><code>(tensor([[ 0.,  1.,  2.,  3.],
          [ 4.,  5.,  6.,  7.],
@@ -212,9 +212,9 @@
    </svg></a></h3>
 <p>当尝试对两个形状并不匹配的张量相互计算时，若不匹配的维度中某个张量的长度为1，torch就会自动在这个维度上通过复制的方式使两个张量强行匹配数据。</p>
 <p>如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">3</span>)<span style="color:#f92672">.</span>reshape((<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">1</span>))
-</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">2</span>)<span style="color:#f92672">.</span>reshape((<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>))
-</span></span><span style="display:flex;"><span>a, b
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 </span></span></code></pre></div><p>结果为：</p>
 <pre tabindex="0"><code>(tensor([[0],
          [1],
@@ -233,8 +233,8 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p><code>X[2, 3:5]</code>表示的就是X张量中0维度坐标2、1维度坐标3，4的元素。如果我们想要给多个元素赋同样的值，我们只需要索引所有元素，然后赋值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">12</span>)<span style="color:#f92672">.</span>reshape([<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>])
-</span></span><span style="display:flex;"><span>x[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>, :] <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">12</span>
 </span></span></code></pre></div><p>得到的x：</p>
 <pre tabindex="0"><code>tensor([[12., 12., 12., 12.],
         [12., 12., 12., 12.],
@@ -246,9 +246,9 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>转换为numpy多维数组：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>numpy()
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 </span></span></code></pre></div><p>转换为torch.Tensor：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>Tensor(x)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span></span></code></pre></div><hr>
 <h2 id="pandas">pandas<a href="#pandas" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -257,21 +257,21 @@
    </svg></a></h2>
 <p>数据预处理。</p>
 <p>写入数据：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>makedirs(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#39;..&#39;</span>, <span style="color:#e6db74">&#39;data&#39;</span>), exist_ok<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>data_file <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#39;..&#39;</span>, <span style="color:#e6db74">&#39;data&#39;</span>, <span style="color:#e6db74">&#39;house_tiny.csv&#39;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(data_file, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;NumRooms,Alley,Price</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 列名</span>
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;NA,Pave,127500</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 每行表示一个数据样本</span>
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;2,NA,106000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;4,NA,178100</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;NA,NA,140000</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">data_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;house_tiny.csv&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;NumRooms,Alley,Price</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># 列名</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;NA,Pave,127500</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># 每行表示一个数据样本</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;2,NA,106000</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;4,NA,178100</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;NA,NA,140000</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </span></span></code></pre></div><p>读取数据：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(data_file)
-</span></span><span style="display:flex;"><span>print(data)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span></span></code></pre></div><hr>
 <h3 id="处理缺失值">处理缺失值<a href="#%e5%a4%84%e7%90%86%e7%bc%ba%e5%a4%b1%e5%80%bc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -279,54 +279,54 @@
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>将nan值填补为平均值：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>inputs, outputs <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>], data<span style="color:#f92672">.</span>iloc[:, <span style="color:#ae81ff">2</span>]
-</span></span><span style="display:flex;"><span>inputs <span style="color:#f92672">=</span> inputs<span style="color:#f92672">.</span>fillna(inputs<span style="color:#f92672">.</span>mean())
-</span></span><span style="display:flex;"><span>print(inputs)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
 </span></span></code></pre></div><hr>
 <h3 id="pandas部分练习">pandas部分练习<a href="#pandas%e9%83%a8%e5%88%86%e7%bb%83%e4%b9%a0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pandas <span style="color:#66d9ef">as</span> pd
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> random
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_row</span>():
-</span></span><span style="display:flex;"><span>    row_data <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
-</span></span><span style="display:flex;"><span>        added_data <span style="color:#f92672">=</span> random<span style="color:#f92672">.</span>random()
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> added_data <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0.2</span>:
-</span></span><span style="display:flex;"><span>            added_data <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;NA&#34;</span>
-</span></span><span style="display:flex;"><span>        row_data <span style="color:#f92672">+=</span> str(added_data)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> i <span style="color:#f92672">!=</span> <span style="color:#ae81ff">4</span>:
-</span></span><span style="display:flex;"><span>            row_data <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;,&#39;</span>
-</span></span><span style="display:flex;"><span>    row_data <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> row_data
-</span></span><span style="display:flex;"><span>                
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>makedirs(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#39;..&#39;</span>, <span style="color:#e6db74">&#39;Moonhalf_data&#39;</span>), exist_ok <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>mh_file <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#39;..&#39;</span>, <span style="color:#e6db74">&#39;Moonhalf_data&#39;</span>, <span style="color:#e6db74">&#39;mh_data.csv&#39;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(mh_file, <span style="color:#e6db74">&#39;w&#39;</span>) <span style="color:#66d9ef">as</span> f:
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#39;NumA,NumB,NumC,NumD,NumE</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)  <span style="color:#75715e"># 列名</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">50</span>):
-</span></span><span style="display:flex;"><span>        f<span style="color:#f92672">.</span>write(generate_row())
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(mh_file)
-</span></span><span style="display:flex;"><span>print(data)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>max_na <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>isna()<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>max()
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(target_column)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>refined_data <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>loc[:, data<span style="color:#f92672">.</span>isna()<span style="color:#f92672">.</span>sum() <span style="color:#f92672">&lt;</span> max_na]
-</span></span><span style="display:flex;"><span>print(refined_data)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>refined_data <span style="color:#f92672">=</span> refined_data<span style="color:#f92672">.</span>fillna(refined_data<span style="color:#f92672">.</span>mean())
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>refined_tensor <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor(refined_data<span style="color:#f92672">.</span>to_numpy(dtype <span style="color:#f92672">=</span> float))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(refined_tensor)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">generate_row</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">row_data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">added_data</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">added_data</span> <span class="o">&lt;=</span> <span class="mf">0.2</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">added_data</span> <span class="o">=</span> <span class="s2">&#34;NA&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">row_data</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">added_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">row_data</span> <span class="o">+=</span> <span class="s1">&#39;,&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">row_data</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">row_data</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;Moonhalf_data&#39;</span><span class="p">),</span> <span class="n">exist_ok</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">mh_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;Moonhalf_data&#39;</span><span class="p">,</span> <span class="s1">&#39;mh_data.csv&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mh_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;NumA,NumB,NumC,NumD,NumE</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># 列名</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">generate_row</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">mh_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">max_na</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># print(target_column)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">refined_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">data</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">max_na</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">refined_data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">refined_data</span> <span class="o">=</span> <span class="n">refined_data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">refined_data</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">refined_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">refined_data</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">refined_tensor</span><span class="p">)</span>
 </span></span></code></pre></div><p>这段代码的作用是：生成一个50 * 5的随机数数据集，删除缺失值最多的列，并将预处理后的数据集转换为张量格式。</p>
 <hr>
 <h2 id="线性代数">线性代数<a href="#%e7%ba%bf%e6%80%a7%e4%bb%a3%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -338,13 +338,13 @@
 <p><code>X.clone()</code>一个和X一模一样的张量，但是重新分配内存。</p>
 <p><code>A.sum(axis = 1)</code>让A沿着1维坐标轴求和，得到n-1维张量。（想象这个张量沿着1维压扁，重叠的地方就求和）</p>
 <p>比如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>test_sum <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">24</span>)<span style="color:#f92672">.</span>reshape(<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>)
-</span></span><span style="display:flex;"><span>print(test_sum)
-</span></span><span style="display:flex;"><span>print(test_sum<span style="color:#f92672">.</span>sum(axis <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>))
-</span></span><span style="display:flex;"><span>print(test_sum<span style="color:#f92672">.</span>sum(axis <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>))
-</span></span><span style="display:flex;"><span>print(test_sum<span style="color:#f92672">.</span>sum(axis <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>))
-</span></span><span style="display:flex;"><span>print(test_sum<span style="color:#f92672">.</span>sum(axis <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>]))
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">test_sum</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">test_sum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">test_sum</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">test_sum</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">test_sum</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">test_sum</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
 </span></span></code></pre></div><p>结果：</p>
 <pre tabindex="0"><code>tensor([[[ 0,  1,  2,  3],
          [ 4,  5,  6,  7],
@@ -363,8 +363,8 @@ tensor([[ 6, 22, 38],
 tensor([60, 66, 72, 78])
 </code></pre><p><code>A.mean(axis = 1)</code>沿着1维求平均值，规则类似sum。</p>
 <p>不降维求和：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sum_A <span style="color:#f92672">=</span> A<span style="color:#f92672">.</span>sum(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, keepdims<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>sum_A
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sum_A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sum_A</span>
 </span></span></code></pre></div><hr>
 <h3 id="点积">点积<a href="#%e7%82%b9%e7%a7%af" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -401,10 +401,10 @@ tensor([60, 66, 72, 78])
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p><code>torch.norm()</code>得到一个向量的长度。对于一个多维张量来说，它的含义是求所有元素平方和再开根号。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>u <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">3.0</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">4.0</span>])
-</span></span><span style="display:flex;"><span>v <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">3.0</span>,<span style="color:#ae81ff">4.0</span>,<span style="color:#ae81ff">5.0</span>])
-</span></span><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>norm(u), torch<span style="color:#f92672">.</span>norm(v)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">5.0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 </span></span></code></pre></div><p>结果：</p>
 <pre tabindex="0"><code>(tensor(5.), tensor(7.0711))
 </code></pre><hr>
@@ -420,16 +420,16 @@ tensor([60, 66, 72, 78])
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">2.0</span>], requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> x <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span>y<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>grad) <span style="color:#75715e"># 此时是 4.0</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>z <span style="color:#f92672">=</span> x <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span>z<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>grad) <span style="color:#75715e"># 此时是 4.0 + 3.0 = 7.0 ！</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="c1"># 此时是 4.0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="n">z</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="c1"># 此时是 4.0 + 3.0 = 7.0 ！</span>
 </span></span></code></pre></div><hr>
 <h3 id="为什么xgrad似乎并不符合通常的程序设计原则">为什么x.grad似乎并不符合通常的程序设计原则？<a href="#%e4%b8%ba%e4%bb%80%e4%b9%88xgrad%e4%bc%bc%e4%b9%8e%e5%b9%b6%e4%b8%8d%e7%ac%a6%e5%90%88%e9%80%9a%e5%b8%b8%e7%9a%84%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -438,12 +438,12 @@ tensor([60, 66, 72, 78])
    </svg></a></h3>
 <p><code>x.grad</code>在通常的oop程序设计中应该表示一个对象自身的属性，但是在torch中<code>x.grad</code>会随着使用x的表达式backward()而发生改变，对于一般的程序设计而言，这种设计是比较反直觉的。</p>
 <p>对于不同的表达式，torch对于梯度的操作并非覆盖而是累加。从上面的例子中我们可以看到x.grad最后的值为7.0。至于为什么要设计成累加的模式，一方面是数学上的便利，根据微积分的链式法则，如果一个变量x同时影响了多个分支，那么总梯度就是各个分支梯度的和；另一方面这样做更能节省内存，即使你的网络极其复杂，分成好几路输出，PyTorch也不需要为每一路都开辟新的空间存梯度，只需要在x.grad这一相同地址上做加法即可。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">24</span>)<span style="color:#f92672">.</span>reshape([<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">6</span>])<span style="color:#f92672">.</span>to(torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>requires_grad_(<span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> (x <span style="color:#f92672">*</span> x)<span style="color:#f92672">.</span>sum()
-</span></span><span style="display:flex;"><span>y<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>grad
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">grad</span>
 </span></span></code></pre></div><p>需要注意的是，尽管多维数组对多维数组的求导在数学上是有意义的，pytorch中仅支持从标量开始的反向传播。比如，在如上的例子中，y是一个单元素张量，此时可以对它进行backward()操作，但是如果<code>y = 2 * x</code>，那么再尝试<code>y.backward()</code>就会报错。</p>
 <p>原因同样是出于对机器学习实际计算工作的妥协，在工程上直接对多维数组之间进行求导意味着我们会需要计算两个数组元素个数之积次计算，而机器学习中我们处理的数组大小有时可以达到百万数量级。直接求导会导致极大的显存消耗。</p>
 <hr>
@@ -460,30 +460,30 @@ tensor([60, 66, 72, 78])
 <p>但是对于一个矩阵计算来说，它必须要存储所有分量和所有分量之间的关系，这意味着即使是两者没有任何关系，矩阵也必须要占用空间来表示这种没有关系的关系。</p>
 <p>pytorch的优化思路其实很简单：我们大可以只站在分量的视角看待问题，只去记录那些和自己有关的分量以及过程中的计算方式，而对于那些和自己无关的分量，我们根本不去记录，也自然不会产生关联。</p>
 <p>我们来用一个相对简单的例子解释torch的工作原理：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>Tensor([<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>])
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>requires_grad_(<span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y1_mask <span style="color:#f92672">=</span> x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y1 <span style="color:#f92672">=</span> x[y1_mask]<span style="color:#f92672">.</span>squeeze(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y2 <span style="color:#f92672">=</span> (x <span style="color:#f92672">*</span> x)<span style="color:#f92672">.</span>sum()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># print(y1, y2)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>L <span style="color:#f92672">=</span> y1 <span style="color:#f92672">+</span> y2
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;L: </span><span style="color:#e6db74">{</span>L<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>L<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>grad)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y1_mask</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">y1_mask</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print(y1, y2)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">L</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;L: </span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">L</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
 </span></span></code></pre></div><p>运行得到的结果是：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>L: 33.0
-</span></span><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>4., 6., 9.<span style="color:#f92672">])</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">L: 33.0
+</span></span><span class="line"><span class="cl">tensor<span class="o">([</span>4., 6., 9.<span class="o">])</span>
 </span></span></code></pre></div><p>在这个例子中，y1是x中大于3的元素构成的单元素张量，y2是x对自己的点积组成的单元素张量，L则是y1和y2求和得到的单元素张量。</p>
 <p>首先，我们计算y1时，torch同时记录下了“y1是由x通过y1_mask筛选出来的”；计算y2时，torch也同时记录下了“y2是由x对自己按元素求乘积再求和得到的”。最后，计算L时，torch会记录下“L是由y1加上y2得到的”。</p>
 <p>当我们对L进行backward时，torch会去查询L的计算方式。此时，我们假设我们需要L增加1，torch会把这个1传递给计算得到L的y1和y2，因为L对y1和y2求偏导得到的是1，所以y1和y2被传递得到1，意味着y1和y2对于L的贡献都是1。</p>
@@ -503,15 +503,15 @@ tensor([60, 66, 72, 78])
 <p>Pytorch的反向传播根本不需要返回一个矩阵，因为它本身就在模拟雅可比矩阵的线性算子功能。</p>
 </blockquote>
 <p>然而，在某些情景下我们确实会需要计算非标量变量的反向传播，比如多个batch同时进行训练，但是即使在这种情景，我们最后需要得到的依然是一个向量。实现方式是让批量中每个样本对x求梯度，最后再求和或者求平均，或者加权平均。总而言之，反向传播归根结底是获取一个用来更新参数的向量，获取二维及以上的张量没有什么实际意义。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 对非标量调用backward需要传入一个gradient参数，该参数指定微分函数关于self的梯度。</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 本例只想求偏导数的和，所以传递一个1的梯度是合适的</span>
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>grad<span style="color:#f92672">.</span>zero_()
-</span></span><span style="display:flex;"><span>print(x<span style="color:#f92672">.</span>grad, x)
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> x <span style="color:#f92672">*</span> x
-</span></span><span style="display:flex;"><span>print(y)
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 等价于y.backward(torch.ones(len(x)))</span>
-</span></span><span style="display:flex;"><span>y<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>grad
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 对非标量调用backward需要传入一个gradient参数，该参数指定微分函数关于self的梯度。</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 本例只想求偏导数的和，所以传递一个1的梯度是合适的</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 等价于y.backward(torch.ones(len(x)))</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">grad</span>
 </span></span></code></pre></div><p>所谓的gradient参数，实际上是一个和x一样长度的向量，含义是<strong>y的每个分量</strong>对于最终结果的贡献。在这里，如果我们写<code>y.sum()</code>，本质上就是将y的每个元素进行求和，所以y的每个元素对最终结果的贡献为1；如果写<code>torch.ones(len(x))</code>意思就是y的每个参数对于最终结果的贡献都是1，所以两者其实是等价的。</p>
 <hr>
 <h3 id="分离计算">分离计算<a href="#%e5%88%86%e7%a6%bb%e8%ae%a1%e7%ae%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -520,42 +520,42 @@ tensor([60, 66, 72, 78])
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>有时候我们只想要把一个<code>torch.Tensor</code>当做一个常数来计算，但是得到这个<code>torch.Tensor</code>的过程中经过了一些计算，使得最后反向传播的时候可能影响最后的结果。此时，我们会希望得到这个tensor，但是抹除它所有的计算历史。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">4</span>)
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>grad<span style="color:#f92672">.</span>zero_()
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> x <span style="color:#f92672">*</span> x
-</span></span><span style="display:flex;"><span>u <span style="color:#f92672">=</span> y<span style="color:#f92672">.</span>detach()
-</span></span><span style="display:flex;"><span>print(u)
-</span></span><span style="display:flex;"><span>z <span style="color:#f92672">=</span> u <span style="color:#f92672">*</span> x
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>z<span style="color:#f92672">.</span>sum()<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>grad <span style="color:#f92672">==</span> u
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</span></span><span class="line"><span class="cl"><span class="n">u</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">z</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">x</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">z</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">grad</span> <span class="o">==</span> <span class="n">u</span>
 </span></span></code></pre></div><p>在这个例子中，u被赋值为<code>y.detach()</code>，含义是使u的张量内容和y一样，但是失去了所有计算记录。这样，后续的反向传递过程中u处就不会向后传递。</p>
 <p>结果是：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>True, True, True, True<span style="color:#f92672">])</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">tensor<span class="o">([</span>True, True, True, True<span class="o">])</span>
 </span></span></code></pre></div><hr>
 <h3 id="如何实现二阶导">如何实现二阶导?<a href="#%e5%a6%82%e4%bd%95%e5%ae%9e%e7%8e%b0%e4%ba%8c%e9%98%b6%e5%af%bc" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>tensor([<span style="color:#ae81ff">2.0</span>], requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 1. 定义函数</span>
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> x <span style="color:#f92672">**</span> <span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. 计算一阶导数</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用 grad 函数，并开启 create_graph=True</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这会把“计算一阶导数”的过程也记录在计算图里</span>
-</span></span><span style="display:flex;"><span>grads <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>autograd<span style="color:#f92672">.</span>grad(y, x, create_graph<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;一阶导数在 x=2 时: </span><span style="color:#e6db74">{</span>grads<span style="color:#f92672">.</span>item()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e"># 3 * 2^2 = 12.0</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. 对一阶导数再次求导</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这次不需要再创建图了（除非你要算三阶导）</span>
-</span></span><span style="display:flex;"><span>grads2 <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>autograd<span style="color:#f92672">.</span>grad(grads, x)[<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;二阶导数在 x=2 时: </span><span style="color:#e6db74">{</span>grads2<span style="color:#f92672">.</span>item()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e"># 6 * 2 = 12.0</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 1. 定义函数</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 计算一阶导数</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用 grad 函数，并开启 create_graph=True</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 这会把“计算一阶导数”的过程也记录在计算图里</span>
+</span></span><span class="line"><span class="cl"><span class="n">grads</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;一阶导数在 x=2 时: </span><span class="si">{</span><span class="n">grads</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span> <span class="c1"># 3 * 2^2 = 12.0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 对一阶导数再次求导</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 这次不需要再创建图了（除非你要算三阶导）</span>
+</span></span><span class="line"><span class="cl"><span class="n">grads2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;二阶导数在 x=2 时: </span><span class="si">{</span><span class="n">grads2</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span> <span class="c1"># 6 * 2 = 12.0</span>
 </span></span></code></pre></div><p>我们没办法通过backward实现二阶导（比如L.backward().backward()），因为反向传播的计算本身并不会被存储在计算图中，但是为了实现二阶导，我们需要一阶导的计算图。因此在上面的例子中我们使用<code>torch.autograd.grad()</code>函数，并添加<code>create_graph=True</code>参数来生成包含一阶导计算图的梯度向量。</p>
 <hr>
 <h3 id="控制流">控制流<a href="#%e6%8e%a7%e5%88%b6%e6%b5%81" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -563,19 +563,19 @@ tensor([60, 66, 72, 78])
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>a <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>randn(size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>,), requires_grad<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>print(a)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> a<span style="color:#f92672">.</span>norm() <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">3</span>:
-</span></span><span style="display:flex;"><span>    b <span style="color:#f92672">=</span> a<span style="color:#f92672">.</span>sum()
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>    b <span style="color:#f92672">=</span> (a <span style="color:#f92672">*</span> a)<span style="color:#f92672">.</span>sum()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>b<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(a<span style="color:#f92672">.</span>grad)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">b</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
 </span></span></code></pre></div><p>torch支持控制流梯度计算，这意味着即使不同情况下计算b的方式可能不同，对b进行反向传播仍然可以得到当前计算方式下的对应梯度。</p>
 <hr>
 <h3 id="绘制函数与导函数图像不直接计算导数">绘制函数与导函数图像（不直接计算导数）<a href="#%e7%bb%98%e5%88%b6%e5%87%bd%e6%95%b0%e4%b8%8e%e5%af%bc%e5%87%bd%e6%95%b0%e5%9b%be%e5%83%8f%e4%b8%8d%e7%9b%b4%e6%8e%a5%e8%ae%a1%e7%ae%97%e5%af%bc%e6%95%b0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -583,72 +583,72 @@ tensor([60, 66, 72, 78])
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> matplotlib_inline <span style="color:#f92672">import</span> backend_inline
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> d2l <span style="color:#f92672">import</span> torch <span style="color:#66d9ef">as</span> d2l
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> math
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">use_svg_display</span>():  <span style="color:#75715e">#@save</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;使用svg格式在Jupyter中显示绘图&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    backend_inline<span style="color:#f92672">.</span>set_matplotlib_formats(<span style="color:#e6db74">&#39;svg&#39;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_figsize</span>(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">3.5</span>, <span style="color:#ae81ff">2.5</span>)):  <span style="color:#75715e">#@save</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;设置matplotlib的图表大小&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    use_svg_display()
-</span></span><span style="display:flex;"><span>    d2l<span style="color:#f92672">.</span>plt<span style="color:#f92672">.</span>rcParams[<span style="color:#e6db74">&#39;figure.figsize&#39;</span>] <span style="color:#f92672">=</span> figsize
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#@save</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">set_axes</span>(axes, xlabel, ylabel, xlim, ylim, xscale, yscale, legend):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;设置matplotlib的轴&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>set_xlabel(xlabel)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>set_ylabel(ylabel)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>set_xscale(xscale)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>set_yscale(yscale)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>set_xlim(xlim)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>set_ylim(ylim)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> legend:
-</span></span><span style="display:flex;"><span>        axes<span style="color:#f92672">.</span>legend(legend)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>grid()
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#@save</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot</span>(X, Y<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, xlabel<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, ylabel<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, legend<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, xlim<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
-</span></span><span style="display:flex;"><span>         ylim<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, xscale<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;linear&#39;</span>, yscale<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;linear&#39;</span>,
-</span></span><span style="display:flex;"><span>         fmts<span style="color:#f92672">=</span>(<span style="color:#e6db74">&#39;-&#39;</span>, <span style="color:#e6db74">&#39;m--&#39;</span>, <span style="color:#e6db74">&#39;g-.&#39;</span>, <span style="color:#e6db74">&#39;r:&#39;</span>), figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">3.5</span>, <span style="color:#ae81ff">2.5</span>), axes<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;绘制数据点&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> legend <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>        legend <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    set_figsize(figsize)
-</span></span><span style="display:flex;"><span>    axes <span style="color:#f92672">=</span> axes <span style="color:#66d9ef">if</span> axes <span style="color:#66d9ef">else</span> d2l<span style="color:#f92672">.</span>plt<span style="color:#f92672">.</span>gca()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 如果X有一个轴，输出True</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">has_one_axis</span>(X):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (hasattr(X, <span style="color:#e6db74">&#34;ndim&#34;</span>) <span style="color:#f92672">and</span> X<span style="color:#f92672">.</span>ndim <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">or</span> isinstance(X, list)
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">and</span> <span style="color:#f92672">not</span> hasattr(X[<span style="color:#ae81ff">0</span>], <span style="color:#e6db74">&#34;__len__&#34;</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> has_one_axis(X):
-</span></span><span style="display:flex;"><span>        X <span style="color:#f92672">=</span> [X]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> Y <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
-</span></span><span style="display:flex;"><span>        X, Y <span style="color:#f92672">=</span> [[]] <span style="color:#f92672">*</span> len(X), X
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> has_one_axis(Y):
-</span></span><span style="display:flex;"><span>        Y <span style="color:#f92672">=</span> [Y]
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(X) <span style="color:#f92672">!=</span> len(Y):
-</span></span><span style="display:flex;"><span>        X <span style="color:#f92672">=</span> X <span style="color:#f92672">*</span> len(Y)
-</span></span><span style="display:flex;"><span>    axes<span style="color:#f92672">.</span>cla()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> x, y, fmt <span style="color:#f92672">in</span> zip(X, Y, fmts):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(x):
-</span></span><span style="display:flex;"><span>            axes<span style="color:#f92672">.</span>plot(x, y, fmt)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>            axes<span style="color:#f92672">.</span>plot(y, fmt)
-</span></span><span style="display:flex;"><span>    set_axes(axes, xlabel, ylabel, xlim, ylim, xscale, yscale, legend)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> d2l<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0.0</span>, <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>pi, <span style="color:#ae81ff">0.05</span><span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>pi)
-</span></span><span style="display:flex;"><span>x<span style="color:#f92672">.</span>requires_grad_(<span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">f</span>(x):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> d2l<span style="color:#f92672">.</span>sin(x)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> f(x)<span style="color:#f92672">.</span>sum()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>y<span style="color:#f92672">.</span>backward()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>plot(x<span style="color:#f92672">.</span>detach(), [f(x)<span style="color:#f92672">.</span>detach(), x<span style="color:#f92672">.</span>grad],<span style="color:#e6db74">&#34;x&#34;</span>, <span style="color:#e6db74">&#34;f(x)&#34;</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">matplotlib_inline</span> <span class="kn">import</span> <span class="n">backend_inline</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">d2l</span> <span class="kn">import</span> <span class="n">torch</span> <span class="k">as</span> <span class="n">d2l</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">math</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">use_svg_display</span><span class="p">():</span>  <span class="c1">#@save</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;使用svg格式在Jupyter中显示绘图&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">set_figsize</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)):</span>  <span class="c1">#@save</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;设置matplotlib的图表大小&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">use_svg_display</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">d2l</span><span class="o">.</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">figsize</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#@save</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">set_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="p">,</span> <span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">legend</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;设置matplotlib的轴&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">xscale</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">yscale</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">axes</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">legend</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#@save</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">         <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">         <span class="n">fmts</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;m--&#39;</span><span class="p">,</span> <span class="s1">&#39;g-.&#39;</span><span class="p">,</span> <span class="s1">&#39;r:&#39;</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;绘制数据点&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">legend</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">set_figsize</span><span class="p">(</span><span class="n">figsize</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span> <span class="k">if</span> <span class="n">axes</span> <span class="k">else</span> <span class="n">d2l</span><span class="o">.</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 如果X有一个轴，输出True</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">has_one_axis</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s2">&#34;ndim&#34;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&#34;__len__&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">has_one_axis</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">Y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="p">[[]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">X</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">has_one_axis</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="n">Y</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">axes</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fmt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">fmts</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">set_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="p">,</span> <span class="n">xscale</span><span class="p">,</span> <span class="n">yscale</span><span class="p">,</span> <span class="n">legend</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">d2l</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.05</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span><span class="o">.</span><span class="n">requires_grad_</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">d2l</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">y</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">],</span><span class="s2">&#34;x&#34;</span><span class="p">,</span> <span class="s2">&#34;f(x)&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>需要使用d2l库和jupyter lab。</p>
 <hr>
 <h2 id="概率">概率<a href="#%e6%a6%82%e7%8e%87" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -662,19 +662,19 @@ tensor([60, 66, 72, 78])
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
 <p>将概率分配给一些离散选项的分布称为多项分布。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> torch.distributions <span style="color:#f92672">import</span> multinomial
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>fair_probs <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>ones([<span style="color:#ae81ff">6</span>]) <span style="color:#f92672">/</span> <span style="color:#ae81ff">6</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(multinomial<span style="color:#f92672">.</span>Multinomial(<span style="color:#ae81ff">1</span>, fair_probs)<span style="color:#f92672">.</span>sample())
-</span></span><span style="display:flex;"><span>print(multinomial<span style="color:#f92672">.</span>Multinomial(<span style="color:#ae81ff">2</span>, fair_probs)<span style="color:#f92672">.</span>sample())
-</span></span><span style="display:flex;"><span>print(multinomial<span style="color:#f92672">.</span>Multinomial(<span style="color:#ae81ff">10</span>, fair_probs)<span style="color:#f92672">.</span>sample())
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">multinomial</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fair_probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">6</span><span class="p">])</span> <span class="o">/</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">multinomial</span><span class="o">.</span><span class="n">Multinomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fair_probs</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">multinomial</span><span class="o">.</span><span class="n">Multinomial</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">fair_probs</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">multinomial</span><span class="o">.</span><span class="n">Multinomial</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">fair_probs</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">())</span>
 </span></span></code></pre></div><p><code>multinomial.Multinomial()</code>用来生成一个采样器，这个采样器每次采样会根据<code>fair_probs</code>也就是概率向量对应的概率来抽取一个位置索引，第一个参数时一次采样的抽取次数。最后得到的向量中对应位置的数字即这个位置被抽中的次数。</p>
 <p>上述代码的某次生成结果为：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tensor([<span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>])
-</span></span><span style="display:flex;"><span>tensor([<span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">2.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">0.</span>])
-</span></span><span style="display:flex;"><span>tensor([<span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">0.</span>, <span style="color:#ae81ff">2.</span>, <span style="color:#ae81ff">1.</span>, <span style="color:#ae81ff">5.</span>])
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">tensor</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">])</span>
 </span></span></code></pre></div><hr>
 <h3 id="联合概率">联合概率<a href="#%e8%81%94%e5%90%88%e6%a6%82%e7%8e%87" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -723,47 +723,51 @@ $$P(B) = \sum_{A} P(A, B),$$
 			<div class="toc-title">Table of Contents</div>
 			<nav id="TableOfContents">
   <ul>
-    <li><a href="#多维数组基本知识">多维数组基本知识</a>
+    <li><a href="#机器学习基础知识">机器学习基础知识</a>
       <ul>
-        <li><a href="#运算符">运算符</a></li>
-        <li><a href="#广播机制">广播机制</a></li>
-        <li><a href="#切片">切片</a></li>
-        <li><a href="#转换为其他对象">转换为其他对象</a></li>
-      </ul>
-    </li>
-    <li><a href="#pandas">pandas</a>
-      <ul>
-        <li><a href="#处理缺失值">处理缺失值</a></li>
-        <li><a href="#pandas部分练习">pandas部分练习</a></li>
-      </ul>
-    </li>
-    <li><a href="#线性代数">线性代数</a>
-      <ul>
-        <li><a href="#点积">点积</a></li>
-        <li><a href="#向量积">向量积</a></li>
-        <li><a href="#矩阵乘法">矩阵乘法</a></li>
-        <li><a href="#范数">范数</a></li>
-        <li><a href="#l2范数">L2范数</a></li>
-        <li><a href="#l1范数">L1范数</a></li>
-      </ul>
-    </li>
-    <li><a href="#自动求导autograd">自动求导（autograd）</a>
-      <ul>
-        <li><a href="#为什么xgrad似乎并不符合通常的程序设计原则">为什么x.grad似乎并不符合通常的程序设计原则？</a></li>
-        <li><a href="#非标量变量的反向传播">非标量变量的反向传播</a></li>
-        <li><a href="#分离计算">分离计算</a></li>
-        <li><a href="#如何实现二阶导">如何实现二阶导?</a></li>
-        <li><a href="#控制流">控制流</a></li>
-        <li><a href="#绘制函数与导函数图像不直接计算导数">绘制函数与导函数图像（不直接计算导数）</a></li>
-      </ul>
-    </li>
-    <li><a href="#概率">概率</a>
-      <ul>
-        <li><a href="#多项分布multinomial-distribution">多项分布(multinomial distribution)</a></li>
-        <li><a href="#联合概率">联合概率</a></li>
-        <li><a href="#条件概率">条件概率</a></li>
-        <li><a href="#贝叶斯定理">贝叶斯定理</a></li>
-        <li><a href="#边际化">边际化</a></li>
+        <li><a href="#多维数组基本知识">多维数组基本知识</a>
+          <ul>
+            <li><a href="#运算符">运算符</a></li>
+            <li><a href="#广播机制">广播机制</a></li>
+            <li><a href="#切片">切片</a></li>
+            <li><a href="#转换为其他对象">转换为其他对象</a></li>
+          </ul>
+        </li>
+        <li><a href="#pandas">pandas</a>
+          <ul>
+            <li><a href="#处理缺失值">处理缺失值</a></li>
+            <li><a href="#pandas部分练习">pandas部分练习</a></li>
+          </ul>
+        </li>
+        <li><a href="#线性代数">线性代数</a>
+          <ul>
+            <li><a href="#点积">点积</a></li>
+            <li><a href="#向量积">向量积</a></li>
+            <li><a href="#矩阵乘法">矩阵乘法</a></li>
+            <li><a href="#范数">范数</a></li>
+            <li><a href="#l2范数">L2范数</a></li>
+            <li><a href="#l1范数">L1范数</a></li>
+          </ul>
+        </li>
+        <li><a href="#自动求导autograd">自动求导（autograd）</a>
+          <ul>
+            <li><a href="#为什么xgrad似乎并不符合通常的程序设计原则">为什么x.grad似乎并不符合通常的程序设计原则？</a></li>
+            <li><a href="#非标量变量的反向传播">非标量变量的反向传播</a></li>
+            <li><a href="#分离计算">分离计算</a></li>
+            <li><a href="#如何实现二阶导">如何实现二阶导?</a></li>
+            <li><a href="#控制流">控制流</a></li>
+            <li><a href="#绘制函数与导函数图像不直接计算导数">绘制函数与导函数图像（不直接计算导数）</a></li>
+          </ul>
+        </li>
+        <li><a href="#概率">概率</a>
+          <ul>
+            <li><a href="#多项分布multinomial-distribution">多项分布(multinomial distribution)</a></li>
+            <li><a href="#联合概率">联合概率</a></li>
+            <li><a href="#条件概率">条件概率</a></li>
+            <li><a href="#贝叶斯定理">贝叶斯定理</a></li>
+            <li><a href="#边际化">边际化</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>

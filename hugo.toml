@@ -34,8 +34,6 @@ weight = 1
 
 enableGitInfo = true
 
-pygmentsCodefences = true
-pygmentsUseClasses = true
 hasCJKLanguage = true
 
 rssLimit = 10
@@ -72,6 +70,13 @@ tag = "tags"
 
 # Enable to get proper Mathjax support
 [markup]
+[markup.highlight]
+style = "monokai"
+noClasses = false
+[markup.tableOfContents]
+startLevel = 1
+endLevel = 6
+ordered = false
 [markup.goldmark]
 [markup.goldmark.extensions]
 [markup.goldmark.extensions.passthrough]

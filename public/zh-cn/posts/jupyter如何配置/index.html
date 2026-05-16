@@ -66,7 +66,7 @@
       }
     }
 }
-</script><title>Jupyter如何配置</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>Jupyter如何配置</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -165,7 +165,7 @@
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pip install jupyterlab 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">pip install jupyterlab 
 </span></span></code></pre></div><p>一行指令就安装好了。之后在终端中输入<code>jupyter lab</code>就可以在浏览器中使用lab了。一般来说会直接窗口跳转到浏览器，使用wsl或者远程连接的时候可能需要自己手动访问对应端口。</p>
 <p>打开之后界面如下：</p>
 <p><img src="/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/Jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE-20260221-1.png" alt=""></p>
@@ -183,9 +183,9 @@
 <p>当我们在激活了一个虚拟环境的情况下启动jupyterlab，jupyterlab就会使用当前环境的python作为kernel。但是，jupyterlab本质上是一个相当复杂的web应用，虽然装起来很方便，假如每一个环境都装一个jupyterlab，我们会浪费很多的磁盘空间。</p>
 <p>jupyterlab在设计上实际鼓励程序员只用一个虚拟环境存放jupyterlab服务本体。对于其他想要使用jupyterlab的虚拟环境，则使用ipykernel来将当前环境注册为一个kernel。这样我们每次只需要启动jupyterlab服务本体然后使用目标环境的kernel即可。</p>
 <p>先激活某个你想注册为kernel的环境，然后下载ipykernel：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>pip install ipykernel
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">pip install ipykernel
 </span></span></code></pre></div><p>随后执行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>python -m ipykernel install --user --name<span style="color:#f92672">=</span>this_is_a_name --display-name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;A random kernel&#34;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">python -m ipykernel install --user --name<span class="o">=</span>this_is_a_name --display-name<span class="o">=</span><span class="s2">&#34;A random kernel&#34;</span>
 </span></span></code></pre></div><p><code>--user</code>参数表示将配置装在当前用户的目录下，<code>--name</code>用来指定唯一标识符，<code>--display-name</code>用来指定jupyterlab中看到的kernel名称。</p>
 <p>之后回到jupyterlab的环境启动jupyterlab，进入界面之后可以在任意一个ipynb文件的右上角选择你刚注册的kernel。</p>
 <p>对于conda环境有一个jupyter插件<code>nb_conda_kernels</code>，可以自动扫描所有安装了ipykernel的conda环境并显示在jupyterlab上。（后记：似乎不安装ipykernel的环境也会被扫描）</p>
@@ -201,7 +201,7 @@
 <blockquote>
 <p>Have you always wished Jupyter notebooks were plain text documents? Wished you could edit them in your favorite IDE? And get clear and meaningful diffs when doing version control? Then, Jupytext may well be the tool you&rsquo;re looking for!</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pip install jupytext
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">pip</span> <span class="n">install</span> <span class="n">jupytext</span>
 </span></span></code></pre></div><p>jupytext的核心功能是将<code>.ipynb</code>文件和<code>.py</code>文件或<code>.md</code>等纯文本文件双向同步。一方面jupytext拓展了jupyterlab处理纯文本的原生行为，会解析其中的标识并动态重组为一个notebook对象，一方面jupytext提供了结对保存功能，让你可以将一个<code>.ipynb</code>文件和一个<code>.py</code>文件绑定之后同步保存，这样实现只用<code>.ipynb</code>文件看结果，同时用<code>.py</code>文件处理代码和进行版本控制。</p>
 <p>在具体的实现上，jupytext提供了网页前端的插件gui可以用来配置配对和用jupytext方式读取py脚本，提供了cli工具来实现批量转换和文件同步（甚至可以将notebook内容pipe给black进行格式化），还提供了python库接口方便你自动化格式转换。</p>
 <p>比如，以下是直接在jupyter lab中使用editor查看一个py文件的默认界面：</p>
@@ -218,29 +218,29 @@
 <p>在以上这个demo中，<code>.py</code>文件使用了<strong>Percent Format</strong>，这是一种专门用于jupyter notebook和python之间进行格式转换的标记语言。jupytext实际上支持很多种格式，但是其中percent format兼容性最好（因为资历最老）。大多数ide都对percent format提供支持。</p>
 <p>percent format的基本特点是使用<code># %%</code>来分隔单元格。在<code># %%</code>之后我们还可以接上一些补充信息，比如如我们上面例子中声明单元格类型（什么都不写默认code），可以加上一个可选的title，还可以添加一些可选的metadata，用来制作幻灯片、添加tag、以及控制可见性等行为。</p>
 <p>比如我们可以写一个花哨的percent format：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># %% 核心代码！！ [markdown] editable=false deletable=false</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这段代码非常重要，原因在于我觉得它很重要。</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># %% 核心代码具体内容 editable=false deletable=false</span>
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Hello world.&#34;</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># %% 核心代码！！ [markdown] editable=false deletable=false</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 这段代码非常重要，原因在于我觉得它很重要。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># %% 核心代码具体内容 editable=false deletable=false</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Hello world.&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>我们就得到了这样的notebook效果：</p>
 <p><img src="/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/Jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE-20260225-8.png" alt=""></p>
 <p>其中我们新添加的两个代码块不仅点删除键删不掉，甚至无法进入insert状态（按i键没有反应），证明metadata发力了。</p>
 <p>除了percent format外，jupytext默认支持light format，这是jupytext自己提出的格式，非常的简洁，没有显式的分隔符，# + 开头或者一个纯注释块得到的就是一个markdown块，一段代码前没有特殊标记得到的就是代码块。优点是方便，缺点是和ide兼容性不够。</p>
 <p>以下提供一些jupytext cli的常见用法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>jupytext --to py:percent notebook.ipynb
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">jupytext --to py:percent notebook.ipynb
 </span></span></code></pre></div><p>把<code>notebook.ipynb</code>文件转换为<code>py:percent</code>格式的py文件。非原地转换。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>jupytext --to notebook script.py
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">jupytext --to notebook script.py
 </span></span></code></pre></div><p>将python文件转换为notebook。（md文件同理）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>jupytext --set-formats ipynb,py:percent notebook.ipynb
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">jupytext --set-formats ipynb,py:percent notebook.ipynb
 </span></span></code></pre></div><p>对<code>notebook.ipynb</code>文件设置结对，此后保存该文件会生成一个py结对文件。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># 自动判断方向并同步</span>
-</span></span><span style="display:flex;"><span>jupytext --sync notebook.ipynb
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 也可以对整个文件夹操作</span>
-</span></span><span style="display:flex;"><span>jupytext --sync *.ipynb
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># 自动判断方向并同步</span>
+</span></span><span class="line"><span class="cl">jupytext --sync notebook.ipynb
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 也可以对整个文件夹操作</span>
+</span></span><span class="line"><span class="cl">jupytext --sync *.ipynb
 </span></span></code></pre></div><p>手动执行同步操作。会自动根据时间戳决定由谁覆盖谁。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>jupytext --pipe black notebook.ipynb
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">jupytext --pipe black notebook.ipynb
 </span></span></code></pre></div><p>对<code>notebook.ipynb</code>文件中的代码块进行black格式化。可以将black替换为isort来整理import。</p>
 <p>一些和ide搭配使用的其他插件工具因为和本人工作流契合度不够所以暂未涉及。</p>
 
@@ -272,7 +272,15 @@
 		</article>
 		<aside id="toc">
 			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents"></nav>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#参考链接">参考链接：</a></li>
+    <li><a href="#jupyter-lab由什么组成">Jupyter lab由什么组成？</a></li>
+    <li><a href="#尝试配置-jupyterlab">尝试配置 jupyterlab</a></li>
+    <li><a href="#注册kernel">注册kernel</a></li>
+    <li><a href="#jupytext">Jupytext</a></li>
+  </ul>
+</nav>
 		</aside>
 		<div class="post-nav thin">
 			<a class="next-post" href="http://localhost:1313/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/">

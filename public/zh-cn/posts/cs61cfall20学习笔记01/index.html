@@ -83,7 +83,7 @@ csdiy介绍
       }
     }
 }
-</script><title>CS61Cfall20学习笔记01</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>CS61Cfall20学习笔记01</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -231,25 +231,25 @@ csdiy介绍
 <blockquote>
 <p>Which command walks a file hierarchy in search of a keyword?</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>grep -r <span style="color:#e6db74">&#34;keyword&#34;</span> /path/to/directory
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">grep -r <span class="s2">&#34;keyword&#34;</span> /path/to/directory
 </span></span></code></pre></div><blockquote>
 <p>Which command displays information about processes running on your machine?</p>
 </blockquote>
 <p>显示进程：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ps
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ps
 </span></span></code></pre></div><p>显示所有进程：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ps aux
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">ps aux
 </span></span></code></pre></div><blockquote>
 <p>Which command terminates a process?</p>
 </blockquote>
 <p>根据进程id停止进程：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>kill <span style="color:#ae81ff">12345</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">kill</span> <span class="m">12345</span>
 </span></span></code></pre></div><p>根据进程名称杀死进程。<code>pkill</code>使用部分匹配，<code>killall</code>使用完全匹配。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>killall qq
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">killall qq
 </span></span></code></pre></div><blockquote>
 <p>Which command can help you find the difference between two files?</p>
 </blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>diff file1 file2
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">diff file1 file2
 </span></span></code></pre></div><h1 id="lecture-03">Lecture 03<a href="#lecture-03" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
@@ -264,37 +264,37 @@ csdiy介绍
 <li>每次迭代都必须把经历修改、编译、运行的全过程，开发速度比较慢。</li>
 </ul>
 <p>C Pre-Processor，简称CPP（并非C++)，会处理所有预处理指令。比如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;files.h&#34;</span><span style="color:#75715e">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;files.h&#34;</span><span class="cp">
 </span></span></span></code></pre></div><p>在经过CPP的时候，CPP会用<code>files.h</code>的内容直接替换掉<code>#include</code>这一行，得到一个<code>xx.i</code>文件。同理，<code>#include &lt;stdio.h&gt;</code>做的是一样的事情，只不过是从标准库里获取文件; <code>#define PI 3</code> 可以在预处理期将所有PI替换为3，<code>#if</code>、<code>#endif</code>负责控制部分条件下include文件。</p>
 <p><code>#define xx</code>定义的是一个所谓的<strong>宏</strong>（即macro）。如前文所说，macro的作用是CPP中直接进行文本替换。你可以用它来做很多事情，但是它并不是真正的函数，在一些时候会导致意外情况。</p>
 <p>比如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#define min(X, Y) X &lt; Y ? X : Y
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>; i<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">min</span>(x<span style="color:#f92672">++</span>, y));
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define min(X, Y) X &lt; Y ? X : Y
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="o">++</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>我们会期待：重复进行5次比较，每次都打印x和y中最小的那个数字，之后x自增1。所以我们会期待结果为：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">2</span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
-</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="m">3</span>
 </span></span></code></pre></div><p>但是实际的输出为：</p>
 <p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test04.png" alt="test04"></p>
 <p>原因在于CPP将<code>min(x++, y)</code>直接替换为了<code>x++ &lt; y?x++:y</code>。这就导致第一次输出前x已经进行了一次自增，所以第一个数字为1而非0，输出之后x又自增了1。导致之后输出结果只有3。</p>
 <p>一些gcc的指令如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -E hello.c -o hello.i <span style="color:#75715e"># 预处理得到.i文件</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -S hello.i -o hello.s <span style="color:#75715e"># 翻译得到汇编语言</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc -c hello.s -o hello.o <span style="color:#75715e"># 翻译为机器指令</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>gcc hello.o -o hello <span style="color:#75715e"># 生成可执行文件</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc -E hello.c -o hello.i <span class="c1"># 预处理得到.i文件</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc -S hello.i -o hello.s <span class="c1"># 翻译得到汇编语言</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc -c hello.s -o hello.o <span class="c1"># 翻译为机器指令</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc hello.o -o hello <span class="c1"># 生成可执行文件</span>
 </span></span></code></pre></div><p>所以我们不妨来看一下<code>test.i</code>的内容：</p>
 <p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test06.png" alt="test06"></p>
 <p>只节选最后一部分的原因是如我们前文所说的，<code>#include &lt;stdio&gt;</code>会把这个头文件的所有内容直接插入进来，所以前面出现了大量看不懂的神秘代码。只看尾部可以看到，<code>min(x++, y)</code>确实被替换为了<code>x++ &lt; y ? x++ : y</code>。这就导致出现了不符合预期的结果。</p>
@@ -309,11 +309,11 @@ csdiy介绍
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install build-essential cgdb valgrind
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install build-essential cgdb valgrind
 </span></span></code></pre></div><p>本地安装C语言的编译和调试工具。gdb意为GNU debugger。使用gdb要求编译时加上<code>-g</code>参数，如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc -g hello.c -o hello
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gcc -g hello.c -o hello
 </span></span></code></pre></div><p>CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。</p>
-<p><img src="CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001.md" alt="CS61Cfall20学习笔记01"></p>
+<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001.png" alt="CS61Cfall20学习笔记01"></p>
 <p>一些基本使用方法如下：</p>
 <ul>
 <li>Esc切换到源码窗口</li>
@@ -353,39 +353,39 @@ csdiy介绍
 <p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_cgdb%E8%B0%83%E8%AF%95.png" alt="CS61Cfall20学习笔记01_cgdb调试"></p>
 <p>通过<code>set args &lt; name.txt</code>将参数设置为重定向符与文本文件，并在同一目录下放一个写入名字的文本文件，我们就允许在cgdb调试时输入内容。</p>
 <p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_stdin.png" alt="CS61Cfall20学习笔记01_stdin"></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> a[<span style="color:#ae81ff">20</span>];
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; ; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>        a[i] <span style="color:#f92672">=</span> i;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>valgrind可以用来模拟cpu并追踪内存访问。以上代码显然存在非法访存问题，<code>valgrind ./segfault</code>输出结果如下：</p>
 <p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_segfault.png" alt="CS61Cfall20学习笔记01_segfault"></p>
 <p>以上信息中，valgrind抛出Invalid write of size 4，表面有一个大小为4的非法写入，试图访问的内存地址为0x1fff001000，而valgrind检查后发现该地址即不在栈上，也不在堆上，也不是最近free的内存。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;ll_cycle.h&#34;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stddef.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">ll_has_cycle</span>(node <span style="color:#f92672">*</span>head) {
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* your code here */</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>head)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>  node <span style="color:#f92672">*</span>tortoise <span style="color:#f92672">=</span> head;
-</span></span><span style="display:flex;"><span>  node <span style="color:#f92672">*</span>hare <span style="color:#f92672">=</span> head;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>hare<span style="color:#f92672">-&gt;</span>next)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (<span style="color:#ae81ff">1</span>) {
-</span></span><span style="display:flex;"><span>    hare <span style="color:#f92672">=</span> hare<span style="color:#f92672">-&gt;</span>next;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>hare)
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>    hare <span style="color:#f92672">=</span> hare<span style="color:#f92672">-&gt;</span>next;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>hare)
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>    tortoise <span style="color:#f92672">=</span> tortoise<span style="color:#f92672">-&gt;</span>next;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (tortoise <span style="color:#f92672">==</span> hare)
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;ll_cycle.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stddef.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">ll_has_cycle</span><span class="p">(</span><span class="n">node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="cm">/* your code here */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">head</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">node</span> <span class="o">*</span><span class="n">tortoise</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">node</span> <span class="o">*</span><span class="n">hare</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">hare</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hare</span> <span class="o">=</span> <span class="n">hare</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">hare</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hare</span> <span class="o">=</span> <span class="n">hare</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">hare</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tortoise</span> <span class="o">=</span> <span class="n">tortoise</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">tortoise</span> <span class="o">==</span> <span class="n">hare</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>exercise 5，用C语言检查一个单向链表是否成环。注意head可以为空，head-&gt;next可以为空。</p>
 <h1 id="project-1">Project 1<a href="#project-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
@@ -397,86 +397,86 @@ csdiy介绍
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Opens a .ppm P3 image file, and constructs an Image object.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// You may find the function fscanf useful.
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Make sure that you close the file with fclose before returning.
-</span></span></span><span style="display:flex;"><span>Image <span style="color:#f92672">*</span><span style="color:#a6e22e">readData</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>filename) {
-</span></span><span style="display:flex;"><span>  Image <span style="color:#f92672">*</span>imageData <span style="color:#f92672">=</span> (Image <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Image));
-</span></span><span style="display:flex;"><span>  FILE <span style="color:#f92672">*</span>fp <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(filename, <span style="color:#e6db74">&#34;r&#34;</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> format[<span style="color:#ae81ff">2</span>];
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> color_range <span style="color:#f92672">=</span> <span style="color:#ae81ff">255</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%s&#34;</span>, format);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%d %d&#34;</span>, <span style="color:#f92672">&amp;</span>imageData<span style="color:#f92672">-&gt;</span>cols, <span style="color:#f92672">&amp;</span>imageData<span style="color:#f92672">-&gt;</span>rows);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>color_range);
-</span></span><span style="display:flex;"><span>  imageData<span style="color:#f92672">-&gt;</span>image <span style="color:#f92672">=</span> (Color <span style="color:#f92672">**</span>)<span style="color:#a6e22e">malloc</span>(imageData<span style="color:#f92672">-&gt;</span>rows <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(Color <span style="color:#f92672">*</span>));
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> imageData<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    imageData<span style="color:#f92672">-&gt;</span>image[i] <span style="color:#f92672">=</span> (Color <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(imageData<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(Color));
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> imageData<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">*</span> imageData<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    Color <span style="color:#f92672">*</span>target_image <span style="color:#f92672">=</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>imageData<span style="color:#f92672">-&gt;</span>image[i <span style="color:#f92672">/</span> imageData<span style="color:#f92672">-&gt;</span>cols][i <span style="color:#f92672">%</span> imageData<span style="color:#f92672">-&gt;</span>cols];
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%hhu&#34;</span>, <span style="color:#f92672">&amp;</span>target_image<span style="color:#f92672">-&gt;</span>R);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%hhu&#34;</span>, <span style="color:#f92672">&amp;</span>target_image<span style="color:#f92672">-&gt;</span>G);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fscanf</span>(fp, <span style="color:#e6db74">&#34;%hhu&#34;</span>, <span style="color:#f92672">&amp;</span>target_image<span style="color:#f92672">-&gt;</span>B);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fclose</span>(fp);
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> imageData;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// Opens a .ppm P3 image file, and constructs an Image object.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// You may find the function fscanf useful.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Make sure that you close the file with fclose before returning.
+</span></span></span><span class="line"><span class="cl"><span class="n">Image</span> <span class="o">*</span><span class="nf">readData</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Image</span> <span class="o">*</span><span class="n">imageData</span> <span class="o">=</span> <span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Image</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="n">FILE</span> <span class="o">*</span><span class="n">fp</span> <span class="o">=</span> <span class="nf">fopen</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">format</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">color_range</span> <span class="o">=</span> <span class="mi">255</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#34;%s&#34;</span><span class="p">,</span> <span class="n">format</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#34;%d %d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">imageData</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">imageData</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">color_range</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">image</span> <span class="o">=</span> <span class="p">(</span><span class="n">Color</span> <span class="o">**</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="n">imageData</span><span class="o">-&gt;</span><span class="n">rows</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Color</span> <span class="o">*</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Color</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="n">imageData</span><span class="o">-&gt;</span><span class="n">cols</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Color</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">cols</span> <span class="o">*</span> <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Color</span> <span class="o">*</span><span class="n">target_image</span> <span class="o">=</span>
+</span></span><span class="line"><span class="cl">        <span class="o">&amp;</span><span class="n">imageData</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">i</span> <span class="o">/</span> <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">][</span><span class="n">i</span> <span class="o">%</span> <span class="n">imageData</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#34;%hhu&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">target_image</span><span class="o">-&gt;</span><span class="n">R</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#34;%hhu&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">target_image</span><span class="o">-&gt;</span><span class="n">G</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">fscanf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s">&#34;%hhu&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">target_image</span><span class="o">-&gt;</span><span class="n">B</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">imageData</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>读取ppm文件得到Image object。注意通过malloc动态分配内存，二维数组要分配两次。（好久没写C语言导致这些概念完全不记得了）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// image&#39;s data.
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeData</span>(Image <span style="color:#f92672">*</span>image) {
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
-</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;P3</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, image<span style="color:#f92672">-&gt;</span>cols, image<span style="color:#f92672">-&gt;</span>rows);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#ae81ff">255</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> row <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; row <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; row<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> col <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; col <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>cols; col<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>      Color <span style="color:#f92672">*</span>target_color <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>image<span style="color:#f92672">-&gt;</span>image[row][col];
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%hhu %hhu %hhu&#34;</span>, target_color<span style="color:#f92672">-&gt;</span>R, target_color<span style="color:#f92672">-&gt;</span>G,
-</span></span><span style="display:flex;"><span>             target_color<span style="color:#f92672">-&gt;</span>B);
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (col <span style="color:#f92672">==</span> image<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;   &#34;</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Frees an image
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">freeImage</span>(Image <span style="color:#f92672">*</span>image) {
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
-</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">free</span>(image<span style="color:#f92672">-&gt;</span>image[i]);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">free</span>(image<span style="color:#f92672">-&gt;</span>image);
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">free</span>(image);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the
+</span></span></span><span class="line"><span class="cl"><span class="c1">// image&#39;s data.
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">writeData</span><span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// YOUR CODE HERE
+</span></span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;P3</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">,</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="mi">255</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">;</span> <span class="n">col</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">Color</span> <span class="o">*</span><span class="n">target_color</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%hhu %hhu %hhu&#34;</span><span class="p">,</span> <span class="n">target_color</span><span class="o">-&gt;</span><span class="n">R</span><span class="p">,</span> <span class="n">target_color</span><span class="o">-&gt;</span><span class="n">G</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">             <span class="n">target_color</span><span class="o">-&gt;</span><span class="n">B</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">col</span> <span class="o">==</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;   &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Frees an image
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">freeImage</span><span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// YOUR CODE HERE
+</span></span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">free</span><span class="p">(</span><span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">free</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>输出和释放内存。释放内存同样需要依次释放所有指针，避免内存泄漏。</p>
 <h3 id="steganography">steganography<a href="#steganography" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Given an image, creates a new image extracting the LSB of the B channel.
-</span></span></span><span style="display:flex;"><span>Image <span style="color:#f92672">*</span><span style="color:#a6e22e">steganography</span>(Image <span style="color:#f92672">*</span>image) {
-</span></span><span style="display:flex;"><span>  Image <span style="color:#f92672">*</span>newImage <span style="color:#f92672">=</span> (Image <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Image));
-</span></span><span style="display:flex;"><span>  newImage<span style="color:#f92672">-&gt;</span>rows <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>rows;
-</span></span><span style="display:flex;"><span>  newImage<span style="color:#f92672">-&gt;</span>cols <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>cols;
-</span></span><span style="display:flex;"><span>  newImage<span style="color:#f92672">-&gt;</span>image <span style="color:#f92672">=</span> (Color <span style="color:#f92672">**</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Color <span style="color:#f92672">*</span>) <span style="color:#f92672">*</span> image<span style="color:#f92672">-&gt;</span>rows);
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    newImage<span style="color:#f92672">-&gt;</span>image[i] <span style="color:#f92672">=</span> (Color <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Color) <span style="color:#f92672">*</span> image<span style="color:#f92672">-&gt;</span>cols);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>rows; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> image<span style="color:#f92672">-&gt;</span>cols; j<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>      Color <span style="color:#f92672">*</span>newColor <span style="color:#f92672">=</span> <span style="color:#a6e22e">evaluateOnePixel</span>(image, i, j);
-</span></span><span style="display:flex;"><span>      newImage<span style="color:#f92672">-&gt;</span>image[i][j] <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>newColor;
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">free</span>(newColor);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> newImage;
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
-</span></span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// Given an image, creates a new image extracting the LSB of the B channel.
+</span></span></span><span class="line"><span class="cl"><span class="n">Image</span> <span class="o">*</span><span class="nf">steganography</span><span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="n">image</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Image</span> <span class="o">*</span><span class="n">newImage</span> <span class="o">=</span> <span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Image</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="n">newImage</span><span class="o">-&gt;</span><span class="n">rows</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">newImage</span><span class="o">-&gt;</span><span class="n">cols</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">newImage</span><span class="o">-&gt;</span><span class="n">image</span> <span class="o">=</span> <span class="p">(</span><span class="n">Color</span> <span class="o">**</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Color</span> <span class="o">*</span><span class="p">)</span> <span class="o">*</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">newImage</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Color</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Color</span><span class="p">)</span> <span class="o">*</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">Color</span> <span class="o">*</span><span class="n">newColor</span> <span class="o">=</span> <span class="nf">evaluateOnePixel</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">newImage</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="n">newColor</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">free</span><span class="p">(</span><span class="n">newColor</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">newImage</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// YOUR CODE HERE
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>读取一个ppm图像的B数值的最后一个bit，若为1则该像素替换为白色，若为0则替换为黑色，最后可以解析得到一个新的图像。</p>
 <p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/7ecb6cd99661043d665a97d8a09042bf.png" alt="7ecb6cd99661043d665a97d8a09042bf"></p>
 <p>（迫真scret message）</p>
@@ -486,57 +486,57 @@ csdiy介绍
       <line x1="8" y1="12" x2="16" y2="12"></line>
    </svg></a></h2>
 <p>彩色生命游戏的规则是：每个颜色通道有8个bit，RGB三个颜色即有24个bit，对于每个像素的每个bit，单独运行一个康威生命游戏。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>Color <span style="color:#f92672">*</span><span style="color:#a6e22e">evaluateOneCell</span>(Image <span style="color:#f92672">*</span>image, <span style="color:#66d9ef">int</span> row, <span style="color:#66d9ef">int</span> col, <span style="color:#66d9ef">uint32_t</span> rule) {
-</span></span><span style="display:flex;"><span>  Color <span style="color:#f92672">*</span>newColor <span style="color:#f92672">=</span> (Color <span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(Color));
-</span></span><span style="display:flex;"><span>  Color curColor <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[row][col];
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> width <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>cols;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> height <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>rows;
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 对三个通道、每个通道8个bit统计邻居数量。
-</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> neighbourCount[<span style="color:#ae81ff">3</span>][<span style="color:#ae81ff">8</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 对目标格子周围8个格子统计其三个通道的数值。
-</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint8_t</span> grid[<span style="color:#ae81ff">8</span>][<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>};
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> index <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>; j<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> targetRow <span style="color:#f92672">=</span> (row <span style="color:#f92672">+</span> i <span style="color:#f92672">+</span> height) <span style="color:#f92672">%</span> height;
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> targetCol <span style="color:#f92672">=</span> (col <span style="color:#f92672">+</span> j <span style="color:#f92672">+</span> width) <span style="color:#f92672">%</span> width;
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (targetRow <span style="color:#f92672">==</span> row <span style="color:#f92672">&amp;&amp;</span> targetCol <span style="color:#f92672">==</span> col)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">continue</span>;
-</span></span><span style="display:flex;"><span>      grid[index][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[targetRow][targetCol].R;
-</span></span><span style="display:flex;"><span>      grid[index][<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[targetRow][targetCol].G;
-</span></span><span style="display:flex;"><span>      grid[index][<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> image<span style="color:#f92672">-&gt;</span>image[targetRow][targetCol].B;
-</span></span><span style="display:flex;"><span>      index<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> chan <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; chan <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">3</span>; chan<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> bit <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; bit <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; bit<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">uint8_t</span> target <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit;
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; i<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (grid[i][chan] <span style="color:#f92672">&amp;</span> target)
-</span></span><span style="display:flex;"><span>          neighbourCount[chan][bit]<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// printf(&#34;chan: %d  bit: %d neighbour: %d&#34;, chan, bit,
-</span></span></span><span style="display:flex;"><span>      <span style="color:#75715e">// neighbourCount[chan][bit]);
-</span></span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uint8_t</span> curChan[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {curColor.R, curColor.G, curColor.B};
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> chan <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; chan <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">3</span>; chan<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> bit <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; bit <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; bit<span style="color:#f92672">++</span>) {
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">int</span> ptr <span style="color:#f92672">=</span> neighbourCount[chan][bit];
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (curChan[chan] <span style="color:#f92672">&amp;</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit))
-</span></span><span style="display:flex;"><span>        ptr <span style="color:#f92672">+=</span> <span style="color:#ae81ff">9</span>;
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (rule <span style="color:#f92672">&amp;</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> ptr))
-</span></span><span style="display:flex;"><span>        curChan[chan] <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit);
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>        curChan[chan] <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  newColor<span style="color:#f92672">-&gt;</span>R <span style="color:#f92672">=</span> curChan[<span style="color:#ae81ff">0</span>];
-</span></span><span style="display:flex;"><span>  newColor<span style="color:#f92672">-&gt;</span>G <span style="color:#f92672">=</span> curChan[<span style="color:#ae81ff">1</span>];
-</span></span><span style="display:flex;"><span>  newColor<span style="color:#f92672">-&gt;</span>B <span style="color:#f92672">=</span> curChan[<span style="color:#ae81ff">2</span>];
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> newColor;
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// YOUR CODE HERE
-</span></span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">Color</span> <span class="o">*</span><span class="nf">evaluateOneCell</span><span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">rule</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Color</span> <span class="o">*</span><span class="n">newColor</span> <span class="o">=</span> <span class="p">(</span><span class="n">Color</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Color</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Color</span> <span class="n">curColor</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">cols</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 对三个通道、每个通道8个bit统计邻居数量。
+</span></span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">neighbourCount</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 对目标格子周围8个格子统计其三个通道的数值。
+</span></span></span><span class="line"><span class="cl">  <span class="kt">uint8_t</span> <span class="n">grid</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">int</span> <span class="n">targetRow</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">height</span><span class="p">)</span> <span class="o">%</span> <span class="n">height</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">int</span> <span class="n">targetCol</span> <span class="o">=</span> <span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">%</span> <span class="n">width</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">targetRow</span> <span class="o">==</span> <span class="n">row</span> <span class="o">&amp;&amp;</span> <span class="n">targetCol</span> <span class="o">==</span> <span class="n">col</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">grid</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">targetRow</span><span class="p">][</span><span class="n">targetCol</span><span class="p">].</span><span class="n">R</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">grid</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">targetRow</span><span class="p">][</span><span class="n">targetCol</span><span class="p">].</span><span class="n">G</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">grid</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span><span class="o">-&gt;</span><span class="n">image</span><span class="p">[</span><span class="n">targetRow</span><span class="p">][</span><span class="n">targetCol</span><span class="p">].</span><span class="n">B</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">index</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">chan</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">chan</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">chan</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">bit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">bit</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">bit</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">uint8_t</span> <span class="n">target</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">bit</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">chan</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">target</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">          <span class="n">neighbourCount</span><span class="p">[</span><span class="n">chan</span><span class="p">][</span><span class="n">bit</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// printf(&#34;chan: %d  bit: %d neighbour: %d&#34;, chan, bit,
+</span></span></span><span class="line"><span class="cl">      <span class="c1">// neighbourCount[chan][bit]);
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">uint8_t</span> <span class="n">curChan</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">curColor</span><span class="p">.</span><span class="n">R</span><span class="p">,</span> <span class="n">curColor</span><span class="p">.</span><span class="n">G</span><span class="p">,</span> <span class="n">curColor</span><span class="p">.</span><span class="n">B</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">chan</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">chan</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">chan</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">bit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">bit</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">bit</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kt">int</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">neighbourCount</span><span class="p">[</span><span class="n">chan</span><span class="p">][</span><span class="n">bit</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">curChan</span><span class="p">[</span><span class="n">chan</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">bit</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ptr</span> <span class="o">+=</span> <span class="mi">9</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">rule</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ptr</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">curChan</span><span class="p">[</span><span class="n">chan</span><span class="p">]</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">bit</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="n">curChan</span><span class="p">[</span><span class="n">chan</span><span class="p">]</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">bit</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">newColor</span><span class="o">-&gt;</span><span class="n">R</span> <span class="o">=</span> <span class="n">curChan</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="n">newColor</span><span class="o">-&gt;</span><span class="n">G</span> <span class="o">=</span> <span class="n">curChan</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="n">newColor</span><span class="o">-&gt;</span><span class="n">B</span> <span class="o">=</span> <span class="n">curChan</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">newColor</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// YOUR CODE HERE
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>（本人非算法竞赛圈内人，实现不够优雅还请见谅）</p>
 <p>用来根据rule推断一个像素下一回合会是什么颜色。写的过程中遇到了一万个错误。其中<code>targetRow</code>和<code>targetCol</code>的计算上需要先加width或height再求余数，原因在于C语言中求余结果符号与第一个值保持一致，而我们不希望负数。</p>
 <p>此外，rule虽然读取的是一个0x1808这样的四位16进制数，按理只有16个位，但是我们用<code>uint32_t</code>类型存储，使得实际上有32个位，而我们实际需要至少18个位。（因为对于活着和死了的情况，周围邻居都有0～8个不等）。<code>ptr</code>在该bit活着的情况下需要自加9。</p>
@@ -557,20 +557,39 @@ csdiy介绍
 			<div class="toc-title">Table of Contents</div>
 			<nav id="TableOfContents">
   <ul>
-    <li><a href="#setup">setup</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#part-a">Part A</a>
+    <li><a href="#参考链接">参考链接</a></li>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#lecture-01">Lecture 01</a></li>
+    <li><a href="#lecture-02">Lecture 02</a></li>
+    <li><a href="#lab-00">Lab 00</a>
       <ul>
-        <li><a href="#steganography">steganography</a></li>
+        <li><a href="#setup">setup</a></li>
       </ul>
     </li>
-    <li><a href="#part-b">Part B</a></li>
+    <li><a href="#lecture-03">Lecture 03</a></li>
+    <li><a href="#lecture-3--4--5">Lecture 3 &amp; 4 &amp; 5</a></li>
+    <li><a href="#lab-01">lab 01</a></li>
+    <li><a href="#project-1">Project 1</a>
+      <ul>
+        <li><a href="#part-a">Part A</a>
+          <ul>
+            <li><a href="#steganography">steganography</a></li>
+          </ul>
+        </li>
+        <li><a href="#part-b">Part B</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 		</aside>
 		<div class="post-nav thin">
+			<a class="next-post" href="http://localhost:1313/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+   </svg>&nbsp;Newer</span><br><span>Happy-LLM自学笔记01</span>
+			</a>
 			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">

@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Tue, 12 May 2026 16:20:17 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 16 May 2026 14:27:13 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Happy-LLM自学笔记01</title>
+      <link>http://localhost:1313/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/</link>
+      <pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
+      <guid>http://localhost:1313/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;a href=&#34;#%e5%89%8d%e8%a8%80&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;在我导推荐了几个月之后终于开坑happy-llm，之后可能还会开CS336的坑。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>CS61Cfall20学习笔记01</title>
       <link>http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/</link>

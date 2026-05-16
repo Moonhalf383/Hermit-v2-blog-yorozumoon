@@ -68,7 +68,7 @@
       }
     }
 }
-</script><title>Triton自学日志 01VectorAdd</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.7c4faf57019635cba7aa1b7c6581baeb1ec040f9c7d861be87c059d42585582c.css" integrity="sha256-fE+vVwGWNcunqht8ZYG66x7AQPnH2GG+h8BZ1CWFWCw=" crossorigin="anonymous">
+</script><title>Triton自学日志 01VectorAdd</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.c2fdc222ba5a2bcb6169b5cdad7e63f5a90d103a21721ac57b7aaf1324dd6f04.css" integrity="sha256-wv3CIrpaK8thabXNrX5j9akNEDohchrFe3qvEyTdbwQ=" crossorigin="anonymous">
 	</head>
 
 <body id="page">
@@ -164,36 +164,36 @@
 <li>用于定义 Triton 内核的<code>triton.jit</code>装饰器（decorator）。</li>
 </ul>
 <p>计算内核:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch_npu
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton.language <span style="color:#66d9ef">as</span> tl
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@triton.jit</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_kernel</span>(x_ptr,  <span style="color:#75715e"># 指向第一个输入向量的指针。</span>
-</span></span><span style="display:flex;"><span>               y_ptr,  <span style="color:#75715e"># 指向第二个输入向量的指针。</span>
-</span></span><span style="display:flex;"><span>               output_ptr,  <span style="color:#75715e"># 指向输出向量的指针。</span>
-</span></span><span style="display:flex;"><span>               n_elements,  <span style="color:#75715e"># 向量的大小。</span>
-</span></span><span style="display:flex;"><span>               BLOCK_SIZE: tl<span style="color:#f92672">.</span>constexpr,  <span style="color:#75715e"># 每个程序应处理的元素数量。</span>
-</span></span><span style="display:flex;"><span>               <span style="color:#75715e"># 注意：`constexpr` 将标记变量为常量。</span>
-</span></span><span style="display:flex;"><span>               ):
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 不同的数据由不同的“process”来处理，因此需要分配：</span>
-</span></span><span style="display:flex;"><span>    pid <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)  <span style="color:#75715e"># 使用 1D 启动网格，因此轴为 0。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 该程序将处理相对初始数据偏移的输入。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 注意 offsets 是指针列表：</span>
-</span></span><span style="display:flex;"><span>    block_start <span style="color:#f92672">=</span> pid <span style="color:#f92672">*</span> BLOCK_SIZE
-</span></span><span style="display:flex;"><span>    offsets <span style="color:#f92672">=</span> block_start <span style="color:#f92672">+</span> tl<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, BLOCK_SIZE)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 创建掩码以防止内存操作超出边界访问。</span>
-</span></span><span style="display:flex;"><span>    mask <span style="color:#f92672">=</span> offsets <span style="color:#f92672">&lt;</span> n_elements
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。</span>
-</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(x_ptr <span style="color:#f92672">+</span> offsets, mask<span style="color:#f92672">=</span>mask)
-</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(y_ptr <span style="color:#f92672">+</span> offsets, mask<span style="color:#f92672">=</span>mask)
-</span></span><span style="display:flex;"><span>    output <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> y
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 将 x + y 写回 DRAM。</span>
-</span></span><span style="display:flex;"><span>    tl<span style="color:#f92672">.</span>store(output_ptr <span style="color:#f92672">+</span> offsets, output, mask<span style="color:#f92672">=</span>mask)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch_npu</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">triton</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">triton.language</span> <span class="k">as</span> <span class="nn">tl</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@triton.jit</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add_kernel</span><span class="p">(</span><span class="n">x_ptr</span><span class="p">,</span>  <span class="c1"># 指向第一个输入向量的指针。</span>
+</span></span><span class="line"><span class="cl">               <span class="n">y_ptr</span><span class="p">,</span>  <span class="c1"># 指向第二个输入向量的指针。</span>
+</span></span><span class="line"><span class="cl">               <span class="n">output_ptr</span><span class="p">,</span>  <span class="c1"># 指向输出向量的指针。</span>
+</span></span><span class="line"><span class="cl">               <span class="n">n_elements</span><span class="p">,</span>  <span class="c1"># 向量的大小。</span>
+</span></span><span class="line"><span class="cl">               <span class="n">BLOCK_SIZE</span><span class="p">:</span> <span class="n">tl</span><span class="o">.</span><span class="n">constexpr</span><span class="p">,</span>  <span class="c1"># 每个程序应处理的元素数量。</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># 注意：`constexpr` 将标记变量为常量。</span>
+</span></span><span class="line"><span class="cl">               <span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 不同的数据由不同的“process”来处理，因此需要分配：</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pid</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">program_id</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># 使用 1D 启动网格，因此轴为 0。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 该程序将处理相对初始数据偏移的输入。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 注意 offsets 是指针列表：</span>
+</span></span><span class="line"><span class="cl">    <span class="n">block_start</span> <span class="o">=</span> <span class="n">pid</span> <span class="o">*</span> <span class="n">BLOCK_SIZE</span>
+</span></span><span class="line"><span class="cl">    <span class="n">offsets</span> <span class="o">=</span> <span class="n">block_start</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">BLOCK_SIZE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 创建掩码以防止内存操作超出边界访问。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mask</span> <span class="o">=</span> <span class="n">offsets</span> <span class="o">&lt;</span> <span class="n">n_elements</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">x_ptr</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">y_ptr</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 将 x + y 写回 DRAM。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tl</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">output_ptr</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
 </span></span></code></pre></div><h1 id="如何理解">如何理解？<a href="#%e5%a6%82%e4%bd%95%e7%90%86%e8%a7%a3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
@@ -329,21 +329,21 @@
 <li>生成 z 张量；</li>
 <li>用适当的 grid/block sizes 将上述内核加入队列。</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(x: torch<span style="color:#f92672">.</span>Tensor, y: torch<span style="color:#f92672">.</span>Tensor):
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 需要预分配输出。</span>
-</span></span><span style="display:flex;"><span>    output <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>empty_like(x)
-</span></span><span style="display:flex;"><span>    n_elements <span style="color:#f92672">=</span> output<span style="color:#f92672">.</span>numel()
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 启动网格表示并行运行的内核实例的数量。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 可以是 Tuple[int]，也可以是 Callable(metaparameters) -&gt; Tuple[int]。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 在本case中，使用 1D 网格，其中大小是块的数量：</span>
-</span></span><span style="display:flex;"><span>    grid <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> meta: (triton<span style="color:#f92672">.</span>cdiv(n_elements, meta[<span style="color:#e6db74">&#39;BLOCK_SIZE&#39;</span>]), )
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># NOTE:</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#  - 每个 torch.tensor 对象都会隐式转换为其第一个元素的指针。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#  - `triton.jit` 函数可以通过启动网格索引来获得可调用的 NPU 内核。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#  - 不要忘记以keywords的方式传递meta-parameters。</span>
-</span></span><span style="display:flex;"><span>    add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE<span style="color:#f92672">=</span><span style="color:#ae81ff">1024</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 返回 z 的句柄。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> output
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 需要预分配输出。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n_elements</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 启动网格表示并行运行的内核实例的数量。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 可以是 Tuple[int]，也可以是 Callable(metaparameters) -&gt; Tuple[int]。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 在本case中，使用 1D 网格，其中大小是块的数量：</span>
+</span></span><span class="line"><span class="cl">    <span class="n">grid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">meta</span><span class="p">:</span> <span class="p">(</span><span class="n">triton</span><span class="o">.</span><span class="n">cdiv</span><span class="p">(</span><span class="n">n_elements</span><span class="p">,</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;BLOCK_SIZE&#39;</span><span class="p">]),</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># NOTE:</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#  - 每个 torch.tensor 对象都会隐式转换为其第一个元素的指针。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#  - `triton.jit` 函数可以通过启动网格索引来获得可调用的 NPU 内核。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#  - 不要忘记以keywords的方式传递meta-parameters。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">add_kernel</span><span class="p">[</span><span class="n">grid</span><span class="p">](</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">n_elements</span><span class="p">,</span> <span class="n">BLOCK_SIZE</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 返回 z 的句柄。</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">output</span>
 </span></span></code></pre></div><h2 id="这段代码又是干什么的">这段代码又是干什么的？<a href="#%e8%bf%99%e6%ae%b5%e4%bb%a3%e7%a0%81%e5%8f%88%e6%98%af%e5%b9%b2%e4%bb%80%e4%b9%88%e7%9a%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
@@ -392,13 +392,13 @@
    </svg></a></h4>
 <p>triton的开发者预料到了你需要有办法去根据特殊情景决定启动的程序数量，所以他们提供了一种方式让你可以获取客户在使用你封装好的函数时的传参情况。</p>
 <p>什么方式呢？在你使用<code>@triton.jit</code>装饰好的函数时，triton会捕捉到你传入的参数，构成一个<strong>字典</strong>。比如，在我们上文写出的add_kernel函数中，这个字典大概长成这样：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>meta <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;x_ptr&#34;</span> : <span style="color:#f92672">&lt;</span>address<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;y_ptr&#34;</span> : <span style="color:#f92672">&lt;</span>address<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;output_ptr&#34;</span> : <span style="color:#f92672">&lt;</span>address<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;n_elements&#34;</span> : <span style="color:#f92672">&lt;</span>numble<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#e6db74">&#34;BLOCK_SIZE&#34;</span> : <span style="color:#f92672">&lt;</span>numble<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;x_ptr&#34;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">address</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;y_ptr&#34;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">address</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;output_ptr&#34;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">address</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;n_elements&#34;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">numble</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"> <span class="s2">&#34;BLOCK_SIZE&#34;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">numble</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>系统在进行运算之前，会先生成这个字典，然后暗中调用一个lambda函数，将这个字典作为参数传入，根据得到的结果进而决定最后启动的程序个数。</p>
 <p>你通常没办法直接调用这个字典，不过幸运的是，你可以去决定系统暗中调用的lambda函数的形式，而这个lambda函数传入的参数正是triton生成的参数字典。</p>
 <p>因此，我们在前面定义lambda函数grid为<code>lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']), )</code>，意义就是在add_kernel生效之前读取传入的参数字典，根据参数字典中BLOCK_SIZE的值计算出需要的最少启动程序数，然后系统通过这个返回值最终决定启动的程序数。</p>
@@ -411,22 +411,22 @@
 <p>返回<code>output</code>这个生成的tensor。</p>
 <hr>
 <p>使用上述函数计算两个 <code>torch.tensor</code> 对象的 element-wise sum，并测试其正确性：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>torch<span style="color:#f92672">.</span>manual_seed(<span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>size <span style="color:#f92672">=</span> <span style="color:#ae81ff">98432</span>
-</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(size, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu&#39;</span>)
-</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(size, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu&#39;</span>)
-</span></span><span style="display:flex;"><span>output_torch <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> y
-</span></span><span style="display:flex;"><span>output_triton <span style="color:#f92672">=</span> add(x, y)
-</span></span><span style="display:flex;"><span>print(output_torch)
-</span></span><span style="display:flex;"><span>print(output_triton)
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;The maximum difference between torch and triton is &#39;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>torch<span style="color:#f92672">.</span>max(torch<span style="color:#f92672">.</span>abs(output_torch <span style="color:#f92672">-</span> output_triton))<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">size</span> <span class="o">=</span> <span class="mi">98432</span>
+</span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;npu&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;npu&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_torch</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_triton</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">output_torch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">output_triton</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The maximum difference between torch and triton is &#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">output_torch</span> <span class="o">-</span> <span class="n">output_triton</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </span></span></code></pre></div><p>这是一段测试代码。x、y分别是使用torch生成的随机向量。<code>output_torch</code>为直接使用torch内置方法计算得到的向量和，<code>output_triton</code>为使用我们自定义函数计算得到的向量和，最后打印两者的最大残差。</p>
 <p>理论上来说，如果程序正确，<code>output_torch</code>和<code>output_triton</code>应该输出完全一致。</p>
 <p>Out:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span style="color:#f92672">]</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>tensor<span style="color:#f92672">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span style="color:#f92672">]</span>, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;npu:0&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>The maximum difference between torch and triton is 0.0
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tensor<span class="o">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span class="o">]</span>, <span class="nv">device</span><span class="o">=</span><span class="s1">&#39;npu:0&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">tensor<span class="o">([</span>0.8329, 1.0024, 1.3639,  ..., 1.0796, 1.0406, 1.5811<span class="o">]</span>, <span class="nv">device</span><span class="o">=</span><span class="s1">&#39;npu:0&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">The maximum difference between torch and triton is 0.0
 </span></span></code></pre></div><p>&ldquo;The maximum difference between torch and triton is 0.0&rdquo; 表示Triton和PyTorch的输出结果一致。</p>
 <p>但是，如果你真正去衡量torch方法与triton方法之间的计算速度，你会发现triton方法算出来的速度基本与torch方法持平，甚至更慢一点。原因很简单，torch经过了长期的优化，这种基础算子的计算速度基本已经达到了物理极限，而我们自己写的triton算法在调用npu显存数据上要花费额外的时间。</p>
 <p>triton算子真正的优势区间在于写“融合算子”。同样的操作，pytorch的每一步操作都要单独去显存拉取一次数据，操作多起来之后这一步拉取操作就会显著影响运行速度。而通过写triton算子直接操作显存，一次拉取数据之后直接计算得到结果，这样就可以规避中间不必要的额外拉取用时。</p>
@@ -438,87 +438,87 @@
    </svg></a></h1>
 <p>因为异步运算的缘故，torch和time模块这样基于CPU的计时方法无法测量NPU中的真正用时。我们需要使用triton提供的专业基本测试工具<code>triton.testing.do_bench</code>来测试计算效率。</p>
 <p>在下列实例代码中，我们采用带宽吞吐量为依据衡量torch和triton的运行速度差异。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 强制使用 &#39;Agg&#39; 后端，这个后端专门用于不弹窗直接生成图片文件</span>
-</span></span><span style="display:flex;"><span>matplotlib<span style="color:#f92672">.</span>use(<span style="color:#e6db74">&#34;Agg&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> torch_npu
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> triton.language <span style="color:#66d9ef">as</span> tl
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@triton.jit</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_kernel</span>(
-</span></span><span style="display:flex;"><span>    x_ptr,  <span style="color:#75715e"># 指向第一个输入向量的指针。</span>
-</span></span><span style="display:flex;"><span>    y_ptr,  <span style="color:#75715e"># 指向第二个输入向量的指针。</span>
-</span></span><span style="display:flex;"><span>    output_ptr,  <span style="color:#75715e"># 指向输出向量的指针。</span>
-</span></span><span style="display:flex;"><span>    n_elements,  <span style="color:#75715e"># 向量的大小。</span>
-</span></span><span style="display:flex;"><span>    BLOCK_SIZE: tl<span style="color:#f92672">.</span>constexpr,  <span style="color:#75715e"># 每个程序应处理的元素数量。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 注意：`constexpr` 将标记变量为常量。</span>
-</span></span><span style="display:flex;"><span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 不同的数据由不同的“process”来处理，因此需要分配：</span>
-</span></span><span style="display:flex;"><span>    pid <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>program_id(axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)  <span style="color:#75715e"># 使用 1D 启动网格，因此轴为 0。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 该程序将处理相对初始数据偏移的输入。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 注意 offsets 是指针列表：</span>
-</span></span><span style="display:flex;"><span>    block_start <span style="color:#f92672">=</span> pid <span style="color:#f92672">*</span> BLOCK_SIZE
-</span></span><span style="display:flex;"><span>    offsets <span style="color:#f92672">=</span> block_start <span style="color:#f92672">+</span> tl<span style="color:#f92672">.</span>arange(<span style="color:#ae81ff">0</span>, BLOCK_SIZE)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 创建掩码以防止内存操作超出边界访问。</span>
-</span></span><span style="display:flex;"><span>    mask <span style="color:#f92672">=</span> offsets <span style="color:#f92672">&lt;</span> n_elements
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。</span>
-</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(x_ptr <span style="color:#f92672">+</span> offsets, mask<span style="color:#f92672">=</span>mask)
-</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> tl<span style="color:#f92672">.</span>load(y_ptr <span style="color:#f92672">+</span> offsets, mask<span style="color:#f92672">=</span>mask)
-</span></span><span style="display:flex;"><span>    output <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> y
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 将 x + y 写回 DRAM。</span>
-</span></span><span style="display:flex;"><span>    tl<span style="color:#f92672">.</span>store(output_ptr <span style="color:#f92672">+</span> offsets, output, mask<span style="color:#f92672">=</span>mask)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@triton.testing.perf_report</span>(
-</span></span><span style="display:flex;"><span>    triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>Benchmark(
-</span></span><span style="display:flex;"><span>        x_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;size&#34;</span>],  <span style="color:#75715e"># 作为x轴变化的参数</span>
-</span></span><span style="display:flex;"><span>        x_vals<span style="color:#f92672">=</span>[<span style="color:#ae81ff">128</span> <span style="color:#f92672">*</span> i <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">100</span>)],  <span style="color:#75715e"># 测试从 256 到 12800 的不同大小</span>
-</span></span><span style="display:flex;"><span>        line_arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;provider&#34;</span>,
-</span></span><span style="display:flex;"><span>        line_vals<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;triton&#34;</span>, <span style="color:#e6db74">&#34;torch&#34;</span>],  <span style="color:#75715e"># 对比这两家</span>
-</span></span><span style="display:flex;"><span>        line_names<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;Triton&#34;</span>, <span style="color:#e6db74">&#34;Torch&#34;</span>],
-</span></span><span style="display:flex;"><span>        styles<span style="color:#f92672">=</span>[(<span style="color:#e6db74">&#34;blue&#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>), (<span style="color:#e6db74">&#34;green&#34;</span>, <span style="color:#e6db74">&#34;-&#34;</span>)],
-</span></span><span style="display:flex;"><span>        ylabel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;GB/s&#34;</span>,  <span style="color:#75715e"># 用带宽吞吐量作为指标</span>
-</span></span><span style="display:flex;"><span>        plot_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vector-add-performance&#34;</span>,
-</span></span><span style="display:flex;"><span>        args<span style="color:#f92672">=</span>{},
-</span></span><span style="display:flex;"><span>    )
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">benchmark</span>(size, provider):
-</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(size, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;npu&#34;</span>, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>rand(size, device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;npu&#34;</span>, dtype<span style="color:#f92672">=</span>torch<span style="color:#f92672">.</span>float32)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 预热显存分配</span>
-</span></span><span style="display:flex;"><span>    quantiles <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">0.8</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> provider <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;torch&#34;</span>:
-</span></span><span style="display:flex;"><span>        ms, min_ms, max_ms <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>do_bench(<span style="color:#66d9ef">lambda</span>: x <span style="color:#f92672">+</span> y, quantiles<span style="color:#f92672">=</span>quantiles)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> provider <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;triton&#34;</span>:
-</span></span><span style="display:flex;"><span>        output <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>empty_like(x)
-</span></span><span style="display:flex;"><span>        grid <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> meta: (triton<span style="color:#f92672">.</span>cdiv(size, meta[<span style="color:#e6db74">&#34;BLOCK_SIZE&#34;</span>]),)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 封装一下 lambda 方便测速</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_triton</span>():
-</span></span><span style="display:flex;"><span>            add_kernel[grid](x, y, output, size, BLOCK_SIZE<span style="color:#f92672">=</span><span style="color:#ae81ff">1024</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        ms, min_ms, max_ms <span style="color:#f92672">=</span> triton<span style="color:#f92672">.</span>testing<span style="color:#f92672">.</span>do_bench(call_triton, quantiles<span style="color:#f92672">=</span>quantiles)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 返回吞吐量计算 GB/s</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">gbps</span>(ms):
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 读x(4 bytes) + 读y(4 bytes) + 写output(4 bytes) = 12 bytes</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">*</span> size <span style="color:#f92672">/</span> ms <span style="color:#f92672">*</span> <span style="color:#ae81ff">1e-6</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> gbps(ms), gbps(max_ms), gbps(min_ms)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 运行 benchmark</span>
-</span></span><span style="display:flex;"><span>benchmark<span style="color:#f92672">.</span>run(print_data<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, show_plots<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>, save_path<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;./bench_result&#34;</span>)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 强制使用 &#39;Agg&#39; 后端，这个后端专门用于不弹窗直接生成图片文件</span>
+</span></span><span class="line"><span class="cl"><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&#34;Agg&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch_npu</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">triton</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">triton.language</span> <span class="k">as</span> <span class="nn">tl</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@triton.jit</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add_kernel</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x_ptr</span><span class="p">,</span>  <span class="c1"># 指向第一个输入向量的指针。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y_ptr</span><span class="p">,</span>  <span class="c1"># 指向第二个输入向量的指针。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output_ptr</span><span class="p">,</span>  <span class="c1"># 指向输出向量的指针。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n_elements</span><span class="p">,</span>  <span class="c1"># 向量的大小。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">BLOCK_SIZE</span><span class="p">:</span> <span class="n">tl</span><span class="o">.</span><span class="n">constexpr</span><span class="p">,</span>  <span class="c1"># 每个程序应处理的元素数量。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 注意：`constexpr` 将标记变量为常量。</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 不同的数据由不同的“process”来处理，因此需要分配：</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pid</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">program_id</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># 使用 1D 启动网格，因此轴为 0。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 该程序将处理相对初始数据偏移的输入。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 例如，如果有一个长度为 256, 块大小为 64 的向量，程序将各自访问 [0:64, 64:128, 128:192, 192:256] 的元素。</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 注意 offsets 是指针列表：</span>
+</span></span><span class="line"><span class="cl">    <span class="n">block_start</span> <span class="o">=</span> <span class="n">pid</span> <span class="o">*</span> <span class="n">BLOCK_SIZE</span>
+</span></span><span class="line"><span class="cl">    <span class="n">offsets</span> <span class="o">=</span> <span class="n">block_start</span> <span class="o">+</span> <span class="n">tl</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">BLOCK_SIZE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 创建掩码以防止内存操作超出边界访问。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mask</span> <span class="o">=</span> <span class="n">offsets</span> <span class="o">&lt;</span> <span class="n">n_elements</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 从 DRAM 加载 x 和 y，如果输入不是块大小的整数倍，则屏蔽掉任何多余的元素。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">x_ptr</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">y_ptr</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 将 x + y 写回 DRAM。</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tl</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">output_ptr</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@triton.testing.perf_report</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">triton</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">Benchmark</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;size&#34;</span><span class="p">],</span>  <span class="c1"># 作为x轴变化的参数</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x_vals</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)],</span>  <span class="c1"># 测试从 256 到 12800 的不同大小</span>
+</span></span><span class="line"><span class="cl">        <span class="n">line_arg</span><span class="o">=</span><span class="s2">&#34;provider&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">line_vals</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;triton&#34;</span><span class="p">,</span> <span class="s2">&#34;torch&#34;</span><span class="p">],</span>  <span class="c1"># 对比这两家</span>
+</span></span><span class="line"><span class="cl">        <span class="n">line_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;Triton&#34;</span><span class="p">,</span> <span class="s2">&#34;Torch&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">styles</span><span class="o">=</span><span class="p">[(</span><span class="s2">&#34;blue&#34;</span><span class="p">,</span> <span class="s2">&#34;-&#34;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&#34;green&#34;</span><span class="p">,</span> <span class="s2">&#34;-&#34;</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ylabel</span><span class="o">=</span><span class="s2">&#34;GB/s&#34;</span><span class="p">,</span>  <span class="c1"># 用带宽吞吐量作为指标</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plot_name</span><span class="o">=</span><span class="s2">&#34;vector-add-performance&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">=</span><span class="p">{},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">provider</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&#34;npu&#34;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&#34;npu&#34;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 预热显存分配</span>
+</span></span><span class="line"><span class="cl">    <span class="n">quantiles</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&#34;torch&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ms</span><span class="p">,</span> <span class="n">min_ms</span><span class="p">,</span> <span class="n">max_ms</span> <span class="o">=</span> <span class="n">triton</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">do_bench</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">quantiles</span><span class="o">=</span><span class="n">quantiles</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&#34;triton&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">grid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">meta</span><span class="p">:</span> <span class="p">(</span><span class="n">triton</span><span class="o">.</span><span class="n">cdiv</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">meta</span><span class="p">[</span><span class="s2">&#34;BLOCK_SIZE&#34;</span><span class="p">]),)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># 封装一下 lambda 方便测速</span>
+</span></span><span class="line"><span class="cl">        <span class="k">def</span> <span class="nf">call_triton</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">            <span class="n">add_kernel</span><span class="p">[</span><span class="n">grid</span><span class="p">](</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">BLOCK_SIZE</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">ms</span><span class="p">,</span> <span class="n">min_ms</span><span class="p">,</span> <span class="n">max_ms</span> <span class="o">=</span> <span class="n">triton</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">do_bench</span><span class="p">(</span><span class="n">call_triton</span><span class="p">,</span> <span class="n">quantiles</span><span class="o">=</span><span class="n">quantiles</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 返回吞吐量计算 GB/s</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">gbps</span><span class="p">(</span><span class="n">ms</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 读x(4 bytes) + 读y(4 bytes) + 写output(4 bytes) = 12 bytes</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">12</span> <span class="o">*</span> <span class="n">size</span> <span class="o">/</span> <span class="n">ms</span> <span class="o">*</span> <span class="mf">1e-6</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">gbps</span><span class="p">(</span><span class="n">ms</span><span class="p">),</span> <span class="n">gbps</span><span class="p">(</span><span class="n">max_ms</span><span class="p">),</span> <span class="n">gbps</span><span class="p">(</span><span class="n">min_ms</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 运行 benchmark</span>
+</span></span><span class="line"><span class="cl"><span class="n">benchmark</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">print_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plots</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&#34;./bench_result&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>在使用这个测试工具之前，你需要先确保安装了<code>matplotlib</code>、<code>pandas</code>、<code>numpy</code>等基本数据科学库。最后你可以得到由matplotlib生成的性能测试图表。</p>
 <p>在本代码中，实际进行加法计算的用时非常少，大部分的用时都在信息搬运上，而带宽正描述的是这一行为的速率。通过运行这段代码，我们就成功得到了torch原生写法与我们自己写的triton算子之间的性能差异图表。</p>
 <p><img src="/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%942025120901.jpg" alt=""></p>
@@ -536,38 +536,49 @@
 			<div class="toc-title">Table of Contents</div>
 			<nav id="TableOfContents">
   <ul>
-    <li><a href="#1-什么是计算内核">1. 什么是“计算内核”？</a>
+    <li><a href="#向量相加-vector-addition">向量相加 （Vector Addition）</a></li>
+    <li><a href="#如何理解">如何理解？</a>
       <ul>
-        <li><a href="#计算内核kernel">计算内核（kernel）</a></li>
+        <li><a href="#1-什么是计算内核">1. 什么是“计算内核”？</a>
+          <ul>
+            <li><a href="#计算内核kernel">计算内核（kernel）</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-tritonjit装饰器在干什么">2. @triton.jit装饰器在干什么?</a></li>
+        <li><a href="#3-行业黑话">3. 行业黑话</a>
+          <ul>
+            <li><a href="#x_ptry_ptroutput_ptr"><code>x_ptr</code>、<code>y_ptr</code>、<code>output_ptr</code></a></li>
+            <li><a href="#block_sizetlconstexpr"><code>BLOCK_SIZE:tl.constexpr</code></a></li>
+            <li><a href="#什么是triton语境下的程序">什么是Triton语境下的“程序”?</a></li>
+            <li><a href="#为什么要固定block_size">为什么要固定block_size？</a></li>
+            <li><a href="#pid--tlprogram_idaxis--0"><code>pid = tl.program_id(axis = 0)</code></a></li>
+            <li><a href="#block_start--pid--block_size"><code>block_start = pid * BLOCK_SIZE</code></a></li>
+            <li><a href="#offsets--block_start--tlarange0-block_size"><code>offsets = block_start + tl.arange(0, BLOCK_SIZE)</code></a></li>
+            <li><a href="#mask--offsets--n_elements"><code>mask = offsets &lt; n_elements</code></a></li>
+            <li><a href="#x--tlloadx_ptr--offsets-maskmask"><code>x = tl.load(x_ptr + offsets, mask=mask)</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#这段代码做了什么">这段代码做了什么？</a></li>
       </ul>
     </li>
-    <li><a href="#2-tritonjit装饰器在干什么">2. @triton.jit装饰器在干什么?</a></li>
-    <li><a href="#3-行业黑话">3. 行业黑话</a>
+    <li><a href="#torch-add">torch add</a>
       <ul>
-        <li><a href="#x_ptry_ptroutput_ptr"><code>x_ptr</code>、<code>y_ptr</code>、<code>output_ptr</code></a></li>
-        <li><a href="#block_sizetlconstexpr"><code>BLOCK_SIZE:tl.constexpr</code></a></li>
-        <li><a href="#什么是triton语境下的程序">什么是Triton语境下的“程序”?</a></li>
-        <li><a href="#为什么要固定block_size">为什么要固定block_size？</a></li>
-        <li><a href="#pid--tlprogram_idaxis--0"><code>pid = tl.program_id(axis = 0)</code></a></li>
-        <li><a href="#block_start--pid--block_size"><code>block_start = pid * BLOCK_SIZE</code></a></li>
-        <li><a href="#offsets--block_start--tlarange0-block_size"><code>offsets = block_start + tl.arange(0, BLOCK_SIZE)</code></a></li>
-        <li><a href="#mask--offsets--n_elements"><code>mask = offsets &lt; n_elements</code></a></li>
-        <li><a href="#x--tlloadx_ptr--offsets-maskmask"><code>x = tl.load(x_ptr + offsets, mask=mask)</code></a></li>
+        <li><a href="#这段代码又是干什么的">这段代码又是干什么的？</a>
+          <ul>
+            <li><a href="#output--torchempty_likex"><code>output = torch.empty_like(x)</code></a></li>
+            <li><a href="#n_elements--outputnumel"><code>n_elements = output.numel()</code></a></li>
+            <li><a href="#grid--lambda-meta-tritoncdivn_elements-metablock_size-"><code>grid = lambda meta: (triton.cdiv(n_elements, meta[&#39;BLOCK_SIZE&#39;]), )</code></a></li>
+            <li><a href="#add_kernelgridx-y-output-n_elements-block_size1024"><code>add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=1024)</code></a>
+              <ul>
+                <li><a href="#meta"><code>meta</code></a></li>
+              </ul>
+            </li>
+            <li><a href="#return-output"><code>return output</code></a></li>
+          </ul>
+        </li>
       </ul>
     </li>
-    <li><a href="#这段代码做了什么">这段代码做了什么？</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#这段代码又是干什么的">这段代码又是干什么的？</a>
-      <ul>
-        <li><a href="#output--torchempty_likex"><code>output = torch.empty_like(x)</code></a></li>
-        <li><a href="#n_elements--outputnumel"><code>n_elements = output.numel()</code></a></li>
-        <li><a href="#grid--lambda-meta-tritoncdivn_elements-metablock_size-"><code>grid = lambda meta: (triton.cdiv(n_elements, meta[&#39;BLOCK_SIZE&#39;]), )</code></a></li>
-        <li><a href="#add_kernelgridx-y-output-n_elements-block_size1024"><code>add_kernel[grid](x, y, output, n_elements, BLOCK_SIZE=1024)</code></a></li>
-        <li><a href="#return-output"><code>return output</code></a></li>
-      </ul>
-    </li>
+    <li><a href="#如何测试运行速度">如何测试运行速度？</a></li>
   </ul>
 </nav>
 		</aside>
