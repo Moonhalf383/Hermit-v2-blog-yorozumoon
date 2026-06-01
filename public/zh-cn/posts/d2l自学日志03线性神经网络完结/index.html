@@ -11,29 +11,29 @@
 <meta name="theme-color" content="#494f5c">
 <meta name="msapplication-TileColor" content="#494f5c">
 
-  <meta itemprop="name" content="D2L自学日志03：线性神经网络完结">
-  <meta itemprop="description" content="忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。">
-  <meta itemprop="datePublished" content="2026-02-04T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2026-02-04T00:00:00+00:00">
-  <meta itemprop="wordCount" content="17761">
-  <meta itemprop="keywords" content="Blog,D2L,Python,Torch,机器学习"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/">
-  <meta property="og:site_name" content="Yorozumoon">
-  <meta property="og:title" content="D2L自学日志03：线性神经网络完结">
-  <meta property="og:description" content="忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。">
-  <meta property="og:locale" content="zh_cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-02-04T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-02-04T00:00:00+00:00">
-    <meta property="article:tag" content="Blog">
-    <meta property="article:tag" content="D2L">
-    <meta property="article:tag" content="Python">
-    <meta property="article:tag" content="Torch">
-    <meta property="article:tag" content="机器学习">
+	<meta itemprop="name" content="D2L自学日志03：线性神经网络完结">
+	<meta itemprop="description" content="忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。">
+	<meta itemprop="datePublished" content="2026-02-04T00:00:00+00:00">
+	<meta itemprop="dateModified" content="2026-02-04T00:00:00+00:00">
+	<meta itemprop="wordCount" content="17761">
+	<meta itemprop="keywords" content="Blog,D2L,Python,Torch,机器学习"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/">
+	<meta property="og:site_name" content="Yorozumoon">
+	<meta property="og:title" content="D2L自学日志03：线性神经网络完结">
+	<meta property="og:description" content="忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。">
+	<meta property="og:locale" content="zh_cn">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-02-04T00:00:00+00:00">
+		<meta property="article:modified_time" content="2026-02-04T00:00:00+00:00">
+		<meta property="article:tag" content="Blog">
+		<meta property="article:tag" content="D2L">
+		<meta property="article:tag" content="Python">
+		<meta property="article:tag" content="Torch">
+		<meta property="article:tag" content="机器学习">
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="D2L自学日志03：线性神经网络完结">
-  <meta name="twitter:description" content="忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="D2L自学日志03：线性神经网络完结">
+	<meta name="twitter:description" content="忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。">
 
 <script type="application/ld+json">
 {

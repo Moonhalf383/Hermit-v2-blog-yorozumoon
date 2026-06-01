@@ -47,3 +47,9 @@ name = "Lineance"
 url = "https://lineance.github.io/"
 avatar = "/images/Lineance.png"
 desc = "Learn. Journey. Bloom."
+
+[[list]]
+name = "剑归无影"
+url = "https://www.yingblog.net/"
+avatar = "/images/ying.png"
+desc = ""

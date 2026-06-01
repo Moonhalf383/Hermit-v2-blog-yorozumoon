@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>D2L on Yorozumoon</title>
-    <link>http://localhost:1313/zh-cn/tags/d2l/</link>
-    <description>Recent content in D2L on Yorozumoon</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Thu, 12 Feb 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/zh-cn/tags/d2l/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>D2L自学日志04：多层感知机</title>
-      <link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</link>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</guid>
-      <description>&lt;h1 id=&#34;本篇要素&#34;&gt;本篇要素：&lt;a href=&#34;#%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;因为之前的学习方法效率一言难尽，本篇尝试探索新的学习方法。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;多层感知机&#xA;&lt;ul&gt;&#xA;&lt;li&gt;从零实现&lt;/li&gt;&#xA;&lt;li&gt;简洁实现&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;模型选择、欠拟合、过拟合&lt;/li&gt;&#xA;&lt;li&gt;权重衰减&lt;/li&gt;&#xA;&lt;li&gt;暂退法（Dropout)&lt;/li&gt;&#xA;&lt;li&gt;向前传播、反向传播和计算图&lt;/li&gt;&#xA;&lt;li&gt;数值稳定性与模型初始化&lt;/li&gt;&#xA;&lt;li&gt;环境与分布偏移&lt;/li&gt;&#xA;&lt;li&gt;实战：Kaggle房价预测比赛&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;多层感知机&#34;&gt;多层感知机&lt;a href=&#34;#%e5%a4%9a%e5%b1%82%e6%84%9f%e7%9f%a5%e6%9c%ba&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;在我们之前的模型中，我们使用了仿射变换来表示从特征到目标的映射，然而仿射变换的&lt;em&gt;线性&lt;/em&gt;是很强的假设。虽然我们总是能通过回归运算找到最贴合实际的线性表示，但是当事实数据本来就并非线性时，线性回归就不免会出现系统性的误差。举个最简单的例子，假如你想用机器学习来探究自由落体运动中位移随时间的变化关系，假如你仍然在使用单层的线性回归模型，那么你永远都预测不到正确的结果。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>D2L自学日志03：线性神经网络完结</title>
-      <link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/</link>
-      <pubDate>Wed, 04 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/</guid>
-      <description>&lt;p&gt;忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>D2L自学日志02：线性回归</title>
-      <link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</link>
-      <pubDate>Wed, 07 Jan 2026 19:27:51 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</guid>
-      <description>&lt;h1 id=&#34;线性回归&#34;&gt;线性回归&lt;a href=&#34;#%e7%ba%bf%e6%80%a7%e5%9b%9e%e5%bd%92&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;线性假设是指目标可以表示为特征的加权和。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;举个例子：我想做一个预测房屋售价的模型。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>D2L自学日志01：preliminaries</title>
-      <link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</link>
-      <pubDate>Tue, 30 Dec 2025 18:14:36 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</guid>
-      <description>&lt;h1 id=&#34;机器学习基础知识&#34;&gt;机器学习基础知识&lt;a href=&#34;#%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;多维数组&lt;/li&gt;&#xA;&lt;li&gt;pandas（数据处理）&lt;/li&gt;&#xA;&lt;li&gt;linear-algebra（线性代数）&lt;/li&gt;&#xA;&lt;li&gt;calculus（微积分）&lt;/li&gt;&#xA;&lt;li&gt;autograd（自动微分）&lt;/li&gt;&#xA;&lt;li&gt;probability（概率）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;多维数组基本知识&#34;&gt;多维数组基本知识&lt;a href=&#34;#%e5%a4%9a%e7%bb%b4%e6%95%b0%e7%bb%84%e5%9f%ba%e6%9c%ac%e7%9f%a5%e8%af%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arange&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# tensor([0,1,2,3,4,5,6,7,8,9,10,11])&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;torch.arange(x,y,z)&lt;/code&gt;的语法和python原生的&lt;code&gt;range()&lt;/code&gt;语法一致，左闭右开，第三个参数为步长。&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>D2L on Yorozumoon</title>
+		<link>http://localhost:1313/zh-cn/tags/d2l/</link>
+		<description>Recent content in D2L on Yorozumoon</description>
+		<generator>Hugo</generator>
+		<language>zh-cn</language>
+		
+		
+		
+			<copyright>copyright by Moonhalf.</copyright>
+		
+		
+			<lastBuildDate>Thu, 12 Feb 2026 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/zh-cn/tags/d2l/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>D2L自学日志04：多层感知机</title>
+				<link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</link>
+				<pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/</guid>
+				<description>&lt;h1 id=&#34;本篇要素&#34;&gt;本篇要素：&lt;a href=&#34;#%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;因为之前的学习方法效率一言难尽，本篇尝试探索新的学习方法。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;多层感知机&#xA;&lt;ul&gt;&#xA;&lt;li&gt;从零实现&lt;/li&gt;&#xA;&lt;li&gt;简洁实现&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;模型选择、欠拟合、过拟合&lt;/li&gt;&#xA;&lt;li&gt;权重衰减&lt;/li&gt;&#xA;&lt;li&gt;暂退法（Dropout)&lt;/li&gt;&#xA;&lt;li&gt;向前传播、反向传播和计算图&lt;/li&gt;&#xA;&lt;li&gt;数值稳定性与模型初始化&lt;/li&gt;&#xA;&lt;li&gt;环境与分布偏移&lt;/li&gt;&#xA;&lt;li&gt;实战：Kaggle房价预测比赛&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;多层感知机&#34;&gt;多层感知机&lt;a href=&#34;#%e5%a4%9a%e5%b1%82%e6%84%9f%e7%9f%a5%e6%9c%ba&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;在我们之前的模型中，我们使用了仿射变换来表示从特征到目标的映射，然而仿射变换的&lt;em&gt;线性&lt;/em&gt;是很强的假设。虽然我们总是能通过回归运算找到最贴合实际的线性表示，但是当事实数据本来就并非线性时，线性回归就不免会出现系统性的误差。举个最简单的例子，假如你想用机器学习来探究自由落体运动中位移随时间的变化关系，假如你仍然在使用单层的线性回归模型，那么你永远都预测不到正确的结果。&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>D2L自学日志03：线性神经网络完结</title>
+				<link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/</link>
+				<pubDate>Wed, 04 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/</guid>
+				<description>&lt;p&gt;忙了大半个月考试，今天终于要回归主线了。考完试的这几天大概做了一些准备工作，试了下vivopencil，感觉效果不尽如人意，又退货了。前天尝试配了zerotier虚拟组网，效果还行，本来也想发篇博客（因为配置的过程中也在记录），但是感觉写的太水了，可能之后考虑搭建moon节点的时候会完善一下发出来。&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>D2L自学日志02：线性回归</title>
+				<link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</link>
+				<pubDate>Wed, 07 Jan 2026 19:27:51 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</guid>
+				<description>&lt;h1 id=&#34;线性回归&#34;&gt;线性回归&lt;a href=&#34;#%e7%ba%bf%e6%80%a7%e5%9b%9e%e5%bd%92&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;线性假设是指目标可以表示为特征的加权和。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;举个例子：我想做一个预测房屋售价的模型。&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>D2L自学日志01：preliminaries</title>
+				<link>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</link>
+				<pubDate>Tue, 30 Dec 2025 18:14:36 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/</guid>
+				<description>&lt;h1 id=&#34;机器学习基础知识&#34;&gt;机器学习基础知识&lt;a href=&#34;#%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;多维数组&lt;/li&gt;&#xA;&lt;li&gt;pandas（数据处理）&lt;/li&gt;&#xA;&lt;li&gt;linear-algebra（线性代数）&lt;/li&gt;&#xA;&lt;li&gt;calculus（微积分）&lt;/li&gt;&#xA;&lt;li&gt;autograd（自动微分）&lt;/li&gt;&#xA;&lt;li&gt;probability（概率）&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;多维数组基本知识&#34;&gt;多维数组基本知识&lt;a href=&#34;#%e5%a4%9a%e7%bb%b4%e6%95%b0%e7%bb%84%e5%9f%ba%e6%9c%ac%e7%9f%a5%e8%af%86&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;torch&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;torch&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arange&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;# tensor([0,1,2,3,4,5,6,7,8,9,10,11])&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;torch.arange(x,y,z)&lt;/code&gt;的语法和python原生的&lt;code&gt;range()&lt;/code&gt;语法一致，左闭右开，第三个参数为步长。&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

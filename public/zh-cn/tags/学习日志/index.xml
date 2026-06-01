@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>学习日志 on Yorozumoon</title>
-    <link>http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
-    <description>Recent content in 学习日志 on Yorozumoon</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Wed, 10 Dec 2025 08:33:43 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Triton自学日志 02FusedSoftmax</title>
-      <link>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/</link>
-      <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/</guid>
-      <description>&lt;h1 id=&#34;融合-softmax-fused-softmax&#34;&gt;融合 Softmax （Fused Softmax）&lt;a href=&#34;#%e8%9e%8d%e5%90%88-softmax-fused-softmax&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。&#xA;在此过程中，你会学习到：&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Triton自学日志 01VectorAdd</title>
-      <link>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/</link>
-      <pubDate>Tue, 09 Dec 2025 08:26:42 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/</guid>
-      <description>&lt;p&gt;在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。&lt;/p&gt;</description>
-    </item>
-  </channel>
+	<channel>
+		<title>学习日志 on Yorozumoon</title>
+		<link>http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
+		<description>Recent content in 学习日志 on Yorozumoon</description>
+		<generator>Hugo</generator>
+		<language>zh-cn</language>
+		
+		
+		
+			<copyright>copyright by Moonhalf.</copyright>
+		
+		
+			<lastBuildDate>Wed, 10 Dec 2025 08:33:43 +0800</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Triton自学日志 02FusedSoftmax</title>
+				<link>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/</link>
+				<pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/</guid>
+				<description>&lt;h1 id=&#34;融合-softmax-fused-softmax&#34;&gt;融合 Softmax （Fused Softmax）&lt;a href=&#34;#%e8%9e%8d%e5%90%88-softmax-fused-softmax&#34; class=&#34;anchor&#34; aria-hidden=&#34;true&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;none&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34;&#xA;      stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&#xA;      &lt;path d=&#34;M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3&#34;&gt;&lt;/path&gt;&#xA;      &lt;line x1=&#34;8&#34; y1=&#34;12&#34; x2=&#34;16&#34; y2=&#34;12&#34;&gt;&lt;/line&gt;&#xA;   &lt;/svg&gt;&lt;/a&gt;&lt;/h1&gt;&#xA;&lt;p&gt;在本节中，我们将使用 Triton 编写一个融合的 softmax 操作的程序。&#xA;在此过程中，你会学习到：&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Triton自学日志 01VectorAdd</title>
+				<link>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/</link>
+				<pubDate>Tue, 09 Dec 2025 08:26:42 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/</guid>
+				<description>&lt;p&gt;在经过了大约半个月的环境配置过程，终于成功在华为服务器上搭建起了vllm和triton开发环境，可以正式开始研究triton算子的写法了。但是我对triton算子没有任何概念，索性花了点时间逐行研究triton-ascend的官方文档示例代码。&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

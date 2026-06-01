@@ -11,34 +11,34 @@
 <meta name="theme-color" content="#494f5c">
 <meta name="msapplication-TileColor" content="#494f5c">
 
-  <meta itemprop="name" content="CS61Cfall20学习笔记02">
-  <meta itemprop="description" content="参考链接 fall20备份网站
+	<meta itemprop="name" content="CS61Cfall20学习笔记02">
+	<meta itemprop="description" content="参考链接 fall20备份网站
 课程视频youtube
 课程作业仓库
 csdiy介绍
 本篇要素 Lecture 6, 7, 8, 9, 10 Lab 2, 3 神秘的学习路径规划 因为对硬件知识不太感兴趣，所以规划了一条有点邪修的学习路径：">
-  <meta itemprop="datePublished" content="2026-05-24T19:59:56+08:00">
-  <meta itemprop="dateModified" content="2026-05-24T19:59:56+08:00">
-  <meta itemprop="wordCount" content="10226">
-  <meta itemprop="keywords" content="C语言,体系架构"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/">
-  <meta property="og:site_name" content="Yorozumoon">
-  <meta property="og:title" content="CS61Cfall20学习笔记02">
-  <meta property="og:description" content="参考链接 fall20备份网站
+	<meta itemprop="datePublished" content="2026-05-24T19:59:56+08:00">
+	<meta itemprop="dateModified" content="2026-05-24T19:59:56+08:00">
+	<meta itemprop="wordCount" content="10226">
+	<meta itemprop="keywords" content="C语言,体系架构"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/">
+	<meta property="og:site_name" content="Yorozumoon">
+	<meta property="og:title" content="CS61Cfall20学习笔记02">
+	<meta property="og:description" content="参考链接 fall20备份网站
 课程视频youtube
 课程作业仓库
 csdiy介绍
 本篇要素 Lecture 6, 7, 8, 9, 10 Lab 2, 3 神秘的学习路径规划 因为对硬件知识不太感兴趣，所以规划了一条有点邪修的学习路径：">
-  <meta property="og:locale" content="zh_cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-05-24T19:59:56+08:00">
-    <meta property="article:modified_time" content="2026-05-24T19:59:56+08:00">
-    <meta property="article:tag" content="C语言">
-    <meta property="article:tag" content="体系架构">
+	<meta property="og:locale" content="zh_cn">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-05-24T19:59:56+08:00">
+		<meta property="article:modified_time" content="2026-05-24T19:59:56+08:00">
+		<meta property="article:tag" content="C语言">
+		<meta property="article:tag" content="体系架构">
 
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="CS61Cfall20学习笔记02">
-  <meta name="twitter:description" content="参考链接 fall20备份网站
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="CS61Cfall20学习笔记02">
+	<meta name="twitter:description" content="参考链接 fall20备份网站
 课程视频youtube
 课程作业仓库
 csdiy介绍
@@ -481,175 +481,175 @@ $$<p>
 </ul>
 <p>在RISC-V中我们有32个寄存器，但是实际编写汇编代码的时候我们并不会直接写<code>x0</code>到<code>x31</code>的硬件编号，而是写对应的ABI名：</p>
 <table>
-  <thead>
-      <tr>
-          <th style="text-align: center">编号</th>
-          <th style="text-align: center"><strong>ABI 名</strong></th>
-          <th style="text-align: left">用途</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td style="text-align: center">x0</td>
-          <td style="text-align: center"><strong>zero</strong></td>
-          <td style="text-align: left">硬连线为 0，写入无效</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x1</td>
-          <td style="text-align: center"><strong>ra</strong></td>
-          <td style="text-align: left">返回地址（Return Address）</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x2</td>
-          <td style="text-align: center"><strong>sp</strong></td>
-          <td style="text-align: left">栈指针（Stack Pointer）</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x3</td>
-          <td style="text-align: center"><strong>gp</strong></td>
-          <td style="text-align: left">全局指针（Global Pointer）</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x4</td>
-          <td style="text-align: center"><strong>tp</strong></td>
-          <td style="text-align: left">线程指针（Thread Pointer）</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x5</td>
-          <td style="text-align: center"><strong>t0</strong></td>
-          <td style="text-align: left">临时变量 0</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x6</td>
-          <td style="text-align: center"><strong>t1</strong></td>
-          <td style="text-align: left">临时变量 1</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x7</td>
-          <td style="text-align: center"><strong>t2</strong></td>
-          <td style="text-align: left">临时变量 2</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x8</td>
-          <td style="text-align: center"><strong>s0</strong> 或 <strong>fp</strong></td>
-          <td style="text-align: left">保存寄存器 0 / 帧指针</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x9</td>
-          <td style="text-align: center"><strong>s1</strong></td>
-          <td style="text-align: left">保存寄存器 1</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x10</td>
-          <td style="text-align: center"><strong>a0</strong></td>
-          <td style="text-align: left">函数参数 0 / 返回值 0</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x11</td>
-          <td style="text-align: center"><strong>a1</strong></td>
-          <td style="text-align: left">函数参数 1 / 返回值 1</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x12</td>
-          <td style="text-align: center"><strong>a2</strong></td>
-          <td style="text-align: left">函数参数 2</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x13</td>
-          <td style="text-align: center"><strong>a3</strong></td>
-          <td style="text-align: left">函数参数 3</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x14</td>
-          <td style="text-align: center"><strong>a4</strong></td>
-          <td style="text-align: left">函数参数 4</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x15</td>
-          <td style="text-align: center"><strong>a5</strong></td>
-          <td style="text-align: left">函数参数 5</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x16</td>
-          <td style="text-align: center"><strong>a6</strong></td>
-          <td style="text-align: left">函数参数 6</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x17</td>
-          <td style="text-align: center"><strong>a7</strong></td>
-          <td style="text-align: left">函数参数 7</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x18</td>
-          <td style="text-align: center"><strong>s2</strong></td>
-          <td style="text-align: left">保存寄存器 2</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x19</td>
-          <td style="text-align: center"><strong>s3</strong></td>
-          <td style="text-align: left">保存寄存器 3</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x20</td>
-          <td style="text-align: center"><strong>s4</strong></td>
-          <td style="text-align: left">保存寄存器 4</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x21</td>
-          <td style="text-align: center"><strong>s5</strong></td>
-          <td style="text-align: left">保存寄存器 5</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x22</td>
-          <td style="text-align: center"><strong>s6</strong></td>
-          <td style="text-align: left">保存寄存器 6</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x23</td>
-          <td style="text-align: center"><strong>s7</strong></td>
-          <td style="text-align: left">保存寄存器 7</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x24</td>
-          <td style="text-align: center"><strong>s8</strong></td>
-          <td style="text-align: left">保存寄存器 8</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x25</td>
-          <td style="text-align: center"><strong>s9</strong></td>
-          <td style="text-align: left">保存寄存器 9</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x26</td>
-          <td style="text-align: center"><strong>s10</strong></td>
-          <td style="text-align: left">保存寄存器 10</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x27</td>
-          <td style="text-align: center"><strong>s11</strong></td>
-          <td style="text-align: left">保存寄存器 11</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x28</td>
-          <td style="text-align: center"><strong>t3</strong></td>
-          <td style="text-align: left">临时变量 3</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x29</td>
-          <td style="text-align: center"><strong>t4</strong></td>
-          <td style="text-align: left">临时变量 4</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x30</td>
-          <td style="text-align: center"><strong>t5</strong></td>
-          <td style="text-align: left">临时变量 5</td>
-      </tr>
-      <tr>
-          <td style="text-align: center">x31</td>
-          <td style="text-align: center"><strong>t6</strong></td>
-          <td style="text-align: left">临时变量 6</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th style="text-align: center">编号</th>
+					<th style="text-align: center"><strong>ABI 名</strong></th>
+					<th style="text-align: left">用途</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">x0</td>
+					<td style="text-align: center"><strong>zero</strong></td>
+					<td style="text-align: left">硬连线为 0，写入无效</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x1</td>
+					<td style="text-align: center"><strong>ra</strong></td>
+					<td style="text-align: left">返回地址（Return Address）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x2</td>
+					<td style="text-align: center"><strong>sp</strong></td>
+					<td style="text-align: left">栈指针（Stack Pointer）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x3</td>
+					<td style="text-align: center"><strong>gp</strong></td>
+					<td style="text-align: left">全局指针（Global Pointer）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x4</td>
+					<td style="text-align: center"><strong>tp</strong></td>
+					<td style="text-align: left">线程指针（Thread Pointer）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x5</td>
+					<td style="text-align: center"><strong>t0</strong></td>
+					<td style="text-align: left">临时变量 0</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x6</td>
+					<td style="text-align: center"><strong>t1</strong></td>
+					<td style="text-align: left">临时变量 1</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x7</td>
+					<td style="text-align: center"><strong>t2</strong></td>
+					<td style="text-align: left">临时变量 2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x8</td>
+					<td style="text-align: center"><strong>s0</strong> 或 <strong>fp</strong></td>
+					<td style="text-align: left">保存寄存器 0 / 帧指针</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x9</td>
+					<td style="text-align: center"><strong>s1</strong></td>
+					<td style="text-align: left">保存寄存器 1</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x10</td>
+					<td style="text-align: center"><strong>a0</strong></td>
+					<td style="text-align: left">函数参数 0 / 返回值 0</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x11</td>
+					<td style="text-align: center"><strong>a1</strong></td>
+					<td style="text-align: left">函数参数 1 / 返回值 1</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x12</td>
+					<td style="text-align: center"><strong>a2</strong></td>
+					<td style="text-align: left">函数参数 2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x13</td>
+					<td style="text-align: center"><strong>a3</strong></td>
+					<td style="text-align: left">函数参数 3</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x14</td>
+					<td style="text-align: center"><strong>a4</strong></td>
+					<td style="text-align: left">函数参数 4</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x15</td>
+					<td style="text-align: center"><strong>a5</strong></td>
+					<td style="text-align: left">函数参数 5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x16</td>
+					<td style="text-align: center"><strong>a6</strong></td>
+					<td style="text-align: left">函数参数 6</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x17</td>
+					<td style="text-align: center"><strong>a7</strong></td>
+					<td style="text-align: left">函数参数 7</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x18</td>
+					<td style="text-align: center"><strong>s2</strong></td>
+					<td style="text-align: left">保存寄存器 2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x19</td>
+					<td style="text-align: center"><strong>s3</strong></td>
+					<td style="text-align: left">保存寄存器 3</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x20</td>
+					<td style="text-align: center"><strong>s4</strong></td>
+					<td style="text-align: left">保存寄存器 4</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x21</td>
+					<td style="text-align: center"><strong>s5</strong></td>
+					<td style="text-align: left">保存寄存器 5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x22</td>
+					<td style="text-align: center"><strong>s6</strong></td>
+					<td style="text-align: left">保存寄存器 6</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x23</td>
+					<td style="text-align: center"><strong>s7</strong></td>
+					<td style="text-align: left">保存寄存器 7</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x24</td>
+					<td style="text-align: center"><strong>s8</strong></td>
+					<td style="text-align: left">保存寄存器 8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x25</td>
+					<td style="text-align: center"><strong>s9</strong></td>
+					<td style="text-align: left">保存寄存器 9</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x26</td>
+					<td style="text-align: center"><strong>s10</strong></td>
+					<td style="text-align: left">保存寄存器 10</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x27</td>
+					<td style="text-align: center"><strong>s11</strong></td>
+					<td style="text-align: left">保存寄存器 11</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x28</td>
+					<td style="text-align: center"><strong>t3</strong></td>
+					<td style="text-align: left">临时变量 3</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x29</td>
+					<td style="text-align: center"><strong>t4</strong></td>
+					<td style="text-align: left">临时变量 4</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x30</td>
+					<td style="text-align: center"><strong>t5</strong></td>
+					<td style="text-align: left">临时变量 5</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">x31</td>
+					<td style="text-align: center"><strong>t6</strong></td>
+					<td style="text-align: left">临时变量 6</td>
+			</tr>
+	</tbody>
 </table>
 <p>组成如下：</p>
 <ul>

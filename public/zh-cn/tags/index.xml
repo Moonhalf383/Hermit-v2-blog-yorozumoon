@@ -1,335 +1,341 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>标签墙 on Yorozumoon</title>
-    <link>http://localhost:1313/zh-cn/tags/</link>
-    <description>Recent content in 标签墙 on Yorozumoon</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <copyright>copyright by Moonhalf.</copyright>
-    <lastBuildDate>Sun, 24 May 2026 19:59:56 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>C语言</title>
-      <link>http://localhost:1313/zh-cn/tags/c%E8%AF%AD%E8%A8%80/</link>
-      <pubDate>Sun, 24 May 2026 19:59:56 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/c%E8%AF%AD%E8%A8%80/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>体系架构</title>
-      <link>http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84/</link>
-      <pubDate>Sun, 24 May 2026 19:59:56 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Llm</title>
-      <link>http://localhost:1313/zh-cn/tags/llm/</link>
-      <pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/llm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>http://localhost:1313/zh-cn/tags/python/</link>
-      <pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>自学</title>
-      <link>http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6/</link>
-      <pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>#Blog</title>
-      <link>http://localhost:1313/zh-cn/tags/%23blog/</link>
-      <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%23blog/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Archlinux</title>
-      <link>http://localhost:1313/zh-cn/tags/archlinux/</link>
-      <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/archlinux/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Blog</title>
-      <link>http://localhost:1313/zh-cn/tags/blog/</link>
-      <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/blog/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Linux</title>
-      <link>http://localhost:1313/zh-cn/tags/linux/</link>
-      <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/linux/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Neovim</title>
-      <link>http://localhost:1313/zh-cn/tags/neovim/</link>
-      <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/neovim/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>机器学习</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Sun, 01 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Jupyter</title>
-      <link>http://localhost:1313/zh-cn/tags/jupyter/</link>
-      <pubDate>Sat, 21 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/jupyter/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>教程</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</link>
-      <pubDate>Sat, 21 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>D2L</title>
-      <link>http://localhost:1313/zh-cn/tags/d2l/</link>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/d2l/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Pandas</title>
-      <link>http://localhost:1313/zh-cn/tags/pandas/</link>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/pandas/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Torch</title>
-      <link>http://localhost:1313/zh-cn/tags/torch/</link>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/torch/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>数据科学</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</link>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>随笔</title>
-      <link>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E7%AC%94/</link>
-      <pubDate>Sun, 08 Feb 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E7%AC%94/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Shell</title>
-      <link>http://localhost:1313/zh-cn/tags/shell/</link>
-      <pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/shell/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>平板</title>
-      <link>http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF/</link>
-      <pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>随意探索</title>
-      <link>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</link>
-      <pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Cpp</title>
-      <link>http://localhost:1313/zh-cn/tags/cpp/</link>
-      <pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/cpp/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>课内</title>
-      <link>http://localhost:1313/zh-cn/tags/%E8%AF%BE%E5%86%85/</link>
-      <pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E8%AF%BE%E5%86%85/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Brainstorm</title>
-      <link>http://localhost:1313/zh-cn/tags/brainstorm/</link>
-      <pubDate>Sun, 18 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/brainstorm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Test</title>
-      <link>http://localhost:1313/zh-cn/tags/test/</link>
-      <pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/test/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>博客搭建</title>
-      <link>http://localhost:1313/zh-cn/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
-      <pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>测试</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%B5%8B%E8%AF%95/</link>
-      <pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%B5%8B%E8%AF%95/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Fabric</title>
-      <link>http://localhost:1313/zh-cn/tags/fabric/</link>
-      <pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/fabric/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Java</title>
-      <link>http://localhost:1313/zh-cn/tags/java/</link>
-      <pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/java/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Minecraft</title>
-      <link>http://localhost:1313/zh-cn/tags/minecraft/</link>
-      <pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/minecraft/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>日常</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/</link>
-      <pubDate>Thu, 25 Dec 2025 10:27:53 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Conda</title>
-      <link>http://localhost:1313/zh-cn/tags/conda/</link>
-      <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/conda/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Venv</title>
-      <link>http://localhost:1313/zh-cn/tags/venv/</link>
-      <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/venv/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>工具不图鉴</title>
-      <link>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</link>
-      <pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>虚拟环境</title>
-      <link>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
-      <pubDate>Tue, 16 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Curl</title>
-      <link>http://localhost:1313/zh-cn/tags/curl/</link>
-      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/curl/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ohmyzsh</title>
-      <link>http://localhost:1313/zh-cn/tags/ohmyzsh/</link>
-      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/ohmyzsh/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Wget</title>
-      <link>http://localhost:1313/zh-cn/tags/wget/</link>
-      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/wget/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Zsh</title>
-      <link>http://localhost:1313/zh-cn/tags/zsh/</link>
-      <pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/zsh/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Ascend</title>
-      <link>http://localhost:1313/zh-cn/tags/ascend/</link>
-      <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/ascend/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Triton</title>
-      <link>http://localhost:1313/zh-cn/tags/triton/</link>
-      <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/triton/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>推理加速</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/</link>
-      <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>学习日志</title>
-      <link>http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
-      <pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>R-906</title>
-      <link>http://localhost:1313/zh-cn/tags/r-906/</link>
-      <pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/r-906/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>歌词</title>
-      <link>http://localhost:1313/zh-cn/tags/%E6%AD%8C%E8%AF%8D/</link>
-      <pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E6%AD%8C%E8%AF%8D/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>假名注音</title>
-      <link>http://localhost:1313/zh-cn/tags/%E5%81%87%E5%90%8D%E6%B3%A8%E9%9F%B3/</link>
-      <pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
-      <guid>http://localhost:1313/zh-cn/tags/%E5%81%87%E5%90%8D%E6%B3%A8%E9%9F%B3/</guid>
-      <description></description>
-    </item>
-  </channel>
+	<channel>
+		<title>标签墙 on Yorozumoon</title>
+		<link>http://localhost:1313/zh-cn/tags/</link>
+		<description>Recent content in 标签墙 on Yorozumoon</description>
+		<generator>Hugo</generator>
+		<language>zh-cn</language>
+		
+		
+		
+			<copyright>copyright by Moonhalf.</copyright>
+		
+		
+			<lastBuildDate>Sun, 24 May 2026 19:59:56 +0800</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/zh-cn/tags/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>C语言</title>
+				<link>http://localhost:1313/zh-cn/tags/c%E8%AF%AD%E8%A8%80/</link>
+				<pubDate>Sun, 24 May 2026 19:59:56 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/c%E8%AF%AD%E8%A8%80/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>体系架构</title>
+				<link>http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84/</link>
+				<pubDate>Sun, 24 May 2026 19:59:56 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Llm</title>
+				<link>http://localhost:1313/zh-cn/tags/llm/</link>
+				<pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/llm/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Python</title>
+				<link>http://localhost:1313/zh-cn/tags/python/</link>
+				<pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/python/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>自学</title>
+				<link>http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6/</link>
+				<pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>#Blog</title>
+				<link>http://localhost:1313/zh-cn/tags/%23blog/</link>
+				<pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%23blog/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Archlinux</title>
+				<link>http://localhost:1313/zh-cn/tags/archlinux/</link>
+				<pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/archlinux/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Blog</title>
+				<link>http://localhost:1313/zh-cn/tags/blog/</link>
+				<pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/blog/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Linux</title>
+				<link>http://localhost:1313/zh-cn/tags/linux/</link>
+				<pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/linux/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Neovim</title>
+				<link>http://localhost:1313/zh-cn/tags/neovim/</link>
+				<pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/neovim/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>机器学习</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+				<pubDate>Sun, 01 Mar 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Jupyter</title>
+				<link>http://localhost:1313/zh-cn/tags/jupyter/</link>
+				<pubDate>Sat, 21 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/jupyter/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>教程</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</link>
+				<pubDate>Sat, 21 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>D2L</title>
+				<link>http://localhost:1313/zh-cn/tags/d2l/</link>
+				<pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/d2l/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Pandas</title>
+				<link>http://localhost:1313/zh-cn/tags/pandas/</link>
+				<pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/pandas/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Torch</title>
+				<link>http://localhost:1313/zh-cn/tags/torch/</link>
+				<pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/torch/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>数据科学</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</link>
+				<pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>随笔</title>
+				<link>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E7%AC%94/</link>
+				<pubDate>Sun, 08 Feb 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E7%AC%94/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Shell</title>
+				<link>http://localhost:1313/zh-cn/tags/shell/</link>
+				<pubDate>Wed, 28 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/shell/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>平板</title>
+				<link>http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF/</link>
+				<pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E5%B9%B3%E6%9D%BF/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>随意探索</title>
+				<link>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</link>
+				<pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Cpp</title>
+				<link>http://localhost:1313/zh-cn/tags/cpp/</link>
+				<pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/cpp/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>课内</title>
+				<link>http://localhost:1313/zh-cn/tags/%E8%AF%BE%E5%86%85/</link>
+				<pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E8%AF%BE%E5%86%85/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Brainstorm</title>
+				<link>http://localhost:1313/zh-cn/tags/brainstorm/</link>
+				<pubDate>Sun, 18 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/brainstorm/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Test</title>
+				<link>http://localhost:1313/zh-cn/tags/test/</link>
+				<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/test/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>博客搭建</title>
+				<link>http://localhost:1313/zh-cn/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+				<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>测试</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%B5%8B%E8%AF%95/</link>
+				<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%B5%8B%E8%AF%95/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Fabric</title>
+				<link>http://localhost:1313/zh-cn/tags/fabric/</link>
+				<pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/fabric/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Java</title>
+				<link>http://localhost:1313/zh-cn/tags/java/</link>
+				<pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/java/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Minecraft</title>
+				<link>http://localhost:1313/zh-cn/tags/minecraft/</link>
+				<pubDate>Thu, 01 Jan 2026 21:00:42 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/minecraft/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>日常</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/</link>
+				<pubDate>Thu, 25 Dec 2025 10:27:53 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%97%A5%E5%B8%B8/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Conda</title>
+				<link>http://localhost:1313/zh-cn/tags/conda/</link>
+				<pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/conda/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Venv</title>
+				<link>http://localhost:1313/zh-cn/tags/venv/</link>
+				<pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/venv/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>工具不图鉴</title>
+				<link>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</link>
+				<pubDate>Tue, 16 Dec 2025 23:23:35 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B4/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>虚拟环境</title>
+				<link>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
+				<pubDate>Tue, 16 Dec 2025 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Curl</title>
+				<link>http://localhost:1313/zh-cn/tags/curl/</link>
+				<pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/curl/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Ohmyzsh</title>
+				<link>http://localhost:1313/zh-cn/tags/ohmyzsh/</link>
+				<pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/ohmyzsh/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Wget</title>
+				<link>http://localhost:1313/zh-cn/tags/wget/</link>
+				<pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/wget/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Zsh</title>
+				<link>http://localhost:1313/zh-cn/tags/zsh/</link>
+				<pubDate>Mon, 15 Dec 2025 23:25:53 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/zsh/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Ascend</title>
+				<link>http://localhost:1313/zh-cn/tags/ascend/</link>
+				<pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/ascend/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Triton</title>
+				<link>http://localhost:1313/zh-cn/tags/triton/</link>
+				<pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/triton/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>推理加速</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/</link>
+				<pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%8E%A8%E7%90%86%E5%8A%A0%E9%80%9F/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>学习日志</title>
+				<link>http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</link>
+				<pubDate>Wed, 10 Dec 2025 08:33:43 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>R-906</title>
+				<link>http://localhost:1313/zh-cn/tags/r-906/</link>
+				<pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/r-906/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>歌词</title>
+				<link>http://localhost:1313/zh-cn/tags/%E6%AD%8C%E8%AF%8D/</link>
+				<pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E6%AD%8C%E8%AF%8D/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>假名注音</title>
+				<link>http://localhost:1313/zh-cn/tags/%E5%81%87%E5%90%8D%E6%B3%A8%E9%9F%B3/</link>
+				<pubDate>Thu, 20 Nov 2025 23:03:14 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/tags/%E5%81%87%E5%90%8D%E6%B3%A8%E9%9F%B3/</guid>
+				<description></description>
+			</item>
+	</channel>
 </rss>
