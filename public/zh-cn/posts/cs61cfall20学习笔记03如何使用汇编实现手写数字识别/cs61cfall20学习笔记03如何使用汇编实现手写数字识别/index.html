@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
+<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
+<meta name="theme-color" content="#494f5c">
+<meta name="msapplication-TileColor" content="#494f5c">
+
+	<meta itemprop="name" content="Yorozumoon">
+	<meta itemprop="description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+csdiy介绍
+本篇要素 Lecture 11, 12, 13 Lab 4 Project 2 因为觉得看lecture太墨迹了，所以本篇的笔记直接从slide中提取得到。">
+	<meta itemprop="datePublished" content="2026-05-26T00:00:00+00:00">
+	<meta itemprop="dateModified" content="2026-05-26T00:00:00+00:00">
+	<meta itemprop="wordCount" content="7239">
+	<meta itemprop="keywords" content="Riscv,体系架构"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/">
+	<meta property="og:site_name" content="Yorozumoon">
+	<meta property="og:title" content="Yorozumoon">
+	<meta property="og:description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+csdiy介绍
+本篇要素 Lecture 11, 12, 13 Lab 4 Project 2 因为觉得看lecture太墨迹了，所以本篇的笔记直接从slide中提取得到。">
+	<meta property="og:locale" content="zh_cn">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-05-26T00:00:00+00:00">
+		<meta property="article:modified_time" content="2026-05-26T00:00:00+00:00">
+		<meta property="article:tag" content="Riscv">
+		<meta property="article:tag" content="体系架构">
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Yorozumoon">
+	<meta name="twitter:description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+csdiy介绍
+本篇要素 Lecture 11, 12, 13 Lab 4 Project 2 因为觉得看lecture太墨迹了，所以本篇的笔记直接从slide中提取得到。">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "",
+    "name": "",
+    "description": "参考链接 fall20备份网站\n课程视频bilibili(字幕翻译比较难绷)\n课程视频youtube\n课程作业仓库\ncsdiy介绍\n本篇要素 Lecture 11, 12, 13 Lab 4 Project 2 因为觉得看lecture太墨迹了，所以本篇的笔记直接从slide中提取得到。\n",
+    "keywords": ["riscv", "体系架构"],
+    "articleBody": "参考链接 fall20备份网站\n课程视频bilibili(字幕翻译比较难绷)\n课程视频youtube\n课程作业仓库\ncsdiy介绍\n本篇要素 Lecture 11, 12, 13 Lab 4 Project 2 因为觉得看lecture太墨迹了，所以本篇的笔记直接从slide中提取得到。\nLecture 11 RISC-V Instruction Format 计算机系统通过多层抽象来表示程序，从高到低：\n层次 示例 高级语言程序 C 代码：temp = v[k]; v[k] = v[k+1]; v[k+1] = temp; 汇编语言程序 RISC-V：lw x3,0(x10) / sw x4,4(x10) 等 机器语言程序 二进制：1000 1101 1110 0010 ... 硬件架构描述 模块框图 逻辑电路描述 电路原理图 在计算机中，所有数据都可以表示为数字。指令和数据都存储在内存中，因此都有内存地址。C语言中的指针存放的就是内存地址。程序计数器PC保存的则是正在执行的指令的地址。\n在risc-v中，所有的指令都是32位的。我们可以将这32位分为若干个“字段”，每个字段都分别告诉了编译器一些该指令的行为。\n根据字段的不同，我们可以将risc-v指令分为以下6个基本类型：\nR-Format，用于表示从寄存器到寄存器的计算； I-Format，用于表示寄存器和立即数之间的计算； S-Format，用于存储数据； B-Format，用于分支； U-Format，用于20位高位立即数； J-Format，用于跳转。 其中，我们来看看R-Format的字段组成：\n31 25 24 20 19 15 14 12 11 7 6 0 +---------+-------+-------+------+-------+---------+ | funct7 | rs2 | rs1 |funct3| rd | opcode | | 7 bit | 5 bit | 5 bit |3 bit | 5 bit | 7 bit | +---------+-------+-------+------+-------+---------+ 其中20-24、15-19以及7-11分别表示rs2，rs1以及rd，即两个源寄存器和一个目标寄存器，每个寄存器分5位，因为总共32个寄存器，刚好足够表示所有寄存器。rs1和rd的字段位置在所有基本类型中保持不变。\nLecture 12 运行程序 编译器 将高级语言翻译为汇编语言代码，可能包含伪指令。\n汇编器 汇编器伪操作 (Directives) 不产生机器指令，给汇编器提供方向：\n伪操作 功能 .text 后续内容放在代码段 .data 后续内容放在数据段 .globl sym 声明符号为全局可见 .string str 存储以 null 结尾的字符串 .word w1...wn 存储 n 个 32 位数据 伪指令替换 伪指令 替换为 mv t0, t1 addi t0, t1, 0 neg t0, t1 sub t0, zero, t1 li t0, imm addi t0, zero, imm（小立即数）或 lui+addi（大立即数） not t0, t1 xori t0, t1, -1 beqz t0, loop beq t0, zero, loop la t0, str lui t0, str[31:12] + addi t0, t0, str[11:0] 两次扫描（two-pass assembly） 第一遍扫描标签位置，第二扫描生成代码。\n目标文件 汇编器输出的 .o 文件包含：\n文件头：文件大小和各部分位置 text代码段 data数据段 重定向表 需要链接器修补的代码行 符号表 本文件中可供其他文件使用的项目（函数标签、全局数据） 调试信息 链接器 将多个目标文件.o链接为一个可执行文件.out。\n链接器的工作步骤如下：\n将每个.o文件的代码段拼接在一起。 将数据段拼接在一起，附加在代码段后面。 遍历重定向表，填入绝对地址。 因为数据拼接会导致代码段和数据段中内容的内存地址变化，链接器需要负责重定向内存地址。但是并不是所有地址都需要重定向。链接器中有四类基本地址：\nPC相对寻址。 beq和jal跳转。 无需重定向。 绝对函数地址。 目标函数太远的时候，编译器生成两步跳转auipc和jalr。 因为此时使用的是函数绝对地址，所以需要重定向。 外部函数引用 需要重定向。 静态数据引用 访问全局变量 需要重定向 链接方式 静态链接： 库更新时需要重新编译，包含整个库，但是没有运行时开销。 动态链接： 库更新时只需要更换.so文件即可。磁盘占用更小，但是运行时存在链接开销。 加载器 由操作系统完成。\n读取可执行文件头部，确定代码段和数据段大小 创建新的地址空间（足够容纳代码段、数据段和栈段） 将指令和数据从磁盘复制到内存 将程序参数复制到栈上 初始化寄存器（大部分清零，栈指针指向栈顶） 跳转到启动例程，将参数从栈传到寄存器，设置 PC Lecture 13 函数调用\u0026栈 risc-v中栈向低位地址增长，有专门的寄存器sp存储栈顶地址。\n寄存器的职责在上一篇笔记中有讲过，略过。\n函数调用的基本流程如下：\n函数调用者：\n将参数放入 a0-a7 如果参数超过 8 个，多余参数放栈上 保存需要保留的 caller-saved 寄存器 执行 jal ra, func_name（返回地址自动保存到 ra） 函数返回后，恢复保存的寄存器 返回值在 a0（和 a1） 被调用函数：\n分配栈帧：addi sp, sp, -N 保存 ra 和需要使用的 callee-saved 寄存器到栈 执行函数体 将返回值放入 a0 恢复 ra 和 callee-saved 寄存器 释放栈帧：addi sp, sp, N 执行 ret（即 jalr x0, ra, 0） 栈为递归提供了可能。但是因为栈空间有限，无限递归最终会导致栈空间溢出。\nLab 04 RISC-V Functions, Pointers Exercise 1: Debugging 实现一个超级链表，每个链表元素为一个数组。我们仍然需要实现一个map函数，对链表中每个数组元素的每个元素映射为新的元素。\nmap: addi sp, sp, -12 sw ra, 0(sp) sw s1, 4(sp) sw s0, 8(sp) beq a0, x0, done # if we were given a null pointer, we're done. add s0, a0, x0 # save address of this node in s0 add s1, a1, x0 # save address of function in s1 add t0, x0, x0 # t0 is a counter # remember that each node is 12 bytes long: # - 4 for the array pointer # - 4 for the size of the array # - 4 more for the pointer to the next node # also keep in mind that we should not make ANY assumption on which registers # are modified by the callees, even when we know the content inside the functions # we call. this is to enforce the abstraction barrier of calling convention. mapLoop: # add t1, s0, x0 # load the address of the array of current node into t1 lw t1, 0(s0) lw t2, 4(s0) # load the size of the node's array into t2 # add t1, t1, t0 # offset the array address by the count slli t3, t0, 2 add t1, t1, t3 lw a0, 0(t1) # load the value at that address into a0 addi sp, sp, -8 # save t0 and t1 before calling the function sw t0, 0(sp) sw t1, 4(sp) jalr s1 # call the function on that value. lw t1, 4(sp) # restore t1 (array element address) lw t0, 0(sp) # restore t0 (loop counter) addi sp, sp, 8 sw a0, 0(t1) # store the returned value back into the array addi t0, t0, 1 # increment the count bne t0, t2, mapLoop # repeat if we haven't reached the array size yet # la a0, 8(s0) # load the address of the next node into a0 lw a0, 8(s0) # lw a1, 0(s1) # put the address of the function back into a1 to prepare for the recursion mv a1, s1 jal map # recurse done: lw s0, 8(sp) lw s1, 4(sp) lw ra, 0(sp) addi sp, sp, 12 jr ra mystery: mul t1, a0, a0 add a0, t1, a0 jr ra 虽然没有要从头开始写一个map，但是非常坑。坑点如下：\n需要注意结构体中不同元素的类型，有的是地址，有的是数据。 被调用函数只负责存储保存寄存器的数值，假如临时寄存器中有仍然需要使用的数据，需要调用方主动保存临时寄存器数据。 此处调用mystery就必须保存t0和t1的数据到栈中。 原实现的错误如下：\ns0存的是结构体的地址而不是结构体第一个元素的内容。需要使用lw加载数据。 t1地址偏移不能直接加上计数器，需要计数器乘以数据类型大小才能得到正确的偏移量。 下一个结构体的地址直接读取第三个元素的内容而不应该读取第三个元素的地址。 传参函数指针应该传函数地址而非函数地址上的数据。 临时寄存器需要caller保存。 Exercise 2: Write a function without branches f(-3) = 6 f(-2) = 61 f(-1) = 17 f(0) = -38 f(1) = 19 f(2) = 42 f(3) = 5 想了半个小时没找到规律，结果发现压根没让找规律。答案直接读表即可。\nf: # YOUR CODE GOES HERE! addi a0, a0, 3 li t0, 4 mul a0, a0, t0 add a1, a1, a0 lw a0, 0(a1) jr ra # Always remember to jr ra after your function! Project 2 ANN in RISC-V At the end of this project you will have written all RISC-V assembly code necessary to run a simple Artificial Neural Network (ANN) on the Venus RISC-V simulator. In part A you will implement the basic operations such as a vector dot product, matrix-matrix multiplication, the argmax and an activation function. In part B you will combine these basic functions in order to load a pretrained network and execute it to classify handwritten digets from the MNIST benchmark set.\n在本proj中，我们会需要用汇编来实现手写数字识别。（可惜权重是预训练好的，本篇并不包含反向传播。）\nvenus网站。才发现这个网站是公开的。提供了语法诊断和断点测试，坏处是没有vim模式，所以写代码还是在nvim里进行。\nTEST ?= VENUS_LOG ?= .venus.log test: ifdef TEST cd unittests \u0026\u0026 python3 -m unittest unittests.$(TEST) -v else cd unittests \u0026\u0026 python3 -m unittest unittests.py -v endif debug: @nohup venus . -dm \u003e $(VENUS_LOG) 2\u003e\u00261 \u0026 @sleep 2 @echo \"Venus started in background (PID $$!), log: $(VENUS_LOG)\" @head -n 10 $(VENUS_LOG) @echo \"(showing first 10 lines, check log for more)\" stop: @pkill -f \"java.*venus\" \u0026\u0026 echo \"Venus stopped\" || echo \"No Venus process found\" .PHONY: test debug stop 写了一个简单的Makefile方便后续调试。\nvenus的调试界面。右边可以查看寄存器和内存的具体存储值，非常直观。\n![[CS61Cfall20学习笔记03_vdb.png]]\nabs工具函数：\nabs: # Prologue # return 0 bge a0, zero, done sub a0, zero, a0 # Epilogue done: ret Task A1: ReLU 一个朴实无华的激活函数，把所有小于0的数值归零。一般套在隐藏层后面，用来将一次函数转换为折线函数，更好的拟合数据分布。\nrelu: # Prologue addi sp, sp, -12 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) loop_begin: mv s0, a0 mv s1, a1 add t0, x0, x0 ble s1, x0, length_error loop_continue: slli t1, t0, 2 add t2, s0, t1 lw t3, 0(t2) addi t0,t0, 1 bgt t3, x0, loop_continue bgt t0, s1, loop_end sw x0, 0(t2) j loop_continue loop_end: lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) addi sp, sp, 12 ret length_error: li a0, 17 li a1, 78 ecall Project 2 要求自己完善单元测试，所以以下附上我的单元测试：\nclass TestRelu(TestCase): def test_simple(self): t = AssemblyTest(self, \"relu.s\") # create an array in the data section array0 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) # load address of `array0` into register a0 t.input_array(\"a0\", array0) # set a1 to the length of our array t.input_scalar(\"a1\", len(array0)) # call the relu function t.call(\"relu\") # check that the array0 was changed appropriately t.check_array(array0, [1, 0, 3, 0, 5, 0, 7, 0, 9]) # generate the `assembly/TestRelu_test_simple.s` file and run it through venus t.execute() def test_zero(self): t = AssemblyTest(self, \"relu.s\") array0 = t.array([]) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", 0) t.call(\"relu\") t.execute(code=78) def test_neg(self): t = AssemblyTest(self, \"relu.s\") array0 = t.array([1, 2, 3]) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", -1) t.call(\"relu\") t.execute(code=78) def test_massive_data(self): for _ in range(100): t = AssemblyTest(self, \"relu.s\") length = random.randint(10, 100) input_array = [random.randint(-100, 100) for _ in range(length)] array0 = t.array(input_array) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", length) t.call(\"relu\") t.check_array(array0, [(i if i \u003e 0 else 0) for i in input_array]) t.execute() @classmethod def tearDownClass(cls): print_coverage(\"relu.s\", verbose=False) 测试结果：\n![[CS61Cfall20学习笔记03_relu_test.png]]\nTask A2: Argmax 返回一个vector中最大元素的索引。用来进行最终的分类。\n.globl argmax .text argmax: addi sp, sp, -12 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) loop_start: mv s0, a0 mv s1, a1 add t0, x0, x0 # counter lw t1, 0(s0) # max add t5, x0, x0 # argmax ble s1, x0, length_error loop_continue: bge t0, s1, loop_end slli t2, t0, 2 addi t0, t0, 1 add t3, t2, s0 lw t4, 0(t3) ble t4, t1, loop_continue mv t1, t4 addi t5, t0, -1 j loop_continue loop_end: mv a0, t5 lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) addi sp, sp, 12 ret length_error: li a0, 17 li a1, 77 ecall 单元测试：\nclass TestArgmax(TestCase): def test_simple(self): t = AssemblyTest(self, \"argmax.s\") array0 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", len(array0)) t.call(\"argmax\") t.check_scalar(\"a0\", 8) t.execute() def test_simple_02(self): t = AssemblyTest(self, \"argmax.s\") array0 = t.array([1, -2, 3, -4, 9, 5, -6, 7, -8]) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", len(array0)) t.call(\"argmax\") t.check_scalar(\"a0\", 4) t.execute() def test_massive_data(self): for _ in range(100): t = AssemblyTest(self, \"argmax.s\") length = random.randint(10, 100) input_array = [random.randint(-100, 100) for _ in range(length)] array0 = t.array(input_array) # logging.debug({key: value for key, value in enumerate(input_array)}) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", length) t.call(\"argmax\") t.check_scalar(\"a0\", input_array.index(max(input_array))) t.execute() @classmethod def tearDownClass(cls): print_coverage(\"argmax.s\", verbose=False) ![[CS61Cfall20学习笔记03_argmax_test.png]]\n因为没有检测error分支导致测试覆盖率不达100%。修改单元测试：\ndef test_error(self): t = AssemblyTest(self, \"argmax.s\") array0 = t.array([1, -2, 3, -4, 9, 5, -6, 7, -8]) t.input_array(\"a0\", array0) t.input_scalar(\"a1\", -1) t.call(\"argmax\") t.execute(code=77) 添加以上测试，结果如下：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_argmax_new_test.png]]\nTask A3.1: Dot Product 向量点积。需要注意的是，在汇编中没有像C语言那样现成的多维数组，内存地址按照一维线性排布。所以，我们需要传入一个跨度参数用来辅助计算。\n.globl dot .text dot: addi sp, sp, -24 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) sw s2, 12(sp) sw s3, 16(sp) sw s4, 20(sp) mv s0, a0 # ptr of vec0 mv s1, a1 # ptr of vec1 mv s2, a2 # length ble s2, x0, error-length mv s3, a3 # stride of vec0 mv s4, a4 # stride of vec1 ble s3, x0, error-stride ble s4, x0, error-stride add t0, x0, x0 # counter add t1, x0, x0 # accumulator add t2, x0, x0 # head 0 add t3, x0, x0 # head 1 loop_start: bge t0, s2, loop_end slli t4, t0, 2 slli t5, t0, 2 mul t4, t4, s3 mul t5, t5, s4 add t2, t4, s0 add t3, t5, s1 lw t4, 0(t2) lw t5, 0(t3) mul t6, t4, t5 add t1, t1, t6 addi t0, t0, 1 j loop_start loop_end: mv a0, t1 lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) lw s2, 12(sp) lw s3, 16(sp) lw s4, 20(sp) addi sp, sp, 24 ret error-length: li a0, 17 li a1, 75 ecall error-stride: li a0, 17 li a1, 76 ecall 单元测试：\nclass TestDot(TestCase): def test_simple(self): t = AssemblyTest(self, \"dot.s\") array0 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) array1 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) t.input_array(\"a0\", array0) t.input_array(\"a1\", array1) t.input_scalar(\"a2\", 9) t.input_scalar(\"a3\", 1) t.input_scalar(\"a4\", 1) t.call(\"dot\") t.check_scalar(\"a0\", sum([i**2 for i in range(1, 10)])) t.execute() def test_error(self): t = AssemblyTest(self, \"dot.s\") array0 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) array1 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) t.input_array(\"a0\", array0) t.input_array(\"a1\", array1) t.input_scalar(\"a2\", -1) t.input_scalar(\"a3\", 1) t.input_scalar(\"a4\", 1) t.call(\"dot\") t.check_scalar(\"a0\", sum([i**2 for i in range(1, 10)])) t.execute(code=75) t = AssemblyTest(self, \"dot.s\") array0 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) array1 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) t.input_array(\"a0\", array0) t.input_array(\"a1\", array1) t.input_scalar(\"a2\", 9) t.input_scalar(\"a3\", -1) t.input_scalar(\"a4\", 1) t.call(\"dot\") t.check_scalar(\"a0\", sum([i**2 for i in range(1, 10)])) t.execute(code=76) t = AssemblyTest(self, \"dot.s\") array0 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) array1 = t.array([1, -2, 3, -4, 5, -6, 7, -8, 9]) t.input_array(\"a0\", array0) t.input_array(\"a1\", array1) t.input_scalar(\"a2\", 9) t.input_scalar(\"a3\", 1) t.input_scalar(\"a4\", -1) t.call(\"dot\") t.check_scalar(\"a0\", sum([i**2 for i in range(1, 10)])) t.execute(code=76) def test_massive_data(self): for _ in range(100): t = AssemblyTest(self, \"dot.s\") length = random.randint(1, 100) stride0 = random.randint(1, 100) stride1 = random.randint(1, 100) input_array_0 = [random.randint(-100, 100) for _ in range(length * stride0)] input_array_1 = [random.randint(-100, 100) for _ in range(length * stride1)] array0 = t.array(input_array_0) array1 = t.array(input_array_1) t.input_array(\"a0\", array0) t.input_array(\"a1\", array1) t.input_scalar(\"a2\", length) t.input_scalar(\"a3\", stride0) t.input_scalar(\"a4\", stride1) t.call(\"dot\") t.check_scalar( \"a0\", sum( [ i * j for i, j in zip( [input_array_0[k * stride0] for k in range(length)], [input_array_1[k * stride1] for k in range(length)], ) ] ), ) t.execute() @classmethod def tearDownClass(cls): print_coverage(\"dot.s\", verbose=False) （力大砖飞式单元测试）\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_dot_test_01.png]]\nTask A3.2: Matrix Multiplication 矩阵乘法。\n.globl matmul .text matmul: # Error checks ble a1, x0, error_m0 ble a2, x0, error_m0 ble a4, x0, error_m1 ble a5, x0, error_m1 bne a2, a4, error_not_match # Prologue addi sp, sp, -32 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) sw s2, 12(sp) sw s3, 16(sp) sw s4, 20(sp) sw s5, 24(sp) sw s6, 28(sp) mv s0, a0 # ptr of m0 mv s1, a1 # rows of m0 mv s2, a2 # columns of m0 mv s3, a3 # ptr of m1 mv s4, a4 # rows of m1 mv s5, a5 # columns of m1 mv s6, a6 # ptr of d li t0, 0 # row counter li t1, 0 # column counter outer_loop_start: bge t0, s1, outer_loop_end li t1, 0 # column counter inner_loop_start: bge t1, s5, inner_loop_end # call vec dot mul t2, s2, t0 slli t3, t1, 2 slli t4, t2, 2 add a0, s0, t4 add a1, s3, t3 mv a2, s2 li a3, 1 mv a4, s5 addi sp, sp, -8 sw t0, 0(sp) sw t1, 4(sp) jal dot lw t0, 0(sp) lw t1, 4(sp) addi sp, sp, 8 mul t2, s5, t0 # call dot end add t2, t2, t1 slli t2, t2, 2 add t2, t2, s6 sw a0, 0(t2) addi t1, t1, 1 j inner_loop_start inner_loop_end: addi t0, t0, 1 j outer_loop_start outer_loop_end: # Epilogue lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) lw s2, 12(sp) lw s3, 16(sp) lw s4, 20(sp) lw s5, 24(sp) lw s6, 28(sp) addi sp, sp, 32 ret error_m0: li a0, 17 li a1, 72 ecall error_m1: li a0, 17 li a1, 73 ecall error_not_match: li a0, 17 li a1, 74 ecall 单元测试。需要手动拉高venus的栈空间大小，不然会爆栈。\nclass TestMatmul(TestCase): def do_matmul(self, m0, m0_rows, m0_cols, m1, m1_rows, m1_cols, result, code=0): t = AssemblyTest(self, \"matmul.s\") # we need to include (aka import) the dot.s file since it is used by matmul.s t.include(\"dot.s\") # create arrays for the arguments and to store the result array0 = t.array(m0) array1 = t.array(m1) array_out = t.array([0] * len(result)) # load address of input matrices and set their dimensions t.input_array(\"a0\", array0) t.input_scalar(\"a1\", m0_rows) t.input_scalar(\"a2\", m0_cols) t.input_array(\"a3\", array1) t.input_scalar(\"a4\", m1_rows) t.input_scalar(\"a5\", m1_cols) t.input_array(\"a6\", array_out) # call the matmul function t.call(\"matmul\") # check the content of the output array t.check_array(array_out, result) # generate the assembly file and run it through venus, we expect the simulation to exit with code `code` t.execute(code=code) def test_simple(self): self.do_matmul( [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3, [30, 36, 42, 66, 81, 96, 102, 126, 150], ) def test_error(self): self.do_matmul( [1, 2, 3, 4, 5, 6, 7, 8, 9], 0, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3, [30, 36, 42, 66, 81, 96, 102, 126, 150], code=72, ) self.do_matmul( [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9], 0, 3, [30, 36, 42, 66, 81, 96, 102, 126, 150], code=73, ) self.do_matmul( [1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 3, [1, 2, 3, 4, 5, 6, 7, 8, 9], 1, 9, [30, 36, 42, 66, 81, 96, 102, 126, 150], code=74, ) def test_massive_data(self): for _ in range(20): row_0 = random.randint(10, 20) col_0 = random.randint(10, 20) col_1 = random.randint(10, 20) array_0 = [random.randint(-20, 20) for _ in range(row_0 * col_0)] array_1 = [random.randint(-20, 20) for _ in range(col_1 * col_0)] result = [ sum( [ array_0[i * col_0 + k] * array_1[j + col_1 * k] for k in range(col_0) ] ) for i in range(row_0) for j in range(col_1) ] self.do_matmul(array_0, row_0, col_0, array_1, col_0, col_1, result) @classmethod def tearDownClass(cls): print_coverage(\"matmul.s\", verbose=False) ![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_matmul_test.png]]\n（现在突然发现没有使用utils中提供的退出程序函数。懒得修改了。）\nTask B1: Read Matrix 从一个矩阵二进制文件中读取矩阵内容并存储在内存上。需要分配堆内存。\n.globl read_matrix .text read_matrix: # Prologue addi sp, sp, -16 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) sw s2, 12(sp) mv s0, a0 # ptr of filename mv s1, a1 # ptr of rows mv s2, a2 # ptr of columns # fopen mv a1, s0 li a2, 0 jal fopen blt a0, x0, error_fopen addi sp, sp, -4 sw s4, 0(sp) mv s4, a0 # file discriptor # fread rows and columns information mv a1, s4 mv a2, s1 # read row number into s1's target li a3, 4 jal fread li t0, 4 blt a0, t0, error_fread mv a1, s4 mv a2, s2 # read col number into s2's target li a3, 4 jal fread li t0, 4 blt a0, t0, error_fread # malloc heap space lw t1, 0(s1) lw t2, 0(s2) mul t0, t1, t2 # matrix size addi sp, sp, -4 sw s5, 0(sp) mv s5, t0 slli a0, t0, 2 jal malloc beq a0, x0, error_malloc addi sp, sp, -4 sw s3, 0(sp) mv s3, a0 # ptr to the heap space addi sp, sp, -4 sw s6, 0(sp) mv s6, a0 # ptr to the buffer # read data read_loop_start: ble s5, x0, read_loop_end mv a1, s4 mv a2, s6 li a3, 4 jal fread li t0, 4 blt a0, t0, error_fread addi s6, s6, 4 addi s5, s5, -1 j read_loop_start read_loop_end: mv a0, s4 jal fclose bne a0, x0, error_fclose mv a0, s3 lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) lw s2, 12(sp) lw s3, 16(sp) lw s4, 20(sp) lw s5, 24(sp) lw s6, 28(sp) addi sp, sp, 32 ret error_malloc: li a1, 88 jal exit2 error_fopen: li a1, 90 jal exit2 error_fread: li a1, 91 jal exit2 error_fclose: li a1, 92 jal exit2 单元测试：\nclass TestReadMatrix(TestCase): def do_read_matrix(self, fail=\"\", code=0): t = AssemblyTest(self, \"read_matrix.s\") t.include(\"utils.s\") # load address to the name of the input file into register a0 t.input_read_filename(\"a0\", \"inputs/test_read_matrix/test_input.bin\") # allocate space to hold the rows and cols output parameters rows = t.array([-1]) cols = t.array([-1]) # load the addresses to the output parameters into the argument registers t.input_array(\"a1\", rows) t.input_array(\"a2\", cols) # TODO # call the read_matrix function t.call(\"read_matrix\") # check the output from the function t.check_array_pointer(\"a0\", [i for i in range(1, 10)]) t.check_array(rows, [3]) t.check_array(cols, [3]) # TODO # generate assembly and run it through venus t.execute(fail=fail, code=code) def test_error(self): self.do_read_matrix(\"malloc\", 88) self.do_read_matrix(\"fopen\", 90) self.do_read_matrix(\"fread\", 91) self.do_read_matrix(\"fclose\", 92) def test_simple(self): self.do_read_matrix() @classmethod def tearDownClass(cls): print_coverage(\"read_matrix.s\", verbose=False) Task B2: Write Matrix 将内存中的矩阵写入文件中。\n.globl write_matrix .text write_matrix: # Prologue addi sp, sp, -24 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) sw s2, 12(sp) sw s3, 16(sp) sw s4, 20(sp) mv s0, a0 # ptr to the filename mv s1, a1 # ptr to the beginning mv s2, a2 # num of rows mv s3, a3 # num of cols # open a file mv a1, s0 li a2, 1 jal fopen blt a0, x0, error_fopen mv s4, a0 # file discriptor # write content addi sp, sp, -8 sw s2, 0(sp) sw s3, 4(sp) mv a1, s4 mv a2, sp li a3, 2 li a4, 4 jal fwrite li t0, 2 blt a0, t0, error_fwrite lw s2, 0(sp) lw s3, 4(sp) addi sp, sp, 8 mv a1, s4 mv a2, s1 mul a3, s2, s3 li a4, 4 jal fwrite mul t0, s2, s3 blt a0, t0, error_fwrite # close file mv a0, s4 jal fclose bne a0, x0, error_fclose # Epilogue lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) lw s2, 12(sp) lw s3, 16(sp) lw s4, 20(sp) addi sp, sp, 24 ret error_fopen: li a1, 93 jal exit2 error_fwrite: li a1, 94 jal exit2 error_fclose: li a1, 95 jal exit2 栈操作应该尽可能简单，塞数据一时爽，改错火葬场。\n单元测试：\nclass TestWriteMatrix(TestCase): def do_write_matrix(self, fail=\"\", code=0): t = AssemblyTest(self, \"write_matrix.s\") outfile = \"outputs/test_write_matrix/student.bin\" # load output file name into a0 register t.input_write_filename(\"a0\", outfile) # load input array and other arguments array0 = t.array([i for i in range(1, 10)]) t.input_array(\"a1\", array0) t.input_scalar(\"a2\", 3) t.input_scalar(\"a3\", 3) # TODO # call `write_matrix` function t.call(\"write_matrix\") # generate assembly and run it through venus t.execute(fail=fail, code=code) # compare the output file against the reference (skip for error tests since no file is written) if not fail: t.check_file_output(outfile, \"outputs/test_write_matrix/reference.bin\") def test_simple(self): self.do_write_matrix() def test_error(self): self.do_write_matrix(fail=\"fopen\", code=93) self.do_write_matrix(fail=\"fwrite\", code=94) self.do_write_matrix(fail=\"fclose\", code=95) @classmethod def tearDownClass(cls): print_coverage(\"write_matrix.s\", verbose=False) Task B3: Classify 把前面的所有函数组合成我们需要的图像分类器。图像分类的原理很简单：读取图像矩阵，经过一些矩阵计算之后得到该图像与不同分类之间关联性的分值，我们从中直接选出分数最高的分类作为结果。打分的步骤本质mlp，激活函数为relu。线性层权重为预训练权重。\n在使用汇编实现该函数的时候，因为数据量太大，数据全部塞在栈上非常难管理，比如中间两个线性层以及输入的图像矩阵需要我们将矩阵长宽和数据指针找地方存起来，光这些数据就有9个word。所以，我们需要单独malloc一块堆空间来存放这些数据。除此之外，每一个中间矩阵也需要我们提前分配堆空间来存放，因为我们前面的matmul实现并没有关心算出来的矩阵存在哪。\n另外一个坑点是：argc会比输入的参数数大1，argv[0]通常是程序自身的名字。因此所有参数读取都需要后移4个字节。\n代码实现如下：\n.globl classify .text classify: addi sp, sp, -28 sw ra, 0(sp) sw s0, 4(sp) sw s1, 8(sp) sw s2, 12(sp) sw s3, 16(sp) # ptr of matrix data sw s4, 20(sp) sw s5, 24(sp) mv s0, a0 # argc mv s1, a1 # **argv mv s2, a2 # print # check argc li t0, 5 bne s0, t0, error_argc # malloc space for matrix data li a0, 40 jal malloc beq a0, x0, error_malloc mv s3, a0 # Load pretrained m0 lw a0, 4(s1) addi t0, s3, 4 addi t1, s3, 8 mv a1, t0 mv a2, t1 jal read_matrix sw a0, 0(s3) # Load pretrained m1 lw a0, 8(s1) addi t0, s3, 16 addi t1, s3, 20 mv a1, t0 mv a2, t1 jal read_matrix sw a0, 12(s3) # Load input matrix lw a0, 12(s1) addi t0, s3, 28 addi t1, s3, 32 mv a1, t0 mv a2, t1 jal read_matrix sw a0, 24(s3) # malloc space for mid-matrix lw t0, 4(s3) lw t1, 32(s3) mul a0, t0, t1 slli a0, a0, 2 jal malloc beq a0, x0, error_malloc mv s4, a0 lw t0, 16(s3) lw t1, 32(s3) mul a0, t0, t1 slli a0, a0, 2 jal malloc beq a0, x0, error_malloc mv s5, a0 # 1. LINEAR LAYER: m0 * input # 2. NONLINEAR LAYER: ReLU(m0 * input) # 3. LINEAR LAYER: m1 * ReLU(m0 * input) # matmul 01 lw a0, 0(s3) lw a1, 4(s3) lw a2, 8(s3) lw a3, 24(s3) lw a4, 28(s3) lw a5, 32(s3) mv a6, s4 jal matmul # relu mv a0, s4 lw t0, 4(s3) lw t1, 32(s3) mul a1, t0, t1 jal relu # matmul 02 lw a0, 12(s3) lw a1, 16(s3) lw a2, 20(s3) mv a3, s4 lw a4, 4(s3) lw a5, 32(s3) mv a6, s5 jal matmul # Write output matrix lw a0, 16(s1) mv a1, s5 lw a2, 16(s3) lw a3, 32(s3) jal write_matrix # Call argmax mv a0, s5 lw t0, 16(s3) lw t1, 32(s3) mul a1, t0, t1 jal argmax sw a0, 36(s3) # Print classification bne s2, x0, continue lw a1, 36(s3) jal print_int # Print newline afterwards for clarity continue: lw a0, 36(s3) lw ra, 0(sp) lw s0, 4(sp) lw s1, 8(sp) lw s2, 12(sp) lw s3, 16(sp) lw s4, 20(sp) lw s5, 24(sp) addi sp, sp, 28 ret error_argc: li a1, 89 jal exit2 error_malloc: li a1, 88 jal exit2 单元测试：\nclass TestClassify(TestCase): def make_test(self): t = AssemblyTest(self, \"classify.s\") t.include(\"argmax.s\") t.include(\"dot.s\") t.include(\"matmul.s\") t.include(\"read_matrix.s\") t.include(\"relu.s\") t.include(\"write_matrix.s\") return t def test_simple0_input0(self): t = self.make_test() out_file = \"outputs/test_basic_main/student0.bin\" ref_file = \"outputs/test_basic_main/reference0.bin\" args = [ \"inputs/simple0/bin/m0.bin\", \"inputs/simple0/bin/m1.bin\", \"inputs/simple0/bin/inputs/input0.bin\", out_file, ] # call classify function t.input_scalar(\"a2\", 0) t.call(\"classify\") # generate assembly and pass program arguments directly to venus t.execute(args=args) # compare the output file and t.check_file_output(out_file, ref_file) t.check_stdout(\"2\") # compare the classification output with `check_stdout` @classmethod def tearDownClass(cls): print_coverage(\"classify.s\", verbose=False) 只补全了简单测试，多的测试懒得设计了。\n测试结果：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_classify_test.png]]\n全测试：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_ultimate_test.png]]\nMNIST测试 cs61c提供了一系列手写数字样例，并提供了图像预览脚本。\n手写6：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_6_input.png]]\n预测结果：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_6_output.png]]\n输出结果为6。预测正确。\n手写9：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_9.png]]\n预测结果：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_9_output.png]]\n输出结果为9。预测正确。\n我的真迹：\n![[280ea9dfe584fdbb7bde9f63409549a8.jpg]]\n![[b9e6a2bf6d4bedbe5bb3b8ee63d6213f.jpg]]\n预测结果：\n![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_Moonhalf_2_outptu.png]]\n猜错了。残念。\n",
+    "wordCount" : "7239",
+    "inLanguage": "zh-cn",
+    "datePublished": "2026-05-26T00:00:00Z",
+    "dateModified": "2026-05-26T00:00:00Z",
+    "author":{
+        "@type": "Person",
+        "name": "Moonhalf",
+        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
+        },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Yorozumoon",
+      "description": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http://localhost:1313/favicon.ico"
+      }
+    }
+}
+</script><title></title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.6299fa705b08646ace3b98e467f44e5c80af31ec085da1f733f61f31d8390764.css" integrity="sha256-Ypn6cFsIZGrOO5jkZ/ROXICvMewIXaH3M/YfMdg5B2Q=" crossorigin="anonymous">
+	</head>
+
+<body id="page">
+<header id="site-header" class="animated slideInUp">
+	<div class="hdr-wrapper section-inner">
+		<div class="hdr-left">
+			<div class="site-branding">
+				<a href="http://localhost:1313/">Yorozumoon</a>
+			</div>
+			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
+		</div>
+		<div class="hdr-right hdr-icons">
+			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
+   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+   <path
+      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+   </path>
+</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+   </svg></button>
+		</div>
+	</div>
+</header>
+<div id="mobile-menu" class="animated fast">
+	<ul>
+		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
+		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
+		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
+		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
+	</ul>
+</div>
+
+	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
+			<header class="post-header">
+				<div class="post-date"><span>May 26, 2026</span></div>
+				<h1></h1>
+			</header>
+			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
+   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+   <line x1="16" y1="8" x2="2" y2="22"></line>
+   <line x1="17.5" y1="15" x2="9" y2="15"></line>
+</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+      <line x1="7" y1="7" x2="7" y2="7"></line>
+   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/riscv">riscv</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84">体系架构</a></span></p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+   </svg>7239&nbspWords 阅读时长32 Minutes, 54 Seconds</p>
+<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+   </svg>2026-05-26 08:00 &#43;0800
+</p></div>
+			<hr class="post-end">
+			<div class="content">
+				 <h1 id="参考链接">参考链接<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><a href="https://www.learncs.site/docs/curriculum-resource/cs61c/syllabus">fall20备份网站</a></p>
+<p><a href="https://www.bilibili.com/video/BV1fC4y147iZ/?share_source=copy_web&amp;vd_source=7c3823b46a52fbbef42b79e01d55c300">课程视频bilibili(字幕翻译比较难绷)</a></p>
+<p><a href="https://www.youtube.com/playlist?list=PL0j-r-omG7i0-mnsxN5T4UcVS1Di0isqf">课程视频youtube</a></p>
+<p><a href="https://github.com/InsideEmpire/CS61C-Assignment">课程作业仓库</a></p>
+<p><a href="https://web.archive.org/web/20220120134001/https://inst.eecs.berkeley.edu/~cs61c/fa20/">csdiy介绍</a></p>
+<h1 id="本篇要素">本篇要素<a href="#%e6%9c%ac%e7%af%87%e8%a6%81%e7%b4%a0" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<ul>
+<li>Lecture 11, 12, 13</li>
+<li>Lab 4</li>
+<li>Project 2</li>
+</ul>
+<p>因为觉得看lecture太墨迹了，所以本篇的笔记直接从slide中提取得到。</p>
+<h1 id="lecture-11-risc-v-instruction-format">Lecture 11 RISC-V Instruction Format<a href="#lecture-11-risc-v-instruction-format" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>计算机系统通过多层抽象来表示程序，从高到低：</p>
+<table>
+	<thead>
+			<tr>
+					<th>层次</th>
+					<th>示例</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>高级语言程序</td>
+					<td>C 代码：<code>temp = v[k]; v[k] = v[k+1]; v[k+1] = temp;</code></td>
+			</tr>
+			<tr>
+					<td>汇编语言程序</td>
+					<td>RISC-V：<code>lw x3,0(x10)</code> / <code>sw x4,4(x10)</code> 等</td>
+			</tr>
+			<tr>
+					<td>机器语言程序</td>
+					<td>二进制：<code>1000 1101 1110 0010 ...</code></td>
+			</tr>
+			<tr>
+					<td>硬件架构描述</td>
+					<td>模块框图</td>
+			</tr>
+			<tr>
+					<td>逻辑电路描述</td>
+					<td>电路原理图</td>
+			</tr>
+	</tbody>
+</table>
+<p>在计算机中，所有数据都可以表示为数字。指令和数据都存储在内存中，因此都有内存地址。C语言中的指针存放的就是内存地址。程序计数器PC保存的则是正在执行的指令的地址。</p>
+<p>在risc-v中，所有的指令都是32位的。我们可以将这32位分为若干个“字段”，每个字段都分别告诉了编译器一些该指令的行为。</p>
+<p>根据字段的不同，我们可以将risc-v指令分为以下6个基本类型：</p>
+<ul>
+<li>R-Format，用于表示从寄存器到寄存器的计算；</li>
+<li>I-Format，用于表示寄存器和立即数之间的计算；</li>
+<li>S-Format，用于存储数据；</li>
+<li>B-Format，用于分支；</li>
+<li>U-Format，用于20位高位立即数；</li>
+<li>J-Format，用于跳转。</li>
+</ul>
+<p>其中，我们来看看R-Format的字段组成：</p>
+<pre tabindex="0"><code>31       25  24   20  19   15  14  12  11    7  6      0
++---------+-------+-------+------+-------+---------+
+| funct7  |  rs2  |  rs1  |funct3|  rd   | opcode  |
+|  7 bit  | 5 bit | 5 bit |3 bit | 5 bit |  7 bit  |
++---------+-------+-------+------+-------+---------+
+</code></pre><p>其中<code>20-24</code>、<code>15-19</code>以及<code>7-11</code>分别表示rs2，rs1以及rd，即两个源寄存器和一个目标寄存器，每个寄存器分5位，因为总共32个寄存器，刚好足够表示所有寄存器。rs1和rd的字段位置在所有基本类型中保持不变。</p>
+<h1 id="lecture-12-运行程序">Lecture 12 运行程序<a href="#lecture-12-%e8%bf%90%e8%a1%8c%e7%a8%8b%e5%ba%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="编译器">编译器<a href="#%e7%bc%96%e8%af%91%e5%99%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>将高级语言翻译为汇编语言代码，可能包含伪指令。</p>
+<h2 id="汇编器">汇编器<a href="#%e6%b1%87%e7%bc%96%e5%99%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<h3 id="汇编器伪操作-directives">汇编器伪操作 (Directives)<a href="#%e6%b1%87%e7%bc%96%e5%99%a8%e4%bc%aa%e6%93%8d%e4%bd%9c-directives" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>不产生机器指令，给汇编器提供方向：</p>
+<table>
+	<thead>
+			<tr>
+					<th>伪操作</th>
+					<th>功能</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>.text</code></td>
+					<td>后续内容放在代码段</td>
+			</tr>
+			<tr>
+					<td><code>.data</code></td>
+					<td>后续内容放在数据段</td>
+			</tr>
+			<tr>
+					<td><code>.globl sym</code></td>
+					<td>声明符号为全局可见</td>
+			</tr>
+			<tr>
+					<td><code>.string str</code></td>
+					<td>存储以 null 结尾的字符串</td>
+			</tr>
+			<tr>
+					<td><code>.word w1...wn</code></td>
+					<td>存储 n 个 32 位数据</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="伪指令替换">伪指令替换<a href="#%e4%bc%aa%e6%8c%87%e4%bb%a4%e6%9b%bf%e6%8d%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<table>
+	<thead>
+			<tr>
+					<th>伪指令</th>
+					<th>替换为</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>mv t0, t1</code></td>
+					<td><code>addi t0, t1, 0</code></td>
+			</tr>
+			<tr>
+					<td><code>neg t0, t1</code></td>
+					<td><code>sub t0, zero, t1</code></td>
+			</tr>
+			<tr>
+					<td><code>li t0, imm</code></td>
+					<td><code>addi t0, zero, imm</code>（小立即数）或 <code>lui</code>+<code>addi</code>（大立即数）</td>
+			</tr>
+			<tr>
+					<td><code>not t0, t1</code></td>
+					<td><code>xori t0, t1, -1</code></td>
+			</tr>
+			<tr>
+					<td><code>beqz t0, loop</code></td>
+					<td><code>beq t0, zero, loop</code></td>
+			</tr>
+			<tr>
+					<td><code>la t0, str</code></td>
+					<td><code>lui t0, str[31:12]</code> + <code>addi t0, t0, str[11:0]</code></td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="两次扫描two-pass-assembly">两次扫描（two-pass assembly）<a href="#%e4%b8%a4%e6%ac%a1%e6%89%ab%e6%8f%8ftwo-pass-assembly" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h3>
+<p>第一遍扫描标签位置，第二扫描生成代码。</p>
+<h2 id="目标文件">目标文件<a href="#%e7%9b%ae%e6%a0%87%e6%96%87%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>汇编器输出的 <code>.o</code> 文件包含：</p>
+<ul>
+<li>文件头：文件大小和各部分位置</li>
+<li>text代码段</li>
+<li>data数据段</li>
+<li>重定向表
+<ul>
+<li>需要链接器修补的代码行</li>
+</ul>
+</li>
+<li>符号表
+<ul>
+<li>本文件中可供其他文件使用的项目（函数标签、全局数据）</li>
+</ul>
+</li>
+<li>调试信息</li>
+</ul>
+<h2 id="链接器">链接器<a href="#%e9%93%be%e6%8e%a5%e5%99%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>将多个目标文件<code>.o</code>链接为一个可执行文件<code>.out</code>。</p>
+<p>链接器的工作步骤如下：</p>
+<ol>
+<li>将每个<code>.o</code>文件的代码段拼接在一起。</li>
+<li>将数据段拼接在一起，附加在代码段后面。</li>
+<li>遍历重定向表，填入绝对地址。</li>
+</ol>
+<p>因为数据拼接会导致代码段和数据段中内容的内存地址变化，链接器需要负责重定向内存地址。但是并不是所有地址都需要重定向。链接器中有四类基本地址：</p>
+<ul>
+<li>PC相对寻址。
+<ul>
+<li><code>beq</code>和<code>jal</code>跳转。</li>
+<li>无需重定向。</li>
+</ul>
+</li>
+<li>绝对函数地址。
+<ul>
+<li>目标函数太远的时候，编译器生成两步跳转<code>auipc</code>和<code>jalr</code>。</li>
+<li>因为此时使用的是函数绝对地址，所以需要重定向。</li>
+</ul>
+</li>
+<li>外部函数引用
+<ul>
+<li>需要重定向。</li>
+</ul>
+</li>
+<li>静态数据引用
+<ul>
+<li>访问全局变量</li>
+<li>需要重定向</li>
+</ul>
+</li>
+</ul>
+<h4 id="链接方式">链接方式<a href="#%e9%93%be%e6%8e%a5%e6%96%b9%e5%bc%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h4>
+<ul>
+<li>静态链接：
+<ul>
+<li>库更新时需要重新编译，包含整个库，但是没有运行时开销。</li>
+</ul>
+</li>
+<li>动态链接：
+<ul>
+<li>库更新时只需要更换<code>.so</code>文件即可。磁盘占用更小，但是运行时存在链接开销。</li>
+</ul>
+</li>
+</ul>
+<h2 id="加载器">加载器<a href="#%e5%8a%a0%e8%bd%bd%e5%99%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>由操作系统完成。</p>
+<ol>
+<li>读取可执行文件头部，确定代码段和数据段大小</li>
+<li>创建新的地址空间（足够容纳代码段、数据段和栈段）</li>
+<li>将指令和数据从磁盘复制到内存</li>
+<li>将程序参数复制到栈上</li>
+<li>初始化寄存器（大部分清零，栈指针指向栈顶）</li>
+<li>跳转到启动例程，将参数从栈传到寄存器，设置 PC</li>
+</ol>
+<h1 id="lecture-13-函数调用栈">Lecture 13 函数调用&amp;栈<a href="#lecture-13-%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e6%a0%88" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>risc-v中栈向低位地址增长，有专门的寄存器<code>sp</code>存储栈顶地址。</p>
+<p>寄存器的职责在上一篇笔记中有讲过，略过。</p>
+<p>函数调用的基本流程如下：</p>
+<p>函数调用者：</p>
+<ol>
+<li>将参数放入 <code>a0-a7</code></li>
+<li>如果参数超过 8 个，多余参数放栈上</li>
+<li>保存需要保留的 caller-saved 寄存器</li>
+<li>执行 <code>jal ra, func_name</code>（返回地址自动保存到 <code>ra</code>）</li>
+<li>函数返回后，恢复保存的寄存器</li>
+<li>返回值在 <code>a0</code>（和 <code>a1</code>）</li>
+</ol>
+<p>被调用函数：</p>
+<ol start="7">
+<li>分配栈帧：<code>addi sp, sp, -N</code></li>
+<li>保存 <code>ra</code> 和需要使用的 callee-saved 寄存器到栈</li>
+<li>执行函数体</li>
+<li>将返回值放入 <code>a0</code></li>
+<li>恢复 <code>ra</code> 和 callee-saved 寄存器</li>
+<li>释放栈帧：<code>addi sp, sp, N</code></li>
+<li>执行 <code>ret</code>（即 <code>jalr x0, ra, 0</code>）</li>
+</ol>
+<p>栈为递归提供了可能。但是因为栈空间有限，无限递归最终会导致栈空间溢出。</p>
+<h1 id="lab-04-risc-v-functions-pointers">Lab 04 RISC-V Functions, Pointers<a href="#lab-04-risc-v-functions-pointers" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<h2 id="exercise-1-debugging">Exercise 1: Debugging<a href="#exercise-1-debugging" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>实现一个<strong>超级链表</strong>，每个链表元素为一个数组。我们仍然需要实现一个<code>map</code>函数，对链表中每个数组元素的每个元素映射为新的元素。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">map:
+    addi sp, sp, -12
+    sw ra, 0(sp)
+    sw s1, 4(sp)
+    sw s0, 8(sp)
+
+    beq a0, x0, done    # if we were given a null pointer, we&#39;re done.
+
+    add s0, a0, x0      # save address of this node in s0
+    add s1, a1, x0      # save address of function in s1
+    add t0, x0, x0      # t0 is a counter
+
+    # remember that each node is 12 bytes long:
+    # - 4 for the array pointer
+    # - 4 for the size of the array
+    # - 4 more for the pointer to the next node
+
+    # also keep in mind that we should not make ANY assumption on which registers
+    # are modified by the callees, even when we know the content inside the functions 
+    # we call. this is to enforce the abstraction barrier of calling convention.
+mapLoop:
+    # add t1, s0, x0      # load the address of the array of current node into t1
+    lw t1, 0(s0)
+
+    lw t2, 4(s0)        # load the size of the node&#39;s array into t2
+
+    # add t1, t1, t0      # offset the array address by the count
+    slli t3, t0, 2
+    add t1, t1, t3
+
+    lw a0, 0(t1)        # load the value at that address into a0
+
+    addi sp, sp, -8     # save t0 and t1 before calling the function
+    sw t0, 0(sp)
+    sw t1, 4(sp)
+    jalr s1             # call the function on that value.
+    lw t1, 4(sp)        # restore t1 (array element address)
+    lw t0, 0(sp)        # restore t0 (loop counter)
+    addi sp, sp, 8
+
+    sw a0, 0(t1)        # store the returned value back into the array
+    addi t0, t0, 1      # increment the count
+    bne t0, t2, mapLoop # repeat if we haven&#39;t reached the array size yet
+
+    # la a0, 8(s0)        # load the address of the next node into a0
+    lw a0, 8(s0)
+    # lw a1, 0(s1)        # put the address of the function back into a1 to prepare for the recursion
+    mv a1, s1
+
+    jal  map            # recurse
+done:
+    lw s0, 8(sp)
+    lw s1, 4(sp)
+    lw ra, 0(sp)
+    addi sp, sp, 12
+    jr ra
+
+mystery:
+    mul t1, a0, a0
+    add a0, t1, a0
+    jr ra
+</code></pre><p>虽然没有要从头开始写一个map，但是非常坑。坑点如下：</p>
+<ul>
+<li>需要注意结构体中不同元素的类型，有的是地址，有的是数据。</li>
+<li>被调用函数只负责存储保存寄存器的数值，假如临时寄存器中有仍然需要使用的数据，需要调用方主动保存临时寄存器数据。
+<ul>
+<li>此处调用<code>mystery</code>就必须保存<code>t0</code>和<code>t1</code>的数据到栈中。</li>
+</ul>
+</li>
+</ul>
+<p>原实现的错误如下：</p>
+<ul>
+<li><code>s0</code>存的是结构体的地址而不是结构体第一个元素的内容。需要使用<code>lw</code>加载数据。</li>
+<li><code>t1</code>地址偏移不能直接加上计数器，需要计数器乘以数据类型大小才能得到正确的偏移量。</li>
+<li>下一个结构体的地址直接读取第三个元素的内容而不应该读取第三个元素的地址。</li>
+<li>传参函数指针应该传函数地址而非函数地址上的数据。</li>
+<li>临时寄存器需要caller保存。</li>
+</ul>
+<h1 id="exercise-2-write-a-function-without-branches">Exercise 2: Write a function without branches<a href="#exercise-2-write-a-function-without-branches" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">61</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">17</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="mi">38</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">19</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">42</span>
+</span></span><span class="line"><span class="cl"><span class="n">f</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mi">5</span>
+</span></span></code></pre></div><p>想了半个小时没找到规律，结果发现压根没让找规律。答案直接读表即可。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">f:
+    # YOUR CODE GOES HERE!
+    addi a0, a0, 3
+    li t0, 4
+    mul a0, a0, t0
+    add a1, a1, a0
+    lw a0, 0(a1)
+    jr ra               # Always remember to jr ra after your function!
+</code></pre><h1 id="project-2-ann-in-risc-v">Project 2 ANN in RISC-V<a href="#project-2-ann-in-risc-v" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<blockquote>
+<p>At the end of this project you will have written all RISC-V assembly code necessary to run a simple Artificial Neural Network (ANN) on the Venus RISC-V simulator. In part A you will implement the basic operations such as a vector dot product, matrix-matrix multiplication, the argmax and an activation function. In part B you will combine these basic functions in order to load a pretrained network and execute it to classify handwritten digets from the MNIST benchmark set.</p>
+</blockquote>
+<p>在本proj中，我们会需要用汇编来实现手写数字识别。（可惜权重是预训练好的，本篇并不包含反向传播。）</p>
+<p><a href="https://venus.cs61c.org/">venus网站。才发现这个网站是公开的。</a>提供了语法诊断和断点测试，坏处是没有vim模式，所以写代码还是在nvim里进行。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nv">TEST</span> <span class="o">?=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">VENUS_LOG</span> <span class="o">?=</span> .venus.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">test</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl"><span class="err">ifdef</span> <span class="err">TEST</span>
+</span></span><span class="line"><span class="cl">	<span class="err">cd</span> <span class="err">unittests</span> <span class="err">&amp;&amp;</span> <span class="err">python3</span> <span class="err">-m</span> <span class="err">unittest</span> <span class="err">unittests.</span><span class="k">$(</span><span class="nv">TEST</span><span class="k">)</span> <span class="err">-v</span>
+</span></span><span class="line"><span class="cl"><span class="err">else</span>
+</span></span><span class="line"><span class="cl">	<span class="err">cd</span> <span class="err">unittests</span> <span class="err">&amp;&amp;</span> <span class="err">python3</span> <span class="err">-m</span> <span class="err">unittest</span> <span class="err">unittests.py</span> <span class="err">-v</span>
+</span></span><span class="line"><span class="cl"><span class="err">endif</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">debug</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	@nohup venus . -dm &gt; <span class="k">$(</span>VENUS_LOG<span class="k">)</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">	@sleep <span class="m">2</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s2">&#34;Venus started in background (PID </span><span class="nv">$$</span><span class="s2">!), log: </span><span class="k">$(</span>VENUS_LOG<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">	@head -n <span class="m">10</span> <span class="k">$(</span>VENUS_LOG<span class="k">)</span>
+</span></span><span class="line"><span class="cl">	@echo <span class="s2">&#34;(showing first 10 lines, check log for more)&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">stop</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	@pkill -f <span class="s2">&#34;java.*venus&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;Venus stopped&#34;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;No Venus process found&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">test</span> <span class="n">debug</span> <span class="n">stop</span>
+</span></span></code></pre></div><p>写了一个简单的Makefile方便后续调试。</p>
+<p>venus的调试界面。右边可以查看寄存器和内存的具体存储值，非常直观。</p>
+<p>![[CS61Cfall20学习笔记03_vdb.png]]</p>
+<p>abs工具函数：</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">abs:
+    # Prologue
+    
+    # return 0
+    bge a0, zero, done
+    sub a0, zero, a0
+    # Epilogue
+done:
+    ret
+</code></pre><h2 id="task-a1-relu">Task A1: ReLU<a href="#task-a1-relu" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>一个朴实无华的激活函数，把所有小于0的数值归零。一般套在隐藏层后面，用来将一次函数转换为折线函数，更好的拟合数据分布。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">relu:
+    # Prologue
+  addi sp, sp, -12
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+
+loop_begin:
+
+  mv s0, a0 
+  mv s1, a1
+  add t0, x0, x0
+  ble s1, x0, length_error
+
+loop_continue:
+
+  slli t1, t0, 2
+  add t2, s0, t1
+  lw t3, 0(t2)
+  addi t0,t0, 1
+  bgt t3, x0, loop_continue
+  bgt t0, s1, loop_end
+  sw x0, 0(t2)
+  j loop_continue
+
+loop_end:
+  
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  addi sp, sp, 12
+    
+	ret
+
+length_error:
+
+  li a0, 17
+  li a1, 78
+  ecall
+</code></pre><p>Project 2 要求自己完善单元测试，所以以下附上我的单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestRelu</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;relu.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># create an array in the data section</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># load address of `array0` into register a0</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># set a1 to the length of our array</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">array0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># call the relu function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;relu&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># check that the array0 was changed appropriately</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_array</span><span class="p">(</span><span class="n">array0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># generate the `assembly/TestRelu_test_simple.s` file and run it through venus</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;relu.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;relu&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">78</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_neg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;relu.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;relu&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">78</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_massive_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;relu.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">length</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">input_array</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_array</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;relu&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">check_array</span><span class="p">(</span><span class="n">array0</span><span class="p">,</span> <span class="p">[(</span><span class="n">i</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_array</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;relu.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><p>测试结果：</p>
+<p>![[CS61Cfall20学习笔记03_relu_test.png]]</p>
+<h2 id="task-a2-argmax">Task A2: Argmax<a href="#task-a2-argmax" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>返回一个vector中最大元素的索引。用来进行最终的分类。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">.globl argmax
+
+.text
+
+argmax:
+
+  addi sp, sp, -12
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+
+loop_start:
+
+  mv s0, a0 
+  mv s1, a1
+  add t0, x0, x0 # counter
+  lw t1, 0(s0) # max
+  add t5, x0, x0 # argmax
+  ble s1, x0, length_error
+
+loop_continue:
+
+  bge t0, s1, loop_end
+  slli t2, t0, 2
+  addi t0, t0, 1
+  add t3, t2, s0
+  lw t4, 0(t3)
+  ble t4, t1, loop_continue
+  mv t1, t4
+  addi t5, t0, -1
+  j loop_continue
+
+loop_end:
+
+  mv a0, t5
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  addi sp, sp, 12
+
+  ret
+
+length_error:
+
+  li a0, 17
+  li a1, 77
+  ecall
+</code></pre><p>单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestArgmax</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;argmax.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">array0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;argmax&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple_02</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;argmax.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">array0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;argmax&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_massive_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;argmax.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">length</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">input_array</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_array</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># logging.debug({key: value for key, value in enumerate(input_array)})</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;argmax&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">input_array</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">input_array</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;argmax.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><p>![[CS61Cfall20学习笔记03_argmax_test.png]]</p>
+<p>因为没有检测error分支导致测试覆盖率不达100%。修改单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">test_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">	<span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;argmax.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">	<span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;argmax&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">77</span><span class="p">)</span>
+</span></span></code></pre></div><p>添加以上测试，结果如下：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_argmax_new_test.png]]</p>
+<h2 id="task-a31-dot-product">Task A3.1: Dot Product<a href="#task-a31-dot-product" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>向量点积。需要注意的是，在汇编中没有像C语言那样现成的多维数组，内存地址按照一维线性排布。所以，我们需要传入一个跨度参数用来辅助计算。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">.globl dot
+
+.text
+
+dot:
+
+  addi sp, sp, -24
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+  sw s2, 12(sp)
+  sw s3, 16(sp)
+  sw s4, 20(sp)
+
+  mv s0, a0 # ptr of vec0 
+  mv s1, a1 # ptr of vec1
+  mv s2, a2 # length 
+  ble s2, x0, error-length 
+  mv s3, a3 # stride of vec0
+  mv s4, a4 # stride of vec1
+  ble s3, x0, error-stride
+  ble s4, x0, error-stride
+
+  add t0, x0, x0 # counter 
+  add t1, x0, x0 # accumulator
+
+  add t2, x0, x0 # head 0 
+  add t3, x0, x0 # head 1 
+  
+loop_start:
+  
+  bge t0, s2, loop_end
+
+  slli t4, t0, 2 
+  slli t5, t0, 2 
+
+  mul t4, t4, s3
+  mul t5, t5, s4
+
+  add t2, t4, s0 
+  add t3, t5, s1 
+
+  lw t4, 0(t2)
+  lw t5, 0(t3)
+
+  mul t6, t4, t5
+
+  add t1, t1, t6
+
+  addi t0, t0, 1 
+  
+  j loop_start 
+
+loop_end:
+
+  mv a0, t1
+
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  lw s2, 12(sp)
+  lw s3, 16(sp)
+  lw s4, 20(sp)
+  addi sp, sp, 24
+
+  ret
+
+error-length:
+  
+  li a0, 17
+  li a1, 75
+  ecall
+
+error-stride:
+  
+  li a0, 17
+  li a1, 76
+  ecall
+</code></pre><p>单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestDot</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array1</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a4&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;dot&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array1</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a4&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;dot&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array1</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a4&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;dot&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">76</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array1</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a4&#34;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;dot&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">76</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_massive_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">length</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stride0</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stride1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">input_array_0</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="n">stride0</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">input_array_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="n">stride1</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_array_0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">array1</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_array_1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="n">stride0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a4&#34;</span><span class="p">,</span> <span class="n">stride1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;dot&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">check_scalar</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;a0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">sum</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">i</span> <span class="o">*</span> <span class="n">j</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">[</span><span class="n">input_array_0</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">stride0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">[</span><span class="n">input_array_1</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">stride1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">                <span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;dot.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><p>（力大砖飞式单元测试）</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_dot_test_01.png]]</p>
+<h2 id="task-a32-matrix-multiplication">Task A3.2: Matrix Multiplication<a href="#task-a32-matrix-multiplication" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>矩阵乘法。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">.globl matmul
+
+.text
+
+matmul:
+
+  # Error checks
+  ble a1, x0, error_m0
+  ble a2, x0, error_m0
+  ble a4, x0, error_m1
+  ble a5, x0, error_m1
+  bne a2, a4, error_not_match
+  # Prologue
+  addi sp, sp, -32
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+  sw s2, 12(sp)
+  sw s3, 16(sp)
+  sw s4, 20(sp)
+  sw s5, 24(sp)
+  sw s6, 28(sp)
+
+  mv s0, a0 # ptr of m0 
+  mv s1, a1 # rows of m0 
+  mv s2, a2 # columns of m0 
+  mv s3, a3 # ptr of m1 
+  mv s4, a4 # rows of m1
+  mv s5, a5 # columns of m1
+  mv s6, a6 # ptr of d 
+  
+  li t0, 0 # row counter
+  li t1, 0 # column counter
+
+outer_loop_start:
+
+  bge t0, s1, outer_loop_end
+  li t1, 0 # column counter
+
+inner_loop_start:
+
+  bge t1, s5, inner_loop_end
+
+  # call vec dot
+  mul t2, s2, t0 
+  slli t3, t1, 2
+  slli t4, t2, 2
+  add a0, s0, t4
+  add a1, s3, t3
+
+  mv a2, s2
+  li a3, 1 
+  mv a4, s5
+
+  addi sp, sp, -8 
+  sw t0, 0(sp)
+  sw t1, 4(sp)
+  
+  jal dot
+
+  lw t0, 0(sp)
+  lw t1, 4(sp)
+  addi sp, sp, 8 
+
+  mul t2, s5, t0 
+  # call dot end
+  add t2, t2, t1
+  slli t2, t2, 2
+  add t2, t2, s6
+  sw a0, 0(t2)
+
+  addi t1, t1, 1
+  j inner_loop_start
+
+inner_loop_end:
+
+  addi t0, t0, 1
+  j outer_loop_start
+
+outer_loop_end:
+
+  # Epilogue
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  lw s2, 12(sp)
+  lw s3, 16(sp)
+  lw s4, 20(sp)
+  lw s5, 24(sp)
+  lw s6, 28(sp)
+  addi sp, sp, 32
+
+  ret
+
+error_m0:
+
+  li a0, 17
+  li a1, 72
+  ecall
+  
+error_m1:
+
+  li a0, 17
+  li a1, 73
+  ecall
+
+error_not_match:
+
+  li a0, 17
+  li a1, 74
+  ecall
+</code></pre><p>单元测试。需要手动拉高venus的栈空间大小，不然会爆栈。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestMatmul</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">do_matmul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m0</span><span class="p">,</span> <span class="n">m0_rows</span><span class="p">,</span> <span class="n">m0_cols</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m1_rows</span><span class="p">,</span> <span class="n">m1_cols</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;matmul.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># we need to include (aka import) the dot.s file since it is used by matmul.s</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># create arrays for the arguments and to store the result</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array1</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array_out</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># load address of input matrices and set their dimensions</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">m0_rows</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="n">m0_cols</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="n">array1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a4&#34;</span><span class="p">,</span> <span class="n">m1_rows</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a5&#34;</span><span class="p">,</span> <span class="n">m1_cols</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a6&#34;</span><span class="p">,</span> <span class="n">array_out</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># call the matmul function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;matmul&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># check the content of the output array</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_array</span><span class="p">(</span><span class="n">array_out</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># generate the assembly file and run it through venus, we expect the simulation to exit with code `code`</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_matmul</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_matmul</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_matmul</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code</span><span class="o">=</span><span class="mi">73</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_matmul</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="mi">9</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">150</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">            <span class="n">code</span><span class="o">=</span><span class="mi">74</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_massive_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">row_0</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">col_0</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">col_1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">array_0</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row_0</span> <span class="o">*</span> <span class="n">col_0</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">array_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col_1</span> <span class="o">*</span> <span class="n">col_0</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">sum</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">array_0</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">col_0</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">array_1</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">col_1</span> <span class="o">*</span> <span class="n">k</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col_0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">                <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row_0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col_1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">do_matmul</span><span class="p">(</span><span class="n">array_0</span><span class="p">,</span> <span class="n">row_0</span><span class="p">,</span> <span class="n">col_0</span><span class="p">,</span> <span class="n">array_1</span><span class="p">,</span> <span class="n">col_0</span><span class="p">,</span> <span class="n">col_1</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;matmul.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_matmul_test.png]]</p>
+<p>（现在突然发现没有使用<code>utils</code>中提供的退出程序函数。懒得修改了。）</p>
+<h2 id="task-b1-read-matrix">Task B1: Read Matrix<a href="#task-b1-read-matrix" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>从一个矩阵二进制文件中读取矩阵内容并存储在内存上。需要分配堆内存。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">.globl read_matrix
+
+.text
+
+read_matrix:
+
+  # Prologue
+  addi sp, sp, -16
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+  sw s2, 12(sp)
+
+  mv s0, a0 # ptr of filename 
+  mv s1, a1 # ptr of rows 
+  mv s2, a2 # ptr of columns 
+
+
+  # fopen
+  mv a1, s0
+  li a2, 0
+  jal fopen 
+  blt a0, x0, error_fopen
+  addi sp, sp, -4
+  sw s4, 0(sp)
+  mv s4, a0 # file discriptor 
+
+  # fread rows and columns information
+  mv a1, s4
+  mv a2, s1 # read row number into s1&#39;s target 
+  li a3, 4
+  jal fread 
+  li t0, 4
+  blt a0, t0, error_fread 
+  mv a1, s4
+  mv a2, s2 # read col number into s2&#39;s target 
+  li a3, 4
+  jal fread 
+  li t0, 4
+  blt a0, t0, error_fread 
+
+  # malloc heap space
+  lw t1, 0(s1)
+  lw t2, 0(s2)
+  mul t0, t1, t2 # matrix size
+  addi sp, sp, -4
+  sw s5, 0(sp)
+  mv s5, t0
+  slli a0, t0, 2 
+
+  jal malloc  
+  beq a0, x0, error_malloc  
+  addi sp, sp, -4
+  sw s3, 0(sp)
+  mv s3, a0 # ptr to the heap space 
+
+  addi sp, sp, -4
+  sw s6, 0(sp)
+  mv s6, a0 # ptr to the buffer 
+
+  # read data 
+read_loop_start:
+  
+  ble s5, x0, read_loop_end 
+  mv a1, s4
+  mv a2, s6  
+  li a3, 4
+  jal fread 
+  li t0, 4
+
+  blt a0, t0, error_fread 
+  addi s6, s6, 4
+  addi s5, s5, -1
+  j read_loop_start
+
+read_loop_end: 
+
+  mv a0, s4
+  jal fclose 
+  bne a0, x0, error_fclose
+
+  mv a0, s3
+
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  lw s2, 12(sp)
+  lw s3, 16(sp)
+  lw s4, 20(sp)
+  lw s5, 24(sp)
+  lw s6, 28(sp)
+  addi sp, sp, 32 
+  ret
+
+error_malloc:
+
+  li a1, 88
+  jal exit2
+
+error_fopen:
+
+  li a1, 90
+  jal exit2
+
+error_fread:
+
+  li a1, 91 
+  jal exit2
+
+error_fclose:
+
+  li a1, 92
+  jal exit2
+</code></pre><p>单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestReadMatrix</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">do_read_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fail</span><span class="o">=</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;read_matrix.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;utils.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># load address to the name of the input file into register a0</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_read_filename</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="s2">&#34;inputs/test_read_matrix/test_input.bin&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># allocate space to hold the rows and cols output parameters</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rows</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cols</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># load the addresses to the output parameters into the argument registers</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="n">cols</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># TODO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># call the read_matrix function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;read_matrix&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># check the output from the function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_array_pointer</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_array</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_array</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># TODO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># generate assembly and run it through venus</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">fail</span><span class="o">=</span><span class="n">fail</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_read_matrix</span><span class="p">(</span><span class="s2">&#34;malloc&#34;</span><span class="p">,</span> <span class="mi">88</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_read_matrix</span><span class="p">(</span><span class="s2">&#34;fopen&#34;</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_read_matrix</span><span class="p">(</span><span class="s2">&#34;fread&#34;</span><span class="p">,</span> <span class="mi">91</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_read_matrix</span><span class="p">(</span><span class="s2">&#34;fclose&#34;</span><span class="p">,</span> <span class="mi">92</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_read_matrix</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;read_matrix.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="task-b2-write-matrix">Task B2: Write Matrix<a href="#task-b2-write-matrix" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>将内存中的矩阵写入文件中。</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">.globl write_matrix
+
+.text
+
+write_matrix:
+
+  # Prologue
+  addi sp, sp, -24
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+  sw s2, 12(sp)
+  sw s3, 16(sp)
+  sw s4, 20(sp)
+
+  mv s0, a0 # ptr to the filename
+  mv s1, a1 # ptr to the beginning
+  mv s2, a2 # num of rows
+  mv s3, a3 # num of cols
+
+  # open a file  
+  mv a1, s0
+  li a2, 1
+  jal fopen
+  blt a0, x0, error_fopen
+  mv s4, a0 # file discriptor 
+
+  # write content
+  addi sp, sp, -8
+  sw s2, 0(sp)
+  sw s3, 4(sp)
+
+  mv a1, s4
+  mv a2, sp 
+  li a3, 2
+  li a4, 4
+  jal fwrite 
+  li t0, 2
+  blt a0, t0, error_fwrite
+
+  lw s2, 0(sp)
+  lw s3, 4(sp)
+  addi sp, sp, 8
+
+  mv a1, s4
+  mv a2, s1
+  mul a3, s2, s3
+  li a4, 4
+  jal fwrite 
+  mul t0, s2, s3
+  blt a0, t0, error_fwrite
+
+  # close file
+  mv a0, s4
+  jal fclose 
+  bne a0, x0, error_fclose
+  
+  # Epilogue
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  lw s2, 12(sp)
+  lw s3, 16(sp)
+  lw s4, 20(sp)
+  addi sp, sp, 24
+
+  ret
+
+error_fopen:
+
+  li a1, 93
+  jal exit2
+
+error_fwrite:
+
+  li a1, 94 
+  jal exit2
+
+error_fclose:
+
+  li a1, 95
+  jal exit2
+</code></pre><p>栈操作应该尽可能简单，塞数据一时爽，改错火葬场。</p>
+<p>单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestWriteMatrix</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">do_write_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fail</span><span class="o">=</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;write_matrix.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">outfile</span> <span class="o">=</span> <span class="s2">&#34;outputs/test_write_matrix/student.bin&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># load output file name into a0 register</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_write_filename</span><span class="p">(</span><span class="s2">&#34;a0&#34;</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># load input array and other arguments</span>
+</span></span><span class="line"><span class="cl">        <span class="n">array0</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_array</span><span class="p">(</span><span class="s2">&#34;a1&#34;</span><span class="p">,</span> <span class="n">array0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a3&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># TODO</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># call `write_matrix` function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;write_matrix&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># generate assembly and run it through venus</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">fail</span><span class="o">=</span><span class="n">fail</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># compare the output file against the reference (skip for error tests since no file is written)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="n">fail</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">t</span><span class="o">.</span><span class="n">check_file_output</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&#34;outputs/test_write_matrix/reference.bin&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_write_matrix</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_write_matrix</span><span class="p">(</span><span class="n">fail</span><span class="o">=</span><span class="s2">&#34;fopen&#34;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">93</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_write_matrix</span><span class="p">(</span><span class="n">fail</span><span class="o">=</span><span class="s2">&#34;fwrite&#34;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">94</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">do_write_matrix</span><span class="p">(</span><span class="n">fail</span><span class="o">=</span><span class="s2">&#34;fclose&#34;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;write_matrix.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><h2 id="task-b3-classify">Task B3: Classify<a href="#task-b3-classify" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>把前面的所有函数组合成我们需要的图像分类器。图像分类的原理很简单：读取图像矩阵，经过一些矩阵计算之后得到该图像与不同分类之间关联性的分值，我们从中直接选出分数最高的分类作为结果。打分的步骤本质mlp，激活函数为relu。线性层权重为预训练权重。</p>
+<p>在使用汇编实现该函数的时候，因为数据量太大，数据全部塞在栈上非常难管理，比如中间两个线性层以及输入的图像矩阵需要我们将矩阵长宽和数据指针找地方存起来，光这些数据就有9个word。所以，我们需要单独malloc一块堆空间来存放这些数据。除此之外，每一个中间矩阵也需要我们提前分配堆空间来存放，因为我们前面的matmul实现并没有关心算出来的矩阵存在哪。</p>
+<p>另外一个坑点是：<code>argc</code>会比输入的参数数大1，<code>argv[0]</code>通常是程序自身的名字。因此所有参数读取都需要后移4个字节。</p>
+<p>代码实现如下：</p>
+<pre tabindex="0"><code class="language-riscv" data-lang="riscv">.globl classify
+
+.text
+classify:
+
+  addi sp, sp, -28
+  sw ra, 0(sp) 
+  sw s0, 4(sp)
+  sw s1, 8(sp)
+  sw s2, 12(sp)
+  sw s3, 16(sp) # ptr of matrix data 
+  sw s4, 20(sp)
+  sw s5, 24(sp)
+
+  mv s0, a0 # argc 
+  mv s1, a1 # **argv 
+  mv s2, a2 # print 
+
+  # check argc 
+  li t0, 5
+  bne s0, t0, error_argc
+
+  # malloc space for matrix data
+  
+  li a0, 40 
+  jal malloc
+  beq a0, x0, error_malloc 
+  mv s3, a0
+
+  # Load pretrained m0
+  
+  lw a0, 4(s1) 
+  addi t0, s3, 4
+  addi t1, s3, 8
+  mv a1, t0 
+  mv a2, t1 
+  jal read_matrix 
+  sw a0, 0(s3)
+
+  # Load pretrained m1
+
+  lw a0, 8(s1) 
+  addi t0, s3, 16
+  addi t1, s3, 20
+  mv a1, t0
+  mv a2, t1 
+  jal read_matrix 
+  sw a0, 12(s3)
+
+  # Load input matrix
+
+  lw a0, 12(s1) 
+  addi t0, s3, 28 
+  addi t1, s3, 32 
+  mv a1, t0
+  mv a2, t1 
+  jal read_matrix 
+  sw a0, 24(s3)
+
+  # malloc space for mid-matrix
+  
+  lw t0, 4(s3)
+  lw t1, 32(s3)
+  mul a0, t0, t1
+  slli a0, a0, 2 
+  jal malloc 
+  beq a0, x0, error_malloc
+  mv s4, a0
+
+  lw t0, 16(s3)
+  lw t1, 32(s3)
+  mul a0, t0, t1
+  slli a0, a0, 2 
+  jal malloc 
+  beq a0, x0, error_malloc
+  mv s5, a0
+
+  # 1. LINEAR LAYER:    m0 * input
+  # 2. NONLINEAR LAYER: ReLU(m0 * input)
+  # 3. LINEAR LAYER:    m1 * ReLU(m0 * input)
+
+  # matmul 01
+  lw a0, 0(s3)  
+  lw a1, 4(s3) 
+  lw a2, 8(s3) 
+  lw a3, 24(s3) 
+  lw a4, 28(s3)
+  lw a5, 32(s3) 
+  mv a6, s4
+  jal matmul 
+
+  # relu
+  mv a0, s4
+  lw t0, 4(s3)
+  lw t1, 32(s3)
+  mul a1, t0, t1
+  jal relu
+
+  # matmul 02
+  lw a0, 12(s3)  
+  lw a1, 16(s3) 
+  lw a2, 20(s3) 
+  mv a3, s4
+  lw a4, 4(s3)
+  lw a5, 32(s3) 
+  mv a6, s5
+  jal matmul 
+
+  # Write output matrix
+  
+  lw a0, 16(s1)
+  mv a1, s5
+  lw a2, 16(s3)
+  lw a3, 32(s3)
+  jal write_matrix  
+
+  # Call argmax
+
+  mv a0, s5
+  lw t0, 16(s3)
+  lw t1, 32(s3)
+  mul a1, t0, t1
+  jal argmax 
+
+  sw a0, 36(s3)
+  
+  # Print classification
+  
+  bne s2, x0, continue 
+  lw a1, 36(s3)
+  jal print_int
+  
+  # Print newline afterwards for clarity
+
+continue:
+
+  lw a0, 36(s3)
+
+  lw ra, 0(sp) 
+  lw s0, 4(sp)
+  lw s1, 8(sp)
+  lw s2, 12(sp)
+  lw s3, 16(sp)
+  lw s4, 20(sp)
+  lw s5, 24(sp)
+  addi sp, sp, 28
+
+  ret
+
+error_argc:
+
+  li a1, 89 
+  jal exit2
+
+error_malloc:
+
+  li a1, 88 
+  jal exit2
+</code></pre><p>单元测试：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestClassify</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">make_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">AssemblyTest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&#34;classify.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;argmax.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;dot.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;matmul.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;read_matrix.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;relu.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="s2">&#34;write_matrix.s&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">t</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_simple0_input0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">out_file</span> <span class="o">=</span> <span class="s2">&#34;outputs/test_basic_main/student0.bin&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ref_file</span> <span class="o">=</span> <span class="s2">&#34;outputs/test_basic_main/reference0.bin&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;inputs/simple0/bin/m0.bin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;inputs/simple0/bin/m1.bin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;inputs/simple0/bin/inputs/input0.bin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">out_file</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># call classify function</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">input_scalar</span><span class="p">(</span><span class="s2">&#34;a2&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&#34;classify&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># generate assembly and pass program arguments directly to venus</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># compare the output file and</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_file_output</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="n">ref_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">check_stdout</span><span class="p">(</span><span class="s2">&#34;2&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># compare the classification output with `check_stdout`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@classmethod</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print_coverage</span><span class="p">(</span><span class="s2">&#34;classify.s&#34;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span></code></pre></div><p>只补全了简单测试，多的测试懒得设计了。</p>
+<p>测试结果：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_classify_test.png]]</p>
+<p>全测试：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_ultimate_test.png]]</p>
+<h2 id="mnist测试">MNIST测试<a href="#mnist%e6%b5%8b%e8%af%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>cs61c提供了一系列手写数字样例，并提供了图像预览脚本。</p>
+<p>手写6：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_6_input.png]]</p>
+<p>预测结果：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_6_output.png]]</p>
+<p>输出结果为6。预测正确。</p>
+<p>手写9：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_9.png]]</p>
+<p>预测结果：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_mnist_9_output.png]]</p>
+<p>输出结果为9。预测正确。</p>
+<p>我的真迹：</p>
+<p>![[280ea9dfe584fdbb7bde9f63409549a8.jpg]]</p>
+<p>![[b9e6a2bf6d4bedbe5bb3b8ee63d6213f.jpg]]</p>
+<p>预测结果：</p>
+<p>![[CS61Cfall20学习笔记03如何使用汇编实现手写数字识别_Moonhalf_2_outptu.png]]</p>
+<p>猜错了。残念。</p>
+
+			</div>
+			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
+      <path
+         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
+      <path
+         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
+   </svg></abbr></a></div>
+
+<div class="related-posts thin">
+	<h2>See Also</h2>
+	<ul>
+	
+	<li><a href="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/">CS61Cfall20学习笔记02</a></li>
+	
+	<li><a href="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/">CS61Cfall20学习笔记01</a></li>
+	
+	</ul>
+</div>
+
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+   </svg></span><br><span>CS61Cfall20学习笔记02</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
+        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+        data-repo-id="R_kgDOQaFILg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOQaFILs4CyFGz"
+        data-mapping="title"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="transparent_dark"
+        data-lang="zh-CN"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+	</main>
+<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+<p>
+	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
+	&#183; copyright by Moonhalf
+	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
+	</p></footer>
+<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
