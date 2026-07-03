@@ -49,7 +49,7 @@ avatar = "/images/Lineance.png"
 desc = "Learn. Journey. Bloom."
 
 [[list]]
-name = "剑归无影"
-url = "https://www.yingblog.net/"
-avatar = "/images/ying.png"
-desc = ""
+name = "45dino's Blog"
+url = "https://blog.45dino.me/"
+avatar = "/images/friend_default.png"
+desc = "使用了默认头像"
