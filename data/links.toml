@@ -53,3 +53,10 @@ name = "45dino's Blog"
 url = "https://blog.45dino.me/"
 avatar = "/images/friend_default.png"
 desc = "使用了默认头像"
+
+[[list]]
+name = "Rycbartbad"
+url = "https://rycbartbad.top/"
+avatar = "/images/avatar_rycbartbad.jpg"
+desc = "......"
+
