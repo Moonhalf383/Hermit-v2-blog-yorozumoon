@@ -4,12 +4,204 @@
 		<title>Posts on Yorozumoon</title>
 		<link>http://localhost:1313/zh-cn/posts/</link>
 		<description>Recent content in Posts on Yorozumoon</description>
-		<generator>Hugo -- 0.162.1</generator>
+		<generator>Hugo -- 0.165.0</generator>
 		<language>zh-cn</language>
 		<copyright>copyright by Moonhalf.</copyright>
-		<lastBuildDate>Wed, 10 Jun 2026 14:58:20 +0800</lastBuildDate>
+		<lastBuildDate>Tue, 01 Sep 2026 18:29:13 +0800</lastBuildDate>
 		<atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
 		
+		
+		<item>
+			<title>LaTeX车祸速成</title>
+			<link>http://localhost:1313/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/</link>
+			<pubDate>Tue, 01 Sep 2026 18:29:13 +0800</pubDate><author>Moonhalf</author><guid>http://localhost:1313/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/</guid>
+			<description><![CDATA[&lt;no value&gt;]]></description><content type="text/html" mode="escaped"><![CDATA[<h1 id="为什么需要-latex-">为什么需要 LaTeX ？<a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81-latex-" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>你的工作需要学术发表，但是你从来没有接受过任何美术训练，如果自己来设计一套优雅的排版，整个过程会非常痛苦。但是如果一个问题很普遍，那么大概率存在一种早就提出来的方法。</p>
+<p>于1978年提出的TeX引擎定义了一系列基础的排版原语。通过写这些排版原语，你不止可以做到静态排版描述，还可以包含可执行的排版程序。但是TeX的接口并不友好。TeX类似于汇编语言，它的定位不在于让人写的舒服，而是能尽可能精确的描述排版。</p>
+<p>LaTeX的定位则接近编程语言中的高级语言，它提供了更人类友好的接口，但是本质上LaTeX只是一系列TeX的宏包。通过TeX引擎，LaTeX宏会被展开为排版原语，之后执行排版操作得到精美的pdf文件。</p>
+<p>作为人类，你应该使用LaTeX或者为了某些需求改进LaTeX，而不是直接上手写TeX。</p>
+<h1 id="hello-latex-">Hello LaTeX !<a href="#hello-latex-" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>一个 Hello world 级别的<code>.tex</code>文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Hello, World!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</span></span></code></pre></div><p>一个<code>.tex</code>文件通常只能写一个<code>\documentclass</code>，它的含义是指定文档类型。<code>\documentclass{article}</code>中的<code>article</code>并不是随意填写的，它代表的是一个文档类，对应于系统中的<code>article.cls</code>，一般随TeX发行版一同安装在系统中。此处意味着加载<code>article.cls</code>。如果改为<code>\documentclass{report}</code>则会加载<code>report.cls</code>，其他同理。</p>
+<p><code>\begin</code>和<code>\end</code>表示的是某种“环境”的起始点和终止点。鉴于LaTeX的编写本质是在处理文本，我们可以这样理解<code>\begin</code>和<code>\end</code>：它们就像鼠标选中一段文本后得到的选中区。在选中之后，我们可以选择对这段文本执行什么操作，而在LaTeX中，操作的选择步骤就对应于在<code>{}</code>中写入<code>document</code>。<code>\begin{document}</code>和<code>\end{document}</code>共同表示：中间的文本会进入最终的pdf。</p>
+<p>在一个<code>.tex</code>中写多个<code>document</code>环境是错误。document表示的是一次LaTeX编译生成的一份完整文档。就像一个cpp程序中只能有一个main函数。</p>
+<p>将文件命名为<code>hello.tex</code>后使用以下指令进行编译：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">pdflatex hello.tex
+</span></span></code></pre></div><p>得到以下文件：</p>
+<p><img src="/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/LaTeX%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0_pdflatex_01.png" alt="LaTeX自学笔记_pdflatex_01"></p>
+<p>其中<code>hello.tex</code>是我们自己写的tex文件，<code>hello.pdf</code>是最终的编译产物。<code>hello.log</code>表示的是编译日志，只有编译错误的时候会有用；<code>hello.aux</code>会保存一些交叉引用和章节编号信息。后两者都可自动重建。</p>
+<p>在一些高级编程语言中，编译的中间产物会被默认自动清理，比如<code>gcc hello.c</code>中<code>.c</code>到<code>.s</code>到<code>.o</code>到<code>.out</code>，<code>hello.s</code>和<code>hello.o</code>都不会被保留。LaTeX之所以采用保留中间产物的设计，根本原因是历史设计与兼容性遗留。在上世纪70-80年代，顺序执行宏并逐页输出的方式可以节省内存，而虽然现在内存不再是问题，改变编译时机有可能会改变旧文档的排版结果，故而现代实践中并不修改TeX内核。</p>
+<h1 id="文档结构">文档结构<a href="#%e6%96%87%e6%a1%a3%e7%bb%93%e6%9e%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>LaTeX 文档分为三个部分：文档类声明、导言区、正文区。你可以将他们非常不严谨地类比到 java 中的<code>package xxx</code>、<code>import xxx</code>和<code>public class xxx</code>（<code>package xxx</code>的类比事实上并不正确，但是鉴于都是描述本文件的特征勉强保留。后文中GDScript的类比会更准确。）</p>
+<h2 id="文档类声明">文档类声明<a href="#%e6%96%87%e6%a1%a3%e7%b1%bb%e5%a3%b0%e6%98%8e" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\documentclass</span><span class="na">[12pt, a4paper, twocolumn]</span><span class="nb">{</span>article<span class="nb">}</span>
+</span></span></code></pre></div><p><code>[]</code>中可以写入一些基本的文档类配置项。<code>12pt</code>表示基础字号、<code>a4paper</code>表示纸张大小、<code>twocolumn</code>表示双栏布局。除此之外还可以配置双面打印、草稿模式、默认的公式对齐方向等。</p>
+<p><code>\command</code>的形式表示一个指令，<code>[]</code>通常表示可选参数，<code>{}</code>表示必填参数。</p>
+<p>你可以将文档类声明类比为GDScript中每个文件开头的<code>extends XXXClass</code>，每个文档都像是对一个文档基类的继承。</p>
+<h2 id="导言区">导言区<a href="#%e5%af%bc%e8%a8%80%e5%8c%ba" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p>引入utf8中文支持：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\usepackage</span><span class="na">[UTF8]</span><span class="nb">{</span>ctex<span class="nb">}</span>
+</span></span></code></pre></div><p><code>\usepackage[可选配置]{包名}</code>的用途是导入宏包。宏不同于我们所理解的Python模块或者C语言头文件，导入宏包不止会引入新的命令，同时还可能影响整个文档的排版。比如<code>\usepackage{graphicx}</code>允许你使用<code>\includegraphics{cat.png}</code>，而<code>\usepackage{hyperref}</code>则会让你的<code>\ref</code>引用变成可跳转的超链接。</p>
+<p>因为宏包没有命名空间之类的防碰撞设计，不同宏包指令可能出现冲突。</p>
+<p>TeX发行版会自带一部分宏包。如果想找到其他的宏包，可以浏览<a href="https://ctan.org/">ctan</a>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\title</span><span class="nb">{</span>LaTeX自学笔记<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\author</span><span class="nb">{</span>Moonhalf<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\date</span><span class="nb">{</span>September 2026<span class="nb">}</span>
+</span></span></code></pre></div><p>定义文档的基本信息。这三个指令由LaTeX基础格式提供，大多数文档类都可使用。在正文区中使用<code>\maketitle</code>将信息显示出来。</p>
+<h2 id="正文区">正文区<a href="#%e6%ad%a3%e6%96%87%e5%8c%ba" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<p><code>\begin{document}</code>和<code>\end{document}</code>包裹的就是正文。</p>
+<h2 id="一个简单的例子">一个简单的例子<a href="#%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84%e4%be%8b%e5%ad%90" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\usepackage</span><span class="na">[UTF8]</span><span class="nb">{</span>ctex<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\title</span><span class="nb">{</span>LaTeX自学笔记<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\author</span><span class="nb">{</span>Moonhalf<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\date</span><span class="nb">{</span><span class="k">\today</span><span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\maketitle</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">把大象放进冰箱有三步：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\begin</span><span class="nb">{</span>itemize<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\item</span> 打开冰箱
+</span></span><span class="line"><span class="cl">  <span class="k">\item</span>  <span class="nb">{</span> <span class="k">\Huge</span> 把大象放进去<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\item</span> 关上冰箱
+</span></span><span class="line"><span class="cl"><span class="k">\end</span><span class="nb">{</span>itemize<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</span></span></code></pre></div><p>效果：</p>
+<p><img src="/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/LaTeX%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0_HelloLaTeX.png" alt="LaTeX自学笔记_HelloLaTeX"></p>
+<h1 id="多文件组织">多文件组织<a href="#%e5%a4%9a%e6%96%87%e4%bb%b6%e7%bb%84%e7%bb%87" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p>太长的文章并不利于维护，我们可以通过<code>\input{}</code>和<code>\include{}</code>将外部TeX文档内容导入。前者的机制是直接将对应的文件插入到此处，后者会在插入内容前后分页，适合独立章节。</p>
+<p>因为是直接插入内容的缘故，单独的子文档可以直接写正文，无需写文档类声明和导言。</p>
+<p><img src="/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/LaTeX%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0_multifile.png" alt="LaTeX自学笔记_multifile"></p>
+<p>构建以上的文件结构以及文件内容，之后在hello.tex补全对该文件的引用（顺带补全对数学公式的支持宏包）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\usepackage</span><span class="na">[UTF8]</span><span class="nb">{</span>ctex<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\usepackage</span><span class="nb">{</span>amsmath<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\usepackage</span><span class="nb">{</span>amssymb<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\usepackage</span><span class="nb">{</span>mathtools<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\title</span><span class="nb">{</span>LaTeX自学笔记<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\author</span><span class="nb">{</span>Moonhalf<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\date</span><span class="nb">{</span><span class="k">\today</span><span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\maketitle</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\section</span><span class="nb">{</span>大象冰箱问题<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">把大象放进冰箱有三步：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\begin</span><span class="nb">{</span>itemize<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\item</span> 打开冰箱
+</span></span><span class="line"><span class="cl">  <span class="k">\item</span>  <span class="nb">{</span> <span class="k">\Huge</span> 把大象放进去<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\item</span> 关上冰箱
+</span></span><span class="line"><span class="cl"><span class="k">\end</span><span class="nb">{</span>itemize<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\input</span><span class="nb">{</span>sections/bellman.tex<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</span></span></code></pre></div><p>效果：</p>
+<p><img src="/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/LaTeX%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0_multifile_03.png" alt="LaTeX自学笔记_multifile_03"></p>
+<h1 id="宏定义tex编程">宏定义&amp;TeX编程<a href="#%e5%ae%8f%e5%ae%9a%e4%b9%89tex%e7%bc%96%e7%a8%8b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+   </svg></a></h1>
+<p><code>\newcommand</code>用于定义新的命令。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\hello</span><span class="nb">}{</span>Hello, World!<span class="nb">}</span>
+</span></span></code></pre></div><p>之后<code>\hello</code>会被替换为<code>Hello, World!</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\newcounter</span><span class="nb">{</span>tempcounter<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\newcommand</span><span class="nb">{</span><span class="k">\add</span><span class="nb">}</span>[2]<span class="nb">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\setcounter</span><span class="nb">{</span>tempcounter<span class="nb">}{</span>#1<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\addtocounter</span><span class="nb">{</span>tempcounter<span class="nb">}{</span>#2<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  #1 + #2 = <span class="k">\thetempcounter</span>
+</span></span><span class="line"><span class="cl">  <span class="k">\setcounter</span><span class="nb">{</span>tempcounter<span class="nb">}{</span>0<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="nb">}</span>
+</span></span></code></pre></div><p><code>[2]</code>表示两个参数，<code>#1</code>和<code>#2</code>表示对两个参数的引用。定义一个加法公式宏。之后如此使用：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\add</span><span class="nb">{</span>2<span class="nb">}{</span>3<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\add</span><span class="nb">{</span>5<span class="nb">}{</span>6<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">\add</span><span class="nb">{</span>7<span class="nb">}{</span>8<span class="nb">}</span>
+</span></span></code></pre></div><p>效果：</p>
+<p><img src="/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/LaTeX%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0_calculator.png" alt="LaTeX自学笔记_calculator"></p>
+<blockquote>
+<p>其实有专门的数学计算宏包，此处只做演示。</p>
+</blockquote>
+<p><code>renewcommand</code>可以覆盖一个原本存在的命令。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\thesection</span><span class="nb">}{</span><span class="k">\Roman</span><span class="nb">{</span>section<span class="nb">}}</span> 
+</span></span></code></pre></div><p>将章节号由阿拉伯数字改为罗马数字。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tex" data-lang="tex"><span class="line"><span class="cl"><span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\thesection</span><span class="nb">}{</span><span class="k">\Roman</span><span class="nb">{</span>section<span class="nb">}}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\thesubsection</span><span class="nb">}{</span><span class="k">\Alph</span><span class="nb">{</span>subsection<span class="nb">}}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\renewcommand</span><span class="nb">{</span><span class="k">\theparagraph</span><span class="nb">}{</span><span class="k">\alph</span><span class="nb">{</span>paragraph<span class="nb">}}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\setcounter</span><span class="nb">{</span>secnumdepth<span class="nb">}{</span>4<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\makeatletter</span>
+</span></span><span class="line"><span class="cl"><span class="k">\@</span>addtoreset<span class="nb">{</span>paragraph<span class="nb">}{</span>section<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\makeatother</span>
+</span></span><span class="line"><span class="cl"><span class="k">\titleformat</span><span class="nb">{</span><span class="k">\section</span><span class="nb">}</span>[block]
+</span></span><span class="line"><span class="cl">  <span class="nb">{</span><span class="k">\normalfont\normalsize\centering\hyphenpenalty</span>=10000<span class="k">\exhyphenpenalty</span>=10000<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">{</span><span class="k">\thesection</span>.<span class="nb">}{</span>0.55em<span class="nb">}{</span><span class="k">\MakeUppercase</span><span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\titlespacing*</span><span class="nb">{</span><span class="k">\section</span><span class="nb">}{</span>0pt<span class="nb">}{</span>2.0ex plus 0.4ex minus 0.2ex<span class="nb">}{</span>0.9ex<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\titleformat</span><span class="nb">{</span><span class="k">\subsection</span><span class="nb">}</span>[block]
+</span></span><span class="line"><span class="cl">  <span class="nb">{</span><span class="k">\normalfont\itshape\normalsize\raggedright\hyphenpenalty</span>=10000<span class="k">\exhyphenpenalty</span>=10000<span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">{</span><span class="k">\thesubsection</span>.<span class="nb">}{</span>0.5em<span class="nb">}{}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\titlespacing*</span><span class="nb">{</span><span class="k">\subsection</span><span class="nb">}{</span>0pt<span class="nb">}{</span>1.5ex plus 0.3ex minus 0.2ex<span class="nb">}{</span>0.6ex<span class="nb">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\titleformat</span><span class="nb">{</span><span class="k">\paragraph</span><span class="nb">}</span>[runin]
+</span></span><span class="line"><span class="cl">  <span class="nb">{</span><span class="k">\normalfont\itshape\normalsize</span><span class="nb">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">{</span><span class="k">\theparagraph</span>.<span class="nb">}{</span>0.45em<span class="nb">}{}</span>
+</span></span><span class="line"><span class="cl"><span class="k">\titlespacing*</span><span class="nb">{</span><span class="k">\paragraph</span><span class="nb">}{</span>0pt<span class="nb">}{</span>0.9ex plus 0.2ex minus 0.1ex<span class="nb">}{</span>0.45em<span class="nb">}</span>
+</span></span></code></pre></div><p>一套相对复杂的段落配置，section序号使用罗马数字，subsection使用大写字母，paragraph使用小写字母。配置了最深标题深度为4，在section计数增加时重置paragraph计数，并调整了一系列格式。此段放于导言区。</p>
+<p>其他的语法细节不必纠结了。只要对LaTeX能做的事情有基本的概念，剩下的事情交给AI即可。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别</title>
