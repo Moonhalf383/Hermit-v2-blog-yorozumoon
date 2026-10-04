@@ -1,6 +1,12 @@
 {{/* layouts/shortcodes/friendlinks.html */}}
+{{- $links := slice -}}
+{{- if ge hugo.Version "0.156.0" -}}
+    {{- $links = hugo.Data.links.list -}}
+{{- else -}}
+    {{- $links = .Site.Data.links.list -}}
+{{- end -}}
 <div class="friend-links-container">
-    {{ range hugo.Data.links.list }}
+    {{ range $links }}
     <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" class="friend-card">
         <div class="friend-left">
             <img src="{{ .avatar }}" alt="{{ .name }}" class="friend-avatar" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/images/friend_default.png'">
