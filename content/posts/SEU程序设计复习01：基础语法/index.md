@@ -8,6 +8,8 @@ tags:
 - cpp
 - 课内
 title: SEU程序设计复习01：基础语法
+icon: LiFileCode
+iconColor: '#000000'
 toc: true
 ---
 

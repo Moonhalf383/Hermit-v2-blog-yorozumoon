@@ -8,6 +8,8 @@ tags:
   - 随意探索
   - 平板
 title: 平板游戏环境配置计划：4阶段
+icon: LiGamepad
+iconColor: '#000000'
 toc: true
 ---
 

@@ -1,175 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cn">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
-<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="noindex, nofollow, noarchive"><meta name="author" content="Moonhalf">
-<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
-<meta name="theme-color" content="#494f5c">
-<meta name="msapplication-TileColor" content="#494f5c">
-
-	<meta itemprop="name" content="工具不图鉴04：环境变量&shell脚本">
-	<meta itemprop="description" content="D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。">
-	<meta itemprop="datePublished" content="2026-01-28T00:00:00+00:00">
-	<meta itemprop="dateModified" content="2026-01-28T00:00:00+00:00">
-	<meta itemprop="wordCount" content="5787">
-	<meta itemprop="keywords" content="Blog,教程,Shell,Python"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/">
-	<meta property="og:site_name" content="Yorozumoon">
-	<meta property="og:title" content="工具不图鉴04：环境变量&shell脚本">
-	<meta property="og:description" content="D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。">
-	<meta property="og:locale" content="zh_cn">
-	<meta property="og:type" content="article">
-		<meta property="article:section" content="posts">
-		<meta property="article:published_time" content="2026-01-28T00:00:00+00:00">
-		<meta property="article:modified_time" content="2026-01-28T00:00:00+00:00">
-		<meta property="article:tag" content="Blog">
-		<meta property="article:tag" content="教程">
-		<meta property="article:tag" content="Shell">
-		<meta property="article:tag" content="Python">
-
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="工具不图鉴04：环境变量&shell脚本">
-	<meta name="twitter:description" content="D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。">
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "工具不图鉴04：环境变量\u0026shell脚本",
-    "name": "工具不图鉴04：环境变量\u0026shell脚本",
-    "description": "D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。\n",
-    "keywords": ["blog", "教程", "shell", "python"],
-    "articleBody": "D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。\n参考链接： 某篇google上随机刷到的博客\n环境变量wiki\n某个实用工具清单仓库\n什么是环境变量？ 在回答这个问题之前，我们不妨思考一下：\n什么是“变量”？ 即使折腾了有段时间linux，实话说我很少遇到普通变量。但是它们确实存在。我觉得一个比较正确的看待变量的角度是把shell看做一个和python类似的东西，shell可以输一行指令运行一次，python开启交互模式也可以输一行代码运行一次；shell允许你写复杂的shell脚本，python也允许你组织复杂的工程。只不过前者本质是一个实用工具，后者至少打的旗号是一个编程语言。\n我们先用Python举一个简单的例子：\n只要你的电脑安装了python，你就可以随时在命令行中输入python来进入交互模式。我们可以开始时定义一个变量a，然后在接下来的交互中调用它或者修改它。\nshell自身的普通变量也有类似的功能，同样一个简单的例子：\n你完全可以把shell看做是一个基本只运行交互模式的python。只不过shell的变量有以下特殊的语法规则：\n定义变量时等号左右不能有空格，比如你必须写a=3而不是a = 3，虽然后者看起来更加顺眼。 调用变量的时候必须在变量名之前加$。 对变量进行数学计算的时候需要使用两个圆括号括起来。 如果你好奇你的当前环境下有哪些变量，你可以输入set指令来查看所有的变量。这里甚至会包含我们刚刚随手写的一个变量a：\n环境变量 虽然普通变量看起来已经可以做很多事情了，但是它有一个显著的局限：它只能作用于当前的shell进程，甚至没办法作用到任何子进程。假如你运行了一个程序，那么这个程序是读取不到你的普通变量的，或者假如你新开了一个窗口，那么新的shell进程中也是不会有原窗口的普通变量。\n环境变量虽然也不能直接存活在所有窗口，但是相较于普通变量，环境变量的一个重要特点是允许子进程读取。很多的应用会读取一些通用的环境变量来获取目录结构信息以及用户信息，用户也可以通过修改环境变量来配置一些应用的行为。\n在进一步了解环境变量之前，我们最好先来了解一些常用的和变量相关的指令：\necho $VAR echo指令的作用是在你的终端上打印指定的东西。你可以让它打印一个变量的内容，也可以打印字符串。如果你想让你的脚本比较人性化的话你可以考虑多打印一点提示内容。\nexport VAR=var 声明一个变量为环境变量。如果没有export关键字的话默认为普通变量。\nenv 查看所有的环境变量。\nunset VAR 删除一个变量。\n大致就这样。\n一些常见的环境变量： USER：你的名字。如果程序想显示你的名字的时候就会查它。 HOME：家目录。通常就是你的~目录。这是一个路径，存储的形式是字符串。 PWD：当前路径，即运行脚本时你所处的实际路径。写脚本的时候可能会很有用。 PATH：这是一个“工具箱搜索清单”，存储的是若干个路径，对应目录下里面装的是可执行文件。当你在命令行里输入一个指令时，系统就会去PATH存储的路径中挨个找你要的名字匹配的可执行文件，找到了就执行，找不到就报错，除非设置了别名。 PATH变量中，不同的目录之间通过冒号隔开。一般的添加PATH路径的方式如下：\nexport PATH=\"$HOME/.local/bin:$PATH\" PATH本质是一个字符串，所以用双引号包裹。在想要添加的路径之后补上:$PATH来保留原有的PATH路径，如果不加这个的话原有的路径就都没了。\n如何让一个环境变量可以在所有shell进程中存在？ 修改你的shell的运行时配置文件，也就是.xxrc文件。比如如果你用的shell是bash，那么通常在你的家目录下会有一个.bashrc文件。你只需要把你原本在终端中直接输入的export VAR=var原封不动地搬到配置文件中就可以了。如果你用的是zsh，那就应该搬到~/.zshrc中。\n在我前两天配置proot游戏运行环境过程中配置了大量的环境变量，其中一些基本不用修改的环境变量便存放在了~/.zshrc中，内容大致如下：\n# ========================================== # 1. 基础路径与环境 # ========================================== export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin export DISPLAY=:1 export XDG_RUNTIME_DIR=/tmp # ========================================== # 2. Wine WOW64 路径配置 # ========================================== export WINE_ROOT=$HOME/wine-wow64/wine-11.0-staging-amd64-wow64 export WINEPREFIX=$HOME/.wine export PATH=$WINE_ROOT/bin:$PATH # 确保 Wine 能找到它自己的库文件 export LD_LIBRARY_PATH=$WINE_ROOT/lib:$WINE_ROOT/lib/wine/x86_64-unix:$LD_LIBRARY_PATH # ========================================== # 3. Audio 修复 (基于之前的测试教训) # ========================================== # 解决音频卡顿和死锁的关键：强制通过 TCP 连接宿主 PulseAudio export PULSE_SERVER=127.0.0.1 # 增加延迟缓冲，解决爆音和因音频同步导致的画面卡顿 (Steam 环境建议 60-100) export PULSE_LATENCY_MSEC=60 # ========================================== # 4. Box64 性能与转译优化 (针对 8 Gen 3) # ========================================== # 日志级别：0=仅报错, 1=基本信息。平时建议设为 0 或 1，设太高会拖慢 I/O export BOX64_LOG=1 # 开启大块编译：显著提升 CPU 密集型任务性能 (如游戏逻辑) export BOX64_DYNAREC_BIGBLOCK=1 # 强内存模型：解决 Unity 引擎和多线程游戏死锁/崩溃问题 (骁龙必须开) export BOX64_DYNAREC_STRONGMEM=1 # 安全标志位：防止非法指令崩溃 export BOX64_DYNAREC_SAFEFLAGS=1 # Box64 辅助路径 export BOX64_PATH=$WINE_ROOT/bin/ export BOX64_LD_LIBRARY_PATH=$WINE_ROOT/lib/wine/x86_64-unix/:$WINE_ROOT/lib/ # ========================================== # 5. 图形驱动 (Turnip + Zink) # ========================================== # [重要] 请确认此文件路径真实存在，否则无法加载驱动 export VK_ICD_FILENAMES=/root/test/freedreno_icd.aarch64.json # 强制 Wine/Linux 程序使用 Zink (OpenGL over Vulkan) export MESA_LOADER_DRIVER_OVERRIDE=zink export GALLIUM_DRIVER=zink # Turnip 驱动内存分配修复 (防止显存分配崩溃) export TU_DEBUG=sysmem # Zink 优化：延迟描述符更新，可提升部分 DX9/DX11 游戏帧数 export ZINK_DESCRIPTORS=lazy export WINEDEBUG=\"-file,-mountmgr,-event\" # ========================================== # 6. 调试辅助 (可选，平时可注释掉) # ========================================== # 显示 DXVK 帧数和显卡信息 (如果你装了 DXVK) # export DXVK_HUD=fps,devinfo,version # 显示 Mesa/Zink 帧数 (如果你没用 DXVK) # export GALLIUM_HUD=fps （看到这么激情洋溢的注释就知道是ai写的了…）\n每次进入proot环境，系统会花一点时间打开zsh，这一过程中系统就会首先运行~/.zshrc中的shell指令，所以将环境变量写在这里，每次启动shell就会自动添加这些环境变量。\nshell脚本 一个helloworld地位的脚本：\n#!/usr/bin/env bash echo \"Hello world!\" shell script虽然定位上被认为是“脚本语言”而非通用型语言，但是脚本语言也是编程语言的一种。python很多时候也不过就是一个高级一点的通用脚本。所以此处你完全可以把.sh和.py看做是一类东西。\n现在我们来拆解一下这个helloworld代码的组成。\n#!/usr/bin/env bash 这个东西的专业术语是Shebang，它的作用是告诉系统内核这个文件不是一个可以直接执行的二进制文件，而是一个需要解释器才能运行的脚本文件，#!后放的就是解释器的文件路径。\n然而，你可能会注意到#!/usr/bin/env bash似乎并不是直接代表了一个解释器路径，这里其实是一种常见的变体。env是一个存在于/usr/bin的二进制文件，它的位置一般来说是稳定不变的，但是在不同人的电脑上，解释器的位置是很有可能变化的。env后加一个程序名表示的就是在PATH环境变量中寻找对应的解释器。这样不管解释器在哪，脚本都可以正常运行。\n常见的shell script解释器有sh或者dash，属于标准的POSIX shell，功能较少但是速度较快，bash会比较中规中矩，而且一般机器上都会有。zsh会有一些高级特性。\n此外，既然Shebang只是规定必须写一个解释器路径，其实我们不止可以写shell script，还可以写python。你只需要把Shebang中的bash换成python，后面的脚本用python语法写，完全可以正常运行。\nchmod +x … chmod，即Change Mode。脚本写完之后无法直接运行，需要使用chmod为它添加执行权限。三种基本权限即rwx，对应读取权限、写入权限，以及执行权限。对于个人电脑来说我们很少会接触到用户组的概念，所以一般最常见的用法就是chmod +x 来为脚本添加执行权限，或者chmod -x 来取消脚本的执行权限。\n一些常见的脚本写法 #!/usr/bin/env bash echo \"Enter a numble:\" read NUMBLE if [ $NUMBLE -gt 10 ]; then echo \"The numble is greater than 10.\" exit 1 elif [ $NUMBLE -eq 10 ]; then echo \"The numble is equal to 10.\" exit 1 else echo \"The numble is less than 10.\" fi 这个简单的例子里涉及了shell script的条件判断写法。在shell script中-gt代表大于，-eq代表等于，-lt表示小于。此外需要注意变量取值必须在变量名前加$（比C语言还繁琐是我没想到的）。shell script是一个弱类型语言，无需显示声明类型，所有的变量会默认存储为字符串。\n注意中括号和中间的关键字和标识符之间需要留有空格，中括号之后要加分号。shell script对于空格、分号和中括号非常敏感。分支结构最后需要加上fi表示结束。\n运行效果：\nfor循环写法：\n#!/usr/bin/env bash echo \"Generating three test files...\" for i in {1..3}; do touch \"test_file_$i.txt\" echo \"File NO.$i created successfully.\" done echo \"Mission completed.\" 创建三个测试用文件（竟然是左闭右闭，简直是异端）。运行结果如下：\n在shell script中有一些特殊的变量由系统自动维护，用来获取脚本参数、运行状态和系统id。\n$0返回运行的脚本文件名（实际是相对于当前位置的相对路径） $1、$2、...表示传给脚本的第1～9个参数。 ${10}，10及以上需要加花括号。 $#传入的参数个数 $@传入的所有参数，可以使用for循环遍历（即把参数打包成一个类似python元组的东西） $*把传入的参数看做一个整体的字符串。 $?上一个命令退出情况，0为成功，非0为失败。 $$当前脚本的进程数。 一个求和脚本示例：\n#!/usr/bin/env bash DATE=$(date \"+%Y-%m-%d\") echo \"PID: $$\" echo \"Date: $DATE\" echo \"Script name: $0\" echo \"\" echo \"You've entered $# params.\" ANS=0 for PARAM in \"$@\"; do ANS=$(($ANS + PARAM)) done echo \"The sum is $ANS.\" 结果：\nshell的for循环语法和python看起来似乎很相似。比如，你可以这么写：\nfor name in Alice Bob Charlie; do echo \"Hello $name\" done 结果输出：\nHello Alice Hello Bob Hello Charlie shell script中一个更强大的功能是通配符遍历。比如，如果你想罗列一个目录下的所有pdf文件，你可以这么写：\n#!/usr/bin/env bash count=1 for file in *.pdf; do echo \"pdf $count: $file\" count=$(($count + 1)) done 效果：\n如果你想使用C风格的数值循环，此处记录一下写法，不再实验。\nfor ((i=1; i\u003c=5; i++)); do echo \"次数: $i\" done while循环的一般写法也就是if和for的杂交，也只是记录一下，不再实验。\ncount=1 while [ $count -le 5 ]; do echo \"Count: $count\" ((count++)) # Bash 中的自增写法 done 插叙：重定向与管道 在linux命令中，|、\u003e、\u003c可以影响数据的流向，为我们编写脚本和日常使用指令提供了极大的方便。理解这些工具的秘诀在于想象数据像水一样流动。\n\u003e和\u003e\u003e表示输出重定向。它们可以把原本应该打印在屏幕上的内容存到指定的文件中。其中\u003e表示覆写，会清空原有内容；\u003e\u003e表示追加写，会在文件末尾接着写。\n你应该这样理解：每一个指令都像一个有着通用的输入、输出管道的机器。默认情况下，输出的管道会直接连到你的终端上。现在，我们不希望它把数据直接流到屏幕上，而是流到文件里，所以我们接一个管道把指令输出的东西转移到文件中。\necho \"Hello\" \u003e hello.txt echo \"Helloworld\" \u003e\u003e hello.txt 结果：\n内容：\nHello Helloworld echo指令就像是一个只会接受东西输出东西的发射器，但是它也使用了通用的管道。\n一个常见的应用是conda导出环境配置。此处就用到了输出重定向。\nconda env export \u003e environment.yml # 导出环境 此外，正常的输出\u003e实际是1\u003e的缩写。错误输出2\u003e和正常输出并不走同一个管道。这意味着有时即使你进行了\u003e的重定向，当出现错误时，报错信息还是会流到屏幕上。你需要对报错做额外的处理。\n与之相对的，\u003c表示输入重定向。比如某些指令默认从屏幕读取输入，你就可以用\u003c来将默认的输入方式改为从指定的文件中输入。每次会自动读取一行。\n举个例子，我们随便写一个若干行的随机人名文件。\n然后编写这样的测试脚本：\n#!/usr/bin/env bash FILE=\"$PWD/names.txt\" while read name; do echo $name done \u003c$FILE FILE定义了指定的文件，此处我们默认在names.txt目录下执行该脚本。假如你在一个没有names.txt的目录下执行该脚本，脚本就会报错。\n运行效果：\n符合预期。\n然而，仅有输入输出重定向是不够的。它们只能代表数据加工开始和结束时数据的去向。但是假如数据加工的过程中也有多个步骤，仅仅使用输入输出重定向虽然也可以完成任务，但是免不了要用额外的存储空间缓存数据，并徒增写入和读取的用时。所以，我们为什么不能直接把一个指令的输出喂给另一个指令作为输入呢？\n于是便有了管道符号|。它的作用就是把左边指令的输出喂给右边的指令作为输入。一些经典的用法如下：\n# 1. 列出当前目录所有文件 # 2. 把结果传给 grep，搜索包含 \"txt\" 的行 ls | grep \"txt\" # 1. 读取一个很长的文件内容 # 2. 把内容传给 head，只看前 10 行 cat large_file.log | head -n 10 # 1. 查找所有正在运行的进程 # 2. 搜索关于 \"python\" 的进程 ps aux | grep \"python\" 函数与递归 虽然shell脚本看起来像是一堆指令堆在一起，但是实际上完全支持函数和递归调用。\n一个简单的函数示例：\n#!/usr/bin/env bash add() { echo $(($1 + $2)) } echo $(add $1 $2) 输出结果：\nshell函数相较于其他语言的函数有很大的行为差异。首先，shell script中的函数传参只能使用$i的形式读取第i个参数。此外，在shell中return关键字的用法是返回状态，只能返回0~255之间的整数，通常用0表示成功。而数据输出则使用echo，并在函数调用的时候使用$(...)符号捕获输出。这种设计的原因在于shell script本身是非常简陋的，想要返回数值唯一的方法就是把东西打印出来。\n$(...)符号在shell script中的行为和输出重定向很相似。它的功能就是把一个原本会输出到屏幕的输出重定向给变量。$VAR的写法则表示从变量的对应内存中提取数据。两者的功能是不同的。\nshell script中定义的变量默认是全局变量，这和一般的程序语言的动态作用域有很大区别。如果我们希望一个变量只作用于函数体内部，我们必须要变量前添加local关键字。\nshell script完全支持递归，以下是基于shell script的阶乘写法：\n#!/usr/bin/env bash fact() { if [ $1 -le 1 ]; then echo 1 else local prev=$(fact $(($1 - 1))) echo $(($prev * $1)) fi } echo $(fact $1) 输出结果：\n一个基于shell script递归的文件树打印脚本：\n#!/usr/bin/env bash echo_indent() { local indent=\"$1\" local ans=\"$2\" for ((i = 1; i \u003c= indent; i++)); do ans=\" $ans\" done echo \"$ans\" } list_file_recursive() { local dir=\"$1\" local indent=\"$2\" for item in $dir/*; do if [ -d \"$item\" ]; then echo \"$(echo_indent $indent \"Directory: $item\")\" list_file_recursive \"$item\" $(($indent + 1)) else echo \"$(echo_indent $indent \"File: $item\")\" fi done } list_file_recursive $PWD 0 某次输出：\n（下方lt为eza输出的文件树，可以当做标准答案。）\n总结 虽然shell script的功能很多，但是写起来和正经的程序语言比还是有点折磨了。这边推荐把shell script当做python程序的包装器。\n以下是我的博客发射器的包装器脚本：\n#!/usr/bin/env bash set -e PROJECT_ROOT=\"$HOME/python_projects/ControlCenter\" VENV_ACTIVATE=\"$PROJECT_ROOT/venv/bin/activate\" ENTRY_POINT=\"$PROJECT_ROOT/Entry.py\" if [ ! -d \"$PROJECT_ROOT\" ]; then echo \"Error: Project directory not found at $PROJECT_ROOT\" exit 1 fi if [ -f \"$VENV_ACTIVATE\" ]; then source \"$VENV_ACTIVATE\" else echo \"Error: Virtual environment not found. Did you run 'python -m venv venv'?\" exit 1 fi python \"$ENTRY_POINT\" \"$@\" deactivate 功能是自动启动虚拟环境并运行python程序，同时自动传参执行指令。随后结束时自动关闭虚拟环境。至于具体的功能实现则交给代码更便于维护的python程序。\n",
-    "wordCount" : "5787",
-    "inLanguage": "zh-cn",
-    "datePublished": "2026-01-28T00:00:00Z",
-    "dateModified": "2026-01-28T00:00:00Z",
-    "author":{
-        "@type": "Person",
-        "name": "Moonhalf",
-        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
-        },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "http://localhost:1313/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Yorozumoon",
-      "description": "",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "http://localhost:1313/favicon.ico"
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=37705&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        try {
+          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+          if (stored !== null) collapsed = JSON.parse(stored) === true;
+        } catch (_) {}
+        root.classList.toggle(`${side}-collapsed`, collapsed);
       }
-    }
-}
-</script><title>工具不图鉴04：环境变量&amp;shell脚本</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.981fd45755dd2c825d2cfb1a56c26ec7a9abccd378ee9b086d0c941e5de412fe.css" integrity="sha256-mB/UV1XdLIJdLPsaVsJux6mrzNN47psIbQyUHl3kEv4=" crossorigin="anonymous">
-	</head>
+    })();
+  </script>
+  <meta name="description" content="D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。
+">
+  <title>工具不图鉴04：环境变量&amp;shell脚本 · Yorozumoon</title>
+  <link rel="icon" type="image/png" href="/images/face.png"><link rel="stylesheet" href="/css/editor.min.4a41cd0abb1a2ad26d1cafbfd366f3ee3e1dab242c436e892b8ca24e4dc3f260.css" integrity="sha256-SkHNCrsaKtJtHK&#43;/02bz7j4dqyQsQ26JK4yiTk3D8mA="><script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true},
+      options: {skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+      chtml: {scale: 0.96}
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+</head>
+<body class="editor-shell" data-current-path="posts/工具不图鉴04：环境变量&amp;shell脚本.md" data-current-source="posts/工具不图鉴04：环境变量&amp;shell脚本/index.md">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
 
-<body id="page">
-<header id="site-header" class="animated slideInUp">
-	<div class="hdr-wrapper section-inner">
-		<div class="hdr-left">
-			<div class="site-branding">
-				<a href="http://localhost:1313/">Yorozumoon</a>
-			</div>
-			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
-		</div>
-		<div class="hdr-right hdr-icons">
-			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
-      <line x1="8" y1="6" x2="21" y2="6"></line>
-      <line x1="8" y1="12" x2="21" y2="12"></line>
-      <line x1="8" y1="18" x2="21" y2="18"></line>
-      <line x1="3" y1="6" x2="3" y2="6"></line>
-      <line x1="3" y1="12" x2="3" y2="12"></line>
-      <line x1="3" y1="18" x2="3" y2="18"></line>
-   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
-   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-   <path
-      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-   </path>
-</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-   </svg></button>
-		</div>
-	</div>
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span>posts/工具不图鉴04：环境变量&amp;shell脚本.md</span>
+      </div>
+      <article class="document" id="document">
+        
+<header class="document-header">
+  <p class="document-kind">posts/工具不图鉴04：环境变量&amp;shell脚本.md</p>
+  <h1>工具不图鉴04：环境变量&amp;shell脚本</h1>
+  <div class="document-meta"><time datetime="2026-01-28">2026-01-28</time><span>blog · 教程 · shell · python</span></div>
 </header>
-<div id="mobile-menu" class="animated fast">
-	<ul>
-		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
-		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
-		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
-		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
-	</ul>
-</div>
-
-	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
-			<header class="post-header">
-				<div class="post-date"><span>Jan 28, 2026</span></div>
-				<h1>工具不图鉴04：环境变量&amp;shell脚本</h1>
-			</header>
-			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
-   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-   <line x1="16" y1="8" x2="2" y2="22"></line>
-   <line x1="17.5" y1="15" x2="9" y2="15"></line>
-</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-      <line x1="7" y1="7" x2="7" y2="7"></line>
-   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/blog">blog</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B">教程</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/shell">shell</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/python">python</a></span></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-      <polyline points="14 2 14 8 20 8"></polyline>
-      <line x1="16" y1="13" x2="8" y2="13"></line>
-      <line x1="16" y1="17" x2="8" y2="17"></line>
-      <polyline points="10 9 9 9 8 9"></polyline>
-   </svg>5787&nbspWords 阅读时长26 Minutes, 18 Seconds</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="16" y1="2" x2="16" y2="6"></line>
-      <line x1="8" y1="2" x2="8" y2="6"></line>
-      <line x1="3" y1="10" x2="21" y2="10"></line>
-   </svg>2026-01-28 08:00 &#43;0800
-</p></div>
-			<hr class="post-end">
-			<div class="content">
-				 <p>D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。</p>
-<h1 id="参考链接">参考链接：<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<div class="content" data-wikilinks>
+  <p>D2L自学日志工程量太大了，学一天给我CPU干烧了，索性学点其他的东西调整一下。因为很长一段时间自己从来没有正经的研究过什么是环境变量以及怎么写shell脚本，遇到这种事情都让ai来完成，最近时常感觉自己的环境有点乱糟糟的。归根结底，这种事情还是要自己知道怎么做的好。</p>
+<h1 id="参考链接">参考链接：</h1>
 <p><a href="https://chihokyo.com/post/6/">某篇google上随机刷到的博客</a></p>
 <p><a href="https://zh.wikipedia.org/zh-cn/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F">环境变量wiki</a></p>
 <p><a href="https://github.com/alebcay/awesome-shell">某个实用工具清单仓库</a></p>
-<h1 id="什么是环境变量">什么是环境变量？<a href="#%e4%bb%80%e4%b9%88%e6%98%af%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="什么是环境变量">什么是环境变量？</h1>
 <p>在回答这个问题之前，我们不妨思考一下：</p>
-<h2 id="什么是变量">什么是“变量”？<a href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%8f%98%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="什么是变量">什么是“变量”？</h2>
 <p>即使折腾了有段时间linux，实话说我很少遇到普通变量。但是它们确实存在。我觉得一个比较正确的看待变量的角度是把shell看做一个和python类似的东西，shell可以输一行指令运行一次，python开启交互模式也可以输一行代码运行一次；shell允许你写复杂的shell脚本，python也允许你组织复杂的工程。只不过前者本质是一个实用工具，后者至少打的旗号是一个编程语言。</p>
 <p>我们先用Python举一个简单的例子：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-1.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-1.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>只要你的电脑安装了python，你就可以随时在命令行中输入<code>python</code>来进入交互模式。我们可以开始时定义一个变量<code>a</code>，然后在接下来的交互中调用它或者修改它。</p>
 <p>shell自身的普通变量也有类似的功能，同样一个简单的例子：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-2.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-2.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>你完全可以把shell看做是一个基本只运行交互模式的python。只不过shell的变量有以下特殊的语法规则：</p>
 <ul>
 <li>定义变量时等号左右不能有空格，比如你必须写<code>a=3</code>而不是<code>a = 3</code>，虽然后者看起来更加顺眼。</li>
@@ -177,12 +81,10 @@
 <li>对变量进行数学计算的时候需要使用两个圆括号括起来。</li>
 </ul>
 <p>如果你好奇你的当前环境下有哪些变量，你可以输入<code>set</code>指令来查看所有的变量。这里甚至会包含我们刚刚随手写的一个变量a：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-3.png" alt=""></p>
-<h2 id="环境变量">环境变量<a href="#%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-3.png" alt="" loading="lazy" decoding="async"></span>
+</p>
+<h2 id="环境变量">环境变量</h2>
 <p>虽然普通变量看起来已经可以做很多事情了，但是它有一个显著的局限：它<strong>只能作用于当前的shell进程</strong>，甚至没办法作用到任何子进程。假如你运行了一个程序，那么这个程序是读取不到你的普通变量的，或者假如你新开了一个窗口，那么新的shell进程中也是不会有原窗口的普通变量。</p>
 <p>环境变量虽然也不能直接存活在所有窗口，但是相较于普通变量，环境变量的一个重要特点是允许子进程读取。很多的应用会读取一些通用的环境变量来获取目录结构信息以及用户信息，用户也可以通过修改环境变量来配置一些应用的行为。</p>
 <p>在进一步了解环境变量之前，我们最好先来了解一些常用的和变量相关的指令：</p>
@@ -195,29 +97,25 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">unset</span> VAR
 </span></span></code></pre></div><p>删除一个变量。</p>
 <p>大致就这样。</p>
-<h3 id="一些常见的环境变量">一些常见的环境变量：<a href="#%e4%b8%80%e4%ba%9b%e5%b8%b8%e8%a7%81%e7%9a%84%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-4.png" alt=""></p>
+<h3 id="一些常见的环境变量">一些常见的环境变量：</h3>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-4.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <ul>
 <li>USER：你的名字。如果程序想显示你的名字的时候就会查它。</li>
 <li>HOME：家目录。通常就是你的<code>~</code>目录。这是一个路径，存储的形式是字符串。</li>
 <li>PWD：当前路径，即运行脚本时你所处的实际路径。写脚本的时候可能会很有用。</li>
 </ul>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-5.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-5.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <ul>
 <li>PATH：这是一个“工具箱搜索清单”，存储的是若干个路径，对应目录下里面装的是可执行文件。当你在命令行里输入一个指令时，系统就会去PATH存储的路径中挨个找你要的名字匹配的可执行文件，找到了就执行，找不到就报错，除非设置了别名。</li>
 </ul>
 <p>PATH变量中，不同的目录之间通过冒号隔开。一般的添加PATH路径的方式如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.local/bin:</span><span class="nv">$PATH</span><span class="s2">&#34;</span>
 </span></span></code></pre></div><p>PATH本质是一个字符串，所以用双引号包裹。在想要添加的路径之后补上<code>:$PATH</code>来保留原有的PATH路径，如果不加这个的话原有的路径就都没了。</p>
-<h3 id="如何让一个环境变量可以在所有shell进程中存在">如何让一个环境变量可以在所有shell进程中存在？<a href="#%e5%a6%82%e4%bd%95%e8%ae%a9%e4%b8%80%e4%b8%aa%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e5%8f%af%e4%bb%a5%e5%9c%a8%e6%89%80%e6%9c%89shell%e8%bf%9b%e7%a8%8b%e4%b8%ad%e5%ad%98%e5%9c%a8" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="如何让一个环境变量可以在所有shell进程中存在">如何让一个环境变量可以在所有shell进程中存在？</h3>
 <p>修改你的shell的<strong>运行时配置文件</strong>，也就是<code>.xxrc</code>文件。比如如果你用的shell是bash，那么通常在你的家目录下会有一个<code>.bashrc</code>文件。你只需要把你原本在终端中直接输入的<code>export VAR=var</code>原封不动地搬到配置文件中就可以了。如果你用的是zsh，那就应该搬到<code>~/.zshrc</code>中。</p>
 <p>在我前两天配置proot游戏运行环境过程中配置了大量的环境变量，其中一些基本不用修改的环境变量便存放在了<code>~/.zshrc</code>中，内容大致如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="c1"># ==========================================</span>
@@ -286,39 +184,27 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># export GALLIUM_HUD=fps</span>
 </span></span></code></pre></div><p>（看到这么激情洋溢的注释就知道是ai写的了&hellip;）</p>
 <p>每次进入proot环境，系统会花一点时间打开zsh，这一过程中系统就会首先运行<code>~/.zshrc</code>中的shell指令，所以将环境变量写在这里，每次启动shell就会自动添加这些环境变量。</p>
-<h1 id="shell脚本">shell脚本<a href="#shell%e8%84%9a%e6%9c%ac" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="shell脚本">shell脚本</h1>
 <p>一个helloworld地位的脚本：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
 </span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Hello world!&#34;</span>
-</span></span></code></pre></div><p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-6.png" alt=""></p>
+</span></span></code></pre></div><p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260128-6.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>shell script虽然定位上被认为是“脚本语言”而非通用型语言，但是脚本语言也是编程语言的一种。python很多时候也不过就是一个高级一点的通用脚本。所以此处你完全可以把<code>.sh</code>和<code>.py</code>看做是一类东西。</p>
 <p>现在我们来拆解一下这个helloworld代码的组成。</p>
-<h2 id="usrbinenv-bash">#!/usr/bin/env bash<a href="#usrbinenv-bash" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="usrbinenv-bash">#!/usr/bin/env bash</h2>
 <p>这个东西的专业术语是<strong>Shebang</strong>，它的作用是告诉系统内核这个文件不是一个可以直接执行的二进制文件，而是一个需要解释器才能运行的脚本文件，<code>#!</code>后放的就是解释器的文件路径。</p>
 <p>然而，你可能会注意到<code>#!/usr/bin/env bash</code>似乎并不是直接代表了一个解释器路径，这里其实是一种常见的变体。<code>env</code>是一个存在于<code>/usr/bin</code>的二进制文件，它的位置一般来说是稳定不变的，但是在不同人的电脑上，解释器的位置是很有可能变化的。<code>env</code>后加一个程序名表示的就是在PATH环境变量中寻找对应的解释器。这样不管解释器在哪，脚本都可以正常运行。</p>
 <p>常见的shell script解释器有sh或者dash，属于标准的POSIX shell，功能较少但是速度较快，bash会比较中规中矩，而且一般机器上都会有。zsh会有一些高级特性。</p>
 <p>此外，既然Shebang只是规定必须写一个解释器路径，其实我们不止可以写shell script，还可以写python。你只需要把Shebang中的bash换成python，后面的脚本用python语法写，完全可以正常运行。</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-1.png" alt=""></p>
-<h2 id="chmod-x-">chmod +x &hellip;<a href="#chmod-x-" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-1.png" alt="" loading="lazy" decoding="async"></span>
+</p>
+<h2 id="chmod-x-">chmod +x &hellip;</h2>
 <p>chmod，即<strong>Ch</strong>ange <strong>Mod</strong>e。脚本写完之后无法直接运行，需要使用chmod为它添加执行权限。三种基本权限即rwx，对应读取权限、写入权限，以及执行权限。对于个人电脑来说我们很少会接触到用户组的概念，所以一般最常见的用法就是<code>chmod +x &lt;file_name&gt;</code>来为脚本添加执行权限，或者<code>chmod -x &lt;file_name&gt;</code>来取消脚本的执行权限。</p>
-<h1 id="一些常见的脚本写法">一些常见的脚本写法<a href="#%e4%b8%80%e4%ba%9b%e5%b8%b8%e8%a7%81%e7%9a%84%e8%84%9a%e6%9c%ac%e5%86%99%e6%b3%95" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="一些常见的脚本写法">一些常见的脚本写法</h1>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
 </span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Enter a numble:&#34;</span>
@@ -336,7 +222,9 @@
 </span></span></code></pre></div><p>这个简单的例子里涉及了shell script的条件判断写法。在shell script中<code>-gt</code>代表大于，<code>-eq</code>代表等于，<code>-lt</code>表示小于。此外需要注意变量取值必须在变量名前加<code>$</code>（比C语言还繁琐是我没想到的）。shell script是一个弱类型语言，无需显示声明类型，所有的变量会默认存储为字符串。</p>
 <p>注意中括号和中间的关键字和标识符之间需要留有空格，中括号之后要加分号。shell script对于空格、分号和中括号非常敏感。分支结构最后需要加上<code>fi</code>表示结束。</p>
 <p>运行效果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-2.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-2.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>for循环写法：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
 </span></span></span><span class="line"><span class="cl">
@@ -349,7 +237,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Mission completed.&#34;</span>
 </span></span></code></pre></div><p>创建三个测试用文件（竟然是左闭右闭，简直是异端）。运行结果如下：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-3.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260129-3.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>在shell script中有一些特殊的变量由系统自动维护，用来获取脚本参数、运行状态和系统id。</p>
 <ul>
 <li><code>$0</code>返回运行的脚本文件名（实际是相对于当前位置的相对路径）</li>
@@ -381,7 +271,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;The sum is </span><span class="nv">$ANS</span><span class="s2">.&#34;</span>
 </span></span></code></pre></div><p>结果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-1.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-1.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>shell的for循环语法和python看起来似乎很相似。比如，你可以这么写：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="k">for</span> name in Alice Bob Charlie<span class="p">;</span> <span class="k">do</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Hello </span><span class="nv">$name</span><span class="s2">&#34;</span>
@@ -399,7 +291,9 @@
 </span></span><span class="line"><span class="cl">  <span class="nv">count</span><span class="o">=</span><span class="k">$((</span><span class="nv">$count</span> <span class="o">+</span> <span class="m">1</span><span class="k">))</span>
 </span></span><span class="line"><span class="cl"><span class="k">done</span>
 </span></span></code></pre></div><p>效果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-2.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-2.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>如果你想使用C风格的数值循环，此处记录一下写法，不再实验。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>1<span class="p">;</span> i&lt;<span class="o">=</span>5<span class="p">;</span> i++<span class="o">))</span><span class="p">;</span> <span class="k">do</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;次数: </span><span class="nv">$i</span><span class="s2">&#34;</span>
@@ -410,18 +304,16 @@
 </span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Count: </span><span class="nv">$count</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl">    <span class="o">((</span>count++<span class="o">))</span> <span class="c1"># Bash 中的自增写法</span>
 </span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></div><h3 id="插叙重定向与管道">插叙：重定向与管道<a href="#%e6%8f%92%e5%8f%99%e9%87%8d%e5%ae%9a%e5%90%91%e4%b8%8e%e7%ae%a1%e9%81%93" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+</span></span></code></pre></div><h3 id="插叙重定向与管道">插叙：重定向与管道</h3>
 <p>在linux命令中，<code>|</code>、<code>&gt;</code>、<code>&lt;</code>可以影响数据的流向，为我们编写脚本和日常使用指令提供了极大的方便。理解这些工具的秘诀在于想象数据像水一样流动。</p>
 <p><code>&gt;</code>和<code>&gt;&gt;</code>表示<strong>输出重定向</strong>。它们可以把<strong>原本应该打印在屏幕上的内容</strong>存到指定的文件中。其中<code>&gt;</code>表示覆写，会清空原有内容；<code>&gt;&gt;</code>表示追加写，会在文件末尾接着写。</p>
 <p>你应该这样理解：每一个指令都像一个有着通用的输入、输出管道的机器。默认情况下，输出的管道会直接连到你的终端上。现在，我们不希望它把数据直接流到屏幕上，而是流到文件里，所以我们接一个管道把指令输出的东西转移到文件中。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Hello&#34;</span> &gt; hello.txt
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Helloworld&#34;</span> &gt;&gt; hello.txt
 </span></span></code></pre></div><p>结果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-3.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-3.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>内容：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Hello
 </span></span><span class="line"><span class="cl">Helloworld
@@ -431,7 +323,9 @@
 </span></span></code></pre></div><p>此外，正常的输出<code>&gt;</code>实际是<code>1&gt;</code>的缩写。错误输出<code>2&gt;</code>和正常输出并不走同一个管道。这意味着有时即使你进行了<code>&gt;</code>的重定向，当出现错误时，报错信息还是会流到屏幕上。你需要对报错做额外的处理。</p>
 <p>与之相对的，<code>&lt;</code>表示输入重定向。比如某些指令默认从屏幕读取输入，你就可以用<code>&lt;</code>来将默认的输入方式改为从指定的文件中输入。每次会自动读取一行。</p>
 <p>举个例子，我们随便写一个若干行的随机人名文件。</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-4.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-4.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>然后编写这样的测试脚本：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
 </span></span></span><span class="line"><span class="cl">
@@ -442,7 +336,9 @@
 </span></span><span class="line"><span class="cl"><span class="k">done</span> &lt;<span class="nv">$FILE</span>
 </span></span></code></pre></div><p>FILE定义了指定的文件，此处我们默认在names.txt目录下执行该脚本。假如你在一个没有names.txt的目录下执行该脚本，脚本就会报错。</p>
 <p>运行效果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-5.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-5.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>符合预期。</p>
 <p>然而，仅有输入输出重定向是不够的。它们只能代表数据加工开始和结束时数据的去向。但是假如数据加工的过程中也有多个步骤，仅仅使用输入输出重定向虽然也可以完成任务，但是免不了要用额外的存储空间缓存数据，并徒增写入和读取的用时。所以，我们为什么不能直接把一个指令的输出喂给另一个指令作为输入呢？</p>
 <p>于是便有了管道符号<code>|</code>。它的作用就是把左边指令的输出喂给右边的指令作为输入。一些经典的用法如下：</p>
@@ -457,11 +353,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 1. 查找所有正在运行的进程</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 2. 搜索关于 &#34;python&#34; 的进程</span>
 </span></span><span class="line"><span class="cl">ps aux <span class="p">|</span> grep <span class="s2">&#34;python&#34;</span>
-</span></span></code></pre></div><h2 id="函数与递归">函数与递归<a href="#%e5%87%bd%e6%95%b0%e4%b8%8e%e9%80%92%e5%bd%92" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+</span></span></code></pre></div><h2 id="函数与递归">函数与递归</h2>
 <p>虽然shell脚本看起来像是一堆指令堆在一起，但是实际上完全支持函数和递归调用。</p>
 <p>一个简单的函数示例：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
@@ -472,7 +364,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="k">$(</span>add <span class="nv">$1</span> <span class="nv">$2</span><span class="k">)</span>
 </span></span></code></pre></div><p>输出结果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-6.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-6.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>shell函数相较于其他语言的函数有很大的行为差异。首先，shell script中的函数传参只能使用<code>$i</code>的形式读取第i个参数。此外，在shell中<code>return</code>关键字的用法是返回状态，只能返回0~255之间的整数，通常用0表示成功。而数据输出则使用echo，并在函数调用的时候使用<code>$(...)</code>符号捕获输出。这种设计的原因在于shell script本身是非常简陋的，想要返回数值唯一的方法就是把东西打印出来。</p>
 <p><code>$(...)</code>符号在shell script中的行为和输出重定向很相似。它的功能就是把一个原本会输出到屏幕的输出重定向给变量。<code>$VAR</code>的写法则表示从变量的对应内存中提取数据。两者的功能是不同的。</p>
 <p>shell script中定义的变量默认是全局变量，这和一般的程序语言的动态作用域有很大区别。如果我们希望一个变量只作用于函数体内部，我们必须要变量前添加<code>local</code>关键字。</p>
@@ -490,7 +384,9 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="k">$(</span>fact <span class="nv">$1</span><span class="k">)</span>
 </span></span></code></pre></div><p>输出结果：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-7.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-7.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>一个基于shell script递归的文件树打印脚本：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
 </span></span></span><span class="line"><span class="cl">
@@ -518,13 +414,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">list_file_recursive <span class="nv">$PWD</span> <span class="m">0</span>
 </span></span></code></pre></div><p>某次输出：</p>
-<p><img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-8.png" alt=""></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&amp;shell%E8%84%9A%E6%9C%AC-20260130-8.png" alt="" loading="lazy" decoding="async"></span>
+</p>
 <p>（下方lt为eza输出的文件树，可以当做标准答案。）</p>
-<h1 id="总结">总结<a href="#%e6%80%bb%e7%bb%93" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="总结">总结</h1>
 <p>虽然shell script的功能很多，但是写起来和正经的程序语言比还是有点折磨了。这边推荐把shell script当做python程序的包装器。</p>
 <p>以下是我的博客发射器的包装器脚本：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/env bash
@@ -552,116 +446,72 @@
 </span></span><span class="line"><span class="cl">deactivate
 </span></span></code></pre></div><p>功能是自动启动虚拟环境并运行python程序，同时自动传参执行指令。随后结束时自动关闭虚拟环境。至于具体的功能实现则交给代码更便于维护的python程序。</p>
 
-			</div>
-			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
-      <path
-         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
-      <path
-         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
-   </svg></abbr></a></div>
-
-<div class="related-posts thin">
-	<h2>See Also</h2>
-	<ul>
-	
-	<li><a href="/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/">TUI图像显示方案</a></li>
-	
-	<li><a href="/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/">核动力博客发射器测试</a></li>
-	
-	<li><a href="/zh-cn/posts/venvminiconda/">工具不图鉴03：虚拟环境&amp;conda</a></li>
-	
-	<li><a href="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/">平板游戏环境配置计划：4阶段</a></li>
-	
-	<li><a href="/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/">平板游戏环境部署计划</a></li>
-	
-	</ul>
 </div>
 
-		</article>
-		<aside id="toc">
-			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents">
-  <ul>
-    <li><a href="#参考链接">参考链接：</a></li>
-    <li><a href="#什么是环境变量">什么是环境变量？</a>
-      <ul>
-        <li><a href="#什么是变量">什么是“变量”？</a></li>
-        <li><a href="#环境变量">环境变量</a>
-          <ul>
-            <li><a href="#一些常见的环境变量">一些常见的环境变量：</a></li>
-            <li><a href="#如何让一个环境变量可以在所有shell进程中存在">如何让一个环境变量可以在所有shell进程中存在？</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#shell脚本">shell脚本</a>
-      <ul>
-        <li><a href="#usrbinenv-bash">#!/usr/bin/env bash</a></li>
-        <li><a href="#chmod-x-">chmod +x &hellip;</a></li>
-      </ul>
-    </li>
-    <li><a href="#一些常见的脚本写法">一些常见的脚本写法</a>
-      <ul>
-        <li>
-          <ul>
-            <li><a href="#插叙重定向与管道">插叙：重定向与管道</a></li>
-          </ul>
-        </li>
-        <li><a href="#函数与递归">函数与递归</a></li>
-      </ul>
-    </li>
-    <li><a href="#总结">总结</a></li>
-  </ul>
-</nav>
-		</aside>
-		<div class="post-nav thin">
-			<a class="next-post" href="http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
-   </svg>&nbsp;Newer</span><br><span>D2L自学日志03：线性神经网络完结</span>
-			</a>
-			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-      <polyline points="12 5 19 12 12 19"></polyline>
-   </svg></span><br><span>TUI图像显示方案</span>
-			</a>
-		</div>
-		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
-        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
-        data-repo-id="R_kgDOQaFILg"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQaFILs4CyFGz"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="transparent_dark"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-	</main>
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-<p>
-	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
-	&#183; copyright by Moonhalf
-	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
-	</p></footer>
-<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+<section id="comments" aria-label="评论">
+  <h2>DISCUSSION</h2>
+  <div class="giscus" data-giscus
+       data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+       data-repo-id="R_kgDOQaFILg"
+       data-category="Announcements"
+       data-category-id="DIC_kwDOQaFILs4CyFGz"
+       data-mapping="specific"
+       data-term="工具不图鉴04：环境变量&amp;shell脚本"
+       data-strict="0"
+       data-reactions-enabled="1"
+       data-emit-metadata="0"
+       data-input-position="top"
+       data-theme="light"
+       data-lang="zh-CN"
+       data-loading="lazy"></div>
+  <noscript>评论需要启用 JavaScript，并允许连接 giscus.app。</noscript>
+</section>
+
+
+
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">posts/工具不图鉴04：环境变量&amp;shell脚本.md</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">[{"aliases":[],"date":1788258553,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/LaTeX车祸速成.md","source":"posts/LaTeX车祸速成/index.md","tags":[],"title":"LaTeX车祸速成","url":"/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/"},{"aliases":[],"date":1788258553,"folderIcon":"LiFolderOpen","icon":"LiHouse","iconColor":"#000000","path":"README.md","source":"_index.md","tags":[],"title":"README.md","url":"/zh-cn/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别.md","source":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别/index.md","tags":["riscv","体系架构"],"title":"CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiTag","iconColor":"#000000","path":"tags.md","source":"tags/_index.md","tags":[],"title":"标签墙","url":"/zh-cn/tags/"},{"aliases":[],"date":1779623996,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记02.md","source":"posts/CS61Cfall20学习笔记02/index.md","tags":["C语言","体系架构"],"title":"CS61Cfall20学习笔记02","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/"},{"aliases":[],"date":1778912833,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/Happy-LLM自学笔记01.md","source":"posts/Happy-LLM自学笔记01/index.md","tags":["llm","自学","python"],"title":"Happy-LLM自学笔记01","url":"/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1778574017,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记01.md","source":"posts/CS61Cfall20学习笔记01/index.md","tags":["体系架构","C语言","自学"],"title":"CS61Cfall20学习笔记01","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1775433600,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/OpenJWC后端开发随想.md","source":"posts/OpenJWC后端开发随想/index.md","tags":["#blog","python"],"title":"OpenJWC后端开发随想","url":"/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1774828800,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Thinkpad Archlinux折腾笔记.md","source":"posts/Thinkpad Archlinux折腾笔记/index.md","tags":["blog","linux","archlinux"],"title":"Thinkpad Archlinux折腾笔记","url":"/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/"},{"aliases":[],"date":1774137600,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/CodeCompanion.md","source":"posts/CodeCompanion/index.md","tags":["blog","Neovim"],"title":"CodeCompanion.nvim配置","url":"/zh-cn/posts/codecompanion/"},{"aliases":[],"date":1772323200,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Kaggle房价预测.md","source":"posts/Kaggle房价预测/index.md","tags":["blog","python","机器学习"],"title":"Kaggle房价预测","url":"/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/"},{"aliases":[],"date":1771632000,"folderIcon":"","icon":"LiNotebook","iconColor":"#000000","path":"posts/Jupyter如何配置.md","source":"posts/Jupyter如何配置/index.md","tags":["blog","python","教程","jupyter"],"title":"Jupyter如何配置","url":"/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志04：多层感知机.md","source":"posts/D2L自学日志04：多层感知机/index.md","tags":["D2L","机器学习","python","torch"],"title":"D2L自学日志04：多层感知机","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Data100自学日志01：Pandas.md","source":"posts/Data100自学日志01：Pandas/index.md","tags":["blog","python","pandas","数据科学"],"title":"Data100自学日志01：Pandas","url":"/zh-cn/posts/data100%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701pandas/"},{"aliases":[],"date":1770768000,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/Python文件结构\u0026一些库.md","source":"posts/Python文件结构\u0026一些库/index.md","tags":["blog","python"],"title":"Python文件结构\u0026一些库","url":"/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/"},{"aliases":[],"date":1770508800,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/19岁生日随想.md","source":"posts/19岁生日随想/index.md","tags":["随笔","blog"],"title":"19岁生日随想","url":"/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1770163200,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志03：线性神经网络完结.md","source":"posts/D2L自学日志03：线性神经网络完结/index.md","tags":["blog","D2L","python","torch","机器学习"],"title":"D2L自学日志03：线性神经网络完结","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/"},{"aliases":[],"date":1769558400,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/工具不图鉴04：环境变量\u0026shell脚本.md","source":"posts/工具不图鉴04：环境变量\u0026shell脚本/index.md","tags":["blog","教程","shell","python"],"title":"工具不图鉴04：环境变量\u0026shell脚本","url":"/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"},{"aliases":[],"date":1769472000,"folderIcon":"","icon":"LiImage","iconColor":"#000000","path":"posts/TUI图像显示方案.md","source":"posts/TUI图像显示方案/index.md","tags":["blog","python"],"title":"TUI图像显示方案","url":"/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/"},{"aliases":[],"date":1769040000,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：4阶段.md","source":"posts/平板游戏环境配置计划：4阶段/index.md","tags":["blog","随意探索","平板"],"title":"平板游戏环境配置计划：4阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境部署计划.md","source":"posts/平板游戏环境部署计划/index.md","tags":["blog","随意探索"],"title":"平板游戏环境部署计划","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：2\u00263阶段.md","source":"posts/平板游戏环境配置计划：2\u00263阶段/index.md","tags":["blog","平板","随意探索"],"title":"平板游戏环境配置计划：2\u00263阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768780800,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习02：远古老登.md","source":"posts/SEU程序设计复习02：远古老登/index.md","tags":["cpp","blog","课内"],"title":"SEU程序设计复习02：远古老登","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"},{"aliases":[],"date":1768694400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/近日神必脑洞合集.md","source":"posts/近日神必脑洞合集/index.md","tags":["blog","brainstorm"],"title":"近日神必脑洞合集","url":"/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/autoblog_test_3.md","source":"posts/autoblog_test_3/index.md","tags":["blog","test"],"title":"autoblog_test_3","url":"/zh-cn/posts/autoblog_test_3/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习01：基础语法.md","source":"posts/SEU程序设计复习01：基础语法/index.md","tags":["blog","cpp","课内"],"title":"SEU程序设计复习01：基础语法","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/核动力博客发射器测试.md","source":"posts/核动力博客发射器测试/index.md","tags":["blog","test","测试","python","博客搭建"],"title":"核动力博客发射器测试","url":"/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/"},{"aliases":[],"date":1767785271,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志02：线性回归.md","source":"posts/D2L自学日志02：线性回归/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志02：线性回归","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"},{"aliases":[],"date":1767272442,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/Fabric自学日志01：农夫乐事重织版.md","source":"posts/Fabric自学日志01：农夫乐事重织版/index.md","tags":["fabric","minecraft","java"],"title":"Fabric自学日志01：农夫乐事重织版","url":"/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"},{"aliases":[],"date":1767089676,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志01：preliminaries.md","source":"posts/D2L自学日志01：preliminaries/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志01：preliminaries","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/"},{"aliases":[],"date":1766629673,"folderIcon":"","icon":"LiCloud","iconColor":"#000000","path":"posts/再用腾讯云我就是狗.md","source":"posts/再用腾讯云我就是狗/index.md","tags":["日常"],"title":"再用腾讯云我就是🐶","url":"/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/"},{"aliases":[],"date":1765898615,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/venvminiconda.md","source":"posts/venvminiconda/index.md","tags":["工具不图鉴","教程","venv","conda","python"],"title":"工具不图鉴03：虚拟环境\u0026conda","url":"/zh-cn/posts/venvminiconda/"},{"aliases":[],"date":1765843200,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/condaAndVenv.md","source":"posts/condaAndVenv/index.md","tags":["虚拟环境","python","conda"],"title":"condaAndVenv","url":"/zh-cn/posts/condaandvenv/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"posts/curl\u0026wget.md","source":"posts/curl\u0026wget/index.md","tags":["工具不图鉴","教程","curl","wget"],"title":"工具不图鉴01：curl\u0026wget","url":"/zh-cn/posts/curlwget/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/zsh\u0026ohmyzsh.md","source":"posts/zsh\u0026ohmyzsh/index.md","tags":["工具不图鉴","教程","zsh","ohmyzsh"],"title":"工具不图鉴02：zsh\u0026ohmyzsh","url":"/zh-cn/posts/zshohmyzsh/"},{"aliases":[],"date":1765326823,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-02Softmax.md","source":"posts/Triton自学日志-02Softmax/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 02FusedSoftmax","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"},{"aliases":[],"date":1765240002,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-01VectorAdd.md","source":"posts/Triton自学日志-01VectorAdd/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 01VectorAdd","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"},{"aliases":[],"date":1763867513,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/NeovimPlugins配置方法.md","source":"posts/NeovimPlugins配置方法/index.md","tags":["Neovim","教程"],"title":"NeovimPlugins配置方法","url":"/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"},{"aliases":[],"date":1763866391,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Neovim配置如何入门.md","source":"posts/Neovim配置如何入门/index.md","tags":["Neovim","教程"],"title":"Neovim配置如何入门","url":"/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"},{"aliases":[],"date":1763706081,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"links.md","source":"links.md","tags":[],"title":"友链","url":"/zh-cn/links/"},{"aliases":[],"date":1763705217,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/test.md","source":"posts/test/index.md","tags":["测试","随笔"],"title":"Test","url":"/zh-cn/posts/test/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"about/月のまにまに.md","source":"about/月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"月のまにまに.md","source":"月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763565643,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/hellohugo.md","source":"posts/hellohugo/index.md","tags":[],"title":"Hellohugo","url":"/zh-cn/posts/hellohugo/"},{"aliases":[],"date":1758372543,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/零基础如何搭建博客.md","source":"posts/零基础如何搭建博客/index.md","tags":["博客搭建","教程"],"title":"零基础如何搭建博客","url":"/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"}]</script>
+  <script id="editor-config" type="application/json">{"mermaidLib":"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"}</script><script defer src="/js/editor.35881f25e0828d0adec1652cc66c2f2a20b86d4be3eb33bfd423d978a718c0df.js" integrity="sha256-NYgfJeCCjQrewWUsxmwvKiC4bUvj6zO/1CPZeKcYwN8="></script>
 </body>
 </html>

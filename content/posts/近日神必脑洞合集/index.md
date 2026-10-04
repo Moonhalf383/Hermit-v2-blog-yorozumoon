@@ -7,6 +7,8 @@ tags:
 - blog
 - brainstorm
 title: 近日神必脑洞合集
+icon: LiBrain
+iconColor: '#000000'
 toc: true
 ---
 

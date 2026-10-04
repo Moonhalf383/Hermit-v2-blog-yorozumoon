@@ -1,92 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cn">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=37705&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        try {
+          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+          if (stored !== null) collapsed = JSON.parse(stored) === true;
+        } catch (_) {}
+        root.classList.toggle(`${side}-collapsed`, collapsed);
+      }
+    })();
+  </script>
+  <meta name="description" content="">
+  <title>Cpp · Yorozumoon</title>
+  <link rel="alternate" type="application/rss+xml" href="/zh-cn/tags/cpp/index.xml" title="Yorozumoon">
+  <link rel="icon" type="image/png" href="/images/face.png"><link rel="stylesheet" href="/css/editor.min.4a41cd0abb1a2ad26d1cafbfd366f3ee3e1dab242c436e892b8ca24e4dc3f260.css" integrity="sha256-SkHNCrsaKtJtHK&#43;/02bz7j4dqyQsQ26JK4yiTk3D8mA=">
+  
+</head>
+<body class="editor-shell" data-current-path="Cpp" data-current-source="Cpp">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
-<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
-<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
-<meta name="theme-color" content="#494f5c">
-<meta name="msapplication-TileColor" content="#494f5c">
-
-	<meta itemprop="name" content="Cpp">
-	<meta itemprop="datePublished" content="2026-01-19T00:00:00+00:00">
-	<meta itemprop="dateModified" content="2026-01-19T00:00:00+00:00"><meta property="og:url" content="http://localhost:1313/zh-cn/tags/cpp/">
-	<meta property="og:site_name" content="Yorozumoon">
-	<meta property="og:title" content="Cpp">
-	<meta property="og:locale" content="zh_cn">
-	<meta property="og:type" content="website">
-
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="Cpp">
-<title>#cpp</title><link rel="alternate" type="application/rss+xml" href="http://localhost:1313/zh-cn/tags/cpp/index.xml" title="Cpp" /><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.981fd45755dd2c825d2cfb1a56c26ec7a9abccd378ee9b086d0c941e5de412fe.css" integrity="sha256-mB/UV1XdLIJdLPsaVsJux6mrzNN47psIbQyUHl3kEv4=" crossorigin="anonymous"></head>
-
-<body id="page">
-<header id="site-header" class="animated slideInUp">
-	<div class="hdr-wrapper section-inner">
-		<div class="hdr-left">
-			<div class="site-branding">
-				<a href="http://localhost:1313/">Yorozumoon</a>
-			</div>
-			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
-		</div>
-		<div class="hdr-right hdr-icons">
-			<span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
-   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-   <path
-      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-   </path>
-</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-   </svg></button>
-		</div>
-	</div>
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span>Cpp</span>
+      </div>
+      <article class="document" id="document">
+        
+<header class="document-header">
+  <p class="document-kind">term.md</p>
+  <h1>Cpp</h1>
 </header>
-<div id="mobile-menu" class="animated fast">
-	<ul>
-		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
-		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
-		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
-		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
-	</ul>
+<div class="content" data-wikilinks>
+  
+  <ul class="file-list">
+    <li>
+      <a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/">SEU程序设计复习02：远古老登</a><time datetime="2026-01-19">2026-01-19</time>
+    </li>
+    <li>
+      <a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/">SEU程序设计复习01：基础语法</a><time datetime="2026-01-17">2026-01-17</time>
+    </li>
+  </ul>
 </div>
 
-	<main class="site-main section-inner thin animated fadeIn faster"><h1 class="tag">Cpp</h1>
-		<div class="posts-group">
-			<div class="post-year" id="2026">2026</div>
-			<ul class="posts-list">
-				<li class="post-item">
-					<a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"><span class="post-title">SEU程序设计复习02：远古老登</span><span class="post-day">Jan 19</span>
-				  </a></li>
-				<li class="post-item">
-					<a href="/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><span class="post-title">SEU程序设计复习01：基础语法</span><span class="post-day">Jan 17</span>
-				  </a></li>
-			</ul>
-		</div></main>
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-<p>
-	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
-	&#183; copyright by Moonhalf
-	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
-	&#183; <a href="http://localhost:1313/zh-cn/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss">
-   <path d="M4 11a9 9 0 0 1 9 9"></path>
-   <path d="M4 4a16 16 0 0 1 16 16"></path>
-   <circle cx="5" cy="19" r="1"></circle>
-</svg></a></p></footer>
-<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">Cpp</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">[{"aliases":[],"date":1788258553,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/LaTeX车祸速成.md","source":"posts/LaTeX车祸速成/index.md","tags":[],"title":"LaTeX车祸速成","url":"/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/"},{"aliases":[],"date":1788258553,"folderIcon":"LiFolderOpen","icon":"LiHouse","iconColor":"#000000","path":"README.md","source":"_index.md","tags":[],"title":"README.md","url":"/zh-cn/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别.md","source":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别/index.md","tags":["riscv","体系架构"],"title":"CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiTag","iconColor":"#000000","path":"tags.md","source":"tags/_index.md","tags":[],"title":"标签墙","url":"/zh-cn/tags/"},{"aliases":[],"date":1779623996,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记02.md","source":"posts/CS61Cfall20学习笔记02/index.md","tags":["C语言","体系架构"],"title":"CS61Cfall20学习笔记02","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/"},{"aliases":[],"date":1778912833,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/Happy-LLM自学笔记01.md","source":"posts/Happy-LLM自学笔记01/index.md","tags":["llm","自学","python"],"title":"Happy-LLM自学笔记01","url":"/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1778574017,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记01.md","source":"posts/CS61Cfall20学习笔记01/index.md","tags":["体系架构","C语言","自学"],"title":"CS61Cfall20学习笔记01","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1775433600,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/OpenJWC后端开发随想.md","source":"posts/OpenJWC后端开发随想/index.md","tags":["#blog","python"],"title":"OpenJWC后端开发随想","url":"/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1774828800,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Thinkpad Archlinux折腾笔记.md","source":"posts/Thinkpad Archlinux折腾笔记/index.md","tags":["blog","linux","archlinux"],"title":"Thinkpad Archlinux折腾笔记","url":"/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/"},{"aliases":[],"date":1774137600,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/CodeCompanion.md","source":"posts/CodeCompanion/index.md","tags":["blog","Neovim"],"title":"CodeCompanion.nvim配置","url":"/zh-cn/posts/codecompanion/"},{"aliases":[],"date":1772323200,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Kaggle房价预测.md","source":"posts/Kaggle房价预测/index.md","tags":["blog","python","机器学习"],"title":"Kaggle房价预测","url":"/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/"},{"aliases":[],"date":1771632000,"folderIcon":"","icon":"LiNotebook","iconColor":"#000000","path":"posts/Jupyter如何配置.md","source":"posts/Jupyter如何配置/index.md","tags":["blog","python","教程","jupyter"],"title":"Jupyter如何配置","url":"/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志04：多层感知机.md","source":"posts/D2L自学日志04：多层感知机/index.md","tags":["D2L","机器学习","python","torch"],"title":"D2L自学日志04：多层感知机","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Data100自学日志01：Pandas.md","source":"posts/Data100自学日志01：Pandas/index.md","tags":["blog","python","pandas","数据科学"],"title":"Data100自学日志01：Pandas","url":"/zh-cn/posts/data100%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701pandas/"},{"aliases":[],"date":1770768000,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/Python文件结构\u0026一些库.md","source":"posts/Python文件结构\u0026一些库/index.md","tags":["blog","python"],"title":"Python文件结构\u0026一些库","url":"/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/"},{"aliases":[],"date":1770508800,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/19岁生日随想.md","source":"posts/19岁生日随想/index.md","tags":["随笔","blog"],"title":"19岁生日随想","url":"/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1770163200,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志03：线性神经网络完结.md","source":"posts/D2L自学日志03：线性神经网络完结/index.md","tags":["blog","D2L","python","torch","机器学习"],"title":"D2L自学日志03：线性神经网络完结","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/"},{"aliases":[],"date":1769558400,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/工具不图鉴04：环境变量\u0026shell脚本.md","source":"posts/工具不图鉴04：环境变量\u0026shell脚本/index.md","tags":["blog","教程","shell","python"],"title":"工具不图鉴04：环境变量\u0026shell脚本","url":"/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"},{"aliases":[],"date":1769472000,"folderIcon":"","icon":"LiImage","iconColor":"#000000","path":"posts/TUI图像显示方案.md","source":"posts/TUI图像显示方案/index.md","tags":["blog","python"],"title":"TUI图像显示方案","url":"/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/"},{"aliases":[],"date":1769040000,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：4阶段.md","source":"posts/平板游戏环境配置计划：4阶段/index.md","tags":["blog","随意探索","平板"],"title":"平板游戏环境配置计划：4阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境部署计划.md","source":"posts/平板游戏环境部署计划/index.md","tags":["blog","随意探索"],"title":"平板游戏环境部署计划","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：2\u00263阶段.md","source":"posts/平板游戏环境配置计划：2\u00263阶段/index.md","tags":["blog","平板","随意探索"],"title":"平板游戏环境配置计划：2\u00263阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768780800,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习02：远古老登.md","source":"posts/SEU程序设计复习02：远古老登/index.md","tags":["cpp","blog","课内"],"title":"SEU程序设计复习02：远古老登","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"},{"aliases":[],"date":1768694400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/近日神必脑洞合集.md","source":"posts/近日神必脑洞合集/index.md","tags":["blog","brainstorm"],"title":"近日神必脑洞合集","url":"/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/autoblog_test_3.md","source":"posts/autoblog_test_3/index.md","tags":["blog","test"],"title":"autoblog_test_3","url":"/zh-cn/posts/autoblog_test_3/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习01：基础语法.md","source":"posts/SEU程序设计复习01：基础语法/index.md","tags":["blog","cpp","课内"],"title":"SEU程序设计复习01：基础语法","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/核动力博客发射器测试.md","source":"posts/核动力博客发射器测试/index.md","tags":["blog","test","测试","python","博客搭建"],"title":"核动力博客发射器测试","url":"/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/"},{"aliases":[],"date":1767785271,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志02：线性回归.md","source":"posts/D2L自学日志02：线性回归/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志02：线性回归","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"},{"aliases":[],"date":1767272442,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/Fabric自学日志01：农夫乐事重织版.md","source":"posts/Fabric自学日志01：农夫乐事重织版/index.md","tags":["fabric","minecraft","java"],"title":"Fabric自学日志01：农夫乐事重织版","url":"/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"},{"aliases":[],"date":1767089676,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志01：preliminaries.md","source":"posts/D2L自学日志01：preliminaries/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志01：preliminaries","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/"},{"aliases":[],"date":1766629673,"folderIcon":"","icon":"LiCloud","iconColor":"#000000","path":"posts/再用腾讯云我就是狗.md","source":"posts/再用腾讯云我就是狗/index.md","tags":["日常"],"title":"再用腾讯云我就是🐶","url":"/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/"},{"aliases":[],"date":1765898615,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/venvminiconda.md","source":"posts/venvminiconda/index.md","tags":["工具不图鉴","教程","venv","conda","python"],"title":"工具不图鉴03：虚拟环境\u0026conda","url":"/zh-cn/posts/venvminiconda/"},{"aliases":[],"date":1765843200,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/condaAndVenv.md","source":"posts/condaAndVenv/index.md","tags":["虚拟环境","python","conda"],"title":"condaAndVenv","url":"/zh-cn/posts/condaandvenv/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"posts/curl\u0026wget.md","source":"posts/curl\u0026wget/index.md","tags":["工具不图鉴","教程","curl","wget"],"title":"工具不图鉴01：curl\u0026wget","url":"/zh-cn/posts/curlwget/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/zsh\u0026ohmyzsh.md","source":"posts/zsh\u0026ohmyzsh/index.md","tags":["工具不图鉴","教程","zsh","ohmyzsh"],"title":"工具不图鉴02：zsh\u0026ohmyzsh","url":"/zh-cn/posts/zshohmyzsh/"},{"aliases":[],"date":1765326823,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-02Softmax.md","source":"posts/Triton自学日志-02Softmax/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 02FusedSoftmax","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"},{"aliases":[],"date":1765240002,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-01VectorAdd.md","source":"posts/Triton自学日志-01VectorAdd/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 01VectorAdd","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"},{"aliases":[],"date":1763867513,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/NeovimPlugins配置方法.md","source":"posts/NeovimPlugins配置方法/index.md","tags":["Neovim","教程"],"title":"NeovimPlugins配置方法","url":"/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"},{"aliases":[],"date":1763866391,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Neovim配置如何入门.md","source":"posts/Neovim配置如何入门/index.md","tags":["Neovim","教程"],"title":"Neovim配置如何入门","url":"/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"},{"aliases":[],"date":1763706081,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"links.md","source":"links.md","tags":[],"title":"友链","url":"/zh-cn/links/"},{"aliases":[],"date":1763705217,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/test.md","source":"posts/test/index.md","tags":["测试","随笔"],"title":"Test","url":"/zh-cn/posts/test/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"about/月のまにまに.md","source":"about/月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"月のまにまに.md","source":"月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763565643,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/hellohugo.md","source":"posts/hellohugo/index.md","tags":[],"title":"Hellohugo","url":"/zh-cn/posts/hellohugo/"},{"aliases":[],"date":1758372543,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/零基础如何搭建博客.md","source":"posts/零基础如何搭建博客/index.md","tags":["博客搭建","教程"],"title":"零基础如何搭建博客","url":"/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"}]</script>
+  <script id="editor-config" type="application/json">{"mermaidLib":"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"}</script><script defer src="/js/editor.35881f25e0828d0adec1652cc66c2f2a20b86d4be3eb33bfd423d978a718c0df.js" integrity="sha256-NYgfJeCCjQrewWUsxmwvKiC4bUvj6zO/1CPZeKcYwN8="></script>
 </body>
 </html>

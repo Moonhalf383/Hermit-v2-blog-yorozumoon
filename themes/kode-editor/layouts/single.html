@@ -1,0 +1,18 @@
+{{ define "main" }}
+<header class="document-header">
+  <p class="document-kind">{{ partial "virtual-path.html" . }}</p>
+  <h1>{{ .Title }}</h1>
+  {{- if or .Date .Params.tags }}
+  <div class="document-meta">
+    {{- with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>{{ end -}}
+    {{- with .Params.tags }}<span>{{ delimit . " · " }}</span>{{ end -}}
+  </div>
+  {{- end }}
+</header>
+<div class="content" data-wikilinks>
+  {{ .Content }}
+</div>
+{{ if and (ne .Params.comments false) (or (eq .Section "posts") .Params.comments) }}
+  {{ partial "editor-comments.html" . }}
+{{ end }}
+{{ end }}

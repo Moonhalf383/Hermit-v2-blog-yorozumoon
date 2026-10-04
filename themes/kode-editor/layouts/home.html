@@ -1,0 +1,13 @@
+{{ define "main" }}
+<header class="document-header home-header">
+  <p class="document-kind">~/README.md</p>
+  <h1>README.md</h1>
+</header>
+<div class="content" data-wikilinks>
+  {{ .Content }}
+  {{- if not .Content }}
+  <p>{{ .Site.Title }}</p>
+  {{ with .Site.Params.homeSubtitle }}<p>{{ . }}</p>{{ end }}
+  {{- end }}
+</div>
+{{ end }}

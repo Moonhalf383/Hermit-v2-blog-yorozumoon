@@ -7,6 +7,8 @@ tags:
   - blog
   - test
 title: autoblog_test_3
+icon: LiFlask
+iconColor: '#000000'
 toc: true
 ---
 

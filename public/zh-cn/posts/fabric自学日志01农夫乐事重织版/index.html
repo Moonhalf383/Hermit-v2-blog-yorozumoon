@@ -1,160 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cn">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
-<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
-<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
-<meta name="theme-color" content="#494f5c">
-<meta name="msapplication-TileColor" content="#494f5c">
-
-	<meta itemprop="name" content="Fabric自学日志01：农夫乐事重织版">
-	<meta itemprop="description" content="我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。">
-	<meta itemprop="datePublished" content="2026-01-01T21:00:42+08:00">
-	<meta itemprop="dateModified" content="2026-01-01T21:00:42+08:00">
-	<meta itemprop="wordCount" content="4125">
-	<meta itemprop="keywords" content="Fabric,Minecraft,Java"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/">
-	<meta property="og:site_name" content="Yorozumoon">
-	<meta property="og:title" content="Fabric自学日志01：农夫乐事重织版">
-	<meta property="og:description" content="我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。">
-	<meta property="og:locale" content="zh_cn">
-	<meta property="og:type" content="article">
-		<meta property="article:section" content="posts">
-		<meta property="article:published_time" content="2026-01-01T21:00:42+08:00">
-		<meta property="article:modified_time" content="2026-01-01T21:00:42+08:00">
-		<meta property="article:tag" content="Fabric">
-		<meta property="article:tag" content="Minecraft">
-		<meta property="article:tag" content="Java">
-
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="Fabric自学日志01：农夫乐事重织版">
-	<meta name="twitter:description" content="我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。">
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Fabric自学日志01：农夫乐事重织版",
-    "name": "Fabric自学日志01：农夫乐事重织版",
-    "description": "我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。\n",
-    "keywords": ["fabric", "minecraft", "java"],
-    "articleBody": "我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。\n程序员森呸们都说，读代码就是学习写代码最好的方式，于是今天第一弹先来研究一下FarmersDelightRefabricated的文件结构与代码组成。FarmersDelightRefabricated即农夫乐事：重织版，是经典模组农夫乐事的fabric端移植版。\n🔗参考链接：\nFarmersDelightRefabricatedGithub主页\nfabric文档\nmcmod页面\n文件结构 📁 . ├── 📁 build │ ├── 📁 classes │ ├── 📁 datagen │ ├── 📁 generated │ ├── 📁 loom-cache │ ├── 📁 reports │ ├── 📁 resources │ └── 📁 tmp ├── 📄 build.gradle ├── 📄 changelog.md ├── 📁 gradle │ └── 📁 wrapper ├── 📄 gradle.properties ├── 📄 gradlew ├── 📄 gradlew.bat ├── 📄 LICENSE ├── 📄 README.md ├── 📁 run │ ├── 📁 config │ ├── 📁 data │ ├── 📁 downloads │ ├── 📁 logs │ ├── 📁 mods │ ├── 📄 options.txt │ ├── 📁 resourcepacks │ ├── 📁 resources │ ├── 📁 saves │ └── 📄 usercache.json ├── 📄 settings.gradle └── 📁 src ├── 📁 generated └── 📁 main 如上是进入根目录后lt -L 2得到的，所以并没有展开到底，大多数代码文件都没有被包含在以上展示的内容中。不过我们可以先来就此分析一下一个fabric模组的主体结构。\nGradle构建文件 决定了项目如何编译以及有哪些依赖。\nGradle文件：build.gradle 最核心的文件，定义了一个模组的版本、名称、依赖关系、服务端还是客户端等基本信息。\nGradle文件：gradle.properties 配置文件，存放Minecraft版本、模组基本信息、fabric loader版本、依赖模组的名称和版本。\nGradle文件：settings.gradle 定义项目名称。\nGradle文件：gradlew \u0026 gradlew.bat 一键编译模组的脚本。运行./gradlew build后即使电脑上没有安装gradle也可以编译。\nGradle文件：gradle/wrapper 存放让上面的脚本可以正常工作的小程序。\nsrc源文件 核心目录：src/main 模组的主体，包含所有.java代码以及贴图、模型等资源。\n📁 . ├── 📁 java │ └── 📁 vectorwing │ └── 📁 farmersdelight │ ├── 📁 client │ ├── 📁 common │ ├── 📁 data │ ├── ☕ FarmersDelight.java │ ├── 📁 integration │ └── 📁 refabricated └── 📁 resources ├── 📁 assets │ ├── 📁 emi │ │ └── 📁 recipe │ └── 📁 farmersdelight │ ├── 📁 atlases │ ├── 📁 blockstates │ ├── 📁 lang │ ├── 📁 models │ ├── 📁 particles │ ├── 📁 sounds │ ├── 📄 sounds.json │ └── 📁 textures ├── 📁 data │ └── 📁 farmersdelight │ ├── 📁 create │ ├── 📁 damage_type │ ├── 📁 loot_modifiers │ ├── 📁 loot_table │ ├── 📁 neoforge │ ├── 📁 recipe │ ├── 📁 scripts │ ├── 📁 structure │ ├── 📁 tags │ ├── 📁 weapon_attributes │ └── 📁 worldgen ├── 📄 fabric.mod.json ├── 📄 farmersdelight.accesswidener ├── 📄 farmersdelight.mixins.json └── 🖼️ icon.png java目录：src/main/java 所有的Java代码所在地。\n素材资源目录：src/main/resources 素材所在地。\nsrc/main/resources/assets存放贴图、模型、语言、声音文件。 src/main/resources/data存放合成表、战利品、标签。 src/main/resources/fabric.mod.json记录模组id、名称、入口类等。 生成资源目录：src/generated 使用代码生成的游戏数据。\n📁 . └── 📁 resources └── 📁 data ├── 📁 c │ └── 📁 tags ├── 📁 create │ └── 📁 tags ├── 📁 createaddition │ └── 📁 tags ├── 📁 farmersdelight │ ├── 📁 advancement │ ├── 📁 enchantment │ ├── 📁 loot_table │ ├── 📁 recipe │ └── 📁 tags ├── 📁 minecraft │ └── 📁 tags ├── 📁 neoforge │ ├── 📁 data_maps │ └── 📁 tags ├── 📁 origins │ └── 📁 tags ├── 📁 sereneseasons │ └── 📁 tags └── 📁 tconstruct └── 📁 tags 以上是src/generated目录下的4级文件树，仍然没有展开到底。展开到底后是各种.json文件。\nrun 当你点击 IDE 里的“运行游戏”时，它会把这里当成一个独立的 Minecraft 根目录。\n存档目录：run/saves 存档。\n运行日志目录：run/logs 崩溃或调试时的日志。\n配置目录：run/config 模组配置文件，可以包含本模组以及独立根目录的其他模组的测试文件。\n模组目录：run/mods 调试时想要加载的其他模组，比如jei。\n📁 . ├── 📁 config │ ├── 📁 fabric │ │ └── 📄 indigo-renderer.properties │ ├── 📄 farmersdelight-client.json │ ├── 📄 farmersdelight-common.json │ └── 📄 modmenu.json ├── 📁 data │ └── 📄 fabricDefaultResourcePacks.dat ├── 📁 downloads │ └── 📄 log.json ├── 📁 logs │ ├──  debug.log │ ├──  latest.log │ └── 📁 telemetry ├── 📁 mods ├──  options.txt ├── 📁 resourcepacks ├── 📁 resources ├── 📁 saves │ └── 📁 'New World' │ ├── 📁 advancements │ ├── 📁 data │ ├── 📁 datapacks │ ├── 📁 DIM-1 │ ├── 📁 DIM1 │ ├── 📁 entities │ ├── 🖼️ icon.png │ ├── 📄 level.dat │ ├── 📄 level.dat_old │ ├── 📁 playerdata │ ├── 📁 poi │ ├── 📁 region │ ├── 🔒 session.lock │ └── 📁 stats └── 📄 usercache.json 编译产物build 每次编译后gradle自动生成的文件夹，存放编译时的各种临时文件。此文件夹可以随时删除，下次编译的时候会自动生成。\n如何正确地看待一个fabric模组的文件结构？ 从上面的简要分析中，你会意识到一个问题：即使是一个看起来其貌不扬的模组，它的文件结构也复杂到了相当逆天的水平。对于我们这种人类程序员来说，我们很难做到手动修改每一个地方来实现功能。一个正常的想法是：这样的模组项目真的是人能组织起来的？\n答案是还真不是，这就是java带给我的自信。真实情况是：一个fabric模组看起来结构非常复杂，但是对于其中的绝大多数文件，你其实根本无需去改动。\nGradle文件：除非你要修改版本号或者添加依赖，否则基本无需修改。 \".“开头的隐藏文件：无视。 src/main：实际的工作区，这里的文件才是你创造的。 所以，一个模组开发者眼里应该只有两条路：\nsrc/main/java: 编写逻辑的地方（方块怎么运作、按键有什么反应）。 src/main/resources: 存放数据的地方（方块长什么样、叫什么名字、材质贴图）。 如果你想添加一个东西：\n先思考怎么注册。\n如果你想添加json（配方、loot、模型）：\n使用Data generation系统。\n如果你想修改原版机制：\n使用mixin。\n举个例子01 （站在FarmersDelightRefabricated开发者视角）我想做一个厨锅。\nQ1：厨锅是一个方块，但是对于厨锅物品，我有必要自己去写“检测右键、计算坐标、放置方块”等方块的基本属性吗？ 答案：不需要。因为Minecraft所有的背包里的方块都是BLockItem的实例。你只需要继承自BLockItem就可以自动获得它的一切特征。\n所以，我（开发者）先在/src/main/java/xxx/farmersdelight/common/item/目录下新建一个CookingPotItem.java，然后写入：\npackage vectorwing.farmersdelight.common.item; 再写入：\npublic class CookingPotItem extends BlockItem 代表CookingPotItem直接继承自BlockItem。\nQ2：物品可以有一个绿色的条（bar）来表示耐久。我的厨锅没有耐久，但是我也想用这个bar来表示里面装了多少饭，怎么实现呢？ 答案：劫持原版的原版的ui机制，让它直接为自己服务。从本质上来说，是原版的代码提供了接口类，使得程序员可以将自己的特殊实现塞进去。\n我（开发者）：我希望我的厨锅条有以下逻辑：\n1. 只在厨锅内部装了东西的时候才显示 所以我写：\n@Override public boolean isBarVisible(ItemStack stack) { return getServingCount(stack) \u003e 0; } 2. Bar的长度能反映内部装了多少东西 所以我写：\n@Override public int getBarWidth(ItemStack stack) { return Math.min(1 + 12 * getServingCount(stack) / 64, 13); } 3. 不管里面装了多少东西，Bar都只是蓝色的 所以我写：\n@Override public int getBarColor(ItemStack stack) { return BAR_COLOR; } Q3：我想 先别急，接下来能做的事情已经不是仅凭写这个java代码就能完成的了。我（开发者）意识到我做的东西是一个方块，而一个方块远远不止是一个物品栏中的物品那么简单。\n我（开发者）还需要做这些事情：\n注册。我只是写了厨锅作为物品存在时的部分属性，我需要让这个厨锅存在。 处理它的方块属性。我需要在/src/main/java/xxx/farmersdelight/common/block/下写点什么。 添加tooltip。我需要在/src/main/java/xxx/farmersdelight/client/下写点什么。 … 所以，我（开发者）写了：\n8192 B ┌─ ☕ CookingPotRecipeBuilder.java 8192 B ┌─ 📁 builder 8192 B ┌─ 📁 data 4096 B │ ┌─ ☕ CookingPotRecipeBookTab.java 4096 B │ ┌─ 📁 recipebook 4096 B │ │ ┌─ ☕ CookingPotRecipeBookComponent.java 4096 B │ │ ├─ ☕ CookingPotTooltip.java 8192 B │ │ ├─ ☕ CookingPotScreen.java 16384 B │ ├─ 📁 gui 20480 B ├─ 📁 client 4096 B │ ┌─ ☕ CookingPotEmiRecipeHandler.java 4096 B │ ┌─ 📁 handler 8192 B │ │ ┌─ ☕ CookingPotEmiRecipe.java 8192 B │ ├─ 📁 recipe 12288 B │ ┌─ 📁 emi 4096 B │ │ ┌─ ☕ CookingPotDisplay.java 4096 B │ │ ┌─ 📁 display 8192 B │ │ │ ┌─ ☕ CookingPotCategory.java 8192 B │ │ ├─ 📁 categories 12288 B │ ├─ 📁 rei 4096 B │ │ ┌─ ☕ CTCookingPotRecipeBookTab.java 8192 B │ │ │ ┌─ ☕ CookingPotRecipeHandler.java 8192 B │ │ ├─ 📁 handlers 8192 B │ │ │ ┌─ ☕ CookingPotRecipeManager.java 8192 B │ │ ├─ 📁 managers 20480 B │ ├─ 📁 crafttweaker 45056 B ├─ 📁 integration 4096 B │ ┌─ ☕ CookingPotItem.java 4096 B │ ┌─ 📁 item 8192 B │ │ ┌─ ☕ CookingPotRecipe.java 8192 B │ ├─ 📁 crafting 0 B │ │ ┌─ ☕ CookingPotSupport.java - │ │ ┌─ 📁 state 12288 B │ │ ├─ ☕ CookingPotBlock.java 8192 B │ │ │ ┌─ ☕ CookingPotItemHandler.java 8192 B │ │ │ ┌─ 📁 inventory 0 B │ │ │ │ ┌─ ☕ CookingPotMealSlot.java 4096 B │ │ │ │ ├─ ☕ CookingPotResultSlot.java 8192 B │ │ │ │ ├─ ☕ CookingPotMenu.java 12288 B │ │ │ ├─ 📁 container 24576 B │ │ │ ├─ ☕ CookingPotBlockEntity.java 45056 B │ │ ├─ 📁 entity 57344 B │ ├─ 📁 block 69632 B ├─ 📁 common 143360 B ┌─ 📁 farmersdelight 143360 B ┌─ 📁 vectorwing 143360 B ┌─ 📁 java 143360 B ┌─ 📁 main 143360 B 📁 src 我们先暂时不尝试完全理解每个文件在干什么，但是一个很明显的特征，所有的这些文件无一例外存放在src/main/java/vectorwing/farmersdelight/中。所以，尽管看起来文件很复杂，你只需要知道一点：每一个java文件的功能就是做好一件事，有的负责处理物品逻辑，有的负责处理方块逻辑，有的负责处理物品槽逻辑，等等。\n所谓的文件目录，本质上就是对于java模块按照功能进行分类。这样看来，一个java模组的结构就一目了然了。程序员只需要事先思考好要实现的东西是什么，有哪些功能，如何分类这些功能，一个模组的文件结构就建立起来了。\n回到CookingPotItem.java，完整版如下：\npackage vectorwing.farmersdelight.common.item; import net.minecraft.core.component.DataComponents; import net.minecraft.nbt.CompoundTag; import net.minecraft.util.Mth; import net.minecraft.world.inventory.tooltip.TooltipComponent; import net.minecraft.world.item.BlockItem; import net.minecraft.world.item.ItemStack; import net.minecraft.world.item.component.CustomData; import net.minecraft.world.level.block.Block; import vectorwing.farmersdelight.client.gui.CookingPotTooltip; import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity; import java.util.Optional; public class CookingPotItem extends BlockItem { private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F); public CookingPotItem(Block block, Properties properties) { super(block, properties); } @Override public boolean isBarVisible(ItemStack stack) { return getServingCount(stack) \u003e 0; } @Override public int getBarWidth(ItemStack stack) { return Math.min(1 + 12 * getServingCount(stack) / 64, 13); } @Override public int getBarColor(ItemStack stack) { return BAR_COLOR; } @Override public Optional\u003cTooltipComponent\u003e getTooltipImage(ItemStack stack) { ItemStack mealStack = CookingPotBlockEntity.getMealFromItem(stack); return Optional.of(new CookingPotTooltip.CookingPotTooltipComponent(mealStack)); } private static int getServingCount(ItemStack stack) { ItemStack mealStack = CookingPotBlockEntity.getMealFromItem(stack); return mealStack.getCount(); } } Q4：为什么不讲import部分？ import是ide的事情，程序员很难也没必要自己去写import。\nQ5：后面两个没讲的方法是做什么的？ 分别是用来处理tooltip信息和内部物品信息。因为会牵扯到其他java模块，所以暂时不讨论。\n",
-    "wordCount" : "4125",
-    "inLanguage": "zh-cn",
-    "datePublished": "2026-01-01T21:00:42+08:00",
-    "dateModified": "2026-01-01T21:00:42+08:00",
-    "author":{
-        "@type": "Person",
-        "name": "Moonhalf",
-        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
-        },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "http://localhost:1313/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Yorozumoon",
-      "description": "",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "http://localhost:1313/favicon.ico"
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=37705&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        try {
+          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+          if (stored !== null) collapsed = JSON.parse(stored) === true;
+        } catch (_) {}
+        root.classList.toggle(`${side}-collapsed`, collapsed);
       }
-    }
-}
-</script><title>Fabric自学日志01：农夫乐事重织版</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.981fd45755dd2c825d2cfb1a56c26ec7a9abccd378ee9b086d0c941e5de412fe.css" integrity="sha256-mB/UV1XdLIJdLPsaVsJux6mrzNN47psIbQyUHl3kEv4=" crossorigin="anonymous">
-	</head>
+    })();
+  </script>
+  <meta name="description" content="我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。
+">
+  <title>Fabric自学日志01：农夫乐事重织版 · Yorozumoon</title>
+  <link rel="icon" type="image/png" href="/images/face.png"><link rel="stylesheet" href="/css/editor.min.4a41cd0abb1a2ad26d1cafbfd366f3ee3e1dab242c436e892b8ca24e4dc3f260.css" integrity="sha256-SkHNCrsaKtJtHK&#43;/02bz7j4dqyQsQ26JK4yiTk3D8mA=">
+  
+</head>
+<body class="editor-shell" data-current-path="posts/Fabric自学日志01：农夫乐事重织版.md" data-current-source="posts/Fabric自学日志01：农夫乐事重织版/index.md">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
 
-<body id="page">
-<header id="site-header" class="animated slideInUp">
-	<div class="hdr-wrapper section-inner">
-		<div class="hdr-left">
-			<div class="site-branding">
-				<a href="http://localhost:1313/">Yorozumoon</a>
-			</div>
-			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
-		</div>
-		<div class="hdr-right hdr-icons">
-			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
-      <line x1="8" y1="6" x2="21" y2="6"></line>
-      <line x1="8" y1="12" x2="21" y2="12"></line>
-      <line x1="8" y1="18" x2="21" y2="18"></line>
-      <line x1="3" y1="6" x2="3" y2="6"></line>
-      <line x1="3" y1="12" x2="3" y2="12"></line>
-      <line x1="3" y1="18" x2="3" y2="18"></line>
-   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
-   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-   <path
-      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-   </path>
-</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-   </svg></button>
-		</div>
-	</div>
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span>posts/Fabric自学日志01：农夫乐事重织版.md</span>
+      </div>
+      <article class="document" id="document">
+        
+<header class="document-header">
+  <p class="document-kind">posts/Fabric自学日志01：农夫乐事重织版.md</p>
+  <h1>Fabric自学日志01：农夫乐事重织版</h1>
+  <div class="document-meta"><time datetime="2026-01-01">2026-01-01</time><span>fabric · minecraft · java</span></div>
 </header>
-<div id="mobile-menu" class="animated fast">
-	<ul>
-		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
-		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
-		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
-		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
-	</ul>
-</div>
-
-	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
-			<header class="post-header">
-				<div class="post-date"><span>Jan 1, 2026</span></div>
-				<h1>Fabric自学日志01：农夫乐事重织版</h1>
-			</header>
-			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
-   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-   <line x1="16" y1="8" x2="2" y2="22"></line>
-   <line x1="17.5" y1="15" x2="9" y2="15"></line>
-</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-      <line x1="7" y1="7" x2="7" y2="7"></line>
-   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/fabric">fabric</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/minecraft">minecraft</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/java">java</a></span></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-      <polyline points="14 2 14 8 20 8"></polyline>
-      <line x1="16" y1="13" x2="8" y2="13"></line>
-      <line x1="16" y1="17" x2="8" y2="17"></line>
-      <polyline points="10 9 9 9 8 9"></polyline>
-   </svg>4125&nbspWords 阅读时长18 Minutes, 45 Seconds</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="16" y1="2" x2="16" y2="6"></line>
-      <line x1="8" y1="2" x2="8" y2="6"></line>
-      <line x1="3" y1="10" x2="21" y2="10"></line>
-   </svg>2026-01-01 21:00 &#43;0800
-</p></div>
-			<hr class="post-end">
-			<div class="content">
-				 <p>我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。</p>
+<div class="content" data-wikilinks>
+  <p>我一直很想做mc模组，但是奈何java开发经验约等于0。今天终于决定开始认真研究fabric模组开发，之后也应该会一直更新fabric学习笔记。</p>
 <p>程序员森呸们都说，读代码就是学习写代码最好的方式，于是今天第一弹先来研究一下FarmersDelightRefabricated的文件结构与代码组成。FarmersDelightRefabricated即农夫乐事：重织版，是经典模组农夫乐事的fabric端移植版。</p>
 <p>🔗参考链接：</p>
 <p><a href="https://github.com/MehVahdJukaar/FarmersDelightRefabricated">FarmersDelightRefabricatedGithub主页</a></p>
 <p><a href="https://docs.fabricmc.net/develop/">fabric文档</a></p>
 <p><a href="https://www.mcmod.cn/class/14196.html">mcmod页面</a></p>
 <hr>
-<h2 id="文件结构">文件结构<a href="#%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="文件结构">文件结构</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">📁 .
 </span></span><span class="line"><span class="cl">├── 📁 build
 </span></span><span class="line"><span class="cl">│   ├── 📁 classes
@@ -189,56 +91,30 @@
 </span></span><span class="line"><span class="cl">    ├── 📁 generated
 </span></span><span class="line"><span class="cl">    └── 📁 main
 </span></span></code></pre></div><p>如上是进入根目录后<code>lt -L 2</code>得到的，所以并没有展开到底，大多数代码文件都没有被包含在以上展示的内容中。不过我们可以先来就此分析一下一个fabric模组的主体结构。</p>
-<h3 id="gradle构建文件">Gradle构建文件<a href="#gradle%e6%9e%84%e5%bb%ba%e6%96%87%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="gradle构建文件">Gradle构建文件</h3>
 <p>决定了项目如何编译以及有哪些依赖。</p>
-<h4 id="gradle文件buildgradle">Gradle文件：<code>build.gradle</code><a href="#gradle%e6%96%87%e4%bb%b6buildgradle" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="gradle文件buildgradle">Gradle文件：<code>build.gradle</code></h4>
 <p>最核心的文件，定义了一个模组的版本、名称、依赖关系、服务端还是客户端等基本信息。</p>
-<p><img src="/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/build.gradle.png" alt=""></p>
-<h4 id="gradle文件gradleproperties">Gradle文件：<code>gradle.properties</code><a href="#gradle%e6%96%87%e4%bb%b6gradleproperties" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/build.gradle.png" alt="" loading="lazy" decoding="async"></span>
+</p>
+<h4 id="gradle文件gradleproperties">Gradle文件：<code>gradle.properties</code></h4>
 <p>配置文件，存放Minecraft版本、模组基本信息、fabric loader版本、依赖模组的名称和版本。</p>
-<p><img src="/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/gradle.properties.png" alt=""></p>
-<h4 id="gradle文件settingsgradle">Gradle文件：<code>settings.gradle</code><a href="#gradle%e6%96%87%e4%bb%b6settingsgradle" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/gradle.properties.png" alt="" loading="lazy" decoding="async"></span>
+</p>
+<h4 id="gradle文件settingsgradle">Gradle文件：<code>settings.gradle</code></h4>
 <p>定义项目名称。</p>
-<p><img src="/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/setting.gradle.png" alt=""></p>
-<h4 id="gradle文件gradlew--gradlewbat">Gradle文件：<code>gradlew &amp; gradlew.bat</code><a href="#gradle%e6%96%87%e4%bb%b6gradlew--gradlewbat" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/setting.gradle.png" alt="" loading="lazy" decoding="async"></span>
+</p>
+<h4 id="gradle文件gradlew--gradlewbat">Gradle文件：<code>gradlew &amp; gradlew.bat</code></h4>
 <p>一键编译模组的脚本。运行<code>./gradlew build</code>后即使电脑上没有安装gradle也可以编译。</p>
-<h4 id="gradle文件gradlewrapper">Gradle文件：<code>gradle/wrapper</code><a href="#gradle%e6%96%87%e4%bb%b6gradlewrapper" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="gradle文件gradlewrapper">Gradle文件：<code>gradle/wrapper</code></h4>
 <p>存放让上面的脚本可以正常工作的小程序。</p>
 <hr>
-<h3 id="src源文件">src源文件<a href="#src%e6%ba%90%e6%96%87%e4%bb%b6" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<h4 id="核心目录srcmain">核心目录：<code>src/main</code><a href="#%e6%a0%b8%e5%bf%83%e7%9b%ae%e5%bd%95srcmain" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h3 id="src源文件">src源文件</h3>
+<h4 id="核心目录srcmain">核心目录：<code>src/main</code></h4>
 <p>模组的主体，包含所有.java代码以及贴图、模型等资源。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">📁 .
 </span></span><span class="line"><span class="cl">├── 📁 java
@@ -280,17 +156,9 @@
 </span></span><span class="line"><span class="cl">    ├── 📄 farmersdelight.accesswidener
 </span></span><span class="line"><span class="cl">    ├── 📄 farmersdelight.mixins.json
 </span></span><span class="line"><span class="cl">    └── 🖼️ icon.png
-</span></span></code></pre></div><h4 id="java目录srcmainjava">java目录：<code>src/main/java</code><a href="#java%e7%9b%ae%e5%bd%95srcmainjava" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+</span></span></code></pre></div><h4 id="java目录srcmainjava">java目录：<code>src/main/java</code></h4>
 <p>所有的Java代码所在地。</p>
-<h4 id="素材资源目录srcmainresources">素材资源目录：<code>src/main/resources</code><a href="#%e7%b4%a0%e6%9d%90%e8%b5%84%e6%ba%90%e7%9b%ae%e5%bd%95srcmainresources" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="素材资源目录srcmainresources">素材资源目录：<code>src/main/resources</code></h4>
 <p>素材所在地。</p>
 <ul>
 <li><code>src/main/resources/assets</code>存放贴图、模型、语言、声音文件。</li>
@@ -298,11 +166,7 @@
 <li><code>src/main/resources/fabric.mod.json</code>记录模组id、名称、入口类等。</li>
 </ul>
 <hr>
-<h4 id="生成资源目录srcgenerated">生成资源目录：<code>src/generated</code><a href="#%e7%94%9f%e6%88%90%e8%b5%84%e6%ba%90%e7%9b%ae%e5%bd%95srcgenerated" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="生成资源目录srcgenerated">生成资源目录：<code>src/generated</code></h4>
 <p>使用代码生成的游戏数据。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">📁 .
 </span></span><span class="line"><span class="cl">└── 📁 resources
@@ -332,35 +196,15 @@
 </span></span><span class="line"><span class="cl">            └── 📁 tags
 </span></span></code></pre></div><p>以上是<code>src/generated</code>目录下的4级文件树，仍然没有展开到底。展开到底后是各种.json文件。</p>
 <hr>
-<h3 id="run">run<a href="#run" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="run">run</h3>
 <p>当你点击 IDE 里的“运行游戏”时，它会把这里当成一个独立的 Minecraft 根目录。</p>
-<h4 id="存档目录runsaves">存档目录：<!-- raw HTML omitted --><code>run/saves</code><!-- raw HTML omitted --><a href="#%e5%ad%98%e6%a1%a3%e7%9b%ae%e5%bd%95runsaves" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="存档目录runsaves">存档目录：<big><code>run/saves</code></big></h4>
 <p>存档。</p>
-<h4 id="运行日志目录runlogs">运行日志目录：<!-- raw HTML omitted --><code>run/logs</code><!-- raw HTML omitted --><a href="#%e8%bf%90%e8%a1%8c%e6%97%a5%e5%bf%97%e7%9b%ae%e5%bd%95runlogs" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="运行日志目录runlogs">运行日志目录：<big><code>run/logs</code></big></h4>
 <p>崩溃或调试时的日志。</p>
-<h4 id="配置目录runconfig">配置目录：<!-- raw HTML omitted --><code>run/config</code><!-- raw HTML omitted --><a href="#%e9%85%8d%e7%bd%ae%e7%9b%ae%e5%bd%95runconfig" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="配置目录runconfig">配置目录：<big><code>run/config</code></big></h4>
 <p>模组配置文件，可以包含本模组以及独立根目录的其他模组的测试文件。</p>
-<h4 id="模组目录runmods">模组目录：<!-- raw HTML omitted --><code>run/mods</code><!-- raw HTML omitted --><a href="#%e6%a8%a1%e7%bb%84%e7%9b%ae%e5%bd%95runmods" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="模组目录runmods">模组目录：<big><code>run/mods</code></big></h4>
 <p>调试时想要加载的其他模组，比如jei。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">📁 .
 </span></span><span class="line"><span class="cl">├── 📁 config
@@ -399,18 +243,10 @@
 </span></span><span class="line"><span class="cl">│       └── 📁 stats
 </span></span><span class="line"><span class="cl">└── 📄 usercache.json
 </span></span></code></pre></div><hr>
-<h3 id="编译产物build">编译产物build<a href="#%e7%bc%96%e8%af%91%e4%ba%a7%e7%89%a9build" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="编译产物build">编译产物build</h3>
 <p>每次编译后gradle自动生成的文件夹，存放编译时的各种临时文件。此文件夹可以随时删除，下次编译的时候会自动生成。</p>
 <hr>
-<h1 id="如何正确地看待一个fabric模组的文件结构">如何正确地看待一个fabric模组的文件结构？<a href="#%e5%a6%82%e4%bd%95%e6%ad%a3%e7%a1%ae%e5%9c%b0%e7%9c%8b%e5%be%85%e4%b8%80%e4%b8%aafabric%e6%a8%a1%e7%bb%84%e7%9a%84%e6%96%87%e4%bb%b6%e7%bb%93%e6%9e%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="如何正确地看待一个fabric模组的文件结构">如何正确地看待一个fabric模组的文件结构？</h1>
 <p>从上面的简要分析中，你会意识到一个问题：即使是一个看起来其貌不扬的模组，它的文件结构也复杂到了相当逆天的水平。对于我们这种人类程序员来说，我们很难做到手动修改每一个地方来实现功能。一个正常的想法是：这样的模组项目真的是人能组织起来的？</p>
 <p>答案是还真不是，这就是java带给我的自信。真实情况是：一个fabric模组看起来结构非常复杂，但是对于其中的绝大多数文件，你其实根本无需去改动。</p>
 <ul>
@@ -438,67 +274,39 @@
 <p>使用mixin。</p>
 </blockquote>
 <hr>
-<h1 id="举个例子01">举个例子01<a href="#%e4%b8%be%e4%b8%aa%e4%be%8b%e5%ad%9001" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="举个例子01">举个例子01</h1>
 <blockquote>
 <p>（站在FarmersDelightRefabricated开发者视角）我想做一个厨锅。</p>
 </blockquote>
-<h2 id="q1厨锅是一个方块但是对于厨锅物品我有必要自己去写检测右键计算坐标放置方块等方块的基本属性吗">Q1：厨锅是一个方块，但是对于厨锅物品，我有必要自己去写“检测右键、计算坐标、放置方块”等方块的基本属性吗？<a href="#q1%e5%8e%a8%e9%94%85%e6%98%af%e4%b8%80%e4%b8%aa%e6%96%b9%e5%9d%97%e4%bd%86%e6%98%af%e5%af%b9%e4%ba%8e%e5%8e%a8%e9%94%85%e7%89%a9%e5%93%81%e6%88%91%e6%9c%89%e5%bf%85%e8%a6%81%e8%87%aa%e5%b7%b1%e5%8e%bb%e5%86%99%e6%a3%80%e6%b5%8b%e5%8f%b3%e9%94%ae%e8%ae%a1%e7%ae%97%e5%9d%90%e6%a0%87%e6%94%be%e7%bd%ae%e6%96%b9%e5%9d%97%e7%ad%89%e6%96%b9%e5%9d%97%e7%9a%84%e5%9f%ba%e6%9c%ac%e5%b1%9e%e6%80%a7%e5%90%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="q1厨锅是一个方块但是对于厨锅物品我有必要自己去写检测右键计算坐标放置方块等方块的基本属性吗">Q1：厨锅是一个方块，但是对于厨锅物品，我有必要自己去写“检测右键、计算坐标、放置方块”等方块的基本属性吗？</h2>
 <p>答案：不需要。因为Minecraft所有的<strong>背包里的</strong>方块都是<code>BLockItem</code>的实例。你只需要继承自<code>BLockItem</code>就可以自动获得它的一切特征。</p>
 <p>所以，我（开发者）先在<code>/src/main/java/xxx/farmersdelight/common/item/</code>目录下新建一个<code>CookingPotItem.java</code>，然后写入：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">vectorwing.farmersdelight.common.item</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>再写入：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CookingPotItem</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">BlockItem</span><span class="w">
 </span></span></span></code></pre></div><p>代表<code>CookingPotItem</code>直接继承自<code>BlockItem</code>。</p>
-<h2 id="q2物品可以有一个绿色的条bar来表示耐久我的厨锅没有耐久但是我也想用这个bar来表示里面装了多少饭怎么实现呢">Q2：物品可以有一个绿色的条（bar）来表示耐久。我的厨锅没有耐久，但是我也想用这个bar来表示里面装了多少饭，怎么实现呢？<a href="#q2%e7%89%a9%e5%93%81%e5%8f%af%e4%bb%a5%e6%9c%89%e4%b8%80%e4%b8%aa%e7%bb%bf%e8%89%b2%e7%9a%84%e6%9d%a1bar%e6%9d%a5%e8%a1%a8%e7%a4%ba%e8%80%90%e4%b9%85%e6%88%91%e7%9a%84%e5%8e%a8%e9%94%85%e6%b2%a1%e6%9c%89%e8%80%90%e4%b9%85%e4%bd%86%e6%98%af%e6%88%91%e4%b9%9f%e6%83%b3%e7%94%a8%e8%bf%99%e4%b8%aabar%e6%9d%a5%e8%a1%a8%e7%a4%ba%e9%87%8c%e9%9d%a2%e8%a3%85%e4%ba%86%e5%a4%9a%e5%b0%91%e9%a5%ad%e6%80%8e%e4%b9%88%e5%ae%9e%e7%8e%b0%e5%91%a2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="q2物品可以有一个绿色的条bar来表示耐久我的厨锅没有耐久但是我也想用这个bar来表示里面装了多少饭怎么实现呢">Q2：物品可以有一个绿色的条（bar）来表示耐久。我的厨锅没有耐久，但是我也想用这个bar来表示里面装了多少饭，怎么实现呢？</h2>
 <p>答案：劫持原版的原版的ui机制，让它直接为自己服务。从本质上来说，是原版的代码提供了接口类，使得程序员可以将自己的特殊实现塞进去。</p>
 <p>我（开发者）：我希望我的厨锅条有以下逻辑：</p>
-<h3 id="1-只在厨锅内部装了东西的时候才显示">1. 只在厨锅内部装了东西的时候才显示<a href="#1-%e5%8f%aa%e5%9c%a8%e5%8e%a8%e9%94%85%e5%86%85%e9%83%a8%e8%a3%85%e4%ba%86%e4%b8%9c%e8%a5%bf%e7%9a%84%e6%97%b6%e5%80%99%e6%89%8d%e6%98%be%e7%a4%ba" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="1-只在厨锅内部装了东西的时候才显示">1. 只在厨锅内部装了东西的时候才显示</h3>
 <p>所以我写：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w"> </span><span class="nd">@Override</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isBarVisible</span><span class="p">(</span><span class="n">ItemStack</span><span class="w"> </span><span class="n">stack</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">getServingCount</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h3 id="2-bar的长度能反映内部装了多少东西">2. Bar的长度能反映内部装了多少东西<a href="#2-bar%e7%9a%84%e9%95%bf%e5%ba%a6%e8%83%bd%e5%8f%8d%e6%98%a0%e5%86%85%e9%83%a8%e8%a3%85%e4%ba%86%e5%a4%9a%e5%b0%91%e4%b8%9c%e8%a5%bf" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+</span></span></span></code></pre></div><h3 id="2-bar的长度能反映内部装了多少东西">2. Bar的长度能反映内部装了多少东西</h3>
 <p>所以我写：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w"> </span><span class="nd">@Override</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getBarWidth</span><span class="p">(</span><span class="n">ItemStack</span><span class="w"> </span><span class="n">stack</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">min</span><span class="p">(</span><span class="n">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">12</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getServingCount</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">64</span><span class="p">,</span><span class="w"> </span><span class="n">13</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h2 id="3-不管里面装了多少东西bar都只是蓝色的">3. 不管里面装了多少东西，Bar都只是蓝色的<a href="#3-%e4%b8%8d%e7%ae%a1%e9%87%8c%e9%9d%a2%e8%a3%85%e4%ba%86%e5%a4%9a%e5%b0%91%e4%b8%9c%e8%a5%bfbar%e9%83%bd%e5%8f%aa%e6%98%af%e8%93%9d%e8%89%b2%e7%9a%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+</span></span></span></code></pre></div><h2 id="3-不管里面装了多少东西bar都只是蓝色的">3. 不管里面装了多少东西，Bar都只是蓝色的</h2>
 <p>所以我写：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="w"> </span><span class="nd">@Override</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getBarColor</span><span class="p">(</span><span class="n">ItemStack</span><span class="w"> </span><span class="n">stack</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">BAR_COLOR</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h2 id="q3我想">Q3：我想<a href="#q3%e6%88%91%e6%83%b3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+</span></span></span></code></pre></div><h2 id="q3我想">Q3：我想</h2>
 <p>先别急，接下来能做的事情已经不是仅凭写这个java代码就能完成的了。我（开发者）意识到我做的东西是一个方块，而一个方块远远不止是一个物品栏中的物品那么简单。</p>
 <p>我（开发者）还需要做这些事情：</p>
 <ol>
@@ -609,133 +417,77 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">mealStack</span><span class="p">.</span><span class="na">getCount</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h2 id="q4为什么不讲import部分">Q4：为什么不讲import部分？<a href="#q4%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e8%ae%b2import%e9%83%a8%e5%88%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+</span></span></span></code></pre></div><h2 id="q4为什么不讲import部分">Q4：为什么不讲import部分？</h2>
 <p>import是ide的事情，程序员很难也没必要自己去写import。</p>
-<h2 id="q5后面两个没讲的方法是做什么的">Q5：后面两个没讲的方法是做什么的？<a href="#q5%e5%90%8e%e9%9d%a2%e4%b8%a4%e4%b8%aa%e6%b2%a1%e8%ae%b2%e7%9a%84%e6%96%b9%e6%b3%95%e6%98%af%e5%81%9a%e4%bb%80%e4%b9%88%e7%9a%84" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="q5后面两个没讲的方法是做什么的">Q5：后面两个没讲的方法是做什么的？</h2>
 <p>分别是用来处理tooltip信息和内部物品信息。因为会牵扯到其他java模块，所以暂时不讨论。</p>
 
-			</div>
-			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
-      <path
-         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
-      <path
-         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
-   </svg></abbr></a></div>
-
-		</article>
-		<aside id="toc">
-			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#文件结构">文件结构</a>
-          <ul>
-            <li><a href="#gradle构建文件">Gradle构建文件</a>
-              <ul>
-                <li><a href="#gradle文件buildgradle">Gradle文件：<code>build.gradle</code></a></li>
-                <li><a href="#gradle文件gradleproperties">Gradle文件：<code>gradle.properties</code></a></li>
-                <li><a href="#gradle文件settingsgradle">Gradle文件：<code>settings.gradle</code></a></li>
-                <li><a href="#gradle文件gradlew--gradlewbat">Gradle文件：<code>gradlew &amp; gradlew.bat</code></a></li>
-                <li><a href="#gradle文件gradlewrapper">Gradle文件：<code>gradle/wrapper</code></a></li>
-              </ul>
-            </li>
-            <li><a href="#src源文件">src源文件</a>
-              <ul>
-                <li><a href="#核心目录srcmain">核心目录：<code>src/main</code></a></li>
-                <li><a href="#java目录srcmainjava">java目录：<code>src/main/java</code></a></li>
-                <li><a href="#素材资源目录srcmainresources">素材资源目录：<code>src/main/resources</code></a></li>
-                <li><a href="#生成资源目录srcgenerated">生成资源目录：<code>src/generated</code></a></li>
-              </ul>
-            </li>
-            <li><a href="#run">run</a>
-              <ul>
-                <li><a href="#存档目录runsaves">存档目录：<code>run/saves</code></a></li>
-                <li><a href="#运行日志目录runlogs">运行日志目录：<code>run/logs</code></a></li>
-                <li><a href="#配置目录runconfig">配置目录：<code>run/config</code></a></li>
-                <li><a href="#模组目录runmods">模组目录：<code>run/mods</code></a></li>
-              </ul>
-            </li>
-            <li><a href="#编译产物build">编译产物build</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#如何正确地看待一个fabric模组的文件结构">如何正确地看待一个fabric模组的文件结构？</a></li>
-    <li><a href="#举个例子01">举个例子01</a>
-      <ul>
-        <li><a href="#q1厨锅是一个方块但是对于厨锅物品我有必要自己去写检测右键计算坐标放置方块等方块的基本属性吗">Q1：厨锅是一个方块，但是对于厨锅物品，我有必要自己去写“检测右键、计算坐标、放置方块”等方块的基本属性吗？</a></li>
-        <li><a href="#q2物品可以有一个绿色的条bar来表示耐久我的厨锅没有耐久但是我也想用这个bar来表示里面装了多少饭怎么实现呢">Q2：物品可以有一个绿色的条（bar）来表示耐久。我的厨锅没有耐久，但是我也想用这个bar来表示里面装了多少饭，怎么实现呢？</a>
-          <ul>
-            <li><a href="#1-只在厨锅内部装了东西的时候才显示">1. 只在厨锅内部装了东西的时候才显示</a></li>
-            <li><a href="#2-bar的长度能反映内部装了多少东西">2. Bar的长度能反映内部装了多少东西</a></li>
-          </ul>
-        </li>
-        <li><a href="#3-不管里面装了多少东西bar都只是蓝色的">3. 不管里面装了多少东西，Bar都只是蓝色的</a></li>
-        <li><a href="#q3我想">Q3：我想</a></li>
-        <li><a href="#q4为什么不讲import部分">Q4：为什么不讲import部分？</a></li>
-        <li><a href="#q5后面两个没讲的方法是做什么的">Q5：后面两个没讲的方法是做什么的？</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-		</aside>
-		<div class="post-nav thin">
-			<a class="next-post" href="http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
-   </svg>&nbsp;Newer</span><br><span>D2L自学日志02：线性回归</span>
-			</a>
-			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-      <polyline points="12 5 19 12 12 19"></polyline>
-   </svg></span><br><span>D2L自学日志01：preliminaries</span>
-			</a>
-		</div>
-		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
-        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
-        data-repo-id="R_kgDOQaFILg"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQaFILs4CyFGz"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="transparent_dark"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
 </div>
-	</main>
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-<p>
-	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
-	&#183; copyright by Moonhalf
-	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
-	</p></footer>
-<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  
+<section id="comments" aria-label="评论">
+  <h2>DISCUSSION</h2>
+  <div class="giscus" data-giscus
+       data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+       data-repo-id="R_kgDOQaFILg"
+       data-category="Announcements"
+       data-category-id="DIC_kwDOQaFILs4CyFGz"
+       data-mapping="specific"
+       data-term="Fabric自学日志01：农夫乐事重织版"
+       data-strict="0"
+       data-reactions-enabled="1"
+       data-emit-metadata="0"
+       data-input-position="top"
+       data-theme="light"
+       data-lang="zh-CN"
+       data-loading="lazy"></div>
+  <noscript>评论需要启用 JavaScript，并允许连接 giscus.app。</noscript>
+</section>
+
+
+
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">posts/Fabric自学日志01：农夫乐事重织版.md</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">[{"aliases":[],"date":1788258553,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/LaTeX车祸速成.md","source":"posts/LaTeX车祸速成/index.md","tags":[],"title":"LaTeX车祸速成","url":"/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/"},{"aliases":[],"date":1788258553,"folderIcon":"LiFolderOpen","icon":"LiHouse","iconColor":"#000000","path":"README.md","source":"_index.md","tags":[],"title":"README.md","url":"/zh-cn/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别.md","source":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别/index.md","tags":["riscv","体系架构"],"title":"CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiTag","iconColor":"#000000","path":"tags.md","source":"tags/_index.md","tags":[],"title":"标签墙","url":"/zh-cn/tags/"},{"aliases":[],"date":1779623996,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记02.md","source":"posts/CS61Cfall20学习笔记02/index.md","tags":["C语言","体系架构"],"title":"CS61Cfall20学习笔记02","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/"},{"aliases":[],"date":1778912833,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/Happy-LLM自学笔记01.md","source":"posts/Happy-LLM自学笔记01/index.md","tags":["llm","自学","python"],"title":"Happy-LLM自学笔记01","url":"/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1778574017,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记01.md","source":"posts/CS61Cfall20学习笔记01/index.md","tags":["体系架构","C语言","自学"],"title":"CS61Cfall20学习笔记01","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1775433600,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/OpenJWC后端开发随想.md","source":"posts/OpenJWC后端开发随想/index.md","tags":["#blog","python"],"title":"OpenJWC后端开发随想","url":"/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1774828800,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Thinkpad Archlinux折腾笔记.md","source":"posts/Thinkpad Archlinux折腾笔记/index.md","tags":["blog","linux","archlinux"],"title":"Thinkpad Archlinux折腾笔记","url":"/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/"},{"aliases":[],"date":1774137600,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/CodeCompanion.md","source":"posts/CodeCompanion/index.md","tags":["blog","Neovim"],"title":"CodeCompanion.nvim配置","url":"/zh-cn/posts/codecompanion/"},{"aliases":[],"date":1772323200,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Kaggle房价预测.md","source":"posts/Kaggle房价预测/index.md","tags":["blog","python","机器学习"],"title":"Kaggle房价预测","url":"/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/"},{"aliases":[],"date":1771632000,"folderIcon":"","icon":"LiNotebook","iconColor":"#000000","path":"posts/Jupyter如何配置.md","source":"posts/Jupyter如何配置/index.md","tags":["blog","python","教程","jupyter"],"title":"Jupyter如何配置","url":"/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志04：多层感知机.md","source":"posts/D2L自学日志04：多层感知机/index.md","tags":["D2L","机器学习","python","torch"],"title":"D2L自学日志04：多层感知机","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Data100自学日志01：Pandas.md","source":"posts/Data100自学日志01：Pandas/index.md","tags":["blog","python","pandas","数据科学"],"title":"Data100自学日志01：Pandas","url":"/zh-cn/posts/data100%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701pandas/"},{"aliases":[],"date":1770768000,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/Python文件结构\u0026一些库.md","source":"posts/Python文件结构\u0026一些库/index.md","tags":["blog","python"],"title":"Python文件结构\u0026一些库","url":"/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/"},{"aliases":[],"date":1770508800,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/19岁生日随想.md","source":"posts/19岁生日随想/index.md","tags":["随笔","blog"],"title":"19岁生日随想","url":"/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1770163200,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志03：线性神经网络完结.md","source":"posts/D2L自学日志03：线性神经网络完结/index.md","tags":["blog","D2L","python","torch","机器学习"],"title":"D2L自学日志03：线性神经网络完结","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/"},{"aliases":[],"date":1769558400,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/工具不图鉴04：环境变量\u0026shell脚本.md","source":"posts/工具不图鉴04：环境变量\u0026shell脚本/index.md","tags":["blog","教程","shell","python"],"title":"工具不图鉴04：环境变量\u0026shell脚本","url":"/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"},{"aliases":[],"date":1769472000,"folderIcon":"","icon":"LiImage","iconColor":"#000000","path":"posts/TUI图像显示方案.md","source":"posts/TUI图像显示方案/index.md","tags":["blog","python"],"title":"TUI图像显示方案","url":"/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/"},{"aliases":[],"date":1769040000,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：4阶段.md","source":"posts/平板游戏环境配置计划：4阶段/index.md","tags":["blog","随意探索","平板"],"title":"平板游戏环境配置计划：4阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境部署计划.md","source":"posts/平板游戏环境部署计划/index.md","tags":["blog","随意探索"],"title":"平板游戏环境部署计划","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：2\u00263阶段.md","source":"posts/平板游戏环境配置计划：2\u00263阶段/index.md","tags":["blog","平板","随意探索"],"title":"平板游戏环境配置计划：2\u00263阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768780800,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习02：远古老登.md","source":"posts/SEU程序设计复习02：远古老登/index.md","tags":["cpp","blog","课内"],"title":"SEU程序设计复习02：远古老登","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"},{"aliases":[],"date":1768694400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/近日神必脑洞合集.md","source":"posts/近日神必脑洞合集/index.md","tags":["blog","brainstorm"],"title":"近日神必脑洞合集","url":"/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/autoblog_test_3.md","source":"posts/autoblog_test_3/index.md","tags":["blog","test"],"title":"autoblog_test_3","url":"/zh-cn/posts/autoblog_test_3/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习01：基础语法.md","source":"posts/SEU程序设计复习01：基础语法/index.md","tags":["blog","cpp","课内"],"title":"SEU程序设计复习01：基础语法","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/核动力博客发射器测试.md","source":"posts/核动力博客发射器测试/index.md","tags":["blog","test","测试","python","博客搭建"],"title":"核动力博客发射器测试","url":"/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/"},{"aliases":[],"date":1767785271,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志02：线性回归.md","source":"posts/D2L自学日志02：线性回归/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志02：线性回归","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"},{"aliases":[],"date":1767272442,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/Fabric自学日志01：农夫乐事重织版.md","source":"posts/Fabric自学日志01：农夫乐事重织版/index.md","tags":["fabric","minecraft","java"],"title":"Fabric自学日志01：农夫乐事重织版","url":"/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"},{"aliases":[],"date":1767089676,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志01：preliminaries.md","source":"posts/D2L自学日志01：preliminaries/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志01：preliminaries","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/"},{"aliases":[],"date":1766629673,"folderIcon":"","icon":"LiCloud","iconColor":"#000000","path":"posts/再用腾讯云我就是狗.md","source":"posts/再用腾讯云我就是狗/index.md","tags":["日常"],"title":"再用腾讯云我就是🐶","url":"/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/"},{"aliases":[],"date":1765898615,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/venvminiconda.md","source":"posts/venvminiconda/index.md","tags":["工具不图鉴","教程","venv","conda","python"],"title":"工具不图鉴03：虚拟环境\u0026conda","url":"/zh-cn/posts/venvminiconda/"},{"aliases":[],"date":1765843200,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/condaAndVenv.md","source":"posts/condaAndVenv/index.md","tags":["虚拟环境","python","conda"],"title":"condaAndVenv","url":"/zh-cn/posts/condaandvenv/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"posts/curl\u0026wget.md","source":"posts/curl\u0026wget/index.md","tags":["工具不图鉴","教程","curl","wget"],"title":"工具不图鉴01：curl\u0026wget","url":"/zh-cn/posts/curlwget/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/zsh\u0026ohmyzsh.md","source":"posts/zsh\u0026ohmyzsh/index.md","tags":["工具不图鉴","教程","zsh","ohmyzsh"],"title":"工具不图鉴02：zsh\u0026ohmyzsh","url":"/zh-cn/posts/zshohmyzsh/"},{"aliases":[],"date":1765326823,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-02Softmax.md","source":"posts/Triton自学日志-02Softmax/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 02FusedSoftmax","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"},{"aliases":[],"date":1765240002,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-01VectorAdd.md","source":"posts/Triton自学日志-01VectorAdd/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 01VectorAdd","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"},{"aliases":[],"date":1763867513,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/NeovimPlugins配置方法.md","source":"posts/NeovimPlugins配置方法/index.md","tags":["Neovim","教程"],"title":"NeovimPlugins配置方法","url":"/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"},{"aliases":[],"date":1763866391,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Neovim配置如何入门.md","source":"posts/Neovim配置如何入门/index.md","tags":["Neovim","教程"],"title":"Neovim配置如何入门","url":"/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"},{"aliases":[],"date":1763706081,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"links.md","source":"links.md","tags":[],"title":"友链","url":"/zh-cn/links/"},{"aliases":[],"date":1763705217,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/test.md","source":"posts/test/index.md","tags":["测试","随笔"],"title":"Test","url":"/zh-cn/posts/test/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"about/月のまにまに.md","source":"about/月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"月のまにまに.md","source":"月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763565643,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/hellohugo.md","source":"posts/hellohugo/index.md","tags":[],"title":"Hellohugo","url":"/zh-cn/posts/hellohugo/"},{"aliases":[],"date":1758372543,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/零基础如何搭建博客.md","source":"posts/零基础如何搭建博客/index.md","tags":["博客搭建","教程"],"title":"零基础如何搭建博客","url":"/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"}]</script>
+  <script id="editor-config" type="application/json">{"mermaidLib":"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"}</script><script defer src="/js/editor.35881f25e0828d0adec1652cc66c2f2a20b86d4be3eb33bfd423d978a718c0df.js" integrity="sha256-NYgfJeCCjQrewWUsxmwvKiC4bUvj6zO/1CPZeKcYwN8="></script>
 </body>
 </html>

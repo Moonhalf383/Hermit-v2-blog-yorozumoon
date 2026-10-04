@@ -7,6 +7,8 @@ tags:
 - blog
 - python
 title: TUI图像显示方案
+icon: LiImage
+iconColor: '#000000'
 toc: true
 ---
 

@@ -8,6 +8,8 @@ tags:
 - linux
 - archlinux
 title: Thinkpad Archlinux折腾笔记
+icon: LiTerminal
+iconColor: '#000000'
 toc: true
 ---
 

@@ -1,0 +1,6 @@
+{{- $src := .Destination -}}
+{{- with .Page.Resources.GetMatch .Destination }}{{ $src = .RelPermalink }}{{ end -}}
+<span class="media-frame">
+  <img src="{{ $src | safeURL }}" alt="{{ .Text }}" loading="lazy" decoding="async"{{ with .Title }} title="{{ . }}"{{ end }}>
+  {{- with .Title }}<span class="media-caption">{{ . }}</span>{{ end -}}
+</span>

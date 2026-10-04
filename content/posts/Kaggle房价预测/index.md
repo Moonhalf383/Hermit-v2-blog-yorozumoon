@@ -8,6 +8,8 @@ tags:
 - python
 - 机器学习
 title: Kaggle房价预测
+icon: LiChart
+iconColor: '#000000'
 toc: true
 ---
 

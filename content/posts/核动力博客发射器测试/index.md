@@ -10,6 +10,8 @@ tags:
 - python
 - 博客搭建
 title: 核动力博客发射器测试
+icon: LiFlask
+iconColor: '#000000'
 toc: true
 ---
 

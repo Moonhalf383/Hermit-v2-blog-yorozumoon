@@ -1,5 +1,7 @@
 ---
 title: "工具不图鉴01：curl&wget"
+icon: LiLink
+iconColor: '#000000'
 date: 2025-12-15T23:25:53+08:00
 draft: false 
 toc: true 

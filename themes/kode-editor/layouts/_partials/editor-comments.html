@@ -1,0 +1,21 @@
+{{/* Keep the old discussion identity: Hermit used the unadorned .Title as
+     document.title. The new tab title contains a site suffix, so specify the
+     original title explicitly instead of letting giscus read document.title. */}}
+<section id="comments" aria-label="评论">
+  <h2>DISCUSSION</h2>
+  <div class="giscus" data-giscus
+       data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+       data-repo-id="R_kgDOQaFILg"
+       data-category="Announcements"
+       data-category-id="DIC_kwDOQaFILs4CyFGz"
+       data-mapping="specific"
+       data-term="{{ .Title }}"
+       data-strict="0"
+       data-reactions-enabled="1"
+       data-emit-metadata="0"
+       data-input-position="top"
+       data-theme="light"
+       data-lang="zh-CN"
+       data-loading="lazy"></div>
+  <noscript>评论需要启用 JavaScript，并允许连接 giscus.app。</noscript>
+</section>

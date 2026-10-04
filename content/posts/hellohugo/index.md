@@ -2,6 +2,8 @@
 date = '2025-11-19T23:20:43+08:00'
 draft = false
 title = 'Hellohugo'
+icon = 'LiHouse'
+iconColor = '#000000'
 categories = ['test']
 +++
 

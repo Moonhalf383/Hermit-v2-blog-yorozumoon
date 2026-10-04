@@ -1,5 +1,7 @@
 ---
 title: "D2L自学日志02：线性回归"
+icon: LiBrain
+iconColor: '#000000'
 date: 2026-01-07T19:27:51+08:00
 draft: false 
 toc: true 

@@ -9,6 +9,8 @@ tags:
 - python
 - torch
 title: D2L自学日志04：多层感知机
+icon: LiBrain
+iconColor: '#000000'
 toc: true
 ---
 

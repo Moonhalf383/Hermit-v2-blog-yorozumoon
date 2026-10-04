@@ -2,6 +2,8 @@
 date = '2025-11-21T14:21:21+08:00'
 draft = false 
 title = '友链'
+icon = 'LiLink'
+iconColor = '#000000'
 +++
 
 月枝的朋友。

@@ -1,5 +1,7 @@
 ---
 title: CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别
+icon: LiCpu
+iconColor: '#000000'
 date: '2026-06-10T14:58:20.304985+08:00'
 draft: false
 toc: true

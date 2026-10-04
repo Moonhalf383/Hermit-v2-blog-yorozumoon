@@ -1,0 +1,19 @@
+{{ define "main" }}
+<header class="document-header">
+  <p class="document-kind">{{ if .File }}{{ partial "virtual-path.html" . }}{{ else }}{{ .Kind }}.md{{ end }}</p>
+  <h1>{{ .Title }}</h1>
+</header>
+<div class="content" data-wikilinks>
+  {{ .Content }}
+  {{- if .Pages }}
+  <ul class="file-list">
+    {{- range .Pages.ByDate.Reverse }}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{- if not .Date.IsZero }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ end }}
+    </li>
+    {{- end }}
+  </ul>
+  {{- end }}
+</div>
+{{ end }}

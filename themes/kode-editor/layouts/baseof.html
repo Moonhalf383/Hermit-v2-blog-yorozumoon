@@ -1,0 +1,144 @@
+{{- $pageTitle := .Title -}}
+{{- if .IsHome }}{{ $pageTitle = "README.md" }}{{ end -}}
+{{- $sourcePath := $pageTitle -}}
+{{- with .File }}{{ $sourcePath = .Path }}{{ end -}}
+{{- $displayPath := replaceRE `/index\.md$` `.md` $sourcePath -}}
+{{- $displayPath = replaceRE `/_index\.md$` `.md` $displayPath -}}
+{{- with .Params.virtualpath }}
+  {{- $displayPath = strings.TrimPrefix "/" . -}}
+  {{- if not (findRE `(?i)\.md$` $displayPath) }}{{ $displayPath = printf "%s.md" $displayPath }}{{ end -}}
+{{- end -}}
+{{- if .IsHome }}{{ $sourcePath = "_index.md" }}{{ $displayPath = "README.md" }}{{ end -}}
+{{- $index := slice -}}
+{{- range .Site.Pages -}}
+  {{- if .File -}}
+    {{- $source := .File.Path -}}
+    {{- $path := replaceRE `/index\.md$` `.md` $source -}}
+    {{- $path = replaceRE `/_index\.md$` `.md` $path -}}
+    {{- with .Params.virtualpath }}
+      {{- $path = strings.TrimPrefix "/" . -}}
+      {{- if not (findRE `(?i)\.md$` $path) }}{{ $path = printf "%s.md" $path }}{{ end -}}
+    {{- end -}}
+    {{- if .IsHome }}{{ $source = "_index.md" }}{{ $path = "README.md" }}{{ end -}}
+    {{- if and (not (findRE `(^|/)\.[^/]+` $source)) (not (findRE `(^|/)\.[^/]+` $path)) -}}
+      {{- $index = $index | append (dict
+        "title" .Title
+        "source" $source
+        "path" $path
+        "url" .RelPermalink
+        "date" (cond .Date.IsZero nil .Date.Unix)
+        "icon" (.Params.icon | default "")
+        "iconColor" (.Params.iconcolor | default "")
+        "folderIcon" (.Params.foldericon | default "")
+        "aliases" (.Aliases | default (slice))
+        "tags" (.Params.tags | default (slice))
+      ) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<!doctype html>
+<html lang="{{ .Site.Language.Locale | default "zh-CN" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        try {
+          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+          if (stored !== null) collapsed = JSON.parse(stored) === true;
+        } catch (_) {}
+        root.classList.toggle(`${side}-collapsed`, collapsed);
+      }
+    })();
+  </script>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+  <title>{{ if .IsHome }}README.md{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+  {{- with .OutputFormats.Get "RSS" }}
+  <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $.Site.Title }}">
+  {{- end }}
+  <link rel="icon" type="image/png" href="{{ "images/face.png" | relURL }}">
+  {{- $style := resources.Get "css/editor.css" | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+  {{- if or .Params.math .Site.Params.global_mathjax -}}
+  <script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true},
+      options: {skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+      chtml: {scale: 0.96}
+    };
+  </script>
+  <script defer src="{{ .Site.Params.mathjaxLib | default "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" }}"></script>
+  {{- end }}
+  {{ block "head" . }}{{ end }}
+</head>
+<body class="editor-shell" data-current-path="{{ $displayPath }}" data-current-source="{{ $sourcePath }}">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
+
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span>{{ $displayPath }}</span>
+      </div>
+      <article class="document" id="document">
+        {{ block "main" . }}{{ end }}
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">{{ $displayPath }}</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">{{ $index | jsonify | safeJS }}</script>
+  <script id="editor-config" type="application/json">{{ dict "mermaidLib" (.Site.Params.mermaidLib | default "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs") | jsonify | safeJS }}</script>
+  {{- $script := resources.Get "js/editor.js" | js.Build (dict "targetPath" "js/editor.js" "minify" true "target" "es2022") | fingerprint -}}
+  <script defer src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 ---
 title: "零基础如何搭建博客"
+icon: LiHouse
+iconColor: '#000000'
 date: 2025-09-20T20:49:03+08:00
 draft: false
 images:

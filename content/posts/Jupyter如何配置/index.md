@@ -9,6 +9,8 @@ tags:
 - 教程
 - jupyter
 title: Jupyter如何配置
+icon: LiNotebook
+iconColor: '#000000'
 toc: true
 ---
 

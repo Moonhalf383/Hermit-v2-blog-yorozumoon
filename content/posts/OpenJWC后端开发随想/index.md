@@ -7,6 +7,8 @@ tags:
 - '#blog'
 - python
 title: OpenJWC后端开发随想
+icon: LiFileCode
+iconColor: '#000000'
 toc: true
 ---
 

@@ -1,155 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cn">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
-<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
-<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
-<meta name="theme-color" content="#494f5c">
-<meta name="msapplication-TileColor" content="#494f5c">
-
-	<meta itemprop="name" content="Neovim配置如何入门">
-	<meta itemprop="description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。">
-	<meta itemprop="datePublished" content="2025-11-23T10:53:11+08:00">
-	<meta itemprop="dateModified" content="2025-11-23T10:53:11+08:00">
-	<meta itemprop="wordCount" content="11396">
-	<meta itemprop="keywords" content="Neovim,教程"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/">
-	<meta property="og:site_name" content="Yorozumoon">
-	<meta property="og:title" content="Neovim配置如何入门">
-	<meta property="og:description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。">
-	<meta property="og:locale" content="zh_cn">
-	<meta property="og:type" content="article">
-		<meta property="article:section" content="posts">
-		<meta property="article:published_time" content="2025-11-23T10:53:11+08:00">
-		<meta property="article:modified_time" content="2025-11-23T10:53:11+08:00">
-		<meta property="article:tag" content="Neovim">
-		<meta property="article:tag" content="教程">
-
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="Neovim配置如何入门">
-	<meta name="twitter:description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。">
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "Neovim配置如何入门",
-    "name": "Neovim配置如何入门",
-    "description": "如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。\n",
-    "keywords": ["Neovim", "教程"],
-    "articleBody": "如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。\n闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）\nNvim配置原理 neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。\n但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。\n通常，一个neovim的配置文件目录如下：\n~/.config/nvim/ ├── init.lua └── lua/ ├── config/ │ ├── options.lua │ ├── keymaps.lua │ └── autocmds.lua └── plugins/ ├── init.lua （可选） ├── lualine.lua ├── treesitter.lua └── …… 乍一看，你可能会觉得很复杂。其实不然，因为lua目录下的文件实际都是自己想怎么加就怎么加的，真正限定的结构只有根目录下的init.lua和lua这个文件夹。只不过通常而言我们会在lua文件夹下创建这些文件结构，方便我们管理自己加入的插件以及相应配置。\n正如你所见，nvim的配置文件全部都使用的是lua语言。但是不用有太高的心理负担，因为这是一个语法甚至比python还要简单的语言。nvim配置过程就相当于构建一个自己的lua语言程序，你需要自己组织其文件结构来让neovim知道如何使用你的配置。\n所以显然，在你开始配置nvim之前，你最好能了解一下lua语言的用法。不过也不用着急，你可以接着看，遇到不懂的点再去深入了解。\nkickstart kickstart链接 这是并不是一个neovim发行版，它只是一套配置文件。严谨的说，它是nvim官方维护的一个学习版nvim配置框架。它使用了lazy. nvim这一插件管理器（注意：这和lazyvim完全不是一回事），但是和lazyvim是完全不一样的两个东西，后者是一个“开箱即用”的nvim框架（但也不那么开箱即用）。\n你仍然需要安装nvim。kickstart只是提供了清晰的配置文件，方便初学者快速了解如何配置nvim。我们接下来也会以kickvim提供的init.lua为例讲解neovim可供配置的内容。\n安装neovim 显然，如果我们想要使用neovim，我们需要先安装它。你可以安装任意你想要的版本，不过这里我们选择Nvim 0.11.5。kickstart要求nvim版本为最新的稳定版，或者每日夜晚自动编译得到的不经过稳定性测试的Nightly版，我们此处使用的是最新的稳定版。\n对于大部分普通电脑，cpu采用x86_64架构，你需要下载nvim-linux-x86_64.tar.gz。这是软件文件的压缩包，你需要把它移动到你想要它存在的文件目录下，然后在该目录下执行：\ntar xzvf nvim-linux-x86_64.tar.gz #或者你实际下载的压缩包 我这边使用的是termux，平板、手机一般cpu架构是arm64，所以我下载的是nvim-linux-arm64.tar.gz。执行相同命令解压之后得到一个同名文件夹。此时，输入：\n./nvim-linux-x86_64/bin/nvim #注意第一个应当是你实际下载的版本 通常来说，这个时候你就会进入一个nvim的默认的黑白界面。这就意味着你neovim安装成功了。\n此外，为了使用方便，你最好还要安装一些剪切板工具，如xclip，以及Nerd Font，用来显示更美观的图标。此部分自行参考相应的文档自己选择进行。\nkickstart安装 现在我们来安装kickstart。在kickstart的文档中，开发者提示说可以将这个kickstart仓库复刻一份到你自己的仓库下，这样你可以通过git来管理你的配置。\n如果你懒得复刻一份，直接输入这个指令，kickstart就会开始自动安装（后记：这里你最好记住这个文件位置~/.config/nvim，因为你之后折腾配置的时候要经常打开它）：\ngit clone https://github.com/nvim-lua/kickstart.nvim.git \"${XDG_CONFIG_HOME:-$HOME/.config}\"/nvim 如果复刻了一份到自己的仓库，直接从自己的仓库克隆即可。\n在下载好后，再次输入nvim，如果一切正常，你就会看见一堆进度条，一堆看不懂的东西安装完后，界面显示出Tokyo night的配色方案，这就意味着你安装成功了。\n可能遇到的问题 在某些平台上，stylua或者一些其他插件并没有提供预编译版，这意味着Mason（你可以理解为nvim的包管理器，自动安装、管理各种开发工具）无法自动安装这些工具。你需要自行编译安装。其中比较推荐的是使用世界上最好的包管理器cargo来进行编译安装。\n要使用cargo，你需要先安装rust。\npkg install rust #这里开头需要用你自己实际的包管理器 安装完后，输入：\ncargo install stylua 如果没有意外的话，下载成功后二进制文件会位于~/.cargo/bin/stylua（cargo理论上会给出提示）。在~/.bashrc或者~/.zshrc中加入一行export PATH=\"$HOME/.cargo/bin:$PATH\" 退出后输入source ~/.bashrc或者source ~/.zshrc，之后按理来说stylua就已经可以工作了。\n但是这个时候，Mason可能会因为只识别Mason安装的stylua而导致进入nvim后依然报错。你可以:\nnvim ~/.config/nvim/init.lua 这就是我们一会会讲到的文件，里面罗列了所有你可能会用到的配置文本。在其中大概718行的位置，你可以找到：\nrequire(\"mason-tool-installer\").setup { ensure_installed = { -- 删掉 stylua 或者不要写 } } 正如上文中的注释，此处本来应该有stylua相关的内容。将它删掉或者注释掉即可。保存退出，再次进入nvim，此时就不会有stylua报错了。你可以通过:!which stylua来验证nvim可以找到stylua应用。\n除stylua外，还有一些包也可能会因为环境缘故无法直接通过mason安装，不再一一列举。\n如果你遇到无法解决的问题，你可以暂时先放一放，继续阅读。之后仍然无法解决，则去求助ai或者其他博客。\ninit.lua 现在，我们终于可以进入根目录的init.lua了。\nnvim ~/.config/nvim/init.lua 如果一切顺利，你会进入一个1000多行的文件，这就是kickstart的配置模版。接下来我们会逐段分析这个配置模版。\n开头部分 ===================================================================== ==================== READ THIS BEFORE CONTINUING ==================== ===================================================================== ======== .-----. ======== ======== .----------------------. | === | ======== ======== |.-\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"-.| |-----| ======== ======== || || | === | ======== ======== || KICKSTART.NVIM || |-----| ======== ======== || || | === | ======== ======== || || |-----| ======== ======== ||:Tutor || |:::::| ======== ======== |'-..................-'| |____o| ======== ======== `\"\")----------------(\"\"` ___________ ======== ======== /::::::::::| |::::::::::\\ \\ no mouse \\ ======== ======== /:::========| |==hjkl==:::\\ \\ required \\ ======== ======== '\"\"\"\"\"\"\"\"\"\"\"\"' '\"\"\"\"\"\"\"\"\"\"\"\"' '\"\"\"\"\"\"\"\"\"\"' ======== ======== ======== ===================================================================== ===================================================================== What is Kickstart? Kickstart.nvim is *not* a distribution. Kickstart.nvim is a starting point for your own configuration. The goal is that you can read every line of code, top-to-bottom, understand what your configuration is doing, and modify it to suit your needs. Once you've done that, you can start exploring, configuring and tinkering to make Neovim your own! That might mean leaving Kickstart just the way it is for a while or immediately breaking it into modular pieces. It's up to you! If you don't know anything about Lua, I recommend taking some time to read through a guide. One possible example which will only take 10-15 minutes: - https://learnxinyminutes.com/docs/lua/ After understanding a bit more about Lua, you can use `:help lua-guide` as a reference for how Neovim integrates Lua. - :help lua-guide - (or HTML version): https://neovim.io/doc/user/lua-guide.html 简单总结，就是告诉你这不是一个neovim发行版，只是一个模版框架。其中它给出的一个10-15min学习lua的网站 https://learnxinyminutes.com/zh-cn/lua/ 非常有用，可以帮助你快速掌握使用lua的关键知识。lua并不是一个复杂的语言，甚至比python还要简单的多。下面我简单罗列一些我们可能会用到的lua知识。\n一些必须的lua基础知识 local关键字 在lua当中，如果不使用local声明，变量就会被视为全局变量。在声明函数之前加上local被视为是lua编程的良好风格。\nrequire关键字 这个关键字非常重要，它的作用是加载和使用模块。简单来说，你的配置文件可能有复杂的结构，但是neovim并不能全自动地去搜索所有的.lua文件。正如很多其他语言只有一个main.xx文件一样，lua通常而言也只有一个主文件，你需要在这个主文件中引用其他文件的内容。\n在我个人看来，lua的文件组织方式和python有许多相似之处。两者都将单个的.lua文件或者.py文件看做一个\"模块\"，不同功能的模块之间除了文件内容之外没有文件后缀名或者文件名的限制。但是python和lua在一些细节的机制上还是有所不同。\npython的模块导出机制可以看做是“默认导出”。一个python模块文件（即一个.py文件）所有的顶级变量、函数、类全都是公开的。比如你在utils.py中写了一个名为myfunction()的函数，你想在另一个.py文件中使用这个函数，你只需要先import utils，再写utils.myfunction()即可。可以说，python的每个单独的.py文件都是一个“命名空间”，就像namespace std一样。\n但是lua采用了一个与此区别较大的管理方式。简单来说，lua的所有内容都是“私有的”，如果你想让别的.lua文件使用这个.lua文件中的函数等内容，你需要把这些东西“打包发出去”。理解这点对于配置neovim非常关键。\n我们下面来看一个简单的例子：\n-- shopping.lua -- (上面的 local 函数和变量定义) -- 1. 手动创建一个空的“储物柜” (table) local M = {} -- 2. 手动把要公开的东西放进去 M.buy_apple = buy_apple --这是一个shopping.lua中定义的函数 M.PRICE_PER_APPLE = PRICE_PER_APPLE --这是一个shopping.lua中定义的变量 -- 注意：我们故意不把 buy_banana 放进去 -- 3. 把这个填充好的储物柜作为模块的出口 return M 当我们想从另一个.lua中调用shopping.lua中的函数或者变量时，我们需要这么写：\nlocal shopping = require('shopping') --此处就用到了require 这时候，我们就在这个.lua文件中定义了一个变量，名字叫shopping。它的内容是什么呢？很简单，就是shopping.lua中最后“打包”好的M这个table。\n此时，如果你想买苹果，你就写shopping.buy_apple()，如果你想知道苹果的单价，那你就写shopping.PRICE_PER_APPLE。但是你没办法买香蕉，因为你在shopping.lua中没有把buy_banana()打包发出去。\n读到这里，你基本上已经明白了lua的模块管理机制了，但是还不够（因为接下来的内容同样非常重要）。lua并不能完全自动地搜索根目录下匹配名称的.lua文件，而是遵循着一种“内部搜索顺序”。简单来说，这个内部搜索顺序就是一堆相对路径，lua文件运行时会挨个搜索这些路径去找符合条件的.lua文件（比如我们前文写的shopping.lua)，如果它在按照内部搜索顺序寻找无果，那么，它就会报错。\n这点之所以重要，就是因为有的时候你必须要让neovim知道它需要的文件到底在哪，但是这个工作是没办法交给ai的，因为你没办法把整个项目都发给ai，ai凭刻板印象给出的代码在解决这类问题时通常无法正常工作，因为它根本不了解你到底把什么文件放在哪了（甚至你自己也很可能未必知道自己需要的文件在哪）。这个时候再把问题发给ai让它解决，ai就会继续给你一个更错的答案，最后恶性循环。（别问我是怎么知道的）\n下面我来详细讲解一下“内置搜索顺序”的机制。\n内置搜索顺序 lua中用于搜索lua模块的路径变量称为“packege.path”，存储在内置的package表中。\n它们通常长成这样：\n./?.lua;./?/init.lua;/usr/local/share/lua/5.4/?.lua;/usr/local/share/lua/5.4/?/init.lua;... 其中，分号分隔了不同的路径，?代表此处会被自动替换为你require中填写的内容。\n例如，假设你执行了 require(‘socket.core’)，Lua 会：\n将模块名中的 . 替换为目录分隔符（如 / 或 \\）。所以 socket.core 变成了 socket/core。 然后用 socket/core 替换掉 package.path 中每个模板的 ?，并依次检查文件是否存在： ./socket/core.lua (在当前目录下找) ./socket/core/init.lua (在当前目录下的 socket 目录中找 init.lua) /usr/local/share/lua/5.4/socket/core.lua (在标准的 Lua 库目录下找) /usr/local/share/lua/5.4/socket/core/init.lua (在标准的 Lua 库目录的子目录中找) …等等，直到找到一个存在的文件为止。 一旦找到，lua就会执行这个文件并返回结果（在我们前文的例子中，返回的就是打包好的函数和变量），如果找不到，require就会报错。\n那么，当我们需要去寻找一个不在默认搜索路径中的文件该怎么做呢？\n下面我们举一个简单的例子:\n首先，让我们在随便一个测试用的文件夹中创建以下文件结构：\n. ├── libs │ └── myutils.lua └── main.lua 然后，让我们在myutils.lua中随便写一点测试用的代码：\n-- libs/myutils.lua -- 创建一个 table 用于导出 local M = {} function M.greet(name) return \"Hello, \" .. name .. \"! Welcome to our module.\" end -- 导出这个 table return M 然后，我们来在main.lua中写一个错误的模块调用代码：\n-- main.lua print(\"Attempting to load the 'myutils' module...\") -- 尝试加载位于 libs 文件夹中的 myutils 模块 -- 注意：我们直接写 'myutils' 而不是 'libs.myutils'，因为 'libs' 只是一个普通文件夹， -- 并不是 Lua 的包名。我们需要让 Lua 知道要去 'libs' 这个文件夹里找。 local utils = require('myutils') -- 如果加载成功，就使用它的功能 local message = utils.greet(\"Alice\") print(\"Successfully loaded module!\") print(message) 这段代码是ai写的。你可能会对其中的注释感到疑惑，我来尝试解答一下：\n直接写require('libs.myutils')其实是可以正常工作的，但是这并不利于维护。我们希望让lua自己通过package path去寻找所需要的模块，而代码中应该只考虑需要什么模块。如果我们在require中强行写入物理位置，虽然可以工作，但是一旦我们调整了文件位置，就不得不修改整个程序中所有从libs中调用模块的代码，这样做非常的低效。 在这段代码中，我们构建了一个无法通过package path找到所需模版的main.lua，这完全是反面例子。后文我们会给出修改。 保存退出，输入lua main.lua，你就会喜提报错：\n$ lua main.lua Attempting to load the 'myutils' module... lua: main.lua:8: module 'myutils' not found: no field package.preload['myutils'] no file '/data/data/com.termux/files/usr/share/lua/5.3/myutils.lua' no file '/data/data/com.termux/files/usr/share/lua/5.3/myutils/init.lua' no file '/data/data/com.termux/files/usr/lib/lua/5.3/myutils.lua' no file '/data/data/com.termux/files/usr/lib/lua/5.3/myutils/init.lua' no file './myutils.lua' no file './myutils/init.lua' no file '/data/data/com.termux/files/usr/lib/lua/5.3/myutils.so' no file '/data/data/com.termux/files/usr/lib/lua/5.3/loadall.so' no file './myutils.so' stack traceback: [C]: in function 'require' main.lua:8: in main chunk [C]: in ? 这样的报错信息会在你配置nvim过程中时常出现（如果你完全不关心背后的原理）。\n从报错信息中，你会看到lua查找了所有的内部搜索路径，但是都找不到你要的myutils.lua这个模块，因为你把它放在了libs下，lua根本不知道还有这个地方。\n那么如何解决呢？很简单，我们只需要让main.lua把libs添加到package path中就行。\n将main.lua修改为以下内容：\n-- main.lua print(\"--- Experiment 2: Modifying package.path in script ---\") -- 打印修改前的 path，方便对比 print(\"Original package.path:\") print(package.path) -- 将我们的 libs 目录添加到搜索路径的最前面 -- './libs/?.lua' 是一个模板，'?' 会被 require 的模块名替换 package.path = './libs/?.lua;' .. package.path print(\"\\nModified package.path:\") print(package.path) print(\"\\nAttempting to load the 'myutils' module...\") local utils = require('myutils') local message = utils.greet(\"Bob\") print(\"Successfully loaded module!\") print(message) 再次退出，输入lua main.lua你就可以得到想要的内容：\n$ lua main.lua --- Experiment 2: Modifying package.path in script --- Original package.path: /data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua Modified package.path: ./libs/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?.lua;/data/data/com.termux/files/usr/share/lua/5.3/?/init.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?.lua;/data/data/com.termux/files/usr/lib/lua/5.3/?/init.lua;./?.lua;./?/init.lua Attempting to load the 'myutils' module... Successfully loaded module! Hello, Bob! Welcome to our module. 注：以上是我在termux中运行的信息，其他平台上显示的path可能会有所区别。\n我们打印了修改前后package.path的内容，显然，在Modified package.path中第一个搜索路径就是我们添加的./libs/?.lua，此时我们也确实成功使用了myutils.lua中的函数。\n怎么做到的呢？让我们来仔细看一下我们修改的核心内容：\n-- 将我们的 libs 目录添加到搜索路径的最前面 -- './libs/?.lua' 是一个模板，'?' 会被 require 的模块名替换 package.path = './libs/?.lua;' .. package.path ..在lua中表示字符串连接。这段代码的含义非常清晰：在package.path这个字符串前面加上我们需要的搜索路径。就这么简单。package.path本质就是一个字符串，你可以随意的根据需要修改本工程的搜索路径。\n除此之外，如果你的所有lua工程都采用基本一致的文件结构，你可以把你需要的自定义的搜索路径写入环境变量中。比如你可以在终端中输入export LUA_PATH=\"./libs/?.lua;;\"，其中;;意味着保留原本的路径。这时候，即使你不在main.lua开头编辑package.path，lua也会自动找到libs下的myutils.lua，因为所需要的搜索路径已经成为一个环境的一部分了。\n但是如果你希望自己的代码可以一次写入、处处运行，那么我建议你还是老老实实的把所需要的搜索路径写在开头，以便在不同环境中都可以使用。\n讲到这里，我们大概理解了lua的工作原理，现在让我们继续阅读根目录下的init.lua文件。\n正式开始分析init.lua Kickstart Guide: TODO: The very first thing you should do is to run the command `:Tutor` in Neovim. If you don't know what this means, type the following: - - : - Tutor - (If you already know the Neovim basics, you can skip this step.) Once you've completed that, you can continue working through **AND READING** the rest of the kickstart init.lua. Next, run AND READ `:help`. This will open up a help window with some basic information about reading, navigating and searching the builtin help documentation. This should be the first place you go to look when you're stuck or confused with something. It's one of my favorite Neovim features. MOST IMPORTANTLY, we provide a keymap \"sh\" to [s]earch the [h]elp documentation, which is very useful when you're not exactly sure of what you're looking for. I have left several `:help X` comments throughout the init.lua These are hints about where to find more information about the relevant settings, plugins or Neovim features used in Kickstart. NOTE: Look for lines like this Throughout the file. These are for you, the reader, to help you understand what is happening. Feel free to delete them once you know what you're doing, but they should serve as a guide for when you are first encountering a few different constructs in your Neovim config. If you experience any errors while trying to install kickstart, run `:checkhealth` for more info. I hope you enjoy your Neovim journey, - TJ P.S. You can delete this when you're done too. It's your config now! :) --]] 总结一下：\n你可以在普通模式下:Tutor来进入一个neovim的使用教程，告诉你这个软件的基本使用方式。 vim的使用方式可以非常花哨，内置的指令多的数不过来。遗憾的是我只会其中最基本的几个指令，但是这通常来讲已经足够了。你不需要为了少按几个上下左右而去背一大堆指令，这样做有用，但是对于一个入门的人来说完全没有必要。 你可以在普通模式下:help来查看帮助。里面罗列了nvim支持的各种功能，以及一些基本的使用方式。这就是一部使用说明书，就和你买的家用电器里附带的说明书是一个性质。 你可以+s+h来进入一个帮助搜索界面。（然而我不会用） 文件剩余的内容都随便你配置。 -- Set as the leader key -- See `:help mapleader` -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used) vim.g.mapleader = ' ' vim.g.maplocalleader = ' ' -- Set to true if you have a Nerd Font installed and selected in the terminal vim.g.have_nerd_font = false vim.g：代表全局变量。这里设置的变量在全局都有效。 vim.g.mapleader = ' '：将空格键设置为“前导键”，用来作为一个通用的快捷键前缀。 vim.g.maplocalleader = ' '：局部映射，简单来说就是只在某些文件中才会生效的“前导键”，之后x就表示只在此情况下才生效的快捷键。 vim.g.have_nerd_font = false：声明你的终端环境有没有安装Nerd Font。很多nvim的插件需要nerd font来支持一些复杂的图形界面，如果你没有安装nerd font，通过在这里声明false，那些插件就会只显示一些普通文本来适配你的环境。 如果你安装了nerd font，记得把这个变量设置为true。 setting options -- [[ Setting options ]] -- See `:help vim.o` -- NOTE: You can change these options as you wish! -- For more options, you can see `:help option-list` -- Make line numbers default vim.o.number = true -- You can also add relative line numbers, to help with jumping. -- Experiment for yourself to see if you like it! -- vim.o.relativenumber = true -- Enable mouse mode, can be useful for resizing splits for example! vim.o.mouse = 'a' -- Don't show the mode, since it's already in the status line vim.o.showmode = false -- Sync clipboard between OS and Neovim. -- Schedule the setting after `UiEnter` because it can increase startup-time. -- Remove this option if you want your OS clipboard to remain independent. -- See `:help 'clipboard'` vim.schedule(function() vim.o.clipboard = 'unnamedplus' end) -- Enable break indent vim.o.breakindent = true -- Save undo history vim.o.undofile = true -- Case-insensitive searching UNLESS \\C or one or more capital letters in the search term vim.o.ignorecase = true vim.o.smartcase = true -- Keep signcolumn on by default vim.o.signcolumn = 'yes' -- Decrease update time vim.o.updatetime = 250 -- Decrease mapped sequence wait time vim.o.timeoutlen = 300 -- Configure how new splits should be opened vim.o.splitright = true vim.o.splitbelow = true -- Sets how neovim will display certain whitespace characters in the editor. -- See `:help 'list'` -- and `:help 'listchars'` -- -- Notice listchars is set using `vim.opt` instead of `vim.o`. -- It is very similar to `vim.o` but offers an interface for conveniently interacting with tables. -- See `:help lua-options` -- and `:help lua-options-guide` vim.o.list = true vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- Preview substitutions live, as you type! vim.o.inccommand = 'split' -- Show which line your cursor is on vim.o.cursorline = true -- Minimal number of screen lines to keep above and below the cursor. vim.o.scrolloff = 10 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`), -- instead raise a dialog asking if you wish to save the current file(s) -- See `:help 'confirm'` vim.o.confirm = true vim.o：设置nvim的各种行为选项。 vim.o.number = true：显示==行号==。默认显示的是绝对行号 vim.o.relativenumber = true：显示==相对行号==。 你可能会好奇如果两个都启用会怎么样。答案很简单：你所处的行会显示绝对行号，而其他行会显示相对行号。这样你既能确定自己的绝对位置，又方便跳转位置，这是很多人的选择。 vim.o.mouse = 'a'：==鼠标模式==，a表示对所有文件都适用。如果你有鼠标，你没有理由把这个这个关掉。 vim.o.showmode = false：不显示nvim内置的==状态提示==。更加现代的状态栏插件可以提供比文本更美观的状态栏，所以除非你有特殊的美术追求，没必要调为true。 vim.schedule(function()vim.o.clipboard = 'unnamedplus'end)：vim.schedule表示在ui完全加载完之后再执行，后面的函数表示将nvim的==剪切板与操作系统剪切板同步==。你可以在nvim中y复制文本之后在外部ctrl v粘贴，也可以外部ctrl c复制后在nvim中p粘贴。 这是一个非常有必要的设置，尤其是当你需要和ai博弈的时候。 vim.o.breakindent = true：==打断缩进==，文本太长自动换行后保持和原文本同样的缩进。 vim.o.undofile = true：保存==撤回树==，当你再次打开这个文件时，你仍然可以撤回到之前的状态，即使中间你保存了文件。实现原理是另外建立一个.un~文件，所以理论上你可以撤回到宇宙大爆炸（如果你从那时就开始写代码） vim.o.ignorecase = true vim.o.smartcase = true：==搜索==时忽视大小写，但是如果你输入了至少一个大写时又会自动大小写敏感。 vim.o.signcolumn = 'yes'： 保持==侧边栏显示==，Lsp（后面会涉及）和一些其他的插件需要依赖这个侧边栏来显示一些信息，所以保持开启。 vim.o.updatetime = 250：==更新时间==，你可以理解为minecraft中的随机刻，很多插件的使用依赖于这个更新时间，如果减少，一些插件的响应速度会加快。 vim.o.timeoutlen = 300：==映射序列等待时间==，比如你的一个映射是j+k，当你按下j时，nvim会等待300ms，如果你在这时间内按下k，那么就会执行映射。 vim.o.splitright = true vim.o.splitbelow = true：新的水平==分屏==和垂直分屏会分别出现在右边和下边。 vim.o.list = true：开启list模式，让nvim可以显示一些特殊的==空白字符== vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }：将tab显示为》，将尾部的多余空格显示为·，将不可断空格显示为␣。 vim.o.inccommand = 'split'：执行替换命令时在一个新的==分屏窗口==中实时显示预览效果。 vim.o.cursorline = true：==高亮==光标所在的当前行。 vim.o.scrolloff = 10：光标滚动时会==偏移上下边缘10行==，方便阅读。 vim.o.confirm = true：在一些可能导致数据丢失的情况下==要求你确认==，比如未保存时就退出。除非你是人形计算机永远可以保证正确，那么建议你保持开启。 -- [[ Basic Keymaps ]] -- See `:help vim.keymap.set()` -- Clear highlights on search when pressing in normal mode -- See `:help hlsearch` vim.keymap.set('n', '', 'nohlsearch') -- Diagnostic keymaps vim.keymap.set('n', 'q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' }) -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier -- for people to discover. Otherwise, you normally need to press , which -- is not what someone will guess without a bit more experience. -- -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping -- or just use to exit terminal mode vim.keymap.set('t', '', '",
-    "wordCount" : "11396",
-    "inLanguage": "zh-cn",
-    "datePublished": "2025-11-23T10:53:11+08:00",
-    "dateModified": "2025-11-23T10:53:11+08:00",
-    "author":{
-        "@type": "Person",
-        "name": "Moonhalf",
-        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
-        },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "http://localhost:1313/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Yorozumoon",
-      "description": "",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "http://localhost:1313/favicon.ico"
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=37705&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        try {
+          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+          if (stored !== null) collapsed = JSON.parse(stored) === true;
+        } catch (_) {}
+        root.classList.toggle(`${side}-collapsed`, collapsed);
       }
-    }
-}
-</script><title>Neovim配置如何入门</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.981fd45755dd2c825d2cfb1a56c26ec7a9abccd378ee9b086d0c941e5de412fe.css" integrity="sha256-mB/UV1XdLIJdLPsaVsJux6mrzNN47psIbQyUHl3kEv4=" crossorigin="anonymous">
-	</head>
+    })();
+  </script>
+  <meta name="description" content="如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。
+">
+  <title>Neovim配置如何入门 · Yorozumoon</title>
+  <link rel="icon" type="image/png" href="/images/face.png"><link rel="stylesheet" href="/css/editor.min.4a41cd0abb1a2ad26d1cafbfd366f3ee3e1dab242c436e892b8ca24e4dc3f260.css" integrity="sha256-SkHNCrsaKtJtHK&#43;/02bz7j4dqyQsQ26JK4yiTk3D8mA=">
+  
+</head>
+<body class="editor-shell" data-current-path="posts/Neovim配置如何入门.md" data-current-source="posts/Neovim配置如何入门/index.md">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
 
-<body id="page">
-<header id="site-header" class="animated slideInUp">
-	<div class="hdr-wrapper section-inner">
-		<div class="hdr-left">
-			<div class="site-branding">
-				<a href="http://localhost:1313/">Yorozumoon</a>
-			</div>
-			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
-		</div>
-		<div class="hdr-right hdr-icons">
-			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
-      <line x1="8" y1="6" x2="21" y2="6"></line>
-      <line x1="8" y1="12" x2="21" y2="12"></line>
-      <line x1="8" y1="18" x2="21" y2="18"></line>
-      <line x1="3" y1="6" x2="3" y2="6"></line>
-      <line x1="3" y1="12" x2="3" y2="12"></line>
-      <line x1="3" y1="18" x2="3" y2="18"></line>
-   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
-   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-   <path
-      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-   </path>
-</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-   </svg></button>
-		</div>
-	</div>
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span>posts/Neovim配置如何入门.md</span>
+      </div>
+      <article class="document" id="document">
+        
+<header class="document-header">
+  <p class="document-kind">posts/Neovim配置如何入门.md</p>
+  <h1>Neovim配置如何入门</h1>
+  <div class="document-meta"><time datetime="2025-11-23">2025-11-23</time><span>Neovim · 教程</span></div>
 </header>
-<div id="mobile-menu" class="animated fast">
-	<ul>
-		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
-		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
-		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
-		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
-	</ul>
-</div>
-
-	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
-			<header class="post-header">
-				<div class="post-date"><span>Nov 23, 2025</span></div>
-				<h1>Neovim配置如何入门</h1>
-			</header>
-			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
-   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-   <line x1="16" y1="8" x2="2" y2="22"></line>
-   <line x1="17.5" y1="15" x2="9" y2="15"></line>
-</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-      <line x1="7" y1="7" x2="7" y2="7"></line>
-   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/neovim">Neovim</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E6%95%99%E7%A8%8B">教程</a></span></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-      <polyline points="14 2 14 8 20 8"></polyline>
-      <line x1="16" y1="13" x2="8" y2="13"></line>
-      <line x1="16" y1="17" x2="8" y2="17"></line>
-      <polyline points="10 9 9 9 8 9"></polyline>
-   </svg>11396&nbspWords 阅读时长51 Minutes, 48 Seconds</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="16" y1="2" x2="16" y2="6"></line>
-      <line x1="8" y1="2" x2="8" y2="6"></line>
-      <line x1="3" y1="10" x2="21" y2="10"></line>
-   </svg>2025-11-23 10:53 &#43;0800
-</p></div>
-			<hr class="post-end">
-			<div class="content">
-				 <p>如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。</p>
+<div class="content" data-wikilinks>
+  <p>如题。neovim因为自定义程度过高导致学习曲线极其陡峭，虽然功能很强大但是配置过程极其折磨，尤其是当你对于neovim配置的原理毫无概念的时候。</p>
 <p>闲言少叙，我尝试来总结一下如何快速入门并配置一个能用的neovim。（后记：在学习完如何配置nvim之后，你实际应该做的是去用lazyvim。lazyvim的lazyextra功能直接优化掉了nvim最反人类的lsp配置过程，如果你有生活，不要尝试自己配置lsp。但是如果你想在使用lazyvim时可以轻松应对各种插件问题，你最好学一下nvim插件配置的通用原理，即我下文中会讲到的。）</p>
 <hr>
-<h2 id="nvim配置原理">Nvim配置原理<a href="#nvim%e9%85%8d%e7%bd%ae%e5%8e%9f%e7%90%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="nvim配置原理">Nvim配置原理</h2>
 <p>neovim是一个文本编辑器，完全可以运行在终端中，无需给它一个桌面环境。你可以按照自己的需求给它添加对特定编程语言的支持，添加语法高亮、自动补全等功能，或者切换颜色主题。它非常轻量，运行飞速，极其贴近代码的原生环境，并且可以运行在任何一台看起来像电脑的机器上。</p>
 <p>但是代价是，这一切都必须通过你自己手动配置来完成。Neovim并不是一个开箱即用的软件，即使你使用一些诸如Nvchad或者Lazyvim这样的预配置版本，很多功能还是必须要你自己手动添加。</p>
 <p>通常，一个neovim的配置文件目录如下：</p>
@@ -169,19 +72,11 @@
 <p>正如你所见，nvim的配置文件全部都使用的是lua语言。但是不用有太高的心理负担，因为这是一个语法甚至比python还要简单的语言。nvim配置过程就相当于构建一个自己的lua语言程序，你需要自己组织其文件结构来让neovim知道如何使用你的配置。</p>
 <p>所以显然，在你开始配置nvim之前，你最好能了解一下lua语言的用法。不过也不用着急，你可以接着看，遇到不懂的点再去深入了解。</p>
 <hr>
-<h3 id="kickstart">kickstart<a href="#kickstart" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="kickstart">kickstart</h3>
 <p><a href="https://github.com/nvim-lua/kickstart.nvim">kickstart链接</a>
 这是并不是一个neovim发行版，它只是一套配置文件。严谨的说，它是nvim官方维护的一个学习版nvim配置框架。它使用了lazy. nvim这一插件管理器（注意：这和lazyvim完全不是一回事），但是和lazyvim是完全不一样的两个东西，后者是一个“开箱即用”的nvim框架（但也不那么开箱即用）。</p>
 <p>你仍然需要安装nvim。kickstart只是提供了清晰的配置文件，方便初学者快速了解如何配置nvim。我们接下来也会以kickvim提供的init.lua为例讲解neovim可供配置的内容。</p>
-<h4 id="安装neovim">安装neovim<a href="#%e5%ae%89%e8%a3%85neovim" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="安装neovim">安装neovim</h4>
 <p>显然，如果我们想要使用neovim，我们需要先安装它。你可以安装任意你想要的版本，不过这里我们选择Nvim 0.11.5。kickstart要求nvim版本为最新的稳定版，或者每日夜晚自动编译得到的不经过稳定性测试的Nightly版，我们此处使用的是最新的稳定版。</p>
 <p>对于大部分普通电脑，cpu采用x86_64架构，你需要下载nvim-linux-x86_64.tar.gz。这是软件文件的压缩包，你需要把它移动到你想要它存在的文件目录下，然后在该目录下执行：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">tar xzvf nvim-linux-x86_64.tar.gz <span class="c1">#或者你实际下载的压缩包</span>
@@ -189,21 +84,13 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">./nvim-linux-x86_64/bin/nvim <span class="c1">#注意第一个应当是你实际下载的版本</span>
 </span></span></code></pre></div><p>通常来说，这个时候你就会进入一个nvim的默认的黑白界面。这就意味着你neovim安装成功了。</p>
 <p>此外，为了使用方便，你最好还要安装一些剪切板工具，如xclip，以及Nerd Font，用来显示更美观的图标。此部分自行参考相应的文档自己选择进行。</p>
-<h4 id="kickstart安装">kickstart安装<a href="#kickstart%e5%ae%89%e8%a3%85" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="kickstart安装">kickstart安装</h4>
 <p>现在我们来安装kickstart。在kickstart的文档中，开发者提示说可以将这个kickstart仓库复刻一份到你自己的仓库下，这样你可以通过git来管理你的配置。</p>
 <p>如果你懒得复刻一份，直接输入这个指令，kickstart就会开始自动安装（后记：这里你最好记住这个文件位置~/.config/nvim，因为你之后折腾配置的时候要经常打开它）：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">git clone https://github.com/nvim-lua/kickstart.nvim.git <span class="s2">&#34;</span><span class="si">${</span><span class="nv">XDG_CONFIG_HOME</span><span class="k">:-</span><span class="nv">$HOME</span><span class="p">/.config</span><span class="si">}</span><span class="s2">&#34;</span>/nvim
 </span></span></code></pre></div><p>如果复刻了一份到自己的仓库，直接从自己的仓库克隆即可。</p>
 <p>在下载好后，再次输入<code>nvim</code>，如果一切正常，你就会看见一堆进度条，一堆看不懂的东西安装完后，界面显示出Tokyo night的配色方案，这就意味着你安装成功了。</p>
-<h4 id="可能遇到的问题">可能遇到的问题<a href="#%e5%8f%af%e8%83%bd%e9%81%87%e5%88%b0%e7%9a%84%e9%97%ae%e9%a2%98" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="可能遇到的问题">可能遇到的问题</h4>
 <p>在某些平台上，stylua或者一些其他插件并没有提供预编译版，这意味着Mason（你可以理解为nvim的包管理器，自动安装、管理各种开发工具）无法自动安装这些工具。你需要自行编译安装。其中比较推荐的是使用<strong>世界上最好的包管理器</strong>cargo来进行编译安装。</p>
 <p>要使用cargo，你需要先安装rust。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">pkg install rust <span class="c1">#这里开头需要用你自己实际的包管理器</span>
@@ -222,19 +109,11 @@
 <p>除stylua外，还有一些包也可能会因为环境缘故无法直接通过mason安装，不再一一列举。</p>
 <p>如果你遇到无法解决的问题，你可以暂时先放一放，继续阅读。之后仍然无法解决，则去求助ai或者其他博客。</p>
 <hr>
-<h3 id="initlua">init.lua<a href="#initlua" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="initlua">init.lua</h3>
 <p>现在，我们终于可以进入根目录的init.lua了。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">nvim ~/.config/nvim/init.lua
 </span></span></code></pre></div><p>如果一切顺利，你会进入一个1000多行的文件，这就是kickstart的配置模版。接下来我们会逐段分析这个配置模版。</p>
-<h3 id="开头部分">开头部分<a href="#%e5%bc%80%e5%a4%b4%e9%83%a8%e5%88%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="开头部分">开头部分</h3>
 <pre tabindex="0"><code>=====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -276,22 +155,10 @@ What is Kickstart?
     - :help lua-guide
     - (or HTML version): https://neovim.io/doc/user/lua-guide.html
 </code></pre><p>简单总结，就是告诉你这不是一个neovim发行版，只是一个模版框架。其中它给出的一个10-15min学习lua的网站 <a href="https://learnxinyminutes.com/zh-cn/lua/">https://learnxinyminutes.com/zh-cn/lua/</a> 非常有用，可以帮助你快速掌握使用lua的关键知识。lua并不是一个复杂的语言，甚至比python还要简单的多。下面我简单罗列一些我们可能会用到的lua知识。</p>
-<h3 id="一些必须的lua基础知识">一些必须的lua基础知识<a href="#%e4%b8%80%e4%ba%9b%e5%bf%85%e9%a1%bb%e7%9a%84lua%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
-<h4 id="local关键字">local关键字<a href="#local%e5%85%b3%e9%94%ae%e5%ad%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h3 id="一些必须的lua基础知识">一些必须的lua基础知识</h3>
+<h4 id="local关键字">local关键字</h4>
 <p>在lua当中，如果不使用local声明，变量就会被视为全局变量。在声明函数之前加上local被视为是lua编程的良好风格。</p>
-<h4 id="require关键字">require关键字<a href="#require%e5%85%b3%e9%94%ae%e5%ad%97" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="require关键字">require关键字</h4>
 <p>这个关键字非常重要，它的作用是加载和使用模块。简单来说，你的配置文件可能有复杂的结构，但是neovim并不能全自动地去搜索所有的.lua文件。正如很多其他语言只有一个main.xx文件一样，lua通常而言也只有一个主文件，你需要在这个主文件中引用其他文件的内容。</p>
 <p>在我个人看来，lua的文件组织方式和python有许多相似之处。两者都将单个的.lua文件或者.py文件看做一个&quot;模块&quot;，不同功能的模块之间除了文件内容之外没有文件后缀名或者文件名的限制。但是python和lua在一些细节的机制上还是有所不同。</p>
 <p>python的模块导出机制可以看做是“默认导出”。一个python模块文件（即一个.py文件）所有的顶级变量、函数、类全都是公开的。比如你在<code>utils.py</code>中写了一个名为<code>myfunction()</code>的函数，你想在另一个.py文件中使用这个函数，你只需要先<code>import utils</code>，再写<code>utils.myfunction()</code>即可。可以说，python的每个单独的.py文件都是一个“命名空间”，就像namespace std一样。</p>
@@ -318,11 +185,7 @@ What is Kickstart?
 <p>读到这里，你基本上已经明白了lua的模块管理机制了，但是还不够（因为接下来的内容同样非常重要）。lua并不能完全自动地搜索根目录下匹配名称的.lua文件，而是遵循着一种“内部搜索顺序”。简单来说，这个内部搜索顺序就是一堆相对路径，lua文件运行时会挨个搜索这些路径去找符合条件的.lua文件（比如我们前文写的shopping.lua)，如果它在按照内部搜索顺序寻找无果，那么，它就会报错。</p>
 <p>这点之所以重要，就是因为有的时候你必须要让neovim知道它需要的文件到底在哪，但是这个工作是没办法交给ai的，因为你没办法把整个项目都发给ai，ai凭刻板印象给出的代码在解决这类问题时通常无法正常工作，因为它根本不了解你到底把什么文件放在哪了（甚至你自己也很可能未必知道自己需要的文件在哪）。这个时候再把问题发给ai让它解决，ai就会继续给你一个更错的答案，最后恶性循环。（别问我是怎么知道的）</p>
 <p>下面我来详细讲解一下“内置搜索顺序”的机制。</p>
-<h4 id="内置搜索顺序">内置搜索顺序<a href="#%e5%86%85%e7%bd%ae%e6%90%9c%e7%b4%a2%e9%a1%ba%e5%ba%8f" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="内置搜索顺序">内置搜索顺序</h4>
 <p>lua中用于搜索lua模块的路径变量称为“packege.path”，存储在内置的package表中。</p>
 <p>它们通常长成这样：</p>
 <pre tabindex="0"><code>./?.lua;./?/init.lua;/usr/local/share/lua/5.4/?.lua;/usr/local/share/lua/5.4/?/init.lua;...
@@ -447,11 +310,7 @@ What is Kickstart?
 <p>但是如果你希望自己的代码可以一次写入、处处运行，那么我建议你还是老老实实的把所需要的搜索路径写在开头，以便在不同环境中都可以使用。</p>
 <hr>
 <p>讲到这里，我们大概理解了lua的工作原理，现在让我们继续阅读根目录下的init.lua文件。</p>
-<h4 id="正式开始分析initlua">正式开始分析init.lua<a href="#%e6%ad%a3%e5%bc%8f%e5%bc%80%e5%a7%8b%e5%88%86%e6%9e%90initlua" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h4>
+<h4 id="正式开始分析initlua">正式开始分析init.lua</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="n">Kickstart</span> <span class="n">Guide</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="n">TODO</span><span class="p">:</span> <span class="n">The</span> <span class="n">very</span> <span class="n">first</span> <span class="n">thing</span> <span class="n">you</span> <span class="n">should</span> <span class="kr">do</span> <span class="n">is</span> <span class="n">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">command</span> <span class="err">`</span><span class="p">:</span><span class="n">Tutor</span><span class="err">`</span> <span class="kr">in</span> <span class="n">Neovim</span><span class="p">.</span>
@@ -522,11 +381,7 @@ What is Kickstart?
 </ul>
 </li>
 </ul>
-<h5 id="setting-options">setting options<a href="#setting-options" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h5>
+<h5 id="setting-options">setting options</h5>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="line"><span class="cl"><span class="c1">-- [[ Setting options ]]</span>
 </span></span><span class="line"><span class="cl"><span class="c1">-- See `:help vim.o`</span>
 </span></span><span class="line"><span class="cl"><span class="c1">-- NOTE: You can change these options as you wish!</span>
@@ -747,108 +602,72 @@ What is Kickstart?
 </span></span></code></pre></div><p>不出意外的话，保存退出再重进，你原先写在init.lua中的配置此时再次会发挥作用。你可以通过这种方式让你的配置文件更加易于维护。</p>
 <p>大概先这样，我还会就界面个性化、lsp等比较棘手的配置问题再写几篇博客。</p>
 
-			</div>
-			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
-      <path
-         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
-      <path
-         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
-   </svg></abbr></a></div>
-
-<div class="related-posts thin">
-	<h2>See Also</h2>
-	<ul>
-	
-	<li><a href="/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">零基础如何搭建博客</a></li>
-	
-	</ul>
 </div>
 
-		</article>
-		<aside id="toc">
-			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#nvim配置原理">Nvim配置原理</a>
-          <ul>
-            <li><a href="#kickstart">kickstart</a>
-              <ul>
-                <li><a href="#安装neovim">安装neovim</a></li>
-                <li><a href="#kickstart安装">kickstart安装</a></li>
-                <li><a href="#可能遇到的问题">可能遇到的问题</a></li>
-              </ul>
-            </li>
-            <li><a href="#initlua">init.lua</a></li>
-            <li><a href="#开头部分">开头部分</a></li>
-            <li><a href="#一些必须的lua基础知识">一些必须的lua基础知识</a>
-              <ul>
-                <li><a href="#local关键字">local关键字</a></li>
-                <li><a href="#require关键字">require关键字</a></li>
-                <li><a href="#内置搜索顺序">内置搜索顺序</a></li>
-                <li><a href="#正式开始分析initlua">正式开始分析init.lua</a>
-                  <ul>
-                    <li><a href="#setting-options">setting options</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-		</aside>
-		<div class="post-nav thin">
-			<a class="next-post" href="http://localhost:1313/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
-   </svg>&nbsp;Newer</span><br><span>NeovimPlugins配置方法</span>
-			</a>
-			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/test/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-      <polyline points="12 5 19 12 12 19"></polyline>
-   </svg></span><br><span>Test</span>
-			</a>
-		</div>
-		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
-        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
-        data-repo-id="R_kgDOQaFILg"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQaFILs4CyFGz"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="transparent_dark"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-	</main>
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-<p>
-	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
-	&#183; copyright by Moonhalf
-	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
-	</p></footer>
-<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+<section id="comments" aria-label="评论">
+  <h2>DISCUSSION</h2>
+  <div class="giscus" data-giscus
+       data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+       data-repo-id="R_kgDOQaFILg"
+       data-category="Announcements"
+       data-category-id="DIC_kwDOQaFILs4CyFGz"
+       data-mapping="specific"
+       data-term="Neovim配置如何入门"
+       data-strict="0"
+       data-reactions-enabled="1"
+       data-emit-metadata="0"
+       data-input-position="top"
+       data-theme="light"
+       data-lang="zh-CN"
+       data-loading="lazy"></div>
+  <noscript>评论需要启用 JavaScript，并允许连接 giscus.app。</noscript>
+</section>
+
+
+
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">posts/Neovim配置如何入门.md</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">[{"aliases":[],"date":1788258553,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/LaTeX车祸速成.md","source":"posts/LaTeX车祸速成/index.md","tags":[],"title":"LaTeX车祸速成","url":"/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/"},{"aliases":[],"date":1788258553,"folderIcon":"LiFolderOpen","icon":"LiHouse","iconColor":"#000000","path":"README.md","source":"_index.md","tags":[],"title":"README.md","url":"/zh-cn/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别.md","source":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别/index.md","tags":["riscv","体系架构"],"title":"CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiTag","iconColor":"#000000","path":"tags.md","source":"tags/_index.md","tags":[],"title":"标签墙","url":"/zh-cn/tags/"},{"aliases":[],"date":1779623996,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记02.md","source":"posts/CS61Cfall20学习笔记02/index.md","tags":["C语言","体系架构"],"title":"CS61Cfall20学习笔记02","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/"},{"aliases":[],"date":1778912833,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/Happy-LLM自学笔记01.md","source":"posts/Happy-LLM自学笔记01/index.md","tags":["llm","自学","python"],"title":"Happy-LLM自学笔记01","url":"/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1778574017,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记01.md","source":"posts/CS61Cfall20学习笔记01/index.md","tags":["体系架构","C语言","自学"],"title":"CS61Cfall20学习笔记01","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1775433600,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/OpenJWC后端开发随想.md","source":"posts/OpenJWC后端开发随想/index.md","tags":["#blog","python"],"title":"OpenJWC后端开发随想","url":"/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1774828800,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Thinkpad Archlinux折腾笔记.md","source":"posts/Thinkpad Archlinux折腾笔记/index.md","tags":["blog","linux","archlinux"],"title":"Thinkpad Archlinux折腾笔记","url":"/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/"},{"aliases":[],"date":1774137600,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/CodeCompanion.md","source":"posts/CodeCompanion/index.md","tags":["blog","Neovim"],"title":"CodeCompanion.nvim配置","url":"/zh-cn/posts/codecompanion/"},{"aliases":[],"date":1772323200,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Kaggle房价预测.md","source":"posts/Kaggle房价预测/index.md","tags":["blog","python","机器学习"],"title":"Kaggle房价预测","url":"/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/"},{"aliases":[],"date":1771632000,"folderIcon":"","icon":"LiNotebook","iconColor":"#000000","path":"posts/Jupyter如何配置.md","source":"posts/Jupyter如何配置/index.md","tags":["blog","python","教程","jupyter"],"title":"Jupyter如何配置","url":"/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志04：多层感知机.md","source":"posts/D2L自学日志04：多层感知机/index.md","tags":["D2L","机器学习","python","torch"],"title":"D2L自学日志04：多层感知机","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Data100自学日志01：Pandas.md","source":"posts/Data100自学日志01：Pandas/index.md","tags":["blog","python","pandas","数据科学"],"title":"Data100自学日志01：Pandas","url":"/zh-cn/posts/data100%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701pandas/"},{"aliases":[],"date":1770768000,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/Python文件结构\u0026一些库.md","source":"posts/Python文件结构\u0026一些库/index.md","tags":["blog","python"],"title":"Python文件结构\u0026一些库","url":"/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/"},{"aliases":[],"date":1770508800,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/19岁生日随想.md","source":"posts/19岁生日随想/index.md","tags":["随笔","blog"],"title":"19岁生日随想","url":"/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1770163200,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志03：线性神经网络完结.md","source":"posts/D2L自学日志03：线性神经网络完结/index.md","tags":["blog","D2L","python","torch","机器学习"],"title":"D2L自学日志03：线性神经网络完结","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/"},{"aliases":[],"date":1769558400,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/工具不图鉴04：环境变量\u0026shell脚本.md","source":"posts/工具不图鉴04：环境变量\u0026shell脚本/index.md","tags":["blog","教程","shell","python"],"title":"工具不图鉴04：环境变量\u0026shell脚本","url":"/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"},{"aliases":[],"date":1769472000,"folderIcon":"","icon":"LiImage","iconColor":"#000000","path":"posts/TUI图像显示方案.md","source":"posts/TUI图像显示方案/index.md","tags":["blog","python"],"title":"TUI图像显示方案","url":"/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/"},{"aliases":[],"date":1769040000,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：4阶段.md","source":"posts/平板游戏环境配置计划：4阶段/index.md","tags":["blog","随意探索","平板"],"title":"平板游戏环境配置计划：4阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境部署计划.md","source":"posts/平板游戏环境部署计划/index.md","tags":["blog","随意探索"],"title":"平板游戏环境部署计划","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：2\u00263阶段.md","source":"posts/平板游戏环境配置计划：2\u00263阶段/index.md","tags":["blog","平板","随意探索"],"title":"平板游戏环境配置计划：2\u00263阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768780800,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习02：远古老登.md","source":"posts/SEU程序设计复习02：远古老登/index.md","tags":["cpp","blog","课内"],"title":"SEU程序设计复习02：远古老登","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"},{"aliases":[],"date":1768694400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/近日神必脑洞合集.md","source":"posts/近日神必脑洞合集/index.md","tags":["blog","brainstorm"],"title":"近日神必脑洞合集","url":"/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/autoblog_test_3.md","source":"posts/autoblog_test_3/index.md","tags":["blog","test"],"title":"autoblog_test_3","url":"/zh-cn/posts/autoblog_test_3/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习01：基础语法.md","source":"posts/SEU程序设计复习01：基础语法/index.md","tags":["blog","cpp","课内"],"title":"SEU程序设计复习01：基础语法","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/核动力博客发射器测试.md","source":"posts/核动力博客发射器测试/index.md","tags":["blog","test","测试","python","博客搭建"],"title":"核动力博客发射器测试","url":"/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/"},{"aliases":[],"date":1767785271,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志02：线性回归.md","source":"posts/D2L自学日志02：线性回归/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志02：线性回归","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"},{"aliases":[],"date":1767272442,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/Fabric自学日志01：农夫乐事重织版.md","source":"posts/Fabric自学日志01：农夫乐事重织版/index.md","tags":["fabric","minecraft","java"],"title":"Fabric自学日志01：农夫乐事重织版","url":"/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"},{"aliases":[],"date":1767089676,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志01：preliminaries.md","source":"posts/D2L自学日志01：preliminaries/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志01：preliminaries","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/"},{"aliases":[],"date":1766629673,"folderIcon":"","icon":"LiCloud","iconColor":"#000000","path":"posts/再用腾讯云我就是狗.md","source":"posts/再用腾讯云我就是狗/index.md","tags":["日常"],"title":"再用腾讯云我就是🐶","url":"/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/"},{"aliases":[],"date":1765898615,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/venvminiconda.md","source":"posts/venvminiconda/index.md","tags":["工具不图鉴","教程","venv","conda","python"],"title":"工具不图鉴03：虚拟环境\u0026conda","url":"/zh-cn/posts/venvminiconda/"},{"aliases":[],"date":1765843200,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/condaAndVenv.md","source":"posts/condaAndVenv/index.md","tags":["虚拟环境","python","conda"],"title":"condaAndVenv","url":"/zh-cn/posts/condaandvenv/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"posts/curl\u0026wget.md","source":"posts/curl\u0026wget/index.md","tags":["工具不图鉴","教程","curl","wget"],"title":"工具不图鉴01：curl\u0026wget","url":"/zh-cn/posts/curlwget/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/zsh\u0026ohmyzsh.md","source":"posts/zsh\u0026ohmyzsh/index.md","tags":["工具不图鉴","教程","zsh","ohmyzsh"],"title":"工具不图鉴02：zsh\u0026ohmyzsh","url":"/zh-cn/posts/zshohmyzsh/"},{"aliases":[],"date":1765326823,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-02Softmax.md","source":"posts/Triton自学日志-02Softmax/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 02FusedSoftmax","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"},{"aliases":[],"date":1765240002,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-01VectorAdd.md","source":"posts/Triton自学日志-01VectorAdd/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 01VectorAdd","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"},{"aliases":[],"date":1763867513,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/NeovimPlugins配置方法.md","source":"posts/NeovimPlugins配置方法/index.md","tags":["Neovim","教程"],"title":"NeovimPlugins配置方法","url":"/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"},{"aliases":[],"date":1763866391,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Neovim配置如何入门.md","source":"posts/Neovim配置如何入门/index.md","tags":["Neovim","教程"],"title":"Neovim配置如何入门","url":"/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"},{"aliases":[],"date":1763706081,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"links.md","source":"links.md","tags":[],"title":"友链","url":"/zh-cn/links/"},{"aliases":[],"date":1763705217,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/test.md","source":"posts/test/index.md","tags":["测试","随笔"],"title":"Test","url":"/zh-cn/posts/test/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"about/月のまにまに.md","source":"about/月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"月のまにまに.md","source":"月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763565643,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/hellohugo.md","source":"posts/hellohugo/index.md","tags":[],"title":"Hellohugo","url":"/zh-cn/posts/hellohugo/"},{"aliases":[],"date":1758372543,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/零基础如何搭建博客.md","source":"posts/零基础如何搭建博客/index.md","tags":["博客搭建","教程"],"title":"零基础如何搭建博客","url":"/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"}]</script>
+  <script id="editor-config" type="application/json">{"mermaidLib":"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"}</script><script defer src="/js/editor.35881f25e0828d0adec1652cc66c2f2a20b86d4be3eb33bfd423d978a718c0df.js" integrity="sha256-NYgfJeCCjQrewWUsxmwvKiC4bUvj6zO/1CPZeKcYwN8="></script>
 </body>
 </html>

@@ -1,182 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cn">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimal-ui">
-<meta http-equiv="X-UA-Compatible" content="ie=edge"><meta name="robots" content="index, follow"><meta name="author" content="Moonhalf">
-<meta name="description" content=""><link rel="manifest" href="/site.webmanifest"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-title" content="Yorozumoon" />
-<meta name="theme-color" content="#494f5c">
-<meta name="msapplication-TileColor" content="#494f5c">
-
-	<meta itemprop="name" content="CS61Cfall20学习笔记01">
-	<meta itemprop="description" content="参考链接 fall20备份网站
-课程视频bilibili(字幕翻译比较难绷)
-课程视频youtube
-课程作业仓库
-我的作业仓库
-csdiy介绍
-前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。">
-	<meta itemprop="datePublished" content="2026-05-12T16:20:17+08:00">
-	<meta itemprop="dateModified" content="2026-05-12T16:20:17+08:00">
-	<meta itemprop="wordCount" content="4254">
-	<meta itemprop="keywords" content="体系架构,C语言,自学"><meta property="og:url" content="http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/">
-	<meta property="og:site_name" content="Yorozumoon">
-	<meta property="og:title" content="CS61Cfall20学习笔记01">
-	<meta property="og:description" content="参考链接 fall20备份网站
-课程视频bilibili(字幕翻译比较难绷)
-课程视频youtube
-课程作业仓库
-我的作业仓库
-csdiy介绍
-前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。">
-	<meta property="og:locale" content="zh_cn">
-	<meta property="og:type" content="article">
-		<meta property="article:section" content="posts">
-		<meta property="article:published_time" content="2026-05-12T16:20:17+08:00">
-		<meta property="article:modified_time" content="2026-05-12T16:20:17+08:00">
-		<meta property="article:tag" content="体系架构">
-		<meta property="article:tag" content="C语言">
-		<meta property="article:tag" content="自学">
-
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="CS61Cfall20学习笔记01">
-	<meta name="twitter:description" content="参考链接 fall20备份网站
-课程视频bilibili(字幕翻译比较难绷)
-课程视频youtube
-课程作业仓库
-我的作业仓库
-csdiy介绍
-前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。">
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "CS61Cfall20学习笔记01",
-    "name": "CS61Cfall20学习笔记01",
-    "description": "参考链接 fall20备份网站\n课程视频bilibili(字幕翻译比较难绷)\n课程视频youtube\n课程作业仓库\n我的作业仓库\ncsdiy介绍\n前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。\n",
-    "keywords": ["体系架构", "C语言", "自学"],
-    "articleBody": "参考链接 fall20备份网站\n课程视频bilibili(字幕翻译比较难绷)\n课程视频youtube\n课程作业仓库\n我的作业仓库\ncsdiy介绍\n前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。\n选fall20自学原因是fall20的时间点属于卡上疫情红利了，ucb线上授课导致网络资料前无古人后无来者的丰富（做梦都想去ucb上学😢）。CS61C主要关注的内容是计算机的硬件细节，以下直接搬运csdiy的内容简介：\n伯克利 CS61 系列的最后一门课程，深入计算机的硬件细节，带领学生逐步理解 C 语言是如何一步步转化为 RISC-V 汇编并在 CPU 上执行的。和 Nand2Tetris 不同，这门课 在难度和深度上都会提高很多，具体会涉及到流水线、Cache、虚存以及并发相关的内容。\n这门课的 Project 也非常新颖有趣。Project1 会让你用 C 语言写一个小程序，20 年秋季学期是著名的游戏 Game of Life。Project2 会让你用 RISC-V 汇编编写一个神经网络，用来 识别 MNIST 手写数字，非常锻炼你对汇编代码的理解和运用。Project3 中你会用 Logisim 这个数字电路模拟软件搭建出一个二级流水线的 CPU，并在上面运行 RISC-V 汇编代码。Project4 会让你使用 OpenMP, SIMD 等方法并行优化矩阵运算，实现一个简易的 Numpy。\n需要注意的是，homwork似乎目前没有人有相关资源。目前能做的只有lab和project。\n找理由环节到此结束，我们快速步入正题。\nLecture 01 bilibili上的课程视频中文字幕配的还不如直接看英文原文，建议看youtube版。（Dan教授未免太有激情了）\nCS61C - 计算机架构中的伟大思想：\n伟大思想一： Abstraction (Levels of Representation / Interpretation)，建立一堆相互隔离的抽象层，这样写高级语言的时候不用关心底层的门电路。\n伟大思想二： Moore’s law， 半导体晶体管(transistor)数量每两年左右翻一倍。\nA’s law（？）你的后代在上ucb的时候都会得A（并非）。\n伟大思想三： Principle of locality / memory hierarchy 局部性原理和内存层次结构。\n伟大思想四： Parallelism 并行思想\n伟大思想五： Performance Measurement \u0026 Inprovement\n伟大思想六： Dependability via Redundancy 通过冗余（？）获取可靠性\nLecture 02 模拟信号转数字信号，bit可以表示所有事物，数制转换。\n常见的颜色代码为6位，每两位代表rgb中一个颜色的十六进制数值。比如#FF0000表示红色，FF即红色数值为255，其余两个00表示绿色和蓝色为0。（头一次知道，成丈育了）\nLab 00 setup 经典的配置环境环节。学习本课程需要你会一些基本技能：\ngit \u0026 github 会用类unix的command line工具 ssh和scp（如果你是ucb的学生） vim基础（喜） 本课程对于ide没有任何要求，甚至鼓励使用tui text editor。\n对于非ucb的学生，fork一份这个仓库克隆到本地就可以开始写代码了。\nWhich command walks a file hierarchy in search of a keyword?\ngrep -r \"keyword\" /path/to/directory Which command displays information about processes running on your machine?\n显示进程：\nps 显示所有进程：\nps aux Which command terminates a process?\n根据进程id停止进程：\nkill 12345 根据进程名称杀死进程。pkill使用部分匹配，killall使用完全匹配。\nkillall qq Which command can help you find the difference between two files?\ndiff file1 file2 Lecture 03 C语言的编译过程分为两步： 先将xx.c的C语言文件编译为xx.o的机器码，之后将.o文件链接成一个可执行文件。\n先编译为汇编代码之后链接为可执行文件的模式提高了编译效率，因为每次修改代码只需要重新编译修改的.c文件之后重新链接，而不需要从头编译整个项目。此外，编译代码极大提高了runtime performance。对机器来说读低级语言比读高级语言省力的多。\n缺点如下：\n不同处理器或操作系统可能采用不同的架构，不同架构必须采用对应的编译方式，所以可执行文件必须在所有操作系统上重建一遍。 每次迭代都必须把经历修改、编译、运行的全过程，开发速度比较慢。 C Pre-Processor，简称CPP（并非C++)，会处理所有预处理指令。比如：\n#include \"files.h\" 在经过CPP的时候，CPP会用files.h的内容直接替换掉#include这一行，得到一个xx.i文件。同理，#include 做的是一样的事情，只不过是从标准库里获取文件; #define PI 3 可以在预处理期将所有PI替换为3，#if、#endif负责控制部分条件下include文件。\n#define xx定义的是一个所谓的宏（即macro）。如前文所说，macro的作用是CPP中直接进行文本替换。你可以用它来做很多事情，但是它并不是真正的函数，在一些时候会导致意外情况。\n比如：\n#include #define min(X, Y) X \u003c Y ? X : Y int x = 0; int y = 3; int main(int argc, char *argv[]) { for (int i = 0; i \u003c 5; i++) printf(\"%d\\n\", min(x++, y)); return 0; } 我们会期待：重复进行5次比较，每次都打印x和y中最小的那个数字，之后x自增1。所以我们会期待结果为：\n0 1 2 3 3 但是实际的输出为：\n原因在于CPP将min(x++, y)直接替换为了x++ \u003c y?x++:y。这就导致第一次输出前x已经进行了一次自增，所以第一个数字为1而非0，输出之后x又自增了1。导致之后输出结果只有3。\n一些gcc的指令如下：\ngcc -E hello.c -o hello.i # 预处理得到.i文件 gcc -S hello.i -o hello.s # 翻译得到汇编语言 gcc -c hello.s -o hello.o # 翻译为机器指令 gcc hello.o -o hello # 生成可执行文件 所以我们不妨来看一下test.i的内容：\n只节选最后一部分的原因是如我们前文所说的，#include 会把这个头文件的所有内容直接插入进来，所以前面出现了大量看不懂的神秘代码。只看尾部可以看到，min(x++, y)确实被替换为了x++ \u003c y ? x++ : y。这就导致出现了不符合预期的结果。\nLecture 3 \u0026 4 \u0026 5 讲的是C语言的基本语法，直接跳过。\nlab 01 sudo apt install build-essential cgdb valgrind 本地安装C语言的编译和调试工具。gdb意为GNU debugger。使用gdb要求编译时加上-g参数，如下：\ngcc -g hello.c -o hello CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。\n一些基本使用方法如下：\nEsc切换到源码窗口 i切换回gdb命令行模式 空格键增减断点 F5运行程序 F6继续执行 F7单步步进 F8单步跳过 F10退出 While you’re in a gdb session, how do you set the arguments that will be passed to the program when it’s run? How do you create a breakpoint? How do you execute the next line of C code in the program after stopping at a breakpoint? If the next line of code is a function call, you’ll execute the whole function call at once if you use your answer to #3. (If not, consider a different command for #3!) How do you tell GDB that you want to debug the code inside the function (i.e. step into the function) instead? (If you changed your answer to #3, then that answer is most likely now applicable here.) How do you continue the program after stopping at a breakpoint? How can you print the value of a variable (or even an expression like 1+2) in gdb? How do you configure gdb so it displays the value of a variable after every step? How do you show a list of all variables and their values in the current function? How do you quit out of gdb? 在gdb会话中set args [arg0] [arg1] ... 空格键，或者break n F8，或者next F7，或者step F6，或者continue print var_name display var_name info locals q 通过set args \u003c name.txt将参数设置为重定向符与文本文件，并在同一目录下放一个写入名字的文本文件，我们就允许在cgdb调试时输入内容。\nint main() { int a[20]; for (int i = 0; ; i++) { a[i] = i; } } valgrind可以用来模拟cpu并追踪内存访问。以上代码显然存在非法访存问题，valgrind ./segfault输出结果如下：\n以上信息中，valgrind抛出Invalid write of size 4，表面有一个大小为4的非法写入，试图访问的内存地址为0x1fff001000，而valgrind检查后发现该地址即不在栈上，也不在堆上，也不是最近free的内存。\n#include \"ll_cycle.h\" #include int ll_has_cycle(node *head) { /* your code here */ if (!head) return 0; node *tortoise = head; node *hare = head; if (!hare-\u003enext) return 0; while (1) { hare = hare-\u003enext; if (!hare) return 0; hare = hare-\u003enext; if (!hare) return 0; tortoise = tortoise-\u003enext; if (tortoise == hare) return 1; } return 0; } exercise 5，用C语言检查一个单向链表是否成环。注意head可以为空，head-\u003enext可以为空。\nProject 1 Part A // Opens a .ppm P3 image file, and constructs an Image object. // You may find the function fscanf useful. // Make sure that you close the file with fclose before returning. Image *readData(char *filename) { Image *imageData = (Image *)malloc(sizeof(Image)); FILE *fp = fopen(filename, \"r\"); char format[2]; int color_range = 255; fscanf(fp, \"%s\", format); fscanf(fp, \"%d %d\", \u0026imageData-\u003ecols, \u0026imageData-\u003erows); fscanf(fp, \"%d\", \u0026color_range); imageData-\u003eimage = (Color **)malloc(imageData-\u003erows * sizeof(Color *)); for (int i = 0; i \u003c imageData-\u003erows; i++) { imageData-\u003eimage[i] = (Color *)malloc(imageData-\u003ecols * sizeof(Color)); } for (int i = 0; i \u003c imageData-\u003ecols * imageData-\u003erows; i++) { Color *target_image = \u0026imageData-\u003eimage[i / imageData-\u003ecols][i % imageData-\u003ecols]; fscanf(fp, \"%hhu\", \u0026target_image-\u003eR); fscanf(fp, \"%hhu\", \u0026target_image-\u003eG); fscanf(fp, \"%hhu\", \u0026target_image-\u003eB); } fclose(fp); return imageData; } 读取ppm文件得到Image object。注意通过malloc动态分配内存，二维数组要分配两次。（好久没写C语言导致这些概念完全不记得了）\n// Given an image, prints to stdout (e.g. with printf) a .ppm P3 file with the // image's data. void writeData(Image *image) { // YOUR CODE HERE printf(\"P3\\n\"); printf(\"%d %d\\n\", image-\u003ecols, image-\u003erows); printf(\"%d\\n\", 255); for (int row = 0; row \u003c image-\u003erows; row++) { for (int col = 0; col \u003c image-\u003ecols; col++) { Color *target_color = \u0026image-\u003eimage[row][col]; printf(\"%hhu %hhu %hhu\", target_color-\u003eR, target_color-\u003eG, target_color-\u003eB); if (col == image-\u003ecols - 1) printf(\"\\n\"); else printf(\" \"); } } } // Frees an image void freeImage(Image *image) { // YOUR CODE HERE for (int i = 0; i \u003c image-\u003erows; i++) { free(image-\u003eimage[i]); } free(image-\u003eimage); free(image); } 输出和释放内存。释放内存同样需要依次释放所有指针，避免内存泄漏。\nsteganography // Given an image, creates a new image extracting the LSB of the B channel. Image *steganography(Image *image) { Image *newImage = (Image *)malloc(sizeof(Image)); newImage-\u003erows = image-\u003erows; newImage-\u003ecols = image-\u003ecols; newImage-\u003eimage = (Color **)malloc(sizeof(Color *) * image-\u003erows); for (int i = 0; i \u003c image-\u003erows; i++) { newImage-\u003eimage[i] = (Color *)malloc(sizeof(Color) * image-\u003ecols); } for (int i = 0; i \u003c image-\u003erows; i++) { for (int j = 0; j \u003c image-\u003ecols; j++) { Color *newColor = evaluateOnePixel(image, i, j); newImage-\u003eimage[i][j] = *newColor; free(newColor); } } return newImage; // YOUR CODE HERE } 读取一个ppm图像的B数值的最后一个bit，若为1则该像素替换为白色，若为0则替换为黑色，最后可以解析得到一个新的图像。\n（迫真scret message）\nPart B 彩色生命游戏的规则是：每个颜色通道有8个bit，RGB三个颜色即有24个bit，对于每个像素的每个bit，单独运行一个康威生命游戏。\nColor *evaluateOneCell(Image *image, int row, int col, uint32_t rule) { Color *newColor = (Color *)malloc(sizeof(Color)); Color curColor = image-\u003eimage[row][col]; int width = image-\u003ecols; int height = image-\u003erows; // 对三个通道、每个通道8个bit统计邻居数量。 int neighbourCount[3][8] = {0}; // 对目标格子周围8个格子统计其三个通道的数值。 uint8_t grid[8][3] = {0}; int index = 0; for (int i = -1; i \u003c 2; i++) { for (int j = -1; j \u003c 2; j++) { int targetRow = (row + i + height) % height; int targetCol = (col + j + width) % width; if (targetRow == row \u0026\u0026 targetCol == col) continue; grid[index][0] = image-\u003eimage[targetRow][targetCol].R; grid[index][1] = image-\u003eimage[targetRow][targetCol].G; grid[index][2] = image-\u003eimage[targetRow][targetCol].B; index++; } } for (int chan = 0; chan \u003c 3; chan++) { for (int bit = 0; bit \u003c 8; bit++) { uint8_t target = 1 \u003c\u003c bit; for (int i = 0; i \u003c 8; i++) { if (grid[i][chan] \u0026 target) neighbourCount[chan][bit]++; } // printf(\"chan: %d bit: %d neighbour: %d\", chan, bit, // neighbourCount[chan][bit]); } } uint8_t curChan[3] = {curColor.R, curColor.G, curColor.B}; for (int chan = 0; chan \u003c 3; chan++) { for (int bit = 0; bit \u003c 8; bit++) { int ptr = neighbourCount[chan][bit]; if (curChan[chan] \u0026 (1 \u003c\u003c bit)) ptr += 9; if (rule \u0026 (1 \u003c\u003c ptr)) curChan[chan] |= (1 \u003c\u003c bit); else curChan[chan] \u0026= ~(1 \u003c\u003c bit); } } newColor-\u003eR = curChan[0]; newColor-\u003eG = curChan[1]; newColor-\u003eB = curChan[2]; return newColor; // YOUR CODE HERE } （本人非算法竞赛圈内人，实现不够优雅还请见谅）\n用来根据rule推断一个像素下一回合会是什么颜色。写的过程中遇到了一万个错误。其中targetRow和targetCol的计算上需要先加width或height再求余数，原因在于C语言中求余结果符号与第一个值保持一致，而我们不希望负数。\n此外，rule虽然读取的是一个0x1808这样的四位16进制数，按理只有16个位，但是我们用uint32_t类型存储，使得实际上有32个位，而我们实际需要至少18个位。（因为对于活着和死了的情况，周围邻居都有0～8个不等）。ptr在该bit活着的情况下需要自加9。\n其余部分和steganography差异不大，遍历所有像素得到新的图像即可。\n最后得到的一个效果图：\n",
-    "wordCount" : "4254",
-    "inLanguage": "zh-cn",
-    "datePublished": "2026-05-12T16:20:17.270127+08:00",
-    "dateModified": "2026-05-12T16:20:17.270127+08:00",
-    "author":{
-        "@type": "Person",
-        "name": "Moonhalf",
-        "url": "http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"
-        },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "http://localhost:1313/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Yorozumoon",
-      "description": "",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "http://localhost:1313/favicon.ico"
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=37705&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        try {
+          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+          if (stored !== null) collapsed = JSON.parse(stored) === true;
+        } catch (_) {}
+        root.classList.toggle(`${side}-collapsed`, collapsed);
       }
-    }
-}
-</script><title>CS61Cfall20学习笔记01</title><link rel="stylesheet dns-prefetch preconnect preload prefetch" as="style" media="screen" href="http://localhost:1313/css/style.min.981fd45755dd2c825d2cfb1a56c26ec7a9abccd378ee9b086d0c941e5de412fe.css" integrity="sha256-mB/UV1XdLIJdLPsaVsJux6mrzNN47psIbQyUHl3kEv4=" crossorigin="anonymous">
-	</head>
+    })();
+  </script>
+  <meta name="description" content="参考链接 fall20备份网站
+课程视频bilibili(字幕翻译比较难绷)
+课程视频youtube
+课程作业仓库
+我的作业仓库
+csdiy介绍
+前言 在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。
+">
+  <title>CS61Cfall20学习笔记01 · Yorozumoon</title>
+  <link rel="icon" type="image/png" href="/images/face.png"><link rel="stylesheet" href="/css/editor.min.4a41cd0abb1a2ad26d1cafbfd366f3ee3e1dab242c436e892b8ca24e4dc3f260.css" integrity="sha256-SkHNCrsaKtJtHK&#43;/02bz7j4dqyQsQ26JK4yiTk3D8mA="><script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true},
+      options: {skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+      chtml: {scale: 0.96}
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+</head>
+<body class="editor-shell" data-current-path="posts/CS61Cfall20学习笔记01.md" data-current-source="posts/CS61Cfall20学习笔记01/index.md">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
 
-<body id="page">
-<header id="site-header" class="animated slideInUp">
-	<div class="hdr-wrapper section-inner">
-		<div class="hdr-left">
-			<div class="site-branding">
-				<a href="http://localhost:1313/">Yorozumoon</a>
-			</div>
-			<nav class="site-nav hide-in-mobile"><a href="http://localhost:1313/zh-cn/posts/">文章</a><a href="http://localhost:1313/zh-cn/tags/">标签</a><a href="http://localhost:1313/zh-cn/about/">关于</a><a href="http://localhost:1313/zh-cn/links/">友链</a></nav>
-		</div>
-		<div class="hdr-right hdr-icons">
-			<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table Of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
-      <line x1="8" y1="6" x2="21" y2="6"></line>
-      <line x1="8" y1="12" x2="21" y2="12"></line>
-      <line x1="8" y1="18" x2="21" y2="18"></line>
-      <line x1="3" y1="6" x2="3" y2="6"></line>
-      <line x1="3" y1="12" x2="3" y2="12"></line>
-      <line x1="3" y1="18" x2="3" y2="18"></line>
-   </svg></button><span class="hdr-links hide-in-mobile"><a href="https://github.com/Moonhalf383" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none"
-   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-   <path
-      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-   </path>
-</svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-   </svg></button>
-		</div>
-	</div>
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span>posts/CS61Cfall20学习笔记01.md</span>
+      </div>
+      <article class="document" id="document">
+        
+<header class="document-header">
+  <p class="document-kind">posts/CS61Cfall20学习笔记01.md</p>
+  <h1>CS61Cfall20学习笔记01</h1>
+  <div class="document-meta"><time datetime="2026-05-12">2026-05-12</time><span>体系架构 · C语言 · 自学</span></div>
 </header>
-<div id="mobile-menu" class="animated fast">
-	<ul>
-		<li><a href="http://localhost:1313/zh-cn/posts/">文章</a></li>
-		<li><a href="http://localhost:1313/zh-cn/tags/">标签</a></li>
-		<li><a href="http://localhost:1313/zh-cn/about/">关于</a></li>
-		<li><a href="http://localhost:1313/zh-cn/links/">友链</a></li>
-	</ul>
-</div>
-
-	<main class="site-main section-inner animated fadeIn faster"><article class="thin">
-			<header class="post-header">
-				<div class="post-date"><span>May 12, 2026</span></div>
-				<h1>CS61Cfall20学习笔记01</h1>
-			</header>
-			<div class="post-description"><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-feather">
-   <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
-   <line x1="16" y1="8" x2="2" y2="22"></line>
-   <line x1="17.5" y1="15" x2="9" y2="15"></line>
-</svg><a href="http://localhost:1313/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/" target="_blank">Moonhalf</a></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-      <line x1="7" y1="7" x2="7" y2="7"></line>
-   </svg><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84">体系架构</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/c%E8%AF%AD%E8%A8%80">C语言</a></span><span class="tag"><a href="http://localhost:1313/zh-cn/tags/%E8%87%AA%E5%AD%A6">自学</a></span></p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-      <polyline points="14 2 14 8 20 8"></polyline>
-      <line x1="16" y1="13" x2="8" y2="13"></line>
-      <line x1="16" y1="17" x2="8" y2="17"></line>
-      <polyline points="10 9 9 9 8 9"></polyline>
-   </svg>4254&nbspWords 阅读时长19 Minutes, 20 Seconds</p>
-<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="16" y1="2" x2="16" y2="6"></line>
-      <line x1="8" y1="2" x2="8" y2="6"></line>
-      <line x1="3" y1="10" x2="21" y2="10"></line>
-   </svg>2026-05-12 16:20 &#43;0800
-</p></div>
-			<hr class="post-end">
-			<div class="content">
-				 <h1 id="参考链接">参考链接<a href="#%e5%8f%82%e8%80%83%e9%93%be%e6%8e%a5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<div class="content" data-wikilinks>
+  <h1 id="参考链接">参考链接</h1>
 <p><a href="https://www.learncs.site/docs/curriculum-resource/cs61c/syllabus">fall20备份网站</a></p>
 <p><a href="https://www.bilibili.com/video/BV1fC4y147iZ/?share_source=copy_web&amp;vd_source=7c3823b46a52fbbef42b79e01d55c300">课程视频bilibili(字幕翻译比较难绷)</a></p>
 <p><a href="https://www.youtube.com/playlist?list=PL0j-r-omG7i0-mnsxN5T4UcVS1Di0isqf">课程视频youtube</a></p>
 <p><a href="https://github.com/InsideEmpire/CS61C-Assignment">课程作业仓库</a></p>
 <p><a href="https://github.com/Moonhalf383/Moonhalf-CS61C-Assignment">我的作业仓库</a></p>
 <p><a href="https://web.archive.org/web/20220120134001/https://inst.eecs.berkeley.edu/~cs61c/fa20/">csdiy介绍</a></p>
-<h1 id="前言">前言<a href="#%e5%89%8d%e8%a8%80" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="前言">前言</h1>
 <p>在经过了折腾计算机设计比赛的两个月后，感觉有必要学点更底层的东西。于是开坑CS61C。CS61B一定会找时间补完的（但愿如此）。</p>
 <p>选fall20自学原因是fall20的时间点属于卡上疫情红利了，ucb线上授课导致网络资料前无古人后无来者的丰富（做梦都想去ucb上学😢）。CS61C主要关注的内容是计算机的硬件细节，以下直接搬运csdiy的内容简介：</p>
 <blockquote>
@@ -185,38 +78,24 @@ csdiy介绍
 </blockquote>
 <p>需要注意的是，homwork似乎目前没有人有相关资源。目前能做的只有lab和project。</p>
 <p>找理由环节到此结束，我们快速步入正题。</p>
-<h1 id="lecture-01">Lecture 01<a href="#lecture-01" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="lecture-01">Lecture 01</h1>
 <p>bilibili上的课程视频中文字幕配的还不如直接看英文原文，建议看youtube版。（Dan教授未免太有激情了）</p>
 <p>CS61C - 计算机架构中的伟大思想：</p>
 <p>伟大思想一： Abstraction (Levels of Representation / Interpretation)，建立一堆相互隔离的抽象层，这样写高级语言的时候不用关心底层的门电路。</p>
 <p>伟大思想二： Moore&rsquo;s law， 半导体晶体管(transistor)数量每两年左右翻一倍。</p>
 <p>A&rsquo;s law（？）你的后代在上ucb的时候都会得A（并非）。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test01.png" alt="test01"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test01.png" alt="test01" loading="lazy" decoding="async"></span>
+</p>
 <p>伟大思想三： Principle of locality / memory hierarchy 局部性原理和内存层次结构。</p>
 <p>伟大思想四： Parallelism 并行思想</p>
 <p>伟大思想五： Performance Measurement &amp; Inprovement</p>
 <p>伟大思想六： Dependability via Redundancy 通过冗余（？）获取可靠性</p>
-<h1 id="lecture-02">Lecture 02<a href="#lecture-02" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="lecture-02">Lecture 02</h1>
 <p>模拟信号转数字信号，bit可以表示所有事物，数制转换。</p>
 <p>常见的颜色代码为6位，每两位代表rgb中一个颜色的十六进制数值。比如#FF0000表示红色，FF即红色数值为255，其余两个00表示绿色和蓝色为0。（头一次知道，成丈育了）</p>
-<h1 id="lab-00">Lab 00<a href="#lab-00" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
-<h2 id="setup">setup<a href="#setup" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h1 id="lab-00">Lab 00</h1>
+<h2 id="setup">setup</h2>
 <p>经典的配置环境环节。学习本课程需要你会一些基本技能：</p>
 <ul>
 <li>git &amp; github</li>
@@ -225,9 +104,13 @@ csdiy介绍
 <li>vim基础（喜）</li>
 </ul>
 <p>本课程对于ide没有任何要求，甚至鼓励使用tui text editor。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test02.png" alt="test02"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test02.png" alt="test02" loading="lazy" decoding="async"></span>
+</p>
 <p>对于非ucb的学生，fork一份<a href="https://github.com/InsideEmpire/CS61C-Assignment#%E4%B8%AD%E6%96%87%E8%AF%B4%E6%98%8E">这个仓库</a>克隆到本地就可以开始写代码了。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test05.png" alt="test05"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test05.png" alt="test05" loading="lazy" decoding="async"></span>
+</p>
 <blockquote>
 <p>Which command walks a file hierarchy in search of a keyword?</p>
 </blockquote>
@@ -250,13 +133,11 @@ csdiy介绍
 <p>Which command can help you find the difference between two files?</p>
 </blockquote>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">diff file1 file2
-</span></span></code></pre></div><h1 id="lecture-03">Lecture 03<a href="#lecture-03" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+</span></span></code></pre></div><h1 id="lecture-03">Lecture 03</h1>
 <p>C语言的编译过程分为两步： 先将<code>xx.c</code>的C语言文件编译为<code>xx.o</code>的机器码，之后将<code>.o</code>文件链接成一个可执行文件。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test03.png" alt="test03"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test03.png" alt="test03" loading="lazy" decoding="async"></span>
+</p>
 <p>先编译为汇编代码之后链接为可执行文件的模式提高了编译效率，因为每次修改代码只需要重新编译修改的<code>.c</code>文件之后重新链接，而不需要从头编译整个项目。此外，编译代码极大提高了runtime performance。对机器来说读低级语言比读高级语言省力的多。</p>
 <p>缺点如下：</p>
 <ul>
@@ -288,7 +169,9 @@ csdiy介绍
 </span></span><span class="line"><span class="cl"><span class="m">3</span>
 </span></span><span class="line"><span class="cl"><span class="m">3</span>
 </span></span></code></pre></div><p>但是实际的输出为：</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test04.png" alt="test04"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test04.png" alt="test04" loading="lazy" decoding="async"></span>
+</p>
 <p>原因在于CPP将<code>min(x++, y)</code>直接替换为了<code>x++ &lt; y?x++:y</code>。这就导致第一次输出前x已经进行了一次自增，所以第一个数字为1而非0，输出之后x又自增了1。导致之后输出结果只有3。</p>
 <p>一些gcc的指令如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc -E hello.c -o hello.i <span class="c1"># 预处理得到.i文件</span>
@@ -296,24 +179,20 @@ csdiy介绍
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc -c hello.s -o hello.o <span class="c1"># 翻译为机器指令</span>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">gcc hello.o -o hello <span class="c1"># 生成可执行文件</span>
 </span></span></code></pre></div><p>所以我们不妨来看一下<code>test.i</code>的内容：</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test06.png" alt="test06"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/test06.png" alt="test06" loading="lazy" decoding="async"></span>
+</p>
 <p>只节选最后一部分的原因是如我们前文所说的，<code>#include &lt;stdio&gt;</code>会把这个头文件的所有内容直接插入进来，所以前面出现了大量看不懂的神秘代码。只看尾部可以看到，<code>min(x++, y)</code>确实被替换为了<code>x++ &lt; y ? x++ : y</code>。这就导致出现了不符合预期的结果。</p>
-<h1 id="lecture-3--4--5">Lecture 3 &amp; 4 &amp; 5<a href="#lecture-3--4--5" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="lecture-3--4--5">Lecture 3 &amp; 4 &amp; 5</h1>
 <p>讲的是C语言的基本语法，直接跳过。</p>
-<h1 id="lab-01">lab 01<a href="#lab-01" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
+<h1 id="lab-01">lab 01</h1>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install build-essential cgdb valgrind
 </span></span></code></pre></div><p>本地安装C语言的编译和调试工具。gdb意为GNU debugger。使用gdb要求编译时加上<code>-g</code>参数，如下：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">gcc -g hello.c -o hello
 </span></span></code></pre></div><p>CS61C中使用的是cgdb，相比于gdb有更高级的终端前端界面。cgdb的操作逻辑非常vim，normal模式即查看源代码，insert模式即输入gdb指令。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001.png" alt="CS61Cfall20学习笔记01"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001.png" alt="CS61Cfall20学习笔记01" loading="lazy" decoding="async"></span>
+</p>
 <p>一些基本使用方法如下：</p>
 <ul>
 <li>Esc切换到源码窗口</li>
@@ -325,7 +204,9 @@ csdiy介绍
 <li>F8单步跳过</li>
 <li>F10退出</li>
 </ul>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_02.png" alt="CS61Cfall20学习笔记01_02"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_02.png" alt="CS61Cfall20学习笔记01_02" loading="lazy" decoding="async"></span>
+</p>
 <blockquote>
 <ol>
 <li>While you’re in a gdb session, how do you <strong>set the arguments</strong> that will be passed to the program when it’s run?</li>
@@ -350,9 +231,13 @@ csdiy介绍
 <li>info locals</li>
 <li>q</li>
 </ol>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_cgdb%E8%B0%83%E8%AF%95.png" alt="CS61Cfall20学习笔记01_cgdb调试"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_cgdb%E8%B0%83%E8%AF%95.png" alt="CS61Cfall20学习笔记01_cgdb调试" loading="lazy" decoding="async"></span>
+</p>
 <p>通过<code>set args &lt; name.txt</code>将参数设置为重定向符与文本文件，并在同一目录下放一个写入名字的文本文件，我们就允许在cgdb调试时输入内容。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_stdin.png" alt="CS61Cfall20学习笔记01_stdin"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_stdin.png" alt="CS61Cfall20学习笔记01_stdin" loading="lazy" decoding="async"></span>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -360,7 +245,9 @@ csdiy介绍
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>valgrind可以用来模拟cpu并追踪内存访问。以上代码显然存在非法访存问题，<code>valgrind ./segfault</code>输出结果如下：</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_segfault.png" alt="CS61Cfall20学习笔记01_segfault"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/CS61Cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001_segfault.png" alt="CS61Cfall20学习笔记01_segfault" loading="lazy" decoding="async"></span>
+</p>
 <p>以上信息中，valgrind抛出Invalid write of size 4，表面有一个大小为4的非法写入，试图访问的内存地址为0x1fff001000，而valgrind检查后发现该地址即不在栈上，也不在堆上，也不是最近free的内存。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;ll_cycle.h&#34;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stddef.h&gt;</span><span class="cp">
@@ -387,16 +274,8 @@ csdiy介绍
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>exercise 5，用C语言检查一个单向链表是否成环。注意head可以为空，head-&gt;next可以为空。</p>
-<h1 id="project-1">Project 1<a href="#project-1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h1>
-<h2 id="part-a">Part A<a href="#part-a" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h1 id="project-1">Project 1</h1>
+<h2 id="part-a">Part A</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// Opens a .ppm P3 image file, and constructs an Image object.
 </span></span></span><span class="line"><span class="cl"><span class="c1">// You may find the function fscanf useful.
 </span></span></span><span class="line"><span class="cl"><span class="c1">// Make sure that you close the file with fclose before returning.
@@ -453,11 +332,7 @@ csdiy介绍
 </span></span><span class="line"><span class="cl">  <span class="nf">free</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>输出和释放内存。释放内存同样需要依次释放所有指针，避免内存泄漏。</p>
-<h3 id="steganography">steganography<a href="#steganography" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h3>
+<h3 id="steganography">steganography</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// Given an image, creates a new image extracting the LSB of the B channel.
 </span></span></span><span class="line"><span class="cl"><span class="n">Image</span> <span class="o">*</span><span class="nf">steganography</span><span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="n">image</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="n">Image</span> <span class="o">*</span><span class="n">newImage</span> <span class="o">=</span> <span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Image</span><span class="p">));</span>
@@ -478,13 +353,11 @@ csdiy介绍
 </span></span><span class="line"><span class="cl">  <span class="c1">// YOUR CODE HERE
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>读取一个ppm图像的B数值的最后一个bit，若为1则该像素替换为白色，若为0则替换为黑色，最后可以解析得到一个新的图像。</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/7ecb6cd99661043d665a97d8a09042bf.png" alt="7ecb6cd99661043d665a97d8a09042bf"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/7ecb6cd99661043d665a97d8a09042bf.png" alt="7ecb6cd99661043d665a97d8a09042bf" loading="lazy" decoding="async"></span>
+</p>
 <p>（迫真scret message）</p>
-<h2 id="part-b">Part B<a href="#part-b" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path>
-      <line x1="8" y1="12" x2="16" y2="12"></line>
-   </svg></a></h2>
+<h2 id="part-b">Part B</h2>
 <p>彩色生命游戏的规则是：每个颜色通道有8个bit，RGB三个颜色即有24个bit，对于每个像素的每个bit，单独运行一个康威生命游戏。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">Color</span> <span class="o">*</span><span class="nf">evaluateOneCell</span><span class="p">(</span><span class="n">Image</span> <span class="o">*</span><span class="n">image</span><span class="p">,</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">rule</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="n">Color</span> <span class="o">*</span><span class="n">newColor</span> <span class="o">=</span> <span class="p">(</span><span class="n">Color</span> <span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Color</span><span class="p">));</span>
@@ -542,94 +415,76 @@ csdiy介绍
 <p>此外，rule虽然读取的是一个0x1808这样的四位16进制数，按理只有16个位，但是我们用<code>uint32_t</code>类型存储，使得实际上有32个位，而我们实际需要至少18个位。（因为对于活着和死了的情况，周围邻居都有0～8个不等）。<code>ptr</code>在该bit活着的情况下需要自加9。</p>
 <p>其余部分和steganography差异不大，遍历所有像素得到新的图像即可。</p>
 <p>最后得到的一个效果图：</p>
-<p><img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/jc.gif" alt="jc"></p>
+<p><span class="media-frame">
+  <img src="/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/jc.gif" alt="jc" loading="lazy" decoding="async"></span>
+</p>
 
-			</div>
-			<div class="human posts"><a href="https://brainmade.org/" target="_blank" rel="external noreferrer noopener"><abbr title="I don't hate AIs; but I love humans!"><svg fill="#fff" width="128" height="40" viewBox="0 0 128 40" xmlns="http://www.w3.org/2000/svg">
-      <path
-         d="M26.306 39.391H11.665a1.28 1.28 0 0 1-1.28-1.28v-3.838H6.399a1.28 1.28 0 0 1-1.28-1.28v-5.336l-4.41-2.198a1.28 1.28 0 0 1-.493-1.855l4.904-7.357v-2.175C5.12 6.298 11.422 0 19.194 0s14.073 6.3 14.075 14.071c-.316 13.912-5.38 11.758-5.59 17.023l-.093 7.018a1.3 1.3 0 0 1-.375.905 1.27 1.27 0 0 1-.905.375zm-13.361-2.559h12.082l.143-7.27c-.132-3.329 5.858-4.122 5.54-15.368-.179-6.356-5.157-11.635-11.515-11.635S7.68 7.713 7.679 14.071v2.559c-.001.253-.075.5-.215.71l-4.315 6.471 3.822 1.91a1.28 1.28 0 0 1 .708 1.145v4.848h3.987a1.28 1.28 0 0 1 1.28 1.28z" />
-      <path
-         d="M20.186 29.111v-9.644c.059 0 .118.009.177.009 4.885-.006 8.525-4.506 7.511-9.284a1.19 1.19 0 0 0-.911-.911 7.67 7.67 0 0 0-9.049 5.67l-.033-.036a7.66 7.66 0 0 0-7.03-2.085 1.19 1.19 0 0 0-.911.91c-1.014 4.777 2.627 9.277 7.51 9.284.118 0 .246-.014.369-.02v6.106zm1.419-16.072a5.33 5.33 0 0 1 4.062-1.553 5.33 5.33 0 0 1-5.614 5.615 5.3 5.3 0 0 1 1.552-4.061zm-7.904 6.057a5.3 5.3 0 0 1-1.559-4.061 5.323 5.323 0 0 1 5.614 5.615 5.3 5.3 0 0 1-4.055-1.554m38.419-6.79q0 2.346-1.567 3.63-1.567 1.282-4.351 1.283h-7.669V0h7.016q2.807 0 4.242 1.1 1.446 1.087 1.446 3.226 0 1.467-.729 2.481-.718 1.002-2.197 1.357 1.86.244 2.828 1.32.979 1.063.979 2.823zm-4.112-7.491q0-1.161-.663-1.65-.652-.488-1.947-.488h-3.655v4.265h3.677q1.36 0 1.968-.525.62-.537.62-1.601m.892 7.209q0-2.42-3.089-2.42h-4.069v4.938h4.188q1.545 0 2.252-.624.718-.635.718-1.894m16.26 5.194-3.557-6.538h-3.764v6.538H54.63V0h7.658q2.741 0 4.231 1.332 1.49 1.32 1.49 3.8 0 1.808-.913 3.128-.914 1.308-2.47 1.723l4.144 7.235zm-.381-11.94q0-2.481-2.828-2.481h-4.112v5.083h4.199q1.349 0 2.045-.684.696-.685.696-1.919m16.785 11.94-1.36-4.399h-5.841l-1.359 4.399h-3.209L75.386 0h3.785l5.569 17.219zM77.278 2.651l-.066.269q-.109.44-.261 1.002c-.152.563-.725 2.436-1.871 6.184h4.405l-1.512-4.949-.468-1.662zm9.551 14.567V0h3.209v17.219zm15.53 0L95.681 3.959q.196 1.931.196 3.104v10.155h-2.849V0h3.666l6.777 13.37q-.196-1.846-.196-3.361V0h2.85v17.219zM52.63 39.375V28.331q.011-.351.115-3.015-.818 3.257-1.209 4.541l-2.925 9.518h-2.418l-2.925-9.518-1.232-4.541q.139 2.809.139 3.717v10.342h-3.017V22.313h4.548l2.902 9.543.253.92.553 2.289.725-2.736 2.983-10.015h4.526v17.063zm17.64 0-1.44-4.359h-6.184l-1.44 4.359h-3.397l5.919-17.063h4.007l5.896 17.063zm-4.537-14.434-.069.267q-.115.436-.277.993c-.162.557-.767 2.414-1.98 6.128h4.663l-1.601-4.905-.495-1.647zm24.577 5.776q0 2.64-.99 4.614-.979 1.961-2.787 3.003-1.796 1.042-4.122 1.042h-6.564V22.313h5.873q4.099 0 6.345 2.18 2.245 2.167 2.245 6.224m-3.42 0q0-2.748-1.359-4.19-1.359-1.453-3.881-1.453h-2.407v11.54h2.879q2.188 0 3.478-1.586t1.29-4.311m6 8.659V22.313h12.759v2.761h-9.362v4.287h8.66v2.761h-8.66v4.492h9.835v2.761zm15.75 0v-3.693h3.328v3.693zm12.445-12.149q2.082 0 3.662.781 1.58.78 2.422 2.235.833 1.454.833 3.393 0 2.98-1.845 4.676Q124.302 40 121.085 40q-3.208 0-5.005-1.688-1.798-1.688-1.798-4.695c0-3.007.606-3.57 1.817-4.694q1.817-1.696 4.986-1.696m0 2.702q-2.157 0-3.378.97-1.23.97-1.23 2.72 0 1.777 1.22 2.747 1.211.97 3.388.97 2.195 0 3.462-.988 1.258-.997 1.258-2.711 0-1.778-1.23-2.738-1.23-.97-3.491-.97m6.725-13.402-5.062 2.935v3.107h5.062v2.648h-13.331v-6.322q0-2.261 1.031-3.491 1.022-1.23 2.942-1.23 1.4 0 2.422.754 1.012.754 1.334 2.038l5.601-3.42zm-9.244.314q-1.92 0-1.921 2.334v3.393h3.936v-3.465q0-1.113-.53-1.688t-1.486-.575m7.249-10.915a6.5 6.5 0 0 0-.313-2.002q-.321-.969-.814-1.499h-1.845v3.088h-2.063V0h4.901q1.088 1.005 1.703 2.622a9.4 9.4 0 0 1 .615 3.375q0 3.088-1.798 4.748-1.808 1.661-5.119 1.661-3.292 0-5.043-1.67-1.76-1.67-1.76-4.803 0-4.452 3.473-5.664l.776 2.442q-1.012.395-1.533 1.238-.52.844-.52 1.984 0 1.867 1.192 2.837t3.416.97q2.261 0 3.501-.997 1.23-1.005 1.23-2.818z" />
-   </svg></abbr></a></div>
-
-		</article>
-		<aside id="toc">
-			<div class="toc-title">Table of Contents</div>
-			<nav id="TableOfContents">
-  <ul>
-    <li><a href="#参考链接">参考链接</a></li>
-    <li><a href="#前言">前言</a></li>
-    <li><a href="#lecture-01">Lecture 01</a></li>
-    <li><a href="#lecture-02">Lecture 02</a></li>
-    <li><a href="#lab-00">Lab 00</a>
-      <ul>
-        <li><a href="#setup">setup</a></li>
-      </ul>
-    </li>
-    <li><a href="#lecture-03">Lecture 03</a></li>
-    <li><a href="#lecture-3--4--5">Lecture 3 &amp; 4 &amp; 5</a></li>
-    <li><a href="#lab-01">lab 01</a></li>
-    <li><a href="#project-1">Project 1</a>
-      <ul>
-        <li><a href="#part-a">Part A</a>
-          <ul>
-            <li><a href="#steganography">steganography</a></li>
-          </ul>
-        </li>
-        <li><a href="#part-b">Part B</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-		</aside>
-		<div class="post-nav thin">
-			<a class="next-post" href="http://localhost:1313/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
-      <line x1="19" y1="12" x2="5" y2="12"></line>
-      <polyline points="12 19 5 12 12 5"></polyline>
-   </svg>&nbsp;Newer</span><br><span>Happy-LLM自学笔记01</span>
-			</a>
-			<a class="prev-post" href="http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
-      <line x1="5" y1="12" x2="19" y2="12"></line>
-      <polyline points="12 5 19 12 12 19"></polyline>
-   </svg></span><br><span>OpenJWC后端开发随想</span>
-			</a>
-		</div>
-		<div id="comments" class="thin"><script src="https://giscus.app/client.js"
-        data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
-        data-repo-id="R_kgDOQaFILg"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOQaFILs4CyFGz"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="transparent_dark"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
 </div>
-	</main>
-<footer id="site-footer" class="section-inner thin animated fadeIn faster">
-<p>
-	&copy; 2026 <a href="http://localhost:1313/">Yorozumoon</a>
-	&#183; copyright by Moonhalf
-	&#183; Made with <a href="https://gohugo.io/" target="_blank" rel="noopener" title="The world's fastest framework for building websites">Hugo</a> &amp; <a href="https://github.com/1bl4z3r/hermit-V2" target="_blank" rel="noopener" title="A fast, minimalist Hugo theme">Hermit-V2</a>
-	</p></footer>
-<script async src="http://localhost:1313/js/bundle.min.a2910447d5c22e84c4b04382d8c10c056b2b9d3e15c64d1fa04882359d61afd3.js" integrity="sha256-opEER9XCLoTEsEOC2MEMBWsrnT4Vxk0foEiCNZ1hr9M=" crossorigin="anonymous"></script><script async src="http://localhost:1313/js/link-share.min.24409a4f6e5537d70ffc55ec8f9192208d718678cb8638585342423020b37f39.js" integrity="sha256-JECaT25VN9cP/FXsj5GSII1xhnjLhjhYU0JCMCCzfzk=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
-</script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  
+<section id="comments" aria-label="评论">
+  <h2>DISCUSSION</h2>
+  <div class="giscus" data-giscus
+       data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+       data-repo-id="R_kgDOQaFILg"
+       data-category="Announcements"
+       data-category-id="DIC_kwDOQaFILs4CyFGz"
+       data-mapping="specific"
+       data-term="CS61Cfall20学习笔记01"
+       data-strict="0"
+       data-reactions-enabled="1"
+       data-emit-metadata="0"
+       data-input-position="top"
+       data-theme="light"
+       data-lang="zh-CN"
+       data-loading="lazy"></div>
+  <noscript>评论需要启用 JavaScript，并允许连接 giscus.app。</noscript>
+</section>
+
+
+
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">posts/CS61Cfall20学习笔记01.md</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">[{"aliases":[],"date":1788258553,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/LaTeX车祸速成.md","source":"posts/LaTeX车祸速成/index.md","tags":[],"title":"LaTeX车祸速成","url":"/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/"},{"aliases":[],"date":1788258553,"folderIcon":"LiFolderOpen","icon":"LiHouse","iconColor":"#000000","path":"README.md","source":"_index.md","tags":[],"title":"README.md","url":"/zh-cn/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别.md","source":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别/index.md","tags":["riscv","体系架构"],"title":"CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiTag","iconColor":"#000000","path":"tags.md","source":"tags/_index.md","tags":[],"title":"标签墙","url":"/zh-cn/tags/"},{"aliases":[],"date":1779623996,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记02.md","source":"posts/CS61Cfall20学习笔记02/index.md","tags":["C语言","体系架构"],"title":"CS61Cfall20学习笔记02","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/"},{"aliases":[],"date":1778912833,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/Happy-LLM自学笔记01.md","source":"posts/Happy-LLM自学笔记01/index.md","tags":["llm","自学","python"],"title":"Happy-LLM自学笔记01","url":"/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1778574017,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记01.md","source":"posts/CS61Cfall20学习笔记01/index.md","tags":["体系架构","C语言","自学"],"title":"CS61Cfall20学习笔记01","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1775433600,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/OpenJWC后端开发随想.md","source":"posts/OpenJWC后端开发随想/index.md","tags":["#blog","python"],"title":"OpenJWC后端开发随想","url":"/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1774828800,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Thinkpad Archlinux折腾笔记.md","source":"posts/Thinkpad Archlinux折腾笔记/index.md","tags":["blog","linux","archlinux"],"title":"Thinkpad Archlinux折腾笔记","url":"/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/"},{"aliases":[],"date":1774137600,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/CodeCompanion.md","source":"posts/CodeCompanion/index.md","tags":["blog","Neovim"],"title":"CodeCompanion.nvim配置","url":"/zh-cn/posts/codecompanion/"},{"aliases":[],"date":1772323200,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Kaggle房价预测.md","source":"posts/Kaggle房价预测/index.md","tags":["blog","python","机器学习"],"title":"Kaggle房价预测","url":"/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/"},{"aliases":[],"date":1771632000,"folderIcon":"","icon":"LiNotebook","iconColor":"#000000","path":"posts/Jupyter如何配置.md","source":"posts/Jupyter如何配置/index.md","tags":["blog","python","教程","jupyter"],"title":"Jupyter如何配置","url":"/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志04：多层感知机.md","source":"posts/D2L自学日志04：多层感知机/index.md","tags":["D2L","机器学习","python","torch"],"title":"D2L自学日志04：多层感知机","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Data100自学日志01：Pandas.md","source":"posts/Data100自学日志01：Pandas/index.md","tags":["blog","python","pandas","数据科学"],"title":"Data100自学日志01：Pandas","url":"/zh-cn/posts/data100%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701pandas/"},{"aliases":[],"date":1770768000,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/Python文件结构\u0026一些库.md","source":"posts/Python文件结构\u0026一些库/index.md","tags":["blog","python"],"title":"Python文件结构\u0026一些库","url":"/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/"},{"aliases":[],"date":1770508800,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/19岁生日随想.md","source":"posts/19岁生日随想/index.md","tags":["随笔","blog"],"title":"19岁生日随想","url":"/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1770163200,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志03：线性神经网络完结.md","source":"posts/D2L自学日志03：线性神经网络完结/index.md","tags":["blog","D2L","python","torch","机器学习"],"title":"D2L自学日志03：线性神经网络完结","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/"},{"aliases":[],"date":1769558400,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/工具不图鉴04：环境变量\u0026shell脚本.md","source":"posts/工具不图鉴04：环境变量\u0026shell脚本/index.md","tags":["blog","教程","shell","python"],"title":"工具不图鉴04：环境变量\u0026shell脚本","url":"/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"},{"aliases":[],"date":1769472000,"folderIcon":"","icon":"LiImage","iconColor":"#000000","path":"posts/TUI图像显示方案.md","source":"posts/TUI图像显示方案/index.md","tags":["blog","python"],"title":"TUI图像显示方案","url":"/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/"},{"aliases":[],"date":1769040000,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：4阶段.md","source":"posts/平板游戏环境配置计划：4阶段/index.md","tags":["blog","随意探索","平板"],"title":"平板游戏环境配置计划：4阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境部署计划.md","source":"posts/平板游戏环境部署计划/index.md","tags":["blog","随意探索"],"title":"平板游戏环境部署计划","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：2\u00263阶段.md","source":"posts/平板游戏环境配置计划：2\u00263阶段/index.md","tags":["blog","平板","随意探索"],"title":"平板游戏环境配置计划：2\u00263阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768780800,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习02：远古老登.md","source":"posts/SEU程序设计复习02：远古老登/index.md","tags":["cpp","blog","课内"],"title":"SEU程序设计复习02：远古老登","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"},{"aliases":[],"date":1768694400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/近日神必脑洞合集.md","source":"posts/近日神必脑洞合集/index.md","tags":["blog","brainstorm"],"title":"近日神必脑洞合集","url":"/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/autoblog_test_3.md","source":"posts/autoblog_test_3/index.md","tags":["blog","test"],"title":"autoblog_test_3","url":"/zh-cn/posts/autoblog_test_3/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习01：基础语法.md","source":"posts/SEU程序设计复习01：基础语法/index.md","tags":["blog","cpp","课内"],"title":"SEU程序设计复习01：基础语法","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/核动力博客发射器测试.md","source":"posts/核动力博客发射器测试/index.md","tags":["blog","test","测试","python","博客搭建"],"title":"核动力博客发射器测试","url":"/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/"},{"aliases":[],"date":1767785271,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志02：线性回归.md","source":"posts/D2L自学日志02：线性回归/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志02：线性回归","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"},{"aliases":[],"date":1767272442,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/Fabric自学日志01：农夫乐事重织版.md","source":"posts/Fabric自学日志01：农夫乐事重织版/index.md","tags":["fabric","minecraft","java"],"title":"Fabric自学日志01：农夫乐事重织版","url":"/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"},{"aliases":[],"date":1767089676,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志01：preliminaries.md","source":"posts/D2L自学日志01：preliminaries/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志01：preliminaries","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/"},{"aliases":[],"date":1766629673,"folderIcon":"","icon":"LiCloud","iconColor":"#000000","path":"posts/再用腾讯云我就是狗.md","source":"posts/再用腾讯云我就是狗/index.md","tags":["日常"],"title":"再用腾讯云我就是🐶","url":"/zh-cn/posts/%E5%86%8D%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91%E6%88%91%E5%B0%B1%E6%98%AF%E7%8B%97/"},{"aliases":[],"date":1765898615,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/venvminiconda.md","source":"posts/venvminiconda/index.md","tags":["工具不图鉴","教程","venv","conda","python"],"title":"工具不图鉴03：虚拟环境\u0026conda","url":"/zh-cn/posts/venvminiconda/"},{"aliases":[],"date":1765843200,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/condaAndVenv.md","source":"posts/condaAndVenv/index.md","tags":["虚拟环境","python","conda"],"title":"condaAndVenv","url":"/zh-cn/posts/condaandvenv/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"posts/curl\u0026wget.md","source":"posts/curl\u0026wget/index.md","tags":["工具不图鉴","教程","curl","wget"],"title":"工具不图鉴01：curl\u0026wget","url":"/zh-cn/posts/curlwget/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/zsh\u0026ohmyzsh.md","source":"posts/zsh\u0026ohmyzsh/index.md","tags":["工具不图鉴","教程","zsh","ohmyzsh"],"title":"工具不图鉴02：zsh\u0026ohmyzsh","url":"/zh-cn/posts/zshohmyzsh/"},{"aliases":[],"date":1765326823,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-02Softmax.md","source":"posts/Triton自学日志-02Softmax/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 02FusedSoftmax","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"},{"aliases":[],"date":1765240002,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-01VectorAdd.md","source":"posts/Triton自学日志-01VectorAdd/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 01VectorAdd","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"},{"aliases":[],"date":1763867513,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/NeovimPlugins配置方法.md","source":"posts/NeovimPlugins配置方法/index.md","tags":["Neovim","教程"],"title":"NeovimPlugins配置方法","url":"/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"},{"aliases":[],"date":1763866391,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Neovim配置如何入门.md","source":"posts/Neovim配置如何入门/index.md","tags":["Neovim","教程"],"title":"Neovim配置如何入门","url":"/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"},{"aliases":[],"date":1763706081,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"links.md","source":"links.md","tags":[],"title":"友链","url":"/zh-cn/links/"},{"aliases":[],"date":1763705217,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/test.md","source":"posts/test/index.md","tags":["测试","随笔"],"title":"Test","url":"/zh-cn/posts/test/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"about/月のまにまに.md","source":"about/月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"月のまにまに.md","source":"月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763565643,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/hellohugo.md","source":"posts/hellohugo/index.md","tags":[],"title":"Hellohugo","url":"/zh-cn/posts/hellohugo/"},{"aliases":[],"date":1758372543,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/零基础如何搭建博客.md","source":"posts/零基础如何搭建博客/index.md","tags":["博客搭建","教程"],"title":"零基础如何搭建博客","url":"/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"}]</script>
+  <script id="editor-config" type="application/json">{"mermaidLib":"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"}</script><script defer src="/js/editor.35881f25e0828d0adec1652cc66c2f2a20b86d4be3eb33bfd423d978a718c0df.js" integrity="sha256-NYgfJeCCjQrewWUsxmwvKiC4bUvj6zO/1CPZeKcYwN8="></script>
 </body>
 </html>

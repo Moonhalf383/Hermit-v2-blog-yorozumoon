@@ -1,5 +1,7 @@
 ---
 title: Test
+icon: LiFlask
+iconColor: '#000000'
 date: 2025-11-21T14:06:57+08:00
 draft: true
 toc: false

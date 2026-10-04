@@ -1,0 +1,10 @@
+{{- $path := printf "%s.md" .Title -}}
+{{- with .File }}{{ $path = .Path }}{{ end -}}
+{{- $path = replaceRE `/index\.md$` `.md` $path -}}
+{{- $path = replaceRE `/_index\.md$` `.md` $path -}}
+{{- with .Params.virtualpath -}}
+  {{- $path = strings.TrimPrefix "/" . -}}
+  {{- if not (findRE `(?i)\.md$` $path) }}{{ $path = printf "%s.md" $path }}{{ end -}}
+{{- end -}}
+{{- if .IsHome }}{{ $path = "README.md" }}{{ end -}}
+{{- return $path -}}

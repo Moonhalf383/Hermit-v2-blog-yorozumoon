@@ -1,5 +1,7 @@
 ---
 title: "Fabric自学日志01：农夫乐事重织版"
+icon: LiGamepad
+iconColor: '#000000'
 date: 2026-01-01T21:00:42+08:00
 draft: false 
 toc: true 

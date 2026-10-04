@@ -10,6 +10,8 @@ tags:
   - torch
   - 机器学习
 title: D2L自学日志03：线性神经网络完结
+icon: LiBrain
+iconColor: '#000000'
 toc: true
 ---
 

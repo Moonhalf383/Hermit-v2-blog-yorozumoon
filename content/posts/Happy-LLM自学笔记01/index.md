@@ -1,5 +1,7 @@
 ---
 title: Happy-LLM自学笔记01
+icon: LiBrain
+iconColor: '#000000'
 date: '2026-05-16T14:27:13.281191+08:00'
 draft: false
 toc: true

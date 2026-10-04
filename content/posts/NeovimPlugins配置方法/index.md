@@ -1,5 +1,7 @@
 ---
 title: "NeovimPlugins配置方法"
+icon: LiTerminal
+iconColor: '#000000'
 date: 2025-11-23T11:11:53+08:00
 draft: false 
 toc: true 

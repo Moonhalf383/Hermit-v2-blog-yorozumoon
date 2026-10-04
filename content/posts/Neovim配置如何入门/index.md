@@ -1,5 +1,7 @@
 ---
 title: "Neovim配置如何入门"
+icon: LiTerminal
+iconColor: '#000000'
 date: 2025-11-23T10:53:11+08:00
 draft: false
 images:

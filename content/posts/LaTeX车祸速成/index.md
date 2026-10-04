@@ -1,5 +1,7 @@
 ---
 title: LaTeX车祸速成
+icon: LiPen
+iconColor: '#000000'
 date: '2026-09-01T18:29:13.588103+08:00'
 draft: false
 toc: true

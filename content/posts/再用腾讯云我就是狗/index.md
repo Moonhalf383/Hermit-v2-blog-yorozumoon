@@ -1,5 +1,7 @@
 ---
 title: 再用腾讯云我就是🐶
+icon: LiCloud
+iconColor: '#000000'
 date: 2025-12-25T10:27:53+08:00
 draft: true
 toc: true

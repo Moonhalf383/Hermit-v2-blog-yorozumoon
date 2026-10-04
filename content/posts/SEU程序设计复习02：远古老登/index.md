@@ -8,6 +8,8 @@ tags:
 - blog
 - 课内
 title: SEU程序设计复习02：远古老登
+icon: LiFileCode
+iconColor: '#000000'
 toc: true
 ---
 

@@ -9,6 +9,8 @@ tags:
 - shell
 - python
 title: 工具不图鉴04：环境变量&shell脚本
+icon: LiTerminal
+iconColor: '#000000'
 toc: true
 ---
 

@@ -1,5 +1,7 @@
 ---
 title: "Triton自学日志 02FusedSoftmax"
+icon: LiCpu
+iconColor: '#000000'
 date: 2025-12-10T08:33:43+08:00
 draft: false 
 images:

@@ -1,5 +1,7 @@
 ---
 title: "工具不图鉴02：zsh&ohmyzsh"
+icon: LiTerminal
+iconColor: '#000000'
 date: 2025-12-15T23:25:53+08:00
 draft: false 
 toc: true 

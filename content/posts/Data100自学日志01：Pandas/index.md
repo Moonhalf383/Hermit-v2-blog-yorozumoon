@@ -9,6 +9,8 @@ tags:
 - pandas
 - 数据科学
 title: Data100自学日志01：Pandas
+icon: LiChart
+iconColor: '#000000'
 toc: true
 ---
 

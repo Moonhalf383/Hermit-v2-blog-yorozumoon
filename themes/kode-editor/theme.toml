@@ -1,0 +1,12 @@
+name = "Kode Editor"
+license = "MIT"
+licenselink = "https://opensource.org/license/mit"
+description = "A fast, keyboard-first Hugo theme shaped like a minimal text editor."
+homepage = "https://yorozumoon.cn/"
+tags = ["minimal", "editor", "wiki", "responsive"]
+features = ["file tree", "outline", "wikilinks", "vim navigation", "mermaid", "mathjax"]
+min_version = "0.146.0"
+
+[author]
+name = "Moonhalf"
+homepage = "https://github.com/Moonhalf383"

@@ -1,5 +1,7 @@
 ---
 title: "Triton自学日志 01VectorAdd"
+icon: LiCpu
+iconColor: '#000000'
 date: 2025-12-09T08:26:42+08:00
 draft: false 
 images:

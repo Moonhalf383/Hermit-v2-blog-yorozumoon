@@ -7,6 +7,8 @@ tags:
 - blog
 - 随意探索
 title: 平板游戏环境部署计划
+icon: LiGamepad
+iconColor: '#000000'
 toc: true
 ---
 

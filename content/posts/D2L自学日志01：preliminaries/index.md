@@ -1,5 +1,7 @@
 ---
 title: "D2L自学日志01：preliminaries"
+icon: LiBrain
+iconColor: '#000000'
 date: 2025-12-30T18:14:36+08:00
 draft: false 
 toc: true 

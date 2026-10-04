@@ -1,5 +1,7 @@
 ---
 title: CS61Cfall20学习笔记02
+icon: LiCpu
+iconColor: '#000000'
 date: '2026-05-24T19:59:56.702776+08:00'
 draft: false
 toc: true

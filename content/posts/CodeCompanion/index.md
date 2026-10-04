@@ -7,6 +7,8 @@ tags:
 - blog
 - Neovim
 title: CodeCompanion.nvim配置
+icon: LiBrain
+iconColor: '#000000'
 toc: true
 ---
 

@@ -8,6 +8,8 @@ tags:
   - python
   - conda
 title: condaAndVenv
+icon: LiBox
+iconColor: '#000000'
 toc: true
 ---
 
