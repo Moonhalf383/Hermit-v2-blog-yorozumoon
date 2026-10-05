@@ -14,8 +14,8 @@ await mkdir(join(temp, 'content/posts'), {recursive:true});
 await writeFile(join(temp, 'hugo.toml'), `baseURL = 'http://localhost/'\ntheme = 'kode-editor'\ndisableKinds = ['taxonomy','term','RSS','sitemap']\n[markup.highlight]\nnoClasses = false\n`);
 await writeFile(join(temp,'content/_index.md'), '---\ntitle: README.md\nicon: LiHouse\n---\n\n[[Visual]]\n');
 const paragraph = 'Render geometry follows actual browser wrapping, not paragraph boundaries. '.repeat(10);
-const code = 'alpha beta_gamma delta\nsecond row here\n\nfourth line\n中文 👩‍💻 emoji\n' + 'long_line_'.repeat(35) + '\nlast line';
-await writeFile(join(temp,'content/posts/visual.md'), `---\ntitle: Visual Movement International Typography Example\nicon: LiTerminal\ntags: [testing]\n---\n\n${paragraph}\n\nalpha beta_gamma delta\n\nalpha\n\nbeta\n\n| Left | Right |\n| --- | --- |\n| ${'wrap words '.repeat(30)} | ${'more text '.repeat(22)} |\n\n## Multiple Line Heading With International Words\n\n\`\`\`python\n${code}\n\`\`\`\n\n${paragraph}\n`);
+const code = 'alpha beta_gamma delta\nsecond row here\n\nfourth line\n中文 👩‍💻 emoji\n' + Array.from({length:10},(_,i)=>`line ${String(i+6).padStart(2,'0')}`).join('\n') + '\n' + 'long_line_'.repeat(35) + '\nlast line';
+await writeFile(join(temp,'content/posts/visual.md'), `---\ntitle: Visual Movement International Typography Example\nicon: LiTerminal\ntags: [testing]\n---\n\n## First Outline Heading\n\n${paragraph}\n\nalpha beta_gamma delta\n\nalpha\n\nbeta\n\n| Left | Right |\n| --- | --- |\n| ${'wrap words '.repeat(30)} | ${'more text '.repeat(22)} |\n\n## Multiple Line Heading With International Words\n\n\`\`\`python\n${code}\n\`\`\`\n\n${paragraph}\n\nJump [standard link](/friend-one/) now.\n`);
 // Date fixtures deliberately disagree with alphabetic order; include ties and no date.
 for (const [name,date,icon] of [['Z-old','1960-01-01','LiCpu'],['B-new','2024-01-01','LiBrain'],['A-new','2024-01-01','LiNotebook'],['C-undated','', 'LiMusic']]) {
   await writeFile(join(temp,`content/posts/${name}.md`),`---\ntitle: ${name}\n${date ? `date: ${date}\n` : ''}virtualPath: notes/${name}.md\ntags: [ordering]\nicon: ${icon}\niconColor: '#000000'\n---\n\nDate test.\n`);
@@ -76,6 +76,10 @@ try {
   await page.evaluate(()=>document.fonts.ready);await tick();
   check('empty difference cursor',await page.$eval('#vim-cursor',e=>!e.textContent&&getComputedStyle(e).mixBlendMode==='difference'));
   check('SVG icons render',await page.$$eval('.file-icon svg',nodes=>nodes.length>=2));
+  check('current tab renders the page SVG icon',await page.evaluate(()=>{
+    const tab=document.querySelector('.editor-tab .file-icon path'),tree=document.querySelector('.tree-row.active .file-icon path');
+    return !!tab&&!!tree&&tab.getAttribute('d')===tree.getAttribute('d')&&getComputedStyle(tab.closest('.file-icon')).color==='rgb(0, 0, 0)';
+  }));
   const sortedPaths=['A-new','B-new','Z-old','C-undated'].map(name=>`notes/${name}.md`);
   const treePaths=selector=>page.$eval(selector,e=>[...e.parentElement.querySelector(':scope>ul').querySelectorAll('a.tree-row')].map(a=>a.dataset.path));
   check('files date descending, ties by name, undated last',JSON.stringify(await treePaths('[data-path="notes"]'))===JSON.stringify(sortedPaths));
@@ -85,10 +89,19 @@ try {
   check('tag files use the same date ordering',JSON.stringify(await treePaths('[data-path="@tag/ordering"]'))===JSON.stringify(sortedPaths));
   await page.click('[data-explorer-view="files"]');
   await clickGlyph('.document-header h1','Visual');
+  check('pane focus uses header marker without frame',await page.evaluate(()=>{
+    const panes=[...document.querySelectorAll('.pane')],editor=document.querySelector('#document-pane'),tab=document.querySelector('.editor-tab');
+    return panes.every(e=>getComputedStyle(e).boxShadow==='none')&&getComputedStyle(tab,'::before').backgroundColor==='rgb(118, 86, 255)'&&getComputedStyle(document.querySelector('.pane-title'),'::before').content==='none';
+  }));
   check('no duplicate collapse buttons',await page.$$eval('.pane-title[data-toggle-pane]',nodes=>nodes.length===0));
   check('tabs fit inside their borders',await page.$$eval('.explorer-tabs button',nodes=>nodes.every(e=>{const a=e.getBoundingClientRect(),b=e.parentElement.getBoundingClientRect();return a.top>=b.top&&a.bottom<=b.bottom&&a.left>=b.left&&a.right<=b.right;})));
   check('current file outline',await page.$eval('.tree-row.active',e=>getComputedStyle(e).boxShadow.includes('2px')));
   check('code typography/no border',await page.$eval('pre',e=>getComputedStyle(e).fontFamily.includes('Kode Mono')&&parseFloat(getComputedStyle(e).fontSize)>=14&&getComputedStyle(e).borderTopWidth==='0px'));
+
+  await clickGlyph('.content h2','First');
+  await page.keyboard.down('Control');await page.keyboard.press('l');await page.keyboard.up('Control');await tick();await key('j');
+  await page.keyboard.down('Control');await page.keyboard.press('h');await page.keyboard.up('Control');await tick();
+  check('returning from outline syncs caret to selected heading',aligned(await rect(),await glyph('.content h2:nth-of-type(2)','Multiple')));
 
   await clickGlyph('.content>p','Render');
   const before=await rect();await key('j');const after=await rect();
@@ -115,6 +128,13 @@ try {
   await key('j');const fourth=await rect();
   check('code j after blank remains adjacent',Math.abs(fourth.y-blank.y-codeLH)<2);
   await key('k');check('code k returns to blank',aligned(await rect(),blank));
+
+  await clickGlyph('pre','alpha');const countStart=await rect();
+  await key('1');await key('0');await key('j');const countDown=await rect();
+  check('10j advances ten visual rows',Math.abs(countDown.y-countStart.y-10*codeLH)<2);
+  await key('1');await key('0');await key('k');check('10k returns ten visual rows',aligned(await rect(),countStart));
+  await key('1');await key('0');await key('l');check('10l advances ten graphemes',aligned(await rect(),await glyph('pre','beta_gamma',4)));
+  await key('1');await key('0');await key('h');check('10h returns ten graphemes',aligned(await rect(),countStart));
 
   await clickGlyph('pre','alpha');await key('w');
   check('w goes to next word',aligned(await rect(),await glyph('pre','beta_gamma')));
@@ -158,10 +178,28 @@ try {
 
   await page.setViewport({width:390,height:844});await tick();
   await page.goto(origin+'/posts/visual/',{waitUntil:'networkidle0'});await tick();
+  check('narrow page load closes both drawers',await page.evaluate(()=>document.documentElement.classList.contains('left-collapsed')&&document.documentElement.classList.contains('right-collapsed')));
+  await key('H');
+  check('opening left drawer focuses it and keeps right closed',await page.evaluate(()=>!document.documentElement.classList.contains('left-collapsed')&&document.documentElement.classList.contains('right-collapsed')&&document.querySelector('#explorer-pane').classList.contains('focused')&&!document.querySelector('#vim-cursor').classList.contains('visible')));
+  await page.keyboard.down('Control');await page.keyboard.press('l');await page.keyboard.up('Control');await tick();
+  check('sidebar stacks above overlapping editor cursor',await page.evaluate(()=>{
+    const side=document.querySelector('#explorer-pane'),cursor=document.querySelector('#vim-cursor');
+    const a=side.getBoundingClientRect(),b=cursor.getBoundingClientRect(),overlaps=b.right>a.left&&b.left<a.right&&b.bottom>a.top&&b.top<a.bottom;
+    return document.querySelector('#document-pane').classList.contains('focused')&&cursor.classList.contains('visible')&&overlaps&&Number(getComputedStyle(side).zIndex)>Number(getComputedStyle(cursor).zIndex);
+  }));
+  await key('L');
+  check('opening right drawer closes left and focuses right',await page.evaluate(()=>document.documentElement.classList.contains('left-collapsed')&&!document.documentElement.classList.contains('right-collapsed')&&document.querySelector('#outline-pane').classList.contains('focused')&&!document.querySelector('#vim-cursor').classList.contains('visible')));
+  await key('L');
+  check('closing focused drawer returns to editor',await page.evaluate(()=>document.documentElement.classList.contains('left-collapsed')&&document.documentElement.classList.contains('right-collapsed')&&document.querySelector('#document-pane').classList.contains('focused')&&document.querySelector('#vim-cursor').classList.contains('visible')));
   check('mobile title does not split English words',await page.$eval('.document-header h1',e=>{
     const node=e.firstChild;return [...node.data.matchAll(/\S+/g)].every(m=>{const r=document.createRange();r.setStart(node,m.index);r.setEnd(node,m.index+m[0].length);return r.getClientRects().length===1;});
   }));
   await page.setViewport({width:1440,height:900});
+  await page.goto(origin+'/posts/visual/',{waitUntil:'networkidle0'});await tick();
+  await clickGlyph('.content>p:last-of-type','Jump');await key('5');await key('l');
+  const standardNavigation=page.waitForNavigation({waitUntil:'networkidle0'});
+  await key('g');await key('d');await standardNavigation;
+  check('gd follows a standard Markdown link',new URL(page.url()).pathname==='/friend-one/');
   await page.goto(origin+'/links/',{waitUntil:'networkidle0'});await tick();
   const cardState=()=>page.evaluate(()=>{
     const card=document.activeElement,rect=card.getBoundingClientRect(),c=document.querySelector('#vim-cursor').getBoundingClientRect();

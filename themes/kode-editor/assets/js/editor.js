@@ -7,6 +7,7 @@ import { createCaret } from "./caret.js";
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const documentPane = $("#document-pane");
   const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const narrowLayout = matchMedia("(max-width: 900px)");
   const scrollBehavior = () => prefersReducedMotion.matches ? "auto" : "smooth";
   let caret;
   const cursor = $("#vim-cursor");
@@ -32,6 +33,7 @@ import { createCaret } from "./caret.js";
     mode: "normal",
     current: {left: null, editor: null, right: null},
     visualLinewise: false,
+    count: "",
     pending: "",
     pendingTimer: 0,
     helpIndex: 0,
@@ -96,6 +98,13 @@ import { createCaret } from "./caret.js";
     }
     container.setAttribute("aria-hidden", "true");
     if (raw) container.title = raw;
+  }
+
+  function renderCurrentIcon() {
+    const icon = $("[data-page-icon]");
+    if (!icon) return;
+    setIcon(icon, icon.dataset.pageIcon);
+    icon.style.color = icon.dataset.pageIconColor || "#000000";
   }
 
   function readStored(key, fallback) {
@@ -387,6 +396,7 @@ import { createCaret } from "./caret.js";
       link.className = "outline-row";
       link.href = `#${encodeURIComponent(heading.id)}`;
       link.dataset.level = String(level);
+      link.dataset.targetId = heading.id;
       link.style.setProperty("--depth", String(level));
       link.innerHTML = `<span class="outline-index">${String(index + 1).padStart(2, "0")}</span><span class="tree-label"></span>`;
       $(".tree-label", link).textContent = heading.textContent;
@@ -416,9 +426,9 @@ import { createCaret } from "./caret.js";
     return selector ? $$(selector, paneElements[pane]).filter(row => row.offsetParent !== null) : navigationUnits();
   }
 
-  function setCurrent(pane, element) {
+  function setCurrent(pane, element, {reveal = false} = {}) {
     if (!element) return;
-    if (pane === "editor") caret?.activate(element);
+    if (pane === "editor") caret?.activate(element, null, {scroll: reveal});
     visibleRows(pane).forEach(item => {
       item.classList.remove("selected");
       if (pane !== "editor" || !item.matches("a[href]")) item.tabIndex = -1;
@@ -426,6 +436,10 @@ import { createCaret } from "./caret.js";
     element.classList.add("selected");
     element.tabIndex = 0;
     state.current[pane] = element;
+    if (pane === "right") {
+      const heading = document.getElementById(element.dataset.targetId || "");
+      if (heading) state.current.editor = heading;
+    }
     if (pane === state.pane && !help.open) {
       element.focus({preventScroll: true});
       requestCursorUpdate();
@@ -434,6 +448,7 @@ import { createCaret } from "./caret.js";
 
   function focusPane(pane) {
     if (!paneElements[pane] || isPaneCollapsed(pane)) return;
+    const fromOutline = pane === "editor" && state.pane === "right";
     if (pane !== "editor") clearCharacterCursor();
     state.pane = pane;
     Object.entries(paneElements).forEach(([name, element]) => element.classList.toggle("focused", name === pane));
@@ -441,7 +456,7 @@ import { createCaret } from "./caret.js";
     if (!state.current[pane] || state.current[pane].offsetParent === null) {
       state.current[pane] = rows[0] || null;
     }
-    setCurrent(pane, state.current[pane]);
+    setCurrent(pane, state.current[pane], {reveal: fromOutline});
     if (pane !== "editor") scrollWithMargin(state.current[pane], scrollElements[pane]);
     showKey(pane.toUpperCase());
   }
@@ -458,13 +473,23 @@ import { createCaret } from "./caret.js";
     }
   }
 
-  function togglePane(side) {
+  function setPaneCollapsed(side, collapsed, persist = true) {
     const className = `${side}-collapsed`;
-    const collapsed = document.documentElement.classList.toggle(className);
-    writeStored(`kode-editor:${className}`, collapsed);
+    document.documentElement.classList.toggle(className, collapsed);
+    if (persist) writeStored(`kode-editor:${className}`, collapsed);
     $$(`[data-toggle-pane="${side}"]`).forEach(button => button.setAttribute("aria-expanded", String(!collapsed)));
-    if (collapsed && (state.pane === side || paneElements[side].contains(document.activeElement))) focusPane("editor");
     paneElements[side].inert = collapsed;
+  }
+
+  function togglePane(side) {
+    const opening = isPaneCollapsed(side);
+    if (opening && narrowLayout.matches) {
+      const other = side === "left" ? "right" : "left";
+      setPaneCollapsed(other, true);
+    }
+    setPaneCollapsed(side, !opening);
+    if (opening && narrowLayout.matches) focusPane(side);
+    else if (!opening && (state.pane === side || paneElements[side].contains(document.activeElement))) focusPane("editor");
     caret?.invalidate();
     requestCursorUpdate();
   }
@@ -558,10 +583,10 @@ import { createCaret } from "./caret.js";
     if (state.pane !== "editor") return;
     const card = caret.current();
     if (card?.matches("a.friend-card")) return card.click();
-    const link = caret.position()?.node.parentElement.closest("a[data-wikilink]");
+    const link = caret.position()?.node.parentElement.closest("a[href]");
     if (!link) return showToast("no link under cursor");
     if (link.classList.contains("unresolved")) return showToast(link.title || "unresolved wikilink");
-    location.href = link.href;
+    link.click();
   }
 
   function showToast(message) {
@@ -571,11 +596,23 @@ import { createCaret } from "./caret.js";
     state.toastTimer = setTimeout(() => toast.classList.remove("show"), 1300);
   }
 
+  function takeCount() {
+    const count = Math.min(999, Math.max(1, Number(state.count) || 1));
+    state.count = "";
+    return count;
+  }
+
+  function repeatMotion(action) {
+    const count = takeCount();
+    for (let index = 0; index < count; index += 1) action();
+  }
+
   function showKey(message) {
     keyIndicator.textContent = message;
     clearTimeout(state.pendingTimer);
     state.pendingTimer = setTimeout(() => {
       state.pending = "";
+      state.count = "";
       keyIndicator.textContent = "? : help";
     }, 900);
   }
@@ -635,19 +672,28 @@ import { createCaret } from "./caret.js";
     if (event.key === "Escape") {
       if (state.mode === "visual") exitVisual();
       state.pending = "";
+      state.count = "";
       showKey("NORMAL");
+      return;
+    }
+    if (/^\d$/.test(event.key) && (event.key !== "0" || state.count)) {
+      event.preventDefault();
+      state.pending = "";
+      state.count += event.key;
+      showKey(state.count);
       return;
     }
     if (event.key === "j" || event.key === "k") {
       event.preventDefault();
-      move(event.key === "j" ? 1 : -1);
+      repeatMotion(() => move(event.key === "j" ? 1 : -1));
       return;
     }
     if (event.key === "h" || event.key === "l") {
       event.preventDefault();
-      horizontal(event.key === "l" ? 1 : -1);
+      repeatMotion(() => horizontal(event.key === "l" ? 1 : -1));
       return;
     }
+    state.count = "";
     if (state.mode === "normal" && (event.key === "v" || event.key === "V")) {
       event.preventDefault();
       enterVisual(event.key === "V");
@@ -721,16 +767,25 @@ import { createCaret } from "./caret.js";
   }
 
   function restoreLayout() {
-    const mobile = matchMedia("(max-width: 900px)").matches;
-    const left = readStored("kode-editor:left-collapsed", mobile);
-    const right = readStored("kode-editor:right-collapsed", mobile);
-    document.documentElement.classList.toggle("left-collapsed", left);
-    document.documentElement.classList.toggle("right-collapsed", right);
-    paneElements.left.inert = left;
-    paneElements.right.inert = right;
-    $$('[data-toggle-pane="left"]').forEach(button => button.setAttribute("aria-expanded", String(!left)));
-    $$('[data-toggle-pane="right"]').forEach(button => button.setAttribute("aria-expanded", String(!right)));
+    // Drawers start closed on narrow page loads so a persisted desktop layout
+    // cannot obscure the document before JavaScript can enforce exclusivity.
+    const left = narrowLayout.matches ? true : readStored("kode-editor:left-collapsed", false);
+    const right = narrowLayout.matches ? true : readStored("kode-editor:right-collapsed", false);
+    setPaneCollapsed("left", left, false);
+    setPaneCollapsed("right", right, false);
     requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove("layout-boot")));
+  }
+
+  function enforceNarrowDrawers(event) {
+    if (!event.matches) return;
+    if (state.pane === "left") setPaneCollapsed("right", true, false);
+    else if (state.pane === "right") setPaneCollapsed("left", true, false);
+    else {
+      setPaneCollapsed("left", true, false);
+      setPaneCollapsed("right", true, false);
+    }
+    caret?.invalidate();
+    requestCursorUpdate();
   }
 
   function bindMouseNavigation() {
@@ -791,6 +846,7 @@ import { createCaret } from "./caret.js";
   }
 
   restoreLayout();
+  renderCurrentIcon();
   buildWikiLookup();
   buildFileTree();
   transformWikilinks();
@@ -808,6 +864,7 @@ import { createCaret } from "./caret.js";
   $("#file-tree").addEventListener("scroll", requestCursorUpdate, {passive: true});
   $("#outline-tree").addEventListener("scroll", requestCursorUpdate, {passive: true});
   addEventListener("resize", requestCursorUpdate, {passive: true});
+  narrowLayout.addEventListener("change", enforceNarrowDrawers);
   $("#editor-app").addEventListener("transitionend", () => caret.invalidate());
 
   const units = navigationUnits();

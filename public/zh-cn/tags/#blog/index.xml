@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>#Blog on Yorozumoon</title>
-		<link>http://localhost:37705/zh-cn/tags/%23blog/</link>
+		<link>http://localhost:1313/zh-cn/tags/%23blog/</link>
 		<description>Recent content in #Blog on Yorozumoon</description>
 		<generator>Hugo</generator>
 		<language>zh-cn</language>
@@ -14,12 +14,12 @@
 		
 			<lastBuildDate>Mon, 06 Apr 2026 00:00:00 +0000</lastBuildDate>
 		
-			<atom:link href="http://localhost:37705/zh-cn/tags/%23blog/index.xml" rel="self" type="application/rss+xml" />
+			<atom:link href="http://localhost:1313/zh-cn/tags/%23blog/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>OpenJWC后端开发随想</title>
-				<link>http://localhost:37705/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</link>
+				<link>http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</link>
 				<pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</guid>
+				<guid>http://localhost:1313/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/</guid>
 				<description>&lt;h1 id=&#34;前言329&#34;&gt;前言（3.29）&lt;/h1&gt;&#xA;&lt;p&gt;三周前看到计算机设计比赛的消息遂组队参加。因为寒假的时候买了个年抛机，加上自己只对python比较熟悉，所以在团队中担任后端开发。&lt;/p&gt;&#xA;&lt;p&gt;半个月的时间感觉写完了一辈子要写的python。&lt;/p&gt;</description>
 			</item>
 	</channel>

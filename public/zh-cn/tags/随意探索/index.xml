@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>随意探索 on Yorozumoon</title>
-		<link>http://localhost:37705/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</link>
+		<link>http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/</link>
 		<description>Recent content in 随意探索 on Yorozumoon</description>
 		<generator>Hugo</generator>
 		<language>zh-cn</language>
@@ -14,26 +14,26 @@
 		
 			<lastBuildDate>Thu, 22 Jan 2026 00:00:00 +0000</lastBuildDate>
 		
-			<atom:link href="http://localhost:37705/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" />
+			<atom:link href="http://localhost:1313/zh-cn/tags/%E9%9A%8F%E6%84%8F%E6%8E%A2%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>平板游戏环境配置计划：4阶段</title>
-				<link>http://localhost:37705/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/</link>
+				<link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/</link>
 				<pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/</guid>
+				<guid>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/</guid>
 				<description>&lt;h1 id=&#34;参考链接&#34;&gt;参考链接：&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/Kron4ek/Wine-Builds&#34;&gt;我所使用的wine预编译包&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.techpowerup.com/325637/techpowerup-releases-gpu-z-v2-60-0&#34;&gt;GPU-Z&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.techpowerup.com/download/futuremark-3dmark06/&#34;&gt;3Dmark6&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;目前进度&#34;&gt;目前进度：&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;termux x11 + proot distro ubuntu桌面环境工作正常；&lt;/li&gt;&#xA;&lt;li&gt;box64运行x86_64程序成功；&lt;/li&gt;&#xA;&lt;li&gt;vulkan驱动正常工作；&#xA;&lt;ul&gt;&#xA;&lt;li&gt;运行&lt;code&gt;glxgears | grep &amp;quot;renderer&amp;quot;&lt;/code&gt;渲染齿轮动画并显示渲染器为&lt;code&gt;zink&lt;/code&gt;；&lt;/li&gt;&#xA;&lt;li&gt;运行&lt;code&gt;vkcube --wsi xcb&lt;/code&gt;可以渲染旋转立方&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;第四阶段wine&#34;&gt;第四阶段：Wine&lt;/h1&gt;&#xA;&lt;p&gt;回顾我们之前的博客，想要在proot环境下运行steam，光有对x86_64和GPU图像渲染的支持是不够的，我们要运行的是一个纯种的win版steam，不仅系统对不上，连cpu位数都对不上。（steam是一个完全的32位应用，而不幸的是我的vivopad3完全不支持32位指令。）&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>平板游戏环境部署计划</title>
-				<link>http://localhost:37705/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/</link>
+				<link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/</link>
 				<pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/</guid>
+				<guid>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/</guid>
 				<description>&lt;h2 id=&#34;今日计划&#34;&gt;今日计划&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;实现平板上配置游戏环境。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;由于游戏大多面向windows这样开箱即用的系统开发，Linux并不是游戏运行的一等公民。所以如果想要在一台&lt;strong&gt;arm64架构的·android系统，甚至不是一个纯种linux系统的·纯64位，对32位指令完全不支持的&lt;/strong&gt;环境下配置windows游戏运行环境，我们需要摄入适量的前置知识。&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>平板游戏环境配置计划：2&amp;3阶段</title>
-				<link>http://localhost:37705/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</link>
+				<link>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</link>
 				<pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</guid>
+				<guid>http://localhost:1313/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/</guid>
 				<description>&lt;h1 id=&#34;参考链接&#34;&gt;参考链接&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/ptitSeb/box64/blob/main/README_CN.md&#34;&gt;box64中文主页&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/K11MCH1/WinlatorTurnipDrivers/releases/tag/winlator_v25.1_r2&#34;&gt;turnip driver&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://docs.mesa3d.org/install.html&#34;&gt;mesa3D主页&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;第二阶段box64部署&#34;&gt;第二阶段：box64部署&lt;/h1&gt;&#xA;&lt;p&gt;基础编译工具链：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt-get update&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt-get install -y git cmake build-essential python3 python3-setuptoolsapt-get update&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;apt-get install -y git cmake build-essential python3 python3-setuptools&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;编译指令：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. 克隆官方仓库&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git clone https://github.com/ptitSeb/box64&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; box64&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. 创建构建目录&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mkdir build&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; build&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3. 配置 CMake (关键步骤)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -DSD8G2=1 : 针对骁龙8Gen2/3架构优化&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# -DCMAKE_BUILD_TYPE=RelWithDebInfo : 保持高性能的同时保留调试信息(对崩溃排查很重要)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cmake .. -DSD8G2&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; -DCMAKE_BUILD_TYPE&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;RelWithDebInfo&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 4. 开始编译 (利用 8s Gen 3 的多核性能，-j8)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;make -j8&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装二进制文件到系统目录：&lt;/p&gt;</description>
 			</item>
 	</channel>

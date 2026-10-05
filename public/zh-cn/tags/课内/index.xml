@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>课内 on Yorozumoon</title>
-		<link>http://localhost:37705/zh-cn/tags/%E8%AF%BE%E5%86%85/</link>
+		<link>http://localhost:1313/zh-cn/tags/%E8%AF%BE%E5%86%85/</link>
 		<description>Recent content in 课内 on Yorozumoon</description>
 		<generator>Hugo</generator>
 		<language>zh-cn</language>
@@ -14,20 +14,20 @@
 		
 			<lastBuildDate>Mon, 19 Jan 2026 00:00:00 +0000</lastBuildDate>
 		
-			<atom:link href="http://localhost:37705/zh-cn/tags/%E8%AF%BE%E5%86%85/index.xml" rel="self" type="application/rss+xml" />
+			<atom:link href="http://localhost:1313/zh-cn/tags/%E8%AF%BE%E5%86%85/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>SEU程序设计复习02：远古老登</title>
-				<link>http://localhost:37705/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</link>
+				<link>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</link>
 				<pubDate>Mon, 19 Jan 2026 00:00:00 +0000</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</guid>
-				<description>&lt;h1 id=&#34;本篇要素&#34;&gt;本篇要素：&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;指针&lt;/li&gt;&#xA;&lt;li&gt;C风格字符串&lt;/li&gt;&#xA;&lt;li&gt;C风格数组&lt;/li&gt;&#xA;&lt;li&gt;基本算法&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;指针&#34;&gt;指针&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;media-frame&#34;&gt;&#xA;  &lt;img src=&#34;http://localhost:37705/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB-20260119-1.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; decoding=&#34;async&#34;&gt;&lt;/span&gt;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;众所周知，无论是什么程序语言，程序运行时的数据都缓存在内存上。内存就像一张超级大的草稿纸。对于机器来说，除了对内存写入的数据本身外，数据写入的位置同样重要。知道了数据写入的位置，我们才能随时利用我们写入的数据进行计算。&lt;/p&gt;</description>
+				<guid>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/</guid>
+				<description>&lt;h1 id=&#34;本篇要素&#34;&gt;本篇要素：&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;指针&lt;/li&gt;&#xA;&lt;li&gt;C风格字符串&lt;/li&gt;&#xA;&lt;li&gt;C风格数组&lt;/li&gt;&#xA;&lt;li&gt;基本算法&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;指针&#34;&gt;指针&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;media-frame&#34;&gt;&#xA;  &lt;img src=&#34;http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB-20260119-1.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; decoding=&#34;async&#34;&gt;&lt;/span&gt;&#xA;&lt;/p&gt;&#xA;&lt;p&gt;众所周知，无论是什么程序语言，程序运行时的数据都缓存在内存上。内存就像一张超级大的草稿纸。对于机器来说，除了对内存写入的数据本身外，数据写入的位置同样重要。知道了数据写入的位置，我们才能随时利用我们写入的数据进行计算。&lt;/p&gt;</description>
 			</item>
 			<item>
 				<title>SEU程序设计复习01：基础语法</title>
-				<link>http://localhost:37705/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
+				<link>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</link>
 				<pubDate>Sat, 17 Jan 2026 00:00:00 +0000</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
-				<description>&lt;h1 id=&#34;本学期涉及内容&#34;&gt;本学期涉及内容：&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;第二章：C++程序入门、输入输出和运算符&lt;/li&gt;&#xA;&lt;li&gt;第三章：类、对象、字符串&lt;/li&gt;&#xA;&lt;li&gt;第四章：控制语句、赋值、自增、自减&lt;/li&gt;&#xA;&lt;li&gt;第五章：控制语句和逻辑运算符&lt;/li&gt;&#xA;&lt;li&gt;第六章：函数和递归入门&lt;/li&gt;&#xA;&lt;li&gt;第七章：类模版array和vector、异常捕捉（没学）&lt;/li&gt;&#xA;&lt;li&gt;第八章：指针&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;第一章省流版&#34;&gt;第一章省流版：&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;media-frame&#34;&gt;&#xA;  &lt;img src=&#34;http://localhost:37705/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001-20260117-1.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; decoding=&#34;async&#34;&gt;&lt;/span&gt;&#xA;&lt;/p&gt;</description>
+				<guid>http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
+				<description>&lt;h1 id=&#34;本学期涉及内容&#34;&gt;本学期涉及内容：&lt;/h1&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;第二章：C++程序入门、输入输出和运算符&lt;/li&gt;&#xA;&lt;li&gt;第三章：类、对象、字符串&lt;/li&gt;&#xA;&lt;li&gt;第四章：控制语句、赋值、自增、自减&lt;/li&gt;&#xA;&lt;li&gt;第五章：控制语句和逻辑运算符&lt;/li&gt;&#xA;&lt;li&gt;第六章：函数和递归入门&lt;/li&gt;&#xA;&lt;li&gt;第七章：类模版array和vector、异常捕捉（没学）&lt;/li&gt;&#xA;&lt;li&gt;第八章：指针&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;第一章省流版&#34;&gt;第一章省流版：&lt;/h1&gt;&#xA;&lt;p&gt;&lt;span class=&#34;media-frame&#34;&gt;&#xA;  &lt;img src=&#34;http://localhost:1313/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/SEU%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001-20260117-1.png&#34; alt=&#34;&#34; loading=&#34;lazy&#34; decoding=&#34;async&#34;&gt;&lt;/span&gt;&#xA;&lt;/p&gt;</description>
 			</item>
 	</channel>
 </rss>

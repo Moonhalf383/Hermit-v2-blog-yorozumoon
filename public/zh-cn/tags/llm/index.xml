@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Llm on Yorozumoon</title>
-		<link>http://localhost:37705/zh-cn/tags/llm/</link>
+		<link>http://localhost:1313/zh-cn/tags/llm/</link>
 		<description>Recent content in Llm on Yorozumoon</description>
 		<generator>Hugo</generator>
 		<language>zh-cn</language>
@@ -14,12 +14,12 @@
 		
 			<lastBuildDate>Sat, 16 May 2026 14:27:13 +0800</lastBuildDate>
 		
-			<atom:link href="http://localhost:37705/zh-cn/tags/llm/index.xml" rel="self" type="application/rss+xml" />
+			<atom:link href="http://localhost:1313/zh-cn/tags/llm/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>Happy-LLM自学笔记01</title>
-				<link>http://localhost:37705/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/</link>
+				<link>http://localhost:1313/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/</link>
 				<pubDate>Sat, 16 May 2026 14:27:13 +0800</pubDate>
-				<guid>http://localhost:37705/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/</guid>
+				<guid>http://localhost:1313/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/</guid>
 				<description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;&#xA;&lt;p&gt;在我导推荐了几个月之后终于开坑happy-llm，之后可能还会开CS336的坑。&lt;/p&gt;&#xA;&lt;p&gt;我个人的写作习惯是倾向于认为文字应该越易懂越好，所以学术性以及数学性可能相对欠缺。&lt;/p&gt;</description>
 			</item>
 	</channel>

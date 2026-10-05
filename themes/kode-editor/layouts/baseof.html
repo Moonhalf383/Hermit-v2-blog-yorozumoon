@@ -9,6 +9,9 @@
   {{- if not (findRE `(?i)\.md$` $displayPath) }}{{ $displayPath = printf "%s.md" $displayPath }}{{ end -}}
 {{- end -}}
 {{- if .IsHome }}{{ $sourcePath = "_index.md" }}{{ $displayPath = "README.md" }}{{ end -}}
+{{- $currentIcon := .Params.icon | default "LiFile" -}}
+{{- if .IsHome }}{{ $currentIcon = .Params.icon | default "LiHouse" }}{{ end -}}
+{{- $currentIconColor := .Params.iconcolor | default "#000000" -}}
 {{- $index := slice -}}
 {{- range .Site.Pages -}}
   {{- if .File -}}
@@ -50,10 +53,12 @@
       const mobile = matchMedia('(max-width: 900px)').matches;
       for (const side of ['left', 'right']) {
         let collapsed = mobile;
-        try {
-          const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
-          if (stored !== null) collapsed = JSON.parse(stored) === true;
-        } catch (_) {}
+        if (!mobile) {
+          try {
+            const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+            if (stored !== null) collapsed = JSON.parse(stored) === true;
+          } catch (_) {}
+        }
         root.classList.toggle(`${side}-collapsed`, collapsed);
       }
     })();
@@ -90,7 +95,7 @@
 
     <main class="pane document-pane" id="document-pane" tabindex="-1">
       <div class="editor-tab" aria-label="当前文件">
-        <span class="tab-mark" aria-hidden="true">◇</span>
+        <span class="file-icon tab-mark" data-page-icon="{{ $currentIcon }}" data-page-icon-color="{{ $currentIconColor }}" aria-hidden="true"></span>
         <span>{{ $displayPath }}</span>
       </div>
       <article class="document" id="document">
@@ -126,11 +131,12 @@
       <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
       <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
       <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>数字</kbd><kbd>h j k l</kbd><span>按次数重复移动，如 10j</span></p>
       <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
       <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
       <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
       <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
-      <p><kbd>g d</kbd><span>打开光标下的 wikilink / 当前友链</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 Markdown 链接 / wikilink / 友链</span></p>
       <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
       <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
     </div>
