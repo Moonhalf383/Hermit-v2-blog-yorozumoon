@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>I&#43;&#43;交流 on Yorozumoon</title>
+		<link>http://localhost:1313/zh-cn/tags/i&#43;&#43;%E4%BA%A4%E6%B5%81/</link>
+		<description>Recent content in I&#43;&#43;交流 on Yorozumoon</description>
+		<generator>Hugo</generator>
+		<language>zh-cn</language>
+		
+		
+		
+			<copyright>copyright by Moonhalf.</copyright>
+		
+		
+			<lastBuildDate>Sat, 31 Oct 2026 18:00:00 +0800</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/zh-cn/tags/i++%E4%BA%A4%E6%B5%81/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>你为什么需要加入I&#43;&#43;交流</title>
+				<link>http://localhost:1313/zh-cn/posts/%E4%BD%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%8A%A0%E5%85%A5ipp%E4%BA%A4%E6%B5%81/</link>
+				<pubDate>Sat, 31 Oct 2026 18:00:00 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/%E4%BD%A0%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%8A%A0%E5%85%A5ipp%E4%BA%A4%E6%B5%81/</guid>
+				<description>&lt;h1 id=&#34;交流的历史&#34;&gt;交流的历史&lt;/h1&gt;&#xA;&lt;p&gt;在古法编程时代，程序员间的技术交流有一套经典的指南，叫做&lt;strong&gt;How To Ask Questions The Smart Way&lt;/strong&gt;。彼时没有大语言模型，遇到技术问题时，程序员只能求助于技术论坛。而人的耐心是有限的，在论坛中活跃的黑客也只是用业余时间解答其他人的技术问题。因此，那时想要得到一个问题的答案是一件困难的事情：你需要用足够好的问题激发黑客的兴趣，这样他们才会乐意研究并给出回答。&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>
