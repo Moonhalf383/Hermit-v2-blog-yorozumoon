@@ -3,7 +3,7 @@ title: 我讨厌社交
 icon: LiBug
 iconColor: '#000000'
 date: '2026-10-31T23:57:13.588103+08:00'
-draft: false
+draft: true
 toc: true
 math: true
 images: []
