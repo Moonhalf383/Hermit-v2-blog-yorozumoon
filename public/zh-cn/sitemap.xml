@@ -3,13 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/zh-cn/posts/</loc>
-    <lastmod>2026-10-31T23:57:13+08:00</lastmod>
+    <lastmod>2026-11-02T19:40:13+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/</loc>
-    <lastmod>2026-10-31T23:57:13+08:00</lastmod>
+    <lastmod>2026-11-02T19:40:13+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/zh-cn/posts/%E6%88%91%E8%AE%A8%E5%8E%8C%E7%A4%BE%E4%BA%A4/</loc>
-    <lastmod>2026-10-31T23:57:13+08:00</lastmod>
+    <loc>http://localhost:1313/zh-cn/tags/</loc>
+    <lastmod>2026-11-02T19:40:13+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/tags/%E6%95%B0%E5%AD%A6/</loc>
+    <lastmod>2026-11-02T19:40:13+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/zh-cn/posts/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E8%A1%A5%E5%AE%8C01/</loc>
+    <lastmod>2026-11-02T19:40:13+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/</loc>
     <lastmod>2026-09-01T18:29:13+08:00</lastmod>
@@ -18,9 +24,6 @@
     <lastmod>2026-06-10T14:58:20+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/riscv/</loc>
-    <lastmod>2026-06-10T14:58:20+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/zh-cn/tags/</loc>
     <lastmod>2026-06-10T14:58:20+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/zh-cn/tags/%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84/</loc>

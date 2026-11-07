@@ -124,11 +124,7 @@ a{text-decoration-thickness:1px;text-underline-offset:.18em}
 .mermaid text,.mermaid .label{fill:var(--ink)!important;color:var(--ink)!important;font-family:var(--font)!important}
 
 mjx-container{font-family:initial;color:var(--ink)}
-mjx-container:not([display="true"])::before,mjx-container:not([display="true"])::after{content:"$";font-family:var(--font);color:#bbb;padding:0 .08em}
 mjx-container[display="true"]{position:relative;margin:2rem auto!important;padding:1.1rem 1.5rem;border-top:var(--hairline);border-bottom:var(--hairline);overflow-x:auto;overflow-y:hidden}
-mjx-container[display="true"]::before,mjx-container[display="true"]::after{content:"$$";position:absolute;font-family:var(--font);font-size:.7rem;color:#bbb}
-mjx-container[display="true"]::before{top:.25rem;left:.3rem}
-mjx-container[display="true"]::after{right:.3rem;bottom:.25rem}
 
 .friend-links-container{display:grid;grid-template-columns:minmax(0,1fr);gap:.85rem;max-width:49rem;margin:2rem auto;background:var(--paper)}
 .friend-card{display:grid;grid-template-columns:3.2rem minmax(0,1fr);gap:.8rem;align-items:center;min-height:5rem;padding:.85rem;background:var(--paper);border:var(--line);text-decoration:none}

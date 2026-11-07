@@ -12,15 +12,15 @@
 			<copyright>copyright by Moonhalf.</copyright>
 		
 		
-			<lastBuildDate>Sat, 31 Oct 2026 18:00:00 +0800</lastBuildDate>
+			<lastBuildDate>Mon, 02 Nov 2026 19:40:13 +0800</lastBuildDate>
 		
 			<atom:link href="http://localhost:1313/zh-cn/tags/%E6%95%B0%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
 			<item>
-				<title>信息论车祸速成</title>
-				<link>http://localhost:1313/zh-cn/posts/%E4%BF%A1%E6%81%AF%E8%AE%BA%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/</link>
-				<pubDate>Sat, 31 Oct 2026 18:00:00 +0800</pubDate>
-				<guid>http://localhost:1313/zh-cn/posts/%E4%BF%A1%E6%81%AF%E8%AE%BA%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/</guid>
-				<description>&lt;p&gt;信息本身具有客观规律，进而使得一些“看起来似乎没人阻止不这么做”的事情事实上背后有规律主导。比如，为什么vibe coding时agent总是猜不到你想实现什么、为什么人类的语言总是有歧义、为什么谣言总是在产生、为什么LLM能有效利用的上下文是有限的、为什么残差网络可以将传统机器学习拓展到深度学习。&lt;/p&gt;</description>
+				<title>统计学补完01</title>
+				<link>http://localhost:1313/zh-cn/posts/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E8%A1%A5%E5%AE%8C01/</link>
+				<pubDate>Mon, 02 Nov 2026 19:40:13 +0800</pubDate>
+				<guid>http://localhost:1313/zh-cn/posts/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E8%A1%A5%E5%AE%8C01/</guid>
+				<description>&lt;p&gt;整理了一些之前没整理或没完全理清的统计学知识。&lt;/p&gt;&#xA;&lt;h2 id=&#34;统计学&#34;&gt;统计学&lt;/h2&gt;&#xA;&lt;p&gt;现实中的事物往往是非常复杂，其中包含了大量信息，但是只有少数信息是我们真正关心的。一方面统计学将信息量庞大的体系压缩为一个或几个人们真正关心的特征量，另一方面统计学也关心如何由特征量复原事物原本的样貌。&lt;/p&gt;</description>
 			</item>
 	</channel>
 </rss>

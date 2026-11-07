@@ -58,7 +58,7 @@ graph LR
 ```
 ````
 
-Mermaid 只在页面存在图表时动态加载。MathJax 只在页面 frontmatter 含 `math: true` 时加载；行内和块公式外围会以浅灰色显示 `$` 与 `$$`。
+Mermaid 只在页面存在图表时动态加载。MathJax 在页面 frontmatter 含 `math: true` 或站点启用 `global_mathjax` 时加载；行内和块公式渲染后不额外显示 `$` 或 `$$` 分隔符。
 
 ## 键位
 

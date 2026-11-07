@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-cn">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('layout-boot');
+      const mobile = matchMedia('(max-width: 900px)').matches;
+      for (const side of ['left', 'right']) {
+        let collapsed = mobile;
+        if (!mobile) {
+          try {
+            const stored = localStorage.getItem(`kode-editor:${side}-collapsed`);
+            if (stored !== null) collapsed = JSON.parse(stored) === true;
+          } catch (_) {}
+        }
+        root.classList.toggle(`${side}-collapsed`, collapsed);
+      }
+    })();
+  </script>
+  <meta name="description" content="整理了一些之前没整理或没完全理清的统计学知识。
+统计学 现实中的事物往往是非常复杂，其中包含了大量信息，但是只有少数信息是我们真正关心的。一方面统计学将信息量庞大的体系压缩为一个或几个人们真正关心的特征量，另一方面统计学也关心如何由特征量复原事物原本的样貌。
+">
+  <title>统计学补完01 · Yorozumoon</title>
+  <link rel="icon" type="image/png" href="/images/face.png"><link rel="stylesheet" href="/css/editor.min.e2fa34cf6c518be2c976ef829fc5932794116cc06ebd0952695b3f72222ca24d.css" integrity="sha256-4vo0z2xRi&#43;LJdu&#43;Cn8WTJ5QRbMBuvQlSaVs/ciIsok0="><script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true},
+      options: {skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+      chtml: {scale: 0.96}
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+</head>
+<body class="editor-shell" data-current-path="posts/统计学补完01.md" data-current-source="posts/统计学补完01/index.md">
+  <div class="editor-grid" id="editor-app">
+    <aside class="pane sidebar explorer" id="explorer-pane" aria-label="文件树">
+      <div class="explorer-tabs" role="tablist" aria-label="浏览方式">
+        <button type="button" role="tab" data-explorer-view="files" aria-selected="true">FILES</button>
+        <button type="button" role="tab" data-explorer-view="tags" aria-selected="false">TAGS</button>
+      </div>
+      <nav class="tree" id="file-tree" aria-label="文件" role="tree"></nav>
+    </aside>
+
+    <main class="pane document-pane" id="document-pane" tabindex="-1">
+      <div class="editor-tab" aria-label="当前文件">
+        <span class="file-icon tab-mark" data-page-icon="LiChart" data-page-icon-color="#000000" aria-hidden="true"></span>
+        <span>posts/统计学补完01.md</span>
+      </div>
+      <article class="document" id="document">
+        
+<header class="document-header">
+  <p class="document-kind">posts/统计学补完01.md</p>
+  <h1>统计学补完01</h1>
+  <div class="document-meta"><time datetime="2026-11-02">2026-11-02</time><span>数学</span></div>
+</header>
+<div class="content" data-wikilinks>
+  <p>整理了一些之前没整理或没完全理清的统计学知识。</p>
+<h2 id="统计学">统计学</h2>
+<p>现实中的事物往往是非常复杂，其中包含了大量信息，但是只有少数信息是我们真正关心的。一方面统计学将信息量庞大的体系压缩为一个或几个人们真正关心的特征量，另一方面统计学也关心如何由特征量复原事物原本的样貌。</p>
+<p>从信息论的视角看，统计学的本质其实就是有损压缩与展开的一系列启发式算法。</p>
+<h3 id="协方差">协方差</h3>
+<p>描述一个变量变化时另一个变量的的变化趋势。
+</p>
+$$
+Cov(X, Y) = E[(X-E[X])(Y-E[Y])]
+$$<p>
+方差即一个变量和自身的协方差。相关系数同样描述两个变量的线性关系，但是进行了标准化。多数时候相关系数是协方差的上位替代。</p>
+<h3 id="最大似然估计">最大似然估计</h3>
+<p>Maximum Likelihood Estimation，简称MLE。用于由数据反推最可能产生这样的数据的参数。</p>
+<p>本质上就是降低交叉熵。</p>
+<h3 id="中心极限定理">中心极限定理</h3>
+<p>相互独立且方差有限非零的随机变量数量越多，其均值越接近正态分布。</p>
+<p>正态分布是方差一定的情况下信息熵最大的分布。变量数增加时信息熵只增不减，而方差有限，使得最后呈现正态分布。</p>
+<h3 id="置信区间">置信区间</h3>
+<p>置信区间描述真值落在一个区间内的概率。真值本身是固定的，但是选取一个区间后真值在不在这个区间内是随机的。我们通过这种方式来估计预测的准确度。</p>
+<p>大多数时候我们没办法完全统计，我们只能从全集的一个子集中总结某种规律。比如我们从所有大学生中抽100个量身高，得到一个平均值$\bar{x}$。虽然我们不知道所有大学生身高的具体分布，但根据中心极限定理，在满足一定条件时，<strong>随机抽取100人得到的样本均值</strong>近似服从正态分布。基于正态分布假设，以局部标准差估计整体标准差并取我们算得的均值为中心，可以得到这样一个区间：
+</p>
+$$
+ [\bar{X} -1.96\cdot\frac{\sigma}{\sqrt{ n } },\bar{X} +1.96\cdot\frac{\sigma}{\sqrt{ n } }]
+$$<p>
+假如我们可以多次抽取100名大学生测量身高，每一次取样我们都可以得到一个均值,那么以这个均值为均值
+、并假设局部标准差和整体标准差一致得到的正态分布下，真值落在这个区间的概率为95%。</p>
+<p>这个区间称为95%置信区间。同理可以得到其他概率大小的置信区间。区间越大真值在区间外的概率越小，置信度越大。</p>
+<h3 id="bootstrap重采样">Bootstrap重采样</h3>
+<p>我们想估计全校大学生的平均睡眠时间，但实际上只调查了5人的数据。Bootstrap这样做：有放回的在这5个人中抽取并记录数据，重复5次，这样得到一个新的均值。重复此操作之后我们得到了一系列均值。这些均值就构成了一个分布，我们可以通过这个分布来估计真实分布，并进而估计真实分布的统计特性，比如均值、中位数、置信区间等。</p>
+<p>信息当然不能凭空产生。Bootstrap的假设是既有的样本足够具有代表性，就像是整个分布的一个摘要，每一个样本都平均的代表了一部分真实的分布，并且完全统计所需要的样本数足够大。样本就像是真实分布打了马赛克，再好的算法也没办法恢复已经损失的信息。</p>
+<p>Bootstrap重采样之后也可以得到置信区间，并且不依赖于正态分布假设。</p>
+<h2 id="信息论与机器学习车祸速成">信息论与机器学习车祸速成</h2>
+<p>香农熵表示如下，单位为bit：</p>
+$$
+H(X) = -\sum_ip_ilog_2p_i
+$$<p>学习的本质是对一组数据找到最好的无损压缩策略。比如如果我们要传递一个10000长度的二进制序列，如果全部都是010101交替出现，我们只需要告诉另一个人“01重复5000次”即可；但是如果这10000个数字全都是抛硬币抛出来的，那么我们根本找不到规律，为了无损传输，我们只能原样把10000长的序列告诉对方。</p>
+<p>香农熵本质上规定了无损压缩的理论最小码长。压缩数据时，用于直接描述数据的信息量减少，而需要额外的信息量用于描述压缩模型。比如，10000次硬币随机投掷得到的序列香农熵为10000bit，那么无损压缩后用于描述这个序列的信息量最少也要10000bit；而全部01组成的序列只有一个100%发生的情况，香农熵为0，则理论上描述这个序列的最小码长为0，我们只需要传递规律本身的信息即可，这部分信息即对应压缩模型的信息。</p>
+<p>与此同时，香农熵还能表示不确定度，因为本质上，当一个概率分布的香农熵为xbit时，猜测这个分布就等价于去猜一个x长的二进制序列。通过香农熵，我们实现了不确定度、信息量以及编码长度三者的统一。不确定度越大，描述样本时就越没办法投机取巧，导致描述所需的编码长度越大，信息量也越大。</p>
+<p>后文中本人不严谨的混用不确定度、信息量以及编码长度三者，如有不周还望指出。</p>
+$$\text{总描述长度 } L(D, H) = L(H) + L(D \mid H)$$<p>MDL指最小编码长度。古典MDL中，我们使用两部分编码来评估模型M对数据的描述长度，其中$L(H)$为模型的描述长度，对应了模型本身的信息量；$L(D|H)$表示给定的模型下数据的描述长度，即描述模型预测残差所需要的信息量。模型的工作是预测数据，如果数据与真实值完全一致，则残差根本不存在，也不会带给人不确定性，模型本身就直接准确表述了真实的数据分布。反之，模型预测值与真实值之间差距较大，则残差会带给人相对更大的不确定度，进而我们需要付出额外的编码长度作为代价。古典MDL的缺点是$L(H)$的选取相对主观，没有一个统一的方法量化模型的描述长度。</p>
+<p>在机器学习中，我们使用神经网络来压缩信息，比如将一个$16\cdot16$的4通道图像分类到8个类别，本质上就是把一个10bit的序列压缩成一个3bit的序列，而描述模型权重的编码长度则对应了压缩算法本身的信息量。</p>
+<p>我们合理假设权重的方差是有上限的，那么这就构成了对于权重分布的约束，同时也是唯一的约束。<strong>最大熵原理</strong>告诉我们，概率分布的信息量受两种因素影响，一部分是已知约束，另一部分则是对于分布的额外假设，继而满足所有已知约束且同时额外假设的信息最少的分布最有可能发生，因为他们的微观状态数远大于其他可能。此处因为我们只限制了方差，那么方差有限且熵最大的分布就是最可能出现的分布。而由前文的中心极限定理知，均值为0、方差有限且熵最大的分布就是正态分布。所以我们本质上认为权重的分布最可能符合正态分布。在这种分布下，权重的值越大概率越小，编码该权重对应的编码长度越大。假如权重的数值普遍都很大，则意味着整个模型的信息量很大。</p>
+<p>$L(D)$描述了模型的信息量，反映了数据分布背后的原理；与此同时$L(D|H)$描述了模型预测残差的信息量。我们当然希望模型尽可能好的预测真实值，所以$L(D|H)$越低越好，但是如果$L(D)$超过了描述数据分布背后我们所关心的规律所需要的编码长度，那么多余的编码长度在训练时就会被用于描述噪声，导致虽然训练用的数据（我们所说的训练集）上$L(D|H)$较低，但是更一般的情境（比如验证集与测试集）下$L(D|H)$则较高，原因就是多余的编码长度被用于表达并不表达数据分布规律的噪声。这就是我们所说的<strong>过拟合</strong>。</p>
+<p>由此看来，我们需要在训练模型的时候限制$L(D)$来防止过拟合。而由前文的方差有限假设知，权重最有可能符合均值为0的正态分布，而正态分下权重越大$L(D)$越大。所以最简单的防止过拟合的方式就是限制权重绝对值。</p>
+<h3 id="模型架构">模型架构</h3>
+<p>在前文的讨论中我们尝试理解了机器学习的统计学本质，但是完全无视了具体的模型架构。不同架构的模型从压缩信息这一角度看没有什么区别，但是我们仍然注意到现实中的模型在架构上出现了分化，比如有经典架构如FNN（全连接前馈）、CNN（卷积神经网络）、RNN（循环神经网络）等，有现代架构如transformer。本质上，模型的学习过程可以看作是在假设空间中寻找最优解的搜索过程，而不同的架构就对应了不同的启发式策略。与传统启发式策略一样，模型架构本质上也是在做空间剪枝，减少不必要的探索,比如FNN使用全连接层理解输入数据，本质上是暴力穷举所有可能，而在计算机视觉任务下，CNN使模型只关心相邻的像素，大大减少了探索空间。</p>
+<p>启发式策略减少搜索成本，但同时代价是当现实数据违背了启发式假设时，强架构会限制模型的能力上限。深度学习架构迭代的历史某种程度上就是启发式逐渐退场的过程。在过去数据量较少、算力较低的时候，强启发式可以带来相比学习方法更好的效果，随着算力与数据量的增长，弱启发架构（如transformer）在泛化能力上最终可以超过人类手工定制的规则。</p>
+<h3 id="回归">回归</h3>
+<p>各种回归策略本质上就是在权衡我们前文中提到的$L(D)$与$L(D|H)$，其中一种普遍被使用的策略叫做<strong>正则化</strong>，即对模型的复杂度进行限制。比如Ridge回归在最小二乘损失函数的基础上引入模型权重的L2范数惩罚来控制$L(D)$进而缓解过拟合；Lasso回归在最小二乘损失函数的基础上引入模型权重的L1范数损失函数来控制$L(D)$。前者使用的就是L2正则化，后者使用的则是L1正则化。区别在于，后者的残差平方和的“尖角”更容易出现在坐标轴上，惩罚也更多集中于少数特征，进而从所有特征中剔除无关变量，更适用于对可解释有要求的情景。</p>
+<p>Logistic回归虽然名字里带回归，但是并不是回归算法。本质是有连续的分数通过Sigmoid激活函数得到概率，根据是否达到阈值来进行离散分类（比如大于0.5是A，小于0.5是B）。</p>
+
+</div>
+
+  
+<section id="comments" aria-label="评论">
+  <h2>DISCUSSION</h2>
+  <div class="giscus" data-giscus
+       data-repo="Moonhalf383/Hermit-v2-blog-yorozumoon"
+       data-repo-id="R_kgDOQaFILg"
+       data-category="Announcements"
+       data-category-id="DIC_kwDOQaFILs4CyFGz"
+       data-mapping="specific"
+       data-term="统计学补完01"
+       data-strict="0"
+       data-reactions-enabled="1"
+       data-emit-metadata="0"
+       data-input-position="top"
+       data-theme="light"
+       data-lang="zh-CN"
+       data-loading="lazy"></div>
+  <noscript>评论需要启用 JavaScript，并允许连接 giscus.app。</noscript>
+</section>
+
+
+
+      </article>
+    </main>
+
+    <aside class="pane sidebar outline" id="outline-pane" aria-label="大纲">
+      <div class="pane-title">OUTLINE</div>
+      <nav class="outline-tree" id="outline-tree" aria-label="页面大纲"></nav>
+    </aside>
+  </div>
+
+  <button class="edge-toggle edge-toggle-left" type="button" data-toggle-pane="left" aria-label="收放文件栏" aria-expanded="true">H</button>
+  <button class="edge-toggle edge-toggle-right" type="button" data-toggle-pane="right" aria-label="收放大纲栏" aria-expanded="true">L</button>
+
+  <footer class="statusline" aria-live="polite">
+    <span id="mode-indicator">NORMAL</span>
+    <span class="status-path">posts/统计学补完01.md</span>
+    <span id="key-indicator">? : help</span>
+  </footer>
+
+  <div class="vim-cursor snap" id="vim-cursor" aria-hidden="true"></div>
+  <div class="toast" id="editor-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="help" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">KEYMAP.md</h2>
+      <button type="button" data-close-help aria-label="关闭帮助">×</button>
+    </div>
+    <div class="help-list">
+      <p><kbd>j</kbd><kbd>k</kbd><span>上下视觉行（含代码及换行标题）</span></p>
+      <p><kbd>w e</kbd><kbd>b</kbd><span>下个词首 / 词尾 / 上个词首</span></p>
+      <p><kbd>0 $</kbd><kbd>gg G</kbd><span>视觉行首尾 / 文档首尾</span></p>
+      <p><kbd>h</kbd><kbd>l</kbd><span>正文逐字符移动 / 侧栏收展与打开</span></p>
+      <p><kbd>数字</kbd><kbd>h j k l</kbd><span>按次数重复移动，如 10j</span></p>
+      <p><kbd>Ctrl h</kbd><kbd>Ctrl l</kbd><span>切换栏位焦点</span></p>
+      <p><kbd>H</kbd><kbd>L</kbd><span>收放左 / 右侧栏</span></p>
+      <p><kbd>v</kbd><kbd>V</kbd><span>可视选择 / 整行选择</span></p>
+      <p><kbd>y</kbd><kbd>yy</kbd><span>复制选择 / 当前行或代码块</span></p>
+      <p><kbd>g d</kbd><span>打开光标下的 Markdown 链接 / wikilink / 友链</span></p>
+      <p><kbd>Esc</kbd><span>返回 NORMAL / 关闭帮助</span></p>
+      <p><kbd>?</kbd><span>显示或隐藏本帮助</span></p>
+    </div>
+  </dialog>
+
+  <script id="site-file-index" type="application/json">[{"aliases":[],"date":1793619613,"folderIcon":"LiFolderOpen","icon":"LiHouse","iconColor":"#000000","path":"README.md","source":"_index.md","tags":[],"title":"README.md","url":"/zh-cn/"},{"aliases":[],"date":1793619613,"folderIcon":"","icon":"LiTag","iconColor":"#000000","path":"tags.md","source":"tags/_index.md","tags":[],"title":"标签墙","url":"/zh-cn/tags/"},{"aliases":[],"date":1793619613,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/统计学补完01.md","source":"posts/统计学补完01/index.md","tags":["数学"],"title":"统计学补完01","url":"/zh-cn/posts/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E8%A1%A5%E5%AE%8C01/"},{"aliases":[],"date":1788258553,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/LaTeX车祸速成.md","source":"posts/LaTeX车祸速成/index.md","tags":[],"title":"LaTeX车祸速成","url":"/zh-cn/posts/latex%E8%BD%A6%E7%A5%B8%E9%80%9F%E6%88%90/"},{"aliases":[],"date":1781074700,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别.md","source":"posts/CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别/index.md","tags":["riscv","体系架构"],"title":"CS61Cfall20学习笔记03：如何使用汇编实现手写数字识别","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%B1%87%E7%BC%96%E5%AE%9E%E7%8E%B0%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/"},{"aliases":[],"date":1779623996,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记02.md","source":"posts/CS61Cfall20学习笔记02/index.md","tags":["C语言","体系架构"],"title":"CS61Cfall20学习笔记02","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002/"},{"aliases":[],"date":1778912833,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/Happy-LLM自学笔记01.md","source":"posts/Happy-LLM自学笔记01/index.md","tags":["llm","自学","python"],"title":"Happy-LLM自学笔记01","url":"/zh-cn/posts/happy-llm%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1778574017,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/CS61Cfall20学习笔记01.md","source":"posts/CS61Cfall20学习笔记01/index.md","tags":["体系架构","C语言","自学"],"title":"CS61Cfall20学习笔记01","url":"/zh-cn/posts/cs61cfall20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001/"},{"aliases":[],"date":1775433600,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/OpenJWC后端开发随想.md","source":"posts/OpenJWC后端开发随想/index.md","tags":["#blog","python"],"title":"OpenJWC后端开发随想","url":"/zh-cn/posts/openjwc%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1774828800,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Thinkpad Archlinux折腾笔记.md","source":"posts/Thinkpad Archlinux折腾笔记/index.md","tags":["blog","linux","archlinux"],"title":"Thinkpad Archlinux折腾笔记","url":"/zh-cn/posts/thinkpad-archlinux%E6%8A%98%E8%85%BE%E7%AC%94%E8%AE%B0/"},{"aliases":[],"date":1774137600,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/CodeCompanion.md","source":"posts/CodeCompanion/index.md","tags":["blog","Neovim"],"title":"CodeCompanion.nvim配置","url":"/zh-cn/posts/codecompanion/"},{"aliases":[],"date":1772323200,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Kaggle房价预测.md","source":"posts/Kaggle房价预测/index.md","tags":["blog","python","机器学习"],"title":"Kaggle房价预测","url":"/zh-cn/posts/kaggle%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B/"},{"aliases":[],"date":1771632000,"folderIcon":"","icon":"LiNotebook","iconColor":"#000000","path":"posts/Jupyter如何配置.md","source":"posts/Jupyter如何配置/index.md","tags":["blog","python","教程","jupyter"],"title":"Jupyter如何配置","url":"/zh-cn/posts/jupyter%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志04：多层感知机.md","source":"posts/D2L自学日志04：多层感知机/index.md","tags":["D2L","机器学习","python","torch"],"title":"D2L自学日志04：多层感知机","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9704%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA/"},{"aliases":[],"date":1770854400,"folderIcon":"","icon":"LiChart","iconColor":"#000000","path":"posts/Data100自学日志01：Pandas.md","source":"posts/Data100自学日志01：Pandas/index.md","tags":["blog","python","pandas","数据科学"],"title":"Data100自学日志01：Pandas","url":"/zh-cn/posts/data100%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701pandas/"},{"aliases":[],"date":1770768000,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/Python文件结构\u0026一些库.md","source":"posts/Python文件结构\u0026一些库/index.md","tags":["blog","python"],"title":"Python文件结构\u0026一些库","url":"/zh-cn/posts/python%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E4%B8%80%E4%BA%9B%E5%BA%93/"},{"aliases":[],"date":1770508800,"folderIcon":"","icon":"LiPen","iconColor":"#000000","path":"posts/19岁生日随想.md","source":"posts/19岁生日随想/index.md","tags":["随笔","blog"],"title":"19岁生日随想","url":"/zh-cn/posts/19%E5%B2%81%E7%94%9F%E6%97%A5%E9%9A%8F%E6%83%B3/"},{"aliases":[],"date":1770163200,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志03：线性神经网络完结.md","source":"posts/D2L自学日志03：线性神经网络完结/index.md","tags":["blog","D2L","python","torch","机器学习"],"title":"D2L自学日志03：线性神经网络完结","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9703%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%8C%E7%BB%93/"},{"aliases":[],"date":1769558400,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/工具不图鉴04：环境变量\u0026shell脚本.md","source":"posts/工具不图鉴04：环境变量\u0026shell脚本/index.md","tags":["blog","教程","shell","python"],"title":"工具不图鉴04：环境变量\u0026shell脚本","url":"/zh-cn/posts/%E5%B7%A5%E5%85%B7%E4%B8%8D%E5%9B%BE%E9%89%B404%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8Fshell%E8%84%9A%E6%9C%AC/"},{"aliases":[],"date":1769472000,"folderIcon":"","icon":"LiImage","iconColor":"#000000","path":"posts/TUI图像显示方案.md","source":"posts/TUI图像显示方案/index.md","tags":["blog","python"],"title":"TUI图像显示方案","url":"/zh-cn/posts/tui%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E6%96%B9%E6%A1%88/"},{"aliases":[],"date":1769040000,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：4阶段.md","source":"posts/平板游戏环境配置计划：4阶段/index.md","tags":["blog","随意探索","平板"],"title":"平板游戏环境配置计划：4阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%924%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境部署计划.md","source":"posts/平板游戏环境部署计划/index.md","tags":["blog","随意探索"],"title":"平板游戏环境部署计划","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%AE%A1%E5%88%92/"},{"aliases":[],"date":1768867200,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/平板游戏环境配置计划：2\u00263阶段.md","source":"posts/平板游戏环境配置计划：2\u00263阶段/index.md","tags":["blog","平板","随意探索"],"title":"平板游戏环境配置计划：2\u00263阶段","url":"/zh-cn/posts/%E5%B9%B3%E6%9D%BF%E6%B8%B8%E6%88%8F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E8%AE%A1%E5%88%9223%E9%98%B6%E6%AE%B5/"},{"aliases":[],"date":1768780800,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习02：远古老登.md","source":"posts/SEU程序设计复习02：远古老登/index.md","tags":["cpp","blog","课内"],"title":"SEU程序设计复习02：远古老登","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A002%E8%BF%9C%E5%8F%A4%E8%80%81%E7%99%BB/"},{"aliases":[],"date":1768694400,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/近日神必脑洞合集.md","source":"posts/近日神必脑洞合集/index.md","tags":["blog","brainstorm"],"title":"近日神必脑洞合集","url":"/zh-cn/posts/%E8%BF%91%E6%97%A5%E7%A5%9E%E5%BF%85%E8%84%91%E6%B4%9E%E5%90%88%E9%9B%86/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFileCode","iconColor":"#000000","path":"posts/SEU程序设计复习01：基础语法.md","source":"posts/SEU程序设计复习01：基础语法/index.md","tags":["blog","cpp","课内"],"title":"SEU程序设计复习01：基础语法","url":"/zh-cn/posts/seu%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%A4%8D%E4%B9%A001%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"},{"aliases":[],"date":1768608000,"folderIcon":"","icon":"LiFlask","iconColor":"#000000","path":"posts/核动力博客发射器测试.md","source":"posts/核动力博客发射器测试/index.md","tags":["blog","test","测试","python","博客搭建"],"title":"核动力博客发射器测试","url":"/zh-cn/posts/%E6%A0%B8%E5%8A%A8%E5%8A%9B%E5%8D%9A%E5%AE%A2%E5%8F%91%E5%B0%84%E5%99%A8%E6%B5%8B%E8%AF%95/"},{"aliases":[],"date":1767785271,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志02：线性回归.md","source":"posts/D2L自学日志02：线性回归/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志02：线性回归","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9702%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"},{"aliases":[],"date":1767272442,"folderIcon":"","icon":"LiGamepad","iconColor":"#000000","path":"posts/Fabric自学日志01：农夫乐事重织版.md","source":"posts/Fabric自学日志01：农夫乐事重织版/index.md","tags":["fabric","minecraft","java"],"title":"Fabric自学日志01：农夫乐事重织版","url":"/zh-cn/posts/fabric%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701%E5%86%9C%E5%A4%AB%E4%B9%90%E4%BA%8B%E9%87%8D%E7%BB%87%E7%89%88/"},{"aliases":[],"date":1767089676,"folderIcon":"","icon":"LiBrain","iconColor":"#000000","path":"posts/D2L自学日志01：preliminaries.md","source":"posts/D2L自学日志01：preliminaries/index.md","tags":["D2L","python","torch","机器学习"],"title":"D2L自学日志01：preliminaries","url":"/zh-cn/posts/d2l%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%9701preliminaries/"},{"aliases":[],"date":1765898615,"folderIcon":"","icon":"LiBox","iconColor":"#000000","path":"posts/venvminiconda.md","source":"posts/venvminiconda/index.md","tags":["工具不图鉴","教程","venv","conda","python"],"title":"工具不图鉴03：虚拟环境\u0026conda","url":"/zh-cn/posts/venvminiconda/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"posts/curl\u0026wget.md","source":"posts/curl\u0026wget/index.md","tags":["工具不图鉴","教程","curl","wget"],"title":"工具不图鉴01：curl\u0026wget","url":"/zh-cn/posts/curlwget/"},{"aliases":[],"date":1765812353,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/zsh\u0026ohmyzsh.md","source":"posts/zsh\u0026ohmyzsh/index.md","tags":["工具不图鉴","教程","zsh","ohmyzsh"],"title":"工具不图鉴02：zsh\u0026ohmyzsh","url":"/zh-cn/posts/zshohmyzsh/"},{"aliases":[],"date":1765326823,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-02Softmax.md","source":"posts/Triton自学日志-02Softmax/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 02FusedSoftmax","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-02softmax/"},{"aliases":[],"date":1765240002,"folderIcon":"","icon":"LiCpu","iconColor":"#000000","path":"posts/Triton自学日志-01VectorAdd.md","source":"posts/Triton自学日志-01VectorAdd/index.md","tags":["Triton","Ascend","学习日志","Python","Torch","推理加速"],"title":"Triton自学日志 01VectorAdd","url":"/zh-cn/posts/triton%E8%87%AA%E5%AD%A6%E6%97%A5%E5%BF%97-01vectoradd/"},{"aliases":[],"date":1763867513,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/NeovimPlugins配置方法.md","source":"posts/NeovimPlugins配置方法/index.md","tags":["Neovim","教程"],"title":"NeovimPlugins配置方法","url":"/zh-cn/posts/neovimplugins%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95/"},{"aliases":[],"date":1763866391,"folderIcon":"","icon":"LiTerminal","iconColor":"#000000","path":"posts/Neovim配置如何入门.md","source":"posts/Neovim配置如何入门/index.md","tags":["Neovim","教程"],"title":"Neovim配置如何入门","url":"/zh-cn/posts/neovim%E9%85%8D%E7%BD%AE%E5%A6%82%E4%BD%95%E5%85%A5%E9%97%A8/"},{"aliases":[],"date":1763706081,"folderIcon":"","icon":"LiLink","iconColor":"#000000","path":"links.md","source":"links.md","tags":[],"title":"友链","url":"/zh-cn/links/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"about/月のまにまに.md","source":"about/月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/about/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763650994,"folderIcon":"","icon":"LiMusic","iconColor":"#000000","path":"月のまにまに.md","source":"月のまにまに.md","tags":["歌词","假名注音","r-906"],"title":"まにまに","url":"/zh-cn/%E6%9C%88%E3%81%AE%E3%81%BE%E3%81%AB%E3%81%BE%E3%81%AB/"},{"aliases":[],"date":1763565643,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/hellohugo.md","source":"posts/hellohugo/index.md","tags":[],"title":"Hellohugo","url":"/zh-cn/posts/hellohugo/"},{"aliases":[],"date":1758372543,"folderIcon":"","icon":"LiHouse","iconColor":"#000000","path":"posts/零基础如何搭建博客.md","source":"posts/零基础如何搭建博客/index.md","tags":["博客搭建","教程"],"title":"零基础如何搭建博客","url":"/zh-cn/posts/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"}]</script>
+  <script id="editor-config" type="application/json">{"mermaidLib":"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs"}</script><script defer src="/js/editor.910c2d81fc9cb8fd44bbafad4ed6ae554bd79eb922b0ebc60bcac39f5925e161.js" integrity="sha256-kQwtgfycuP1Eu6&#43;tTtauVUvXnrkisOvGC8rDn1kl4WE="></script>
+</body>
+</html>
